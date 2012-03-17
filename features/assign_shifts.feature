@@ -8,7 +8,7 @@ Background: Users created
     | name    | type       |
     | Chris   | admin      |
     | Alice   | standard   |
-  And I am logged in as “admin1”
+  And I am logged in as “Chris”
   Scenario: Assign a shift
     Given I am on the calendar page for “Alice”
     When I select the interval “12:00 1/1/2012” to “2:00 1/1/2012“
