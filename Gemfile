@@ -9,6 +9,15 @@ gem 'haml-rails'
 # for Heroku, replace "gem 'sqlite3'" in your Gemfile with this:
 group :development, :test do
   gem 'sqlite3' # use SQLite only in development and testing
+  gem 'ruby-debug19', :require => 'ruby-debug'
+  gem 'cucumber-rails'
+  gem 'cucumber-rails-training-wheels'
+  gem 'database_cleaner'
+  gem 'capybara'
+  gem 'launchy'
+  gem 'rspec-rails'
+  gem 'ZenTest'
+  gem 'simplecov'
 end
 group :production do
   gem 'pg' # use PostgreSQL in production (Heroku)
