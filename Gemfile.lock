@@ -87,6 +87,7 @@ GEM
       thor (~> 0.14)
     json (1.6.5)
     json_pure (1.6.5)
+    later_dude (0.3.3)
     launchy (2.0.5)
       addressable (~> 2.2.6)
     libv8 (3.3.10.4)
@@ -201,6 +202,7 @@ DEPENDENCIES
   database_cleaner
   haml-rails
   jquery-rails
+  later_dude (>= 0.3.1)
   launchy
   pg
   rails (= 3.1.0)
