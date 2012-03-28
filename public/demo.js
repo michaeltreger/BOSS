@@ -6,10 +6,10 @@ $(document).ready(function() {
 
    $calendar.weekCalendar({
       displayOddEven:true,
-      timeslotsPerHour : 4,
-      allowCalEventOverlap : true,
+      timeslotsPerHour : 2,
+      allowCalEventOverlap : false,
       overlapEventsSeparate: true,
-      firstDayOfWeek : 1,
+      firstDayOfWeek : 0,
       businessHours :{start: 8, end: 18, limitDisplay: true },
       daysToShow : 7,
       switchDisplay: {'1 day': 1, '3 next days': 3, 'work week': 5, 'full week': 7},
@@ -39,8 +39,8 @@ $(document).ready(function() {
          resetForm($dialogContent);
          var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
          var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
-         var titleField = $dialogContent.find("input[name='title']");
-         var bodyField = $dialogContent.find("textarea[name='body']");
+         var typeField = $dialogContent.find("select[name='type']").val(calEvent.type);
+         var descriptionField = $dialogContent.find("textarea[name='description']");
 
 
          $dialogContent.dialog({
@@ -57,8 +57,8 @@ $(document).ready(function() {
                   id++;
                   calEvent.start = new Date(startField.val());
                   calEvent.end = new Date(endField.val());
-                  calEvent.title = titleField.val();
-                  calEvent.body = bodyField.val();
+                  calEvent.type = typeField.val();
+                  calEvent.description = descriptionField.val();
 
                   $calendar.weekCalendar("removeUnsavedEvents");
                   $calendar.weekCalendar("updateEvent", calEvent);
@@ -89,13 +89,13 @@ $(document).ready(function() {
          resetForm($dialogContent);
          var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
          var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
-         var titleField = $dialogContent.find("input[name='title']").val(calEvent.title);
-         var bodyField = $dialogContent.find("textarea[name='body']");
-         bodyField.val(calEvent.body);
+         var typeField = $dialogContent.find("select[name='type']").val(calEvent.type);
+         var descriptionField = $dialogContent.find("textarea[name='description']");
+         descriptionField.val(calEvent.description);
 
          $dialogContent.dialog({
             modal: true,
-            title: "Edit - " + calEvent.title,
+            title: "Edit - " + calEvent.type,
             close: function() {
                $dialogContent.dialog("destroy");
                $dialogContent.hide();
@@ -106,8 +106,8 @@ $(document).ready(function() {
 
                   calEvent.start = new Date(startField.val());
                   calEvent.end = new Date(endField.val());
-                  calEvent.title = titleField.val();
-                  calEvent.body = bodyField.val();
+                  calEvent.type = typeField.val();
+                  calEvent.description = descriptionField.val();
 
                   $calendar.weekCalendar("updateEvent", calEvent);
                   $dialogContent.dialog("close");
@@ -157,44 +157,44 @@ $(document).ready(function() {
                "id":1,
                "start": new Date(year, month, day, 12),
                "end": new Date(year, month, day, 13, 30),
-               "title":"Lunch with Mike"
+               "type":"Prefer"
             },
             {
                "id":2,
                "start": new Date(year, month, day, 14),
                "end": new Date(year, month, day, 14, 45),
-               "title":"Dev Meeting"
+               "type":"Class"
             },
             {
                "id":3,
                "start": new Date(year, month, day + 1, 17),
                "end": new Date(year, month, day + 1, 17, 45),
-               "title":"Hair cut"
+               "type":"Prefer"
             },
             {
                "id":4,
                "start": new Date(year, month, day - 1, 8),
                "end": new Date(year, month, day - 1, 9, 30),
-               "title":"Team breakfast"
+               "type":"Obligation"
             },
             {
                "id":5,
                "start": new Date(year, month, day + 1, 14),
                "end": new Date(year, month, day + 1, 15),
-               "title":"Product showcase"
+               "type":"Prefer"
             },
             {
                "id":6,
                "start": new Date(year, month, day, 10),
                "end": new Date(year, month, day, 11),
-               "title":"I'm read-only",
+               "type":"Obligation",
                readOnly : true
             },
             {
                "id":7,
                "start": new Date(year, month, day + 2, 17),
                "end": new Date(year, month, day + 3, 9),
-               "title":"Multiday"
+               "type":"N/P"
             }
          ]
       };

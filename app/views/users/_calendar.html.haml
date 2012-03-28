@@ -3,19 +3,22 @@
   = form_tag user_path
   %ul
     %li
-      <span>Date: </span><span class="date_holder"></span> 
+      %label{:for=>"start"}Start Time:
+      %select{:name=>"start"}
+        %option{:value=>""}Select Start Time
     %li
-      <label for="start">Start Time: </label><select name="start"><option value="">Select Start Time</option></select>
+      %label{:for=>"end"}End Time:
+      %select{:name=>"end"}
+        %option{:value=>""}Select End Time
     %li
-      <label for="end">End Time: </label><select name="end"><option value="">Select End Time</option></select>
-    %li
-      <label for="title">Title: </label>
-      %select{:name=>"title"}
+      %label{:for=>"type"}Type:
+      %select{:name=>"type"}
         %option{:value=>"prefer"}Prefer
         %option{:value=>"not_prefered"}N/P
         %option{:value=>"class"}Class
         %option{:value=>"obligation"}Obligation
-    %li
-      <label for="body">Body: </label><textarea name="body"></textarea>
+    %li#description
+      %label{:for=>"description"}Description: 
+      %textarea{:name=>"description"}
 
 

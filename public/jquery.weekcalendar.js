@@ -120,7 +120,7 @@
           if (displayTitleWithTime) {
             return calendar.weekCalendar(
                         'formatTime', calEvent.start) +
-                        ': ' + calEvent.title;
+                        ': ' + calEvent.type;
           } else {
             return calendar.weekCalendar(
                         'formatTime', calEvent.start) +
@@ -130,7 +130,7 @@
           }
         },
         eventBody: function(calEvent, calendar) {
-          return calEvent.title;
+          return calEvent.type;
         },
         shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         longMonths: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -667,6 +667,7 @@
         * render the nav buttons on top of the calendar
         */
       _renderCalendarButtons: function($calendarContainer) {
+        return;
         var self = this, options = this.options;
         if (options.buttons) {
             var calendarNavHtml = '';
@@ -1096,7 +1097,7 @@
                 var eventDuration = self._getEventDurationFromPositionedEventElement($weekDay, $newEvent, top);
 
                 $newEvent.remove();
-                var newCalEvent = {start: eventDuration.start, end: eventDuration.end, title: options.newEventText};
+                var newCalEvent = {start: eventDuration.start, end: eventDuration.end, type: options.newEventText};
                 var showAsSeparatedUser = options.showAsSeparateUsers && options.users && options.users.length;
 
                 if (showAsSeparatedUser) {
@@ -2539,7 +2540,7 @@
           return options.getHeaderDate(date, this.element);
         }
         var dayName = options.useShortDayNames ? options.shortDays[date.getDay()] : options.longDays[date.getDay()];
-        return dayName + (options.headerSeparator) + this._formatDate(date, options.dateFormat);
+        return dayName
       },
 
 
