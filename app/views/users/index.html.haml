@@ -1,11 +1,3 @@
-= weekly_calendar(@events, :date => @date, :include_24_hours => true) do |w|
-  = w.week(:business_hours => params[:business_hours], :clickable_hours => true) do |event,truncate|
-    =  event.starts_at.strftime('%I:%M%p')
-    =  link_to truncate(event.name,truncate), event_path(event)
-
-= weekly_links(:date => @date)
-= stylesheet_link_tag("weekly")
-
 %table
   %tr
     %th Type
