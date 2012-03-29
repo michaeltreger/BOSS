@@ -4,40 +4,24 @@
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <title>CS169CampusScheduler</title>
-  <%= stylesheet_link_tag  "application" %>
-  <%= javascript_include_tag "application" %>
+  <title>CampusScheduler</title>
   <%= csrf_meta_tags %>
-  <link href='http://fonts.googleapis.com/css?family=Ubuntu+Condensed' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Marvel' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Marvel|Delius+Unicase' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
-  <link href="/application.css" rel="stylesheet" type="text/css" media="screen" />
+
+  <%= stylesheet_link_tag  "application.css" %>
+  <%= stylesheet_link_tag  "simpleworld.css" %>
+  <%= stylesheet_link_tag  "reset.css" %>
+  <%= stylesheet_link_tag  "jquery-ui-1.8.11.custom.css" %>
+  <%= stylesheet_link_tag  "jquery.weekcalendar.css" %> 
+  <%= stylesheet_link_tag  "demo.css" %>
 
 
-<link rel='stylesheet' type='text/css' href='/reset.css' />
-  <link rel='stylesheet' type='text/css' href='/libs/css/smoothness/jquery-ui-1.8.11.custom.css' />
-  <link rel='stylesheet' type='text/css' href='/jquery.weekcalendar.css' />
-  <link rel='stylesheet' type='text/css' href='/demo.css' />
-  <link rel='stylesheet' type='text/css' href='/skins/default.css' />
-
-
-  <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'></script>
-  <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js'></script>
-  <script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
+  <%= javascript_include_tag "application.js" %>
+  <%= javascript_include_tag "demo.js" %>
+  <%= javascript_include_tag "date.js" %>
+  <%= javascript_include_tag "jquery.weekcalendar.js" %>
+  <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" %>
+  <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" %>
   
-  <script>
-	  $(document).ready(function(){
-	    $('#switcher').themeswitcher();
-	  });
-  </script>
-	<script type="text/javascript" src="/libs/date.js"></script>
-	<script type='text/javascript' src='/jquery.weekcalendar.js'></script>
-	<script type='text/javascript' src='/demo.js'></script>
-
-
-
-
 
 </head>
 <body>
