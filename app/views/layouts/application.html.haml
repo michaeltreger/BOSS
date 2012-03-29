@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+%html
+  %head
+    %meta{:name=>"keywords", :content=>""}
+    %meta{:name=>"description", :content=>""}
+    %meta{"http-equiv"=>"content-type", :content=>"text/html; charset=utf-8"}
+    %title CampusScheduler
+    
+    = csrf_meta_tags
+
+    = stylesheet_link_tag  "application.css"
+    = stylesheet_link_tag  "simpleworld.css"
+
+    = javascript_include_tag "application.js"
+    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
+    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"
+    
+
+  %body
+    %div#wrapper
+      %div#wrapper2
+        %div#header{:class=>"container"}
+          %div#logo
+            %h1
+              <a href="/">Campus<span>Scheduler</span></a>
+
+          %div#menu
+            %ul
+              %li <a href="/users">Users</a>
+              %li <a href="#">Post Sub</a>
+              %li <a href="#">Take Sub</a>
+              %li <a href="#">View Schedule</a>
+              %li <a href="#">Edit Schedule</a>
+        
+        %div#page
+          %div#content
+            = yield
+
+          %div#sidebar
+            %ul
+              %li
+                %div#search
+                  %form{:method=>"get", :action=>"#"}
+                    %div
+                      %ul
+                        %li
+                          <input type="text" name="s" id="search-text" value="username" />
+                          <input type="text" name="s" id="search-text" value="password" />
+                          <input type="submit" id="search-submit" value="Login" />
+                %div{:style=>"clear: both;"} &nbsp;
+          %div{:style=>"clear: both;"} &nbsp;
+        %div#footer
+          %p Copyright (c) 2012 Sitename.com. All rights reserved. Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.
