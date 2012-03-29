@@ -1,3 +1,12 @@
+= stylesheet_link_tag  "reset.css"
+= stylesheet_link_tag  "jquery-ui-1.8.11.custom.css"
+= stylesheet_link_tag  "jquery.weekcalendar.css"
+= stylesheet_link_tag  "demo.css"
+  
+= javascript_include_tag "demo.js"
+= javascript_include_tag "date.js"
+= javascript_include_tag "jquery.weekcalendar.js"
+
 %div#calendar
 %div#event_edit_container
   = form_tag user_path
