@@ -1243,7 +1243,7 @@
           self.element.find('.wc-header td.wc-day-column-header').each(function(i, val) {
             $(this).html(self._getHeaderDate(currentDay));
             if (self._isToday(currentDay)) {
-                $(this).addClass(todayClass);
+                //$(this).addClass(todayClass);
             } else {
                 $(this).removeClass(todayClass);
             }
