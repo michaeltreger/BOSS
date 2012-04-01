@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_filter CASClient::Frameworks::Rails::Filter
+  
   # GET /users
   # GET /users.json
   def index
@@ -13,6 +15,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    flash[:notice] = "#{session[:cas_user]} logged in."
     @user = User.find(params[:id])
 
     respond_to do |format|
@@ -80,4 +83,9 @@ class UsersController < ApplicationController
       format.json { head :ok }
     end
   end
+  
+  def logout
+    CASClient::Frameworks::Rails::Filter.logout(self)
+  end
+  
 end

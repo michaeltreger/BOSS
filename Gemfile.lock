@@ -151,6 +151,8 @@ GEM
       ruby-debug-base19 (>= 0.11.19)
     ruby_core_source (0.1.5)
       archive-tar-minitar (>= 0.5.2)
+    rubycas-client (2.3.8)
+      activesupport
     rubyzip (0.9.6.1)
     sass (3.1.15)
     sass-rails (3.1.5)
@@ -206,6 +208,7 @@ DEPENDENCIES
   rails (= 3.1.0)
   rspec-rails
   ruby-debug19
+  rubycas-client
   sass-rails (~> 3.1.0)
   simplecov
   sqlite3
