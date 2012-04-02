@@ -113,6 +113,7 @@
         eventHeader: function(calEvent, calendar) {
           var options = calendar.weekCalendar('option');
           var one_hour = 3600000;
+          return calEvent.type;
           var displayTitleWithTime = calEvent.end.getTime() - calEvent.start.getTime() <= (one_hour / options.timeslotsPerHour);
           if (displayTitleWithTime) {
             return calendar.weekCalendar(
@@ -127,7 +128,7 @@
           }
         },
         eventBody: function(calEvent, calendar) {
-          return calEvent.type;
+          return calEvent.description;
         },
         shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         longMonths: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],

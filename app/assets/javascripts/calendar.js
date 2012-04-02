@@ -20,7 +20,7 @@ $(document).ready(function() {
          return 760;//$(window).height() - $("h1").outerHeight() - 1;
       },
       eventRender : function(calEvent, $event) {
-         if (calEvent.type === "prefer") {
+         if (calEvent.type === "rather_not") {
             $event.css("backgroundColor", "#c6c");
             $event.find(".wc-time").css({
                "backgroundColor" : "#a4a",
@@ -209,7 +209,7 @@ $(document).ready(function() {
             $endTimeOptions.filter(function() {
                return startTime < $timestampsOfOptions.end[$(this).text()];
             })
-            );
+      );
 
       var endTimeSelected = false;
       $endTimeField.find("option").each(function() {
@@ -231,7 +231,7 @@ $(document).ready(function() {
       if ($("select[name='type']").val() === "obligation") {
          document.getElementById("description").style.display='block';
       } else {
-         //clear data too
+         $('#description > textarea').val("");
          document.getElementById("description").style.display='none';
       }
    }
@@ -279,6 +279,13 @@ $(document).ready(function() {
            "start": new Date(year, month, day + 2, 18),
            "end": new Date(year, month, day + 3, 2),
            "type":"rather_not"
+        },
+        {
+           "id":7,
+           "start": new Date(year, month, day + 4, 18),
+           "end": new Date(year, month, day + 6, 2),
+           "type":"closed",
+           "readOnly": true
         }
       ];
       events.map(convertTimesIn);
