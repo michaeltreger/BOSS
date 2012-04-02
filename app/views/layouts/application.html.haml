@@ -29,7 +29,7 @@
               %li= link_to "Users", users_path
               %li= link_to "Post Sub", "#"
               %li= link_to "Take Sub", "#"
-              %li= link_to "View Schedule", "#"
+              %li= link_to "Login", CASClient::Frameworks::Rails::Filter.login_url(controller)
               %li= link_to "Logout", logout_url
         
         %div#page
@@ -37,17 +37,6 @@
             = yield
 
           %div#sidebar
-            %ul
-              %li
-                %div#search
-                  %form{:method=>"get", :action=>"#"}
-                    %div
-                      %ul
-                        %li
-                          <input type="text" name="s" id="search-text" value="username" />
-                          <input type="text" name="s" id="search-text" value="password" />
-                          <input type="submit" id="search-submit" value="Login" />
-                %div{:style=>"clear: both;"} &nbsp;
           %div{:style=>"clear: both;"} &nbsp;
 
         %div#footer

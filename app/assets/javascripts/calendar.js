@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-
    var $calendar = $('#calendar');
    var id = 10;
 
@@ -10,7 +9,7 @@ $(document).ready(function() {
       allowCalEventOverlap : false,
       overlapEventsSeparate: true,
       firstDayOfWeek : 0,
-      businessHours :{start: 8, end: 18, limitDisplay: true },
+      businessHours :{start: 8, end: 24, limitDisplay: true },
       daysToShow : 7,
       switchDisplay: {'1 day': 1, '3 next days': 3, 'work week': 5, 'full week': 7},
       title: function(daysToShow) {
@@ -43,6 +42,7 @@ $(document).ready(function() {
          var typeField = $dialogContent.find("select[name='type']").val(calEvent.type);
          var descriptionField = $dialogContent.find("textarea[name='description']");
 
+         setDescriptionVisibility()
 
          $dialogContent.dialog({
             modal: true,
@@ -91,8 +91,9 @@ $(document).ready(function() {
          var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
          var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
          var typeField = $dialogContent.find("select[name='type']").val(calEvent.type);
-         var descriptionField = $dialogContent.find("textarea[name='description']");
-         descriptionField.val(calEvent.description);
+         var descriptionField = $dialogContent.find("textarea[name='description']").val(calEvent.description);
+
+         setDescriptionVisibility();
 
          $dialogContent.dialog({
             modal: true,
@@ -146,61 +147,6 @@ $(document).ready(function() {
       $dialogContent.find("input").val("");
       $dialogContent.find("textarea").val("");
    }
-
-   function getEventData() {
-      var year = new Date().getFullYear();
-      var month = new Date().getMonth();
-      var day = new Date().getDate();
-
-      return {
-         events : [
-            {
-               "id":1,
-               "start": new Date(year, month, day, 12),
-               "end": new Date(year, month, day, 13, 30),
-               "type":"Prefer"
-            },
-            {
-               "id":2,
-               "start": new Date(year, month, day, 14),
-               "end": new Date(year, month, day, 14, 45),
-               "type":"Class"
-            },
-            {
-               "id":3,
-               "start": new Date(year, month, day + 1, 17),
-               "end": new Date(year, month, day + 1, 17, 45),
-               "type":"Prefer"
-            },
-            {
-               "id":4,
-               "start": new Date(year, month, day - 1, 8),
-               "end": new Date(year, month, day - 1, 9, 30),
-               "type":"Obligation"
-            },
-            {
-               "id":5,
-               "start": new Date(year, month, day + 1, 14),
-               "end": new Date(year, month, day + 1, 15),
-               "type":"Prefer"
-            },
-            {
-               "id":6,
-               "start": new Date(year, month, day, 10),
-               "end": new Date(year, month, day, 11),
-               "type":"Obligation",
-               readOnly : true
-            },
-            {
-               "id":7,
-               "start": new Date(year, month, day + 2, 17),
-               "end": new Date(year, month, day + 3, 9),
-               "type":"N/P"
-            }
-         ]
-      };
-   }
-
 
    /*
     * Sets up the start and end time fields in the calendar event
@@ -262,5 +208,63 @@ $(document).ready(function() {
       }
 
    });
+
+   function setDescriptionVisibility() {
+      if ($("select[name='type']").val() === "obligation") {
+         document.getElementById("description").style.display='block';
+      } else {
+         //clear data too
+         document.getElementById("description").style.display='none';
+      }
+   }
+
+   $("select[name='type']").change(setDescriptionVisibility);
+
+   function getEventData() {
+      var year = new Date().getFullYear();
+      var month = new Date().getMonth();
+      var day = new Date().getDate();
+
+      return {
+         events : [
+            {
+               "id":1,
+               "start": new Date(year, month, day, 12),
+               "end": new Date(year, month, day, 13, 30),
+               "type":"Prefer"
+            },
+            {
+               "id":2,
+               "start": new Date(year, month, day, 14),
+               "end": new Date(year, month, day, 14, 45),
+               "type":"Class"
+            },
+            {
+               "id":3,
+               "start": new Date(year, month, day + 1, 17),
+               "end": new Date(year, month, day + 1, 17, 45),
+               "type":"Prefer"
+            },
+            {
+               "id":4,
+               "start": new Date(year, month, day - 1, 8),
+               "end": new Date(year, month, day - 1, 9, 30),
+               "type":"Obligation"
+            },
+            {
+               "id":5,
+               "start": new Date(year, month, day + 1, 14),
+               "end": new Date(year, month, day + 1, 15),
+               "type":"Prefer"
+            },
+            {
+               "id":6,
+               "start": new Date(year, month, day + 2, 17),
+               "end": new Date(year, month, day + 3, 9),
+               "type":"R/N"
+            }
+         ]
+      };
+   }
 
 });
