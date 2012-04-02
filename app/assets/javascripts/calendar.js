@@ -9,18 +9,36 @@ $(document).ready(function() {
       allowCalEventOverlap : false,
       overlapEventsSeparate: true,
       firstDayOfWeek : 0,
-      businessHours :{start: 8, end: 24, limitDisplay: true },
+//      businessHours :{start: 8, end: 26, limitDisplay: true },
+      businessHours :{start: 6, end: 24, limitDisplay: true },
       daysToShow : 7,
       switchDisplay: {'1 day': 1, '3 next days': 3, 'work week': 5, 'full week': 7},
       title: function(daysToShow) {
 			return daysToShow == 1 ? '%date%' : '%start% - %end%';
       },
       height : function($calendar) {
-         return $(window).height() - $("h1").outerHeight() - 1;
+         return 760;//$(window).height() - $("h1").outerHeight() - 1;
       },
       eventRender : function(calEvent, $event) {
-         if (calEvent.end.getTime() < new Date().getTime()) {
-            return;
+         if (calEvent.type === "prefer") {
+            $event.css("backgroundColor", "#c6c");
+            $event.find(".wc-time").css({
+               "backgroundColor" : "#a4a",
+               "border" : "1px solid #949"
+            });
+         } else if (calEvent.type === "obligation") {
+            $event.css("backgroundColor", "#3c6");
+            $event.find(".wc-time").css({
+               "backgroundColor" : "#1a4",
+               "border" : "1px solid #093"
+            });
+         } else if (calEvent.type === "class") {
+            $event.css("backgroundColor", "#f23");
+            $event.find(".wc-time").css({
+               "backgroundColor" : "#c12",
+               "border" : "1px solid #b12"
+            });
+         } else if (calEvent.type === "closed") {
             $event.css("backgroundColor", "#aaa");
             $event.find(".wc-time").css({
                "backgroundColor" : "#999",
@@ -225,46 +243,56 @@ $(document).ready(function() {
       var month = new Date().getMonth();
       var day = new Date().getDate();
 
-      return {
-         events : [
-            {
-               "id":1,
-               "start": new Date(year, month, day, 12),
-               "end": new Date(year, month, day, 13, 30),
-               "type":"Prefer"
-            },
-            {
-               "id":2,
-               "start": new Date(year, month, day, 14),
-               "end": new Date(year, month, day, 14, 45),
-               "type":"Class"
-            },
-            {
-               "id":3,
-               "start": new Date(year, month, day + 1, 17),
-               "end": new Date(year, month, day + 1, 17, 45),
-               "type":"Prefer"
-            },
-            {
-               "id":4,
-               "start": new Date(year, month, day - 1, 8),
-               "end": new Date(year, month, day - 1, 9, 30),
-               "type":"Obligation"
-            },
-            {
-               "id":5,
-               "start": new Date(year, month, day + 1, 14),
-               "end": new Date(year, month, day + 1, 15),
-               "type":"Prefer"
-            },
-            {
-               "id":6,
-               "start": new Date(year, month, day + 2, 17),
-               "end": new Date(year, month, day + 3, 9),
-               "type":"R/N"
-            }
-         ]
-      };
+      events = [
+        {
+           "id":1,
+           "start": new Date(year, month, day, 10),
+           "end": new Date(year, month, day, 13, 30),
+           "type":"prefer"
+        },
+        {
+           "id":2,
+           "start": new Date(year, month, day, 14),
+           "end": new Date(year, month, day, 16, 45),
+           "type":"class"
+        },
+        {
+           "id":3,
+           "start": new Date(year, month, day + 1, 17),
+           "end": new Date(year, month, day + 1, 19, 45),
+           "type":"class"
+        },
+        {
+           "id":4,
+           "start": new Date(year, month, day - 1, 8),
+           "end": new Date(year, month, day - 1, 14, 30),
+           "type":"obligation"
+        },
+        {
+           "id":5,
+           "start": new Date(year, month, day + 1, 11),
+           "end": new Date(year, month, day + 1, 15),
+           "type":"prefer"
+        },
+        {
+           "id":6,
+           "start": new Date(year, month, day + 2, 18),
+           "end": new Date(year, month, day + 3, 2),
+           "type":"rather_not"
+        }
+      ];
+      events.map(convertTimesIn);
+      return events;
+   }
+   
+   function convertTimesIn(event) {
+      event.start = new Date(event.start.getTime() - 7200000)
+      event.end = new Date(event.end.getTime() - 7200000)
+   }
+   
+   function convertTimesOut(event) {
+      event.start = new Date(event.start.getTime() + 7200000)
+      event.end = new Date(event.end.getTime() + 7200000)
    }
 
 });

@@ -63,7 +63,7 @@
         },
         switchDisplay: {},
         scrollToHourMillis: 500,
-	allowEventDelete: false,
+        allowEventDelete: false,
         allowCalEventOverlap: false,
         overlapEventsSeparate: false,
         totalEventsWidthPercentInOneColumn : 100,
@@ -78,8 +78,7 @@
         resizable: function(calEvent, element) {
           return true;
         },
-        eventClick: function(calEvent, element, dayFreeBusyManager, 
-                                                      calendar, clickEvent) {
+        eventClick: function(calEvent, element, dayFreeBusyManager, calendar, clickEvent) {
         },
         eventRender: function(calEvent, element) {
           return element;
@@ -96,17 +95,15 @@
         },
         eventResize: function(calEvent, element) {
         },
-        eventNew: function(calEvent, element, dayFreeBusyManager, 
-                                                    calendar, mouseupEvent) {
+        eventNew: function(calEvent, element, dayFreeBusyManager, calendar, mouseupEvent) {
         },
         eventMouseover: function(calEvent, $event) {
         },
         eventMouseout: function(calEvent, $event) {
         },
-        eventDelete: function(calEvent, element, dayFreeBusyManager, 
-                                                      calendar, clickEvent) {
+        eventDelete: function(calEvent, element, dayFreeBusyManager, calendar, clickEvent) {
             calendar.weekCalendar('removeEvent',calEvent.id);
-	},
+        },
         calendarBeforeLoad: function(calendar) {
         },
         calendarAfterLoad: function(calendar) {
@@ -1889,6 +1886,7 @@
         * find the hour (12 hour day) for a given hour index
         */
       _hourForIndex: function(index) {
+          index = (index+2) % 24;
           if (index === 0) { //midnight
             return 12;
           } else if (index < 13) { //am
@@ -1899,6 +1897,7 @@
       },
 
       _24HourForIndex: function(index) {
+          index = (index+2) % 24;
           if (index === 0) { //midnight
             return '00:00';
           } else if (index < 10) {
@@ -2122,6 +2121,7 @@
         * http://jacwright.com/projects/javascript/date_format
         */
       _formatDate: function(date, format) {
+        date = new Date(date.getTime() + MILLIS_IN_2_HOURS);
         var returnStr = '';
         for (var i = 0; i < format.length; i++) {
           var curChar = format.charAt(i);
@@ -2594,6 +2594,7 @@
       }
     });
 
+    var MILLIS_IN_2_HOURS = 7200000;
     var MILLIS_IN_DAY = 86400000;
     var MILLIS_IN_WEEK = MILLIS_IN_DAY * 7;
 
