@@ -1,3 +1,6 @@
+require 'casclient'
+require 'casclient/frameworks/rails/filter'
+
 # Load the rails application
 require File.expand_path('../application', __FILE__)
 
@@ -5,5 +8,5 @@ require File.expand_path('../application', __FILE__)
 CS169CampusScheduler::Application.initialize!
 
 CASClient::Frameworks::Rails::Filter.configure(
-  :cas_base_url => "https://auth-test.berkeley.edu/cas"
+   :cas_base_url => "https://auth-test.berkeley.edu/cas"
 )

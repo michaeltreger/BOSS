@@ -98,6 +98,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.17.2)
     multi_json (1.1.0)
+    net-ldap (0.3.1)
     nokogiri (1.5.0)
     pg (0.13.2)
     polyglot (0.3.3)
@@ -196,14 +197,17 @@ PLATFORMS
 
 DEPENDENCIES
   ZenTest
+  activesupport
   capybara
   coffee-rails (~> 3.1.0)
   cucumber-rails
   cucumber-rails-training-wheels
   database_cleaner
   haml-rails
+  i18n
   jquery-rails
   launchy
+  net-ldap
   pg
   rails (= 3.1.0)
   rspec-rails
