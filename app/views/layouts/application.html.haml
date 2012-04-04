@@ -18,39 +18,30 @@
             %div#banr
               <!-- Link to UC Berkeley home page; do not remove -->
               %div#ucb
-                <a href="http://www.berkeley.edu">UC Berkeley</a>
-              <!-- Website logo -->
+                =link_to "UC Berkeley", "http://www.berkeley.edu"
               %div#logo
-                <img src="/img/logo-templates.gif" alt="UC Berkeley templates" />
+                =link_to image_tag("/img/logo-templates.gif", :alt=>"UC Berkeley templates"), root_url
 
               %div#topnav
                 %ul
-                  <li class="first"><a href="#">Link 1</a></li>
-                  <li> <a href="#">Link 2</a></li>
-                  <li> <a href="#">Link 3</a></li>
-                  <li> <a href="#">Link 4</a></li>
-                  <li> <a href="#">Link 5</a></li>
-                  <li> <a href="#">Link 6</a></li>
+                  %li.first= link_to "Log in", CASClient::Frameworks::Rails::Filter.login_url(controller)
+                  %li= link_to "Log out", logout_url
 	            
             %div#pagebody
               %div#navcol
                 %div#menu
                   %ul
-                    <li><a href="#">Link 1 </a></li>
-                    <li><a href="#">Link 2 </a></li>
-                    <li><a href="#">Link 3 </a></li>
-                    <li><a href="#">Link 4</a></li>
-                    <li><a href="#">Link 5</a></li>
-                    <li><a href="#">Link 6 </a></li>
-                    <li><a href="#">Link 7</a></li>
-                    <li><a href="#">Link 8 </a></li>
+                    %li= link_to "View Schedule", "#"
+                    %li= link_to "Post Sub", "#"
+                    %li= link_to "Time Edit", "#"
                 
                 %div#addon
-                  <p>Optional extra info</p>
+                  %p Optional extra info
               
               %div#contentcol
                 %div#section
-                  %div#section-txt Section title (optional)
+                  %div#section-txt
+                    Section title
                   %div#pstrip
                 
                 %div#content
