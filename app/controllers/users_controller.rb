@@ -3,7 +3,7 @@ require 'net/ldap'
 
 class UsersController < ApplicationController
   before_filter CASClient::Frameworks::Rails::GatewayFilter, :only => :index
-  before_filter CASClient::Frameworks::Rails::Filter, :except => :index
+  #before_filter CASClient::Frameworks::Rails::Filter, :except => :index
 
   def ldapparams
     ldap = Net::LDAP.new
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    flash[:notice] = "#{session[:cas_user]} logged in. \n  #{ldapparams.to_s}"
+    #flash[:notice] = "#{session[:cas_user]} logged in. \n  #{ldapparams.to_s}"
     @user = User.find(params[:id])
 
     respond_to do |format|

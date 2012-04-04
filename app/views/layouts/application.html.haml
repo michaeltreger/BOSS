@@ -1,42 +1,61 @@
 <!DOCTYPE html>
 %html
   %head
-    %meta{:name=>"keywords", :content=>""}
-    %meta{:name=>"description", :content=>""}
-    %meta{"http-equiv"=>"content-type", :content=>"text/html; charset=utf-8"}
     %title CampusScheduler
+
+    = stylesheet_link_tag "application.css"
     
     = csrf_meta_tags
-
-    = stylesheet_link_tag  "application.css"
-
     = javascript_include_tag "application.js"
-    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
     = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"
-    
+
 
   %body
-    %div#wrapper
-      %div#wrapper2
-        %div#header{:class=>"container"}
-          %div#logo
-            %h1
-              <a href="/">Campus<span>Scheduler</span></a>
+    %div#sizer
+      %div#expander
+        %div#innerwrapper
+          %div#outside
+            %div#banr
+              <!-- Link to UC Berkeley home page; do not remove -->
+              %div#ucb
+                <a href="http://www.berkeley.edu">UC Berkeley</a>
+              <!-- Website logo -->
+              %div#logo
+                <img src="/img/logo-templates.gif" alt="UC Berkeley templates" />
 
-          %div#menu
-            %ul
-              %li= link_to "Users", users_path
-              %li= link_to "Post Sub", "#"
-              %li= link_to "Take Sub", "#"
-              %li= link_to "Login", CASClient::Frameworks::Rails::Filter.login_url(controller)
-              %li= link_to "Logout", logout_url
-        
-        %div#page
-          %div#content
-            = yield
-
-          %div#sidebar
-          %div{:style=>"clear: both;"} &nbsp;
-
-        %div#footer
-          %p Copyright (c) 2012 Sitename.com. All rights reserved. Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.
+              %div#topnav
+                %ul
+                  <li class="first"><a href="#">Link 1</a></li>
+                  <li> <a href="#">Link 2</a></li>
+                  <li> <a href="#">Link 3</a></li>
+                  <li> <a href="#">Link 4</a></li>
+                  <li> <a href="#">Link 5</a></li>
+                  <li> <a href="#">Link 6</a></li>
+	            
+            %div#pagebody
+              %div#navcol
+                %div#menu
+                  %ul
+                    <li><a href="#">Link 1 </a></li>
+                    <li><a href="#">Link 2 </a></li>
+                    <li><a href="#">Link 3 </a></li>
+                    <li><a href="#">Link 4</a></li>
+                    <li><a href="#">Link 5</a></li>
+                    <li><a href="#">Link 6 </a></li>
+                    <li><a href="#">Link 7</a></li>
+                    <li><a href="#">Link 8 </a></li>
+                
+                %div#addon
+                  <p>Optional extra info</p>
+              
+              %div#contentcol
+                %div#section
+                  %div#section-txt Section title (optional)
+                  %div#pstrip
+                
+                %div#content
+                  = yield
+                    
+                    
+                    
+                    
