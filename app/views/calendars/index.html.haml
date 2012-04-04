@@ -1,0 +1,23 @@
+%h1 Listing calendars
+
+%table
+  %tr
+    %th Type
+    %th Name
+    %th Description
+    %th
+    %th
+    %th
+
+  - @calendars.each do |calendar|
+    %tr
+      %td= calendar.type
+      %td= calendar.name
+      %td= calendar.description
+      %td= link_to 'Show', calendar
+      %td= link_to 'Edit', edit_calendar_path(calendar)
+      %td= link_to 'Destroy', calendar, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Calendar', new_calendar_path

@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Type:
+  = @calendar.type
+%p
+  %b Name:
+  = @calendar.name
+%p
+  %b Description:
+  = @calendar.description
+
+= link_to 'Edit', edit_calendar_path(@calendar)
+\|
+= link_to 'Back', calendars_path

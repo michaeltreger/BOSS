@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Description:
+  = @lab.description
+%p
+  %b Name:
+  = @lab.name
+%p
+  %b Initials:
+  = @lab.initials
+%p
+  %b Max employees:
+  = @lab.max_employees
+%p
+  %b Min employees:
+  = @lab.min_employees
+
+= link_to 'Edit', edit_lab_path(@lab)
+\|
+= link_to 'Back', labs_path

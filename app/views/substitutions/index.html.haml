@@ -1,0 +1,21 @@
+%h1 Listing substitutions
+
+%table
+  %tr
+    %th Description
+    %th Message
+    %th
+    %th
+    %th
+
+  - @substitutions.each do |substitution|
+    %tr
+      %td= substitution.description
+      %td= substitution.message
+      %td= link_to 'Show', substitution
+      %td= link_to 'Edit', edit_substitution_path(substitution)
+      %td= link_to 'Destroy', substitution, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Substitution', new_substitution_path

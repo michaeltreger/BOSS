@@ -1,0 +1,25 @@
+= form_for @lab do |f|
+  -if @lab.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@lab.errors.count, "error")} prohibited this lab from being saved:"
+      %ul
+        - @lab.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :description
+    = f.text_area :description
+  .field
+    = f.label :name
+    = f.text_field :name
+  .field
+    = f.label :initials
+    = f.text_field :initials
+  .field
+    = f.label :max_employees
+    = f.number_field :max_employees
+  .field
+    = f.label :min_employees
+    = f.number_field :min_employees
+  .actions
+    = f.submit 'Save'

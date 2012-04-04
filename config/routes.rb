@@ -1,4 +1,12 @@
 CS169CampusScheduler::Application.routes.draw do
+  resources :substitutions
+
+  resources :entries
+
+  resources :labs
+
+  resources :calendars
+
   resources :users
   match 'logout' => 'users#logout', :as => :logout
 

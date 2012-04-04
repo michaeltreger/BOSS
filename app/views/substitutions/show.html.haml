@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Description:
+  = @substitution.description
+%p
+  %b Message:
+  = @substitution.message
+
+= link_to 'Edit', edit_substitution_path(@substitution)
+\|
+= link_to 'Back', substitutions_path

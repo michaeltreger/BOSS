@@ -1,0 +1,27 @@
+%h1 Listing labs
+
+%table
+  %tr
+    %th Description
+    %th Name
+    %th Initials
+    %th Max employees
+    %th Min employees
+    %th
+    %th
+    %th
+
+  - @labs.each do |lab|
+    %tr
+      %td= lab.description
+      %td= lab.name
+      %td= lab.initials
+      %td= lab.max_employees
+      %td= lab.min_employees
+      %td= link_to 'Show', lab
+      %td= link_to 'Edit', edit_lab_path(lab)
+      %td= link_to 'Destroy', lab, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Lab', new_lab_path
