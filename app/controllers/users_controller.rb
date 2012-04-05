@@ -2,8 +2,8 @@ require 'rubygems'
 require 'net/ldap'
 
 class UsersController < ApplicationController
-  #before_filter CASClient::Frameworks::Rails::GatewayFilter, :only => :index
-  #before_filter CASClient::Frameworks::Rails::Filter, :except => :index
+  before_filter CASClient::Frameworks::Rails::GatewayFilter, :only => :index
+  before_filter CASClient::Frameworks::Rails::Filter, :except => :index
 
   def ldapparams
     ldap = Net::LDAP.new
@@ -63,13 +63,16 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+
     @user = User.new(params[:user])
 
     respond_to do |format|
+      @user.cas_user = session[:cas_user]
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
       else
+        debugger
         format.html { render action: "new" }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
