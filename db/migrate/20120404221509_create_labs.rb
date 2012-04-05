@@ -7,6 +7,10 @@ class CreateLabs < ActiveRecord::Migration
       t.integer :max_employees
       t.integer :min_employees
 
+      t.references :calendar
+      t.references :entry
+      t.references :lab_users
+
       t.timestamps
     end
   end

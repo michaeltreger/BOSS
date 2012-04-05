@@ -6,6 +6,14 @@ class CreateUsers < ActiveRecord::Migration
       t.string :email
       t.integer :cas_user
 
+      t.references :calendar
+      t.references :substitution
+      t.references :preference
+      t.references :entry
+      t.references :lab
+      t.references :group
+      t.references :lab_users
+
       t.timestamps
     end
   end
