@@ -4,6 +4,9 @@ class CreateSubstitutions < ActiveRecord::Migration
       t.text :description
       t.text :message
 
+      t.references :user
+      t.references :entry
+
       t.timestamps
     end
   end
