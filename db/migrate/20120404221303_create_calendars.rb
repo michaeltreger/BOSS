@@ -1,7 +1,7 @@
 class CreateCalendars < ActiveRecord::Migration
   def change
     create_table :calendars do |t|
-      t.integer :type
+      t.integer :calendar_type
       t.string :name
       t.text :description
 
