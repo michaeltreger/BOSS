@@ -1909,6 +1909,7 @@
       },
 
       _amOrPm: function(hourOfDay) {
+          hourOfDay = (hourOfDay+2) %24;
           return hourOfDay < 12 ? 'AM' : 'PM';
       },
 
