@@ -11,37 +11,52 @@
 
 
   %body
-    %div#sizer
-      %div#expander
-        %div#innerwrapper
-          %div#outside
-            %div#banr
+    #sizer
+      #expander
+        #innerwrapper
+          #outside
+            #banr
               <!-- Link to UC Berkeley home page; do not remove -->
-              %div#ucb
+              #ucb
                 =link_to "UC Berkeley", "http://www.berkeley.edu"
-              %div#logo
-                =link_to image_tag("/img/logo-templates.gif", :alt=>"UC Berkeley templates"), root_url
+              #logo
+                logo coming later
+                link_to image_tag("/img/logo.gif", :alt=>"UC Berkeley templates"), root_url
 
-              %div#topnav
+              #topnav
                 %ul
-                  %li.first= link_to "Log in", CASClient::Frameworks::Rails::Filter.login_url(controller)
-                  %li= link_to "Log out", logout_url
+                  - if !session[:cas_user]
+                    %li.first= link_to "Log in", CASClient::Frameworks::Rails::Filter.login_url(controller)
+                  - else
+                    %li= link_to "Log out", logout_url
 	            
-            %div#pagebody
-              %div#navcol
-                %div#menu
-                  %ul
-                    %li= link_to "View Schedule", "#"
-                    %li= link_to "Post Sub", "#"
-                    %li= link_to "Time Edit", "#"
-                
+            #pagebody
+              #navcol
+                %ul#menu-flyout
+                  %li
+                    = link_to "Calendars", calendars_path
+                    %ul
+                      %li
+                        = link_to "My Calendars", calendars_path
+                      %li
+                        = link_to "Admin Calendars", calendars_path
+                  %li
+                    = link_to "Substitutions", substitutions_path
+                    %ul
+                      %li
+                        = link_to "View Substitutions", substitutions_path
+                      %li
+                        = link_to "Post a Substitution", substitutions_path
+                  %li
+                    = link_to "Time Edit", '/'
+                      
                 %div#addon
                   %p Optional extra info
               
               %div#contentcol
                 %div#section
                   %div#section-txt
-                    Section title
+                    = @page_title
                   %div#pstrip
                 
                 %div#content

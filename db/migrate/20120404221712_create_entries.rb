@@ -7,6 +7,11 @@ class CreateEntries < ActiveRecord::Migration
       t.boolean :repeating
       t.boolean :finalized
 
+      t.references :user
+      t.references :substitution
+      t.references :calendar
+      t.references :lab
+
       t.timestamps
     end
   end
