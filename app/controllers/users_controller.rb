@@ -2,8 +2,8 @@ require 'rubygems'
 require 'net/ldap'
 
 class UsersController < ApplicationController
-  #before_filter CASClient::Frameworks::Rails::GatewayFilter, :only => :index
-  #before_filter CASClient::Frameworks::Rails::Filter, :except => :index
+  before_filter CASClient::Frameworks::Rails::GatewayFilter, :only => :index
+  before_filter CASClient::Frameworks::Rails::Filter, :except => :index
 
   def ldapparams
     ldap = Net::LDAP.new
