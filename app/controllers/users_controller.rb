@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    flash[:notice] = "#{session[:cas_user]} logged in."
+    flash[:notice] = "You are logged in as #{ldapparams[0][:givenname][0]} #{ldapparams[0][:sn][0]}."
     @user = User.find(params[:id])
 
     respond_to do |format|
@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       @user.cas_user = session[:cas_user]
-      @user.name = ldapparams[0][:givenname][0] + ldapparams[0][:sn][0]
+      @user.name = ldapparams[0][:givenname][0] + " " + ldapparams[0][:sn][0]
       @user.email = ldapparams[0][:mail][0]
       @user.approved = false
       if @user.save
@@ -70,6 +70,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
+      @user.approved = true unless @user.approved?
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :ok }
@@ -92,15 +93,28 @@ class UsersController < ApplicationController
     end
   end
 
+<<<<<<< HEAD
   def approve
     @nonApprovedUsers = User.all
 
+=======
+  def approveindex
+    @nonApprovedUsers = User.find_all_by_approved(false)
+    
+>>>>>>> cda03a4ea30a3b212f076945085b860cc1a2de1b
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
     end
   end
 
+<<<<<<< HEAD
+=======
+  def approve
+    @user = User.find(params[:id])
+  end
+  
+>>>>>>> cda03a4ea30a3b212f076945085b860cc1a2de1b
   def logout
     CASClient::Frameworks::Rails::Filter.logout(self)
   end

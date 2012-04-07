@@ -4,11 +4,15 @@
       %h2= "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
       %ul
         - @user.errors.full_messages.each do |msg|
-          %li= msgi
+          %li= msg
 
   .field
-    = f.label :phone
-    = f.text_field :phone
+    = f.label :user_type
+    = f.number_field :user_type
+
+  .field
+    = f.label :initials
+    = f.text_field :initials
 
   .actions
     = f.submit 'Save'

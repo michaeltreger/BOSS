@@ -11,9 +11,9 @@
       %td= user.user_type
       %td= user.name
       %td= user.email
-      %td= link_to 'Show', user
-      %td= link_to 'Edit', edit_user_path(user)
-      %td= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete
+      %td= link_to 'View user page', user
+      %td= link_to 'Edit user', edit_user_path(user)#"/admin/users/edit/#{user.id}"
+      %td= link_to 'Delete user', user, :confirm => 'Are you sure?', :method => :delete
 
 %br
 

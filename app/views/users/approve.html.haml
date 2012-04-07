@@ -1,19 +1,6 @@
-%table
-  %tr
-    %th Type
-    %th Name
-    %th Email
-    %th
-    %th
-    %th
+%h1 Editing user
 
-  - @nonApprovedUsers.each do |user|
-    %tr
-      %td= user.name
-      %td= user.email
-      %td= link_to 'Approve', edit_user_path(user)
-      %td= link_to 'Delete', user, :confirm => 'Are you sure?', :method => :delete
+= render 'form3'
 
-%br
 
-= link_to 'New User', new_user_path
+= link_to 'Back', '/approve/'
