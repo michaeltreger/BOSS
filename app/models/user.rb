@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  has_many :calendar
+  has_many :calendars
   belongs_to :substitution
   has_one :preference
   belongs_to :entry

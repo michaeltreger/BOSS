@@ -2,30 +2,12 @@ require 'rubygems'
 require 'net/ldap'
 
 class UsersController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::GatewayFilter, :only => :index
-  before_filter CASClient::Frameworks::Rails::Filter, :except => :index
-
-  def ldapparams
-    ldap = Net::LDAP.new
-    ldap.host = "ldap-test.berkeley.edu"
-    filter = Net::LDAP::Filter.eq( "uid", session[:cas_user])
-    attrs = []
-
-    @ldapparams = Hash.new
-
-    ldap.search( :base => "ou=people,dc=berkeley,dc=edu", :filter => filter, :return_result => true ) do |entry|
-
-      entry.attribute_names.each do |n|
-        @ldapparams[n] = entry[n]
-      end
-    end
-  end
 
   # GET /users
   # GET /users.json
   def index
     @users = User.all
-    
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
@@ -106,11 +88,11 @@ class UsersController < ApplicationController
       format.json { head :ok }
     end
   end
-  
+
   def logout
     CASClient::Frameworks::Rails::Filter.logout(self)
   end
-  
+
   def calendar
     @events = Entry.find_all_by_user_id(1)
 
@@ -119,5 +101,5 @@ class UsersController < ApplicationController
       format.json { render json: @events }
     end
   end
-  
+
 end
