@@ -49,9 +49,8 @@
                         = link_to "Post a Substitution", substitutions_path
                   %li
                     = link_to "Time Edit", '/'
-                  - @user = User.find_by_cas_user(session[:cas_user])
-                  - if not @user.nil?
-                    - if @user.user_type == 0
+                  - if not @current_user.nil?
+                    - if @current_user.user_type == 0
                       %li
                         = link_to "Admin", users_path
                         %ul
