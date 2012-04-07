@@ -7,7 +7,7 @@ class Entry < ActiveRecord::Base
 
     #This might be useful down the line.
     def duration
-        ((@start_time.minus_with_coercion(@end_time)/3600).round
+        (@start_time.minus_with_coercion(@end_time)/3600).round
     end
 
 end
