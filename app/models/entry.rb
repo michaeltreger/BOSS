@@ -1,5 +1,5 @@
 class Entry < ActiveRecord::Base
-    has_many :users
+    has_one :user
     belongs_to :substitution
     belongs_to :calendar
     belongs_to :lab

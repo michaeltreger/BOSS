@@ -68,6 +68,9 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       @user.cas_user = session[:cas_user]
+      @user.name = ldapparams[0][:givenname][0] + ldapparams[0][:sn][0]
+      @user.email = ldapparams[0][:mail][0]
+      @user.approved = false
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
@@ -104,6 +107,15 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to users_url }
       format.json { head :ok }
+    end
+  end
+
+  def approve
+    @nonApprovedUsers = User.all
+    
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @users }
     end
   end
   
