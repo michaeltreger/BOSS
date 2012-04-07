@@ -9,7 +9,7 @@ $(document).ready(function() {
    function getEventData() {   
       $.ajax({
          type: "GET",
-         url: "http://localhost:3000/calendar.json",
+         url: "http://localhost:3000/calendars.json",
          dataType: "json",
          success: function(data) {
             data.map(convertTimesIn);

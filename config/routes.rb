@@ -9,7 +9,6 @@ CS169CampusScheduler::Application.routes.draw do
 
   resources :users
   match 'logout' => 'users#logout', :as => :logout
-  match 'calendar' => 'users#calendar', :as => :calendar
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

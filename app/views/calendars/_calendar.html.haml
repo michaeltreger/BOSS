@@ -1,0 +1,27 @@
+= javascript_include_tag "jquery.weekcalendar.js"
+= javascript_include_tag "date.js"
+
+%div#calendar
+%div#event_edit_container
+  = form_tag '/'
+  %ul
+    %li
+      %label{:for=>"start"}Start Time:
+      %select{:name=>"start"}
+        %option{:value=>""}Select Start Time
+    %li
+      %label{:for=>"end"}End Time:
+      %select{:name=>"end"}
+        %option{:value=>""}Select End Time
+    %li
+      %label{:for=>"type"}Type:
+      %select{:name=>"type"}
+        %option{:value=>"prefer"}Prefer
+        %option{:value=>"rather_not"}R/N
+        %option{:value=>"class"}Class
+        %option{:value=>"obligation"}Obligation
+    %li#description
+      %label{:for=>"description"}Description: 
+      %textarea{:name=>"description"}
+
+
