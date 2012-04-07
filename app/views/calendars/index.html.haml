@@ -1,23 +1,5 @@
-%h1 Listing calendars
+- @page_title = 'Calendars'
+%h3 My Calendar
+%h3 Calendars I Administrate
 
-%table
-  %tr
-    %th Type
-    %th Name
-    %th Description
-    %th
-    %th
-    %th
-
-  - @calendars.each do |calendar|
-    %tr
-      %td= calendar.calendar_type
-      %td= calendar.name
-      %td= calendar.description
-      %td= link_to 'Show', calendar
-      %td= link_to 'Edit', edit_calendar_path(calendar)
-      %td= link_to 'Destroy', calendar, :confirm => 'Are you sure?', :method => :delete
-
-%br
-
-= link_to 'New Calendar', new_calendar_path
+= render 'calendar'

@@ -1,8 +1,9 @@
 = javascript_include_tag "jquery.weekcalendar.js"
+= javascript_include_tag "date.js"
 
 %div#calendar
 %div#event_edit_container
-  = form_tag user_path
+  = form_tag '/'
   %ul
     %li
       %label{:for=>"start"}Start Time:

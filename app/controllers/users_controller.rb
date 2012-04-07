@@ -35,7 +35,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    #flash[:notice] = "#{session[:cas_user]} logged in. \n  #{ldapparams.to_s}"
+    flash[:notice] = "#{session[:cas_user]} logged in."
     @user = User.find(params[:id])
 
     respond_to do |format|
