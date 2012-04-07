@@ -10,7 +10,6 @@ CS169CampusScheduler::Application.routes.draw do
   #resources :users
 
   match 'logout' => 'users#logout', :as => :logout
-
   scope '/admin' do
     resources :users
   end
