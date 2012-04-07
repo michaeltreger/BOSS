@@ -111,13 +111,4 @@ class UsersController < ApplicationController
     CASClient::Frameworks::Rails::Filter.logout(self)
   end
   
-  def calendar
-    @events = Entry.find_all_by_user_id(1)
-
-    respond_to do |format|
-      format.html { redirect_to users_url }
-      format.json { render json: @events }
-    end
-  end
-  
 end
