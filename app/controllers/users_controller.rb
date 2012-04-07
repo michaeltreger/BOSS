@@ -50,6 +50,9 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       @user.cas_user = session[:cas_user]
+      @user.name = ldapparams[0][:givenname][0] + ldapparams[0][:sn][0]
+      @user.email = ldapparams[0][:mail][0]
+      @user.approved = false
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
@@ -89,17 +92,17 @@ class UsersController < ApplicationController
     end
   end
 
-  def logout
-    CASClient::Frameworks::Rails::Filter.logout(self)
-  end
-
-  def calendar
-    @events = Entry.find_all_by_user_id(1)
+  def approve
+    @nonApprovedUsers = User.all
 
     respond_to do |format|
-      format.html { redirect_to users_url }
-      format.json { render json: @events }
+      format.html # index.html.erb
+      format.json { render json: @users }
     end
+  end
+
+  def logout
+    CASClient::Frameworks::Rails::Filter.logout(self)
   end
 
 end

@@ -1,5 +1,5 @@
 class Entry < ActiveRecord::Base
-    has_many :users
+    has_one :user
     belongs_to :substitution
     belongs_to :calendar
     belongs_to :lab
@@ -7,7 +7,7 @@ class Entry < ActiveRecord::Base
 
     #This might be useful down the line.
     def duration
-        ((@start_time.minus_with_coercion(@end_time)/3600).round
+        (@start_time.minus_with_coercion(@end_time)/3600).round
     end
 
 end

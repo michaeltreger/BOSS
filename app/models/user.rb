@@ -5,6 +5,9 @@ class User < ActiveRecord::Base
   belongs_to :entry
   belongs_to :lab
   belongs_to :group
-  validates_presence_of :user_type, :name
+  validates_presence_of :name
+  validates_presence_of :type, :if => :approved?
+  validates_presence_of :initials, :if => :approved?
+  validates_presence_of :type, :if => :approved?
 
 end

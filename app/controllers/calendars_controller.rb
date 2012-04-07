@@ -3,10 +3,11 @@ class CalendarsController < ApplicationController
   # GET /calendars.json
   def index
     @calendars = Calendar.all
+    @events = Entry.find_all_by_user_id(1)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @calendars }
+      format.json { render json: @events }
     end
   end
 
