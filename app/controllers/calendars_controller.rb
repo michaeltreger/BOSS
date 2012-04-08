@@ -3,22 +3,21 @@ class CalendarsController < ApplicationController
   # GET /calendars.json
   def index
     @calendars = Calendar.all
-    @events = Entry.find_all_by_user_id(1)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @events }
+      format.json { render json: @calendars }
     end
   end
 
   # GET /calendars/1
   # GET /calendars/1.json
   def show
-    @calendar = Calendar.find(params[:id])
+    @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description] )
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @calendar }
+      format.json { render json: @events }
     end
   end
 
@@ -57,16 +56,19 @@ class CalendarsController < ApplicationController
   # PUT /calendars/1
   # PUT /calendars/1.json
   def update
+    parsed_json = ActiveSupport::JSON.decode(params[:calendar])
+    
     @calendar = Calendar.find(params[:id])
+    @calendar.update_calendar(parsed_json)
 
     respond_to do |format|
-      if @calendar.update_attributes(params[:calendar])
+      #if @calendar.update_attributes(params[:calendar])
         format.html { redirect_to @calendar, notice: 'Calendar was successfully updated.' }
         format.json { head :ok }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @calendar.errors, status: :unprocessable_entity }
-      end
+      #else
+      #  format.html { render action: "edit" }
+      #  format.json { render json: @calendar.errors, status: :unprocessable_entity }
+      #end
     end
   end
 

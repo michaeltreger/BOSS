@@ -1,15 +1,9 @@
 %p#notice= notice
 
-%p
-  %b Type:
-  = @calendar.calendar_type
-%p
-  %b Name:
-  = @calendar.name
-%p
-  %b Description:
-  = @calendar.description
-
-= link_to 'Edit', edit_calendar_path(@calendar)
-\|
-= link_to 'Back', calendars_path
+%table
+  %tr
+    %td
+      %h3 Calendars I Administrate
+    %td
+      = button_tag :submit, :id=>:submit_calendar
+= render 'calendar'

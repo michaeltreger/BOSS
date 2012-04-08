@@ -4,12 +4,31 @@ $(document).ready(function() {
    var id = 10;
    var $events;
    
+   $('#submit_calendar').bind('click', submit);
+   
+   function submit() {
+      finalizedEvents = $calendar.weekCalendar("serializeEvents");
+      finalizedEvents.map(convertTimesOut);
+      
+      json = JSON.stringify(finalizedEvents);
+      alert(json);
+      $.ajax({
+        type: "PUT",
+        url: window.location.pathname+".json",
+        data: {"calendar": json},
+        dataType: "json",
+        success: function(data) {
+          alert(a);
+        }
+      });
+   }
+   
    getEventData();
    
    function getEventData() {   
       $.ajax({
          type: "GET",
-         url: "http://localhost:3000/calendars.json",
+         url: window.location.pathname+".json",
          dataType: "json",
          success: function(data) {
             data.map(convertTimesIn);
@@ -17,18 +36,17 @@ $(document).ready(function() {
             startCalendar();
          }
       });
-      
    }
    
    function convertTimesIn(event) {
       event.start = Date.parse(event.start_time).add(-2).hours();
       event.end = Date.parse(event.end_time).add(-2).hours();
-      event.type = event.description;
+      event.entry_type= event.description;
    }
    
    function convertTimesOut(event) {
-      event.start = new Date(event.start.getTime() + 7200000);
-      event.end = new Date(event.end.getTime() + 7200000);
+      event.start_time = new Date(event.start.add(-5).hours());
+      event.end_time = new Date(event.end.add(-5).hours());
    }
    
    function startCalendar() {
@@ -48,25 +66,25 @@ $(document).ready(function() {
            return 760;//$(window).height() - $("h1").outerHeight() - 1;
         },
         eventRender : function(calEvent, $event) {
-           if (calEvent.type === "rather_not") {
+           if (calEvent.entry_type=== "rather_not") {
               $event.css("backgroundColor", "#c6c");
               $event.find(".wc-time").css({
                  "backgroundColor" : "#a4a",
                  "border" : "1px solid #949"
               });
-           } else if (calEvent.type === "obligation") {
+           } else if (calEvent.entry_type=== "obligation") {
               $event.css("backgroundColor", "#3c6");
               $event.find(".wc-time").css({
                  "backgroundColor" : "#1a4",
                  "border" : "1px solid #093"
               });
-           } else if (calEvent.type === "class") {
+           } else if (calEvent.entry_type=== "class") {
               $event.css("backgroundColor", "#f23");
               $event.find(".wc-time").css({
                  "backgroundColor" : "#c12",
                  "border" : "1px solid #b12"
               });
-           } else if (calEvent.type === "closed") {
+           } else if (calEvent.entry_type=== "closed") {
               $event.css("backgroundColor", "#aaa");
               $event.find(".wc-time").css({
                  "backgroundColor" : "#999",
@@ -104,7 +122,7 @@ $(document).ready(function() {
                     id++;
                     calEvent.start = new Date(startField.val());
                     calEvent.end = new Date(endField.val());
-                    calEvent.type = typeField.val();
+                    calEvent.entry_type= typeField.val();
                     calEvent.description = descriptionField.val();
 
                     $calendar.weekCalendar("removeUnsavedEvents");
@@ -122,9 +140,10 @@ $(document).ready(function() {
 
         },
         eventDrop : function(calEvent, $event) {
-          
+           $calendar.weekCalendar("updateEvent", calEvent);
         },
         eventResize : function(calEvent, $event) {
+           $calendar.weekCalendar("updateEvent", calEvent);
         },
         eventClick : function(calEvent, $event) {
 
@@ -154,7 +173,7 @@ $(document).ready(function() {
 
                     calEvent.start = new Date(startField.val());
                     calEvent.end = new Date(endField.val());
-                    calEvent.type = typeField.val();
+                    calEvent.entry_type= typeField.val();
                     calEvent.description = descriptionField.val();
 
                     $calendar.weekCalendar("updateEvent", calEvent);

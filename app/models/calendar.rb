@@ -9,5 +9,29 @@ class Calendar < ActiveRecord::Base
     def owner
         @user
     end
+    
+    def update_calendar(entries)
+
+      debugger
+      self.entries.clear
+      
+      entries.each do |ent|
+        ent.delete("start")
+        ent.delete("end")
+        ent.delete("type")
+        e = Entry.find_by_id(ent["id"].to_i)
+        ent.delete("id")
+        if e.blank?
+          e = Entry.create(ent)
+        else
+          e.update_attributes!(ent)
+        end
+        self.entries << e
+          
+                            
+        
+
+      end
+    end
 
 end
