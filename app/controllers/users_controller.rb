@@ -2,30 +2,12 @@ require 'rubygems'
 require 'net/ldap'
 
 class UsersController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::GatewayFilter, :only => :index
-  before_filter CASClient::Frameworks::Rails::Filter, :except => :index
-
-  def ldapparams
-    ldap = Net::LDAP.new
-    ldap.host = "ldap-test.berkeley.edu"
-    filter = Net::LDAP::Filter.eq( "uid", session[:cas_user])
-    attrs = []
-
-    @ldapparams = Hash.new
-
-    ldap.search( :base => "ou=people,dc=berkeley,dc=edu", :filter => filter, :return_result => true ) do |entry|
-
-      entry.attribute_names.each do |n|
-        @ldapparams[n] = entry[n]
-      end
-    end
-  end
 
   # GET /users
   # GET /users.json
   def index
     @users = User.all
-    
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
@@ -35,8 +17,9 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    flash[:notice] = "#{session[:cas_user]} logged in."
+    flash[:notice] = "You are logged in as #{ldapparams[0][:givenname][0]} #{ldapparams[0][:sn][0]}."
     @user = User.find(params[:id])
+    @calendar = Calendar.find_by_user_id(@user.id)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -68,7 +51,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       @user.cas_user = session[:cas_user]
-      @user.name = ldapparams[0][:givenname][0] + ldapparams[0][:sn][0]
+      @user.name = ldapparams[0][:givenname][0] + " " + ldapparams[0][:sn][0]
       @user.email = ldapparams[0][:mail][0]
       @user.approved = false
       if @user.save
@@ -88,6 +71,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
+      if not @user.approved?
+        @user.approved = true
+        @user.calendars << Calendar.create!(:calendar_type => 0, :name => "#{@user.name}'s Calendar")
+      end
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :ok }
@@ -110,17 +97,21 @@ class UsersController < ApplicationController
     end
   end
 
-  def approve
-    @nonApprovedUsers = User.all
-    
+  def approveindex
+    @nonApprovedUsers = User.find_all_by_approved(false)
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
     end
   end
-  
+
+  def approve
+    @user = User.find(params[:id])
+  end
+
   def logout
     CASClient::Frameworks::Rails::Filter.logout(self)
   end
-  
+
 end

@@ -6,7 +6,6 @@
 html,body,div,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,p,blockquote,fieldset,input {margin:0; padding:0;}
 fieldset,img {border:none;}
 caption,th {text-align:left;}
-table {border-collapse:collapse; border-spacing:0;}
 .clear {clear:both; height:0; overflow:hidden; line-height:1px; font-size:1px;}
 
 /* ********** basics - main typography *********** */

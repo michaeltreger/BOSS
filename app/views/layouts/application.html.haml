@@ -22,12 +22,15 @@
               #logo
                 logo coming later
                 link_to image_tag("/img/logo.gif", :alt=>"UC Berkeley templates"), root_url
+                %br
+                = flash[:notice]
 
               #topnav
                 %ul
                   - if !session[:cas_user]
                     %li.first= link_to "Log in", CASClient::Frameworks::Rails::Filter.login_url(controller)
                   - else
+                    %li= link_to "My Profile", users_url
                     %li= link_to "Log out", logout_url
 	            
             #pagebody
@@ -44,14 +47,22 @@
                     = link_to "Substitutions", substitutions_path
                     %ul
                       %li
-                        = link_to "View Substitutions", substitutions_path
+                        = link_to "Post a Substitution", new_substitution_path
                       %li
-                        = link_to "Post a Substitution", substitutions_path
+                        = link_to "View Substitutions", substitutions_path
                   %li
                     = link_to "Time Edit", '/'
-                      
+                  - if not @current_user.nil?
+                    - if @current_user.user_type == 0
+                      %li
+                        = link_to "Admin", users_path
+                        %ul
+                          %li
+                            = link_to "View Users", users_path
+                          %li
+                            = link_to "Approve Users", '/approve/'
+
                 %div#addon
-                  %p Optional extra info
               
               %div#contentcol
                 %div#section

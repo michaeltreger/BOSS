@@ -7,6 +7,7 @@ class CreateUsers < ActiveRecord::Migration
       t.integer :cas_user
       t.string :phone
       t.boolean :approved
+      t.string :initials
 
       t.references :calendar
       t.references :substitution
