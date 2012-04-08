@@ -25,12 +25,7 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions/new
   # GET /substitutions/new.json
   def new
-    @entries = []
-    @current_user.calendars.each do |c|
-      c.entries.each do |e|
-        @entries << e
-      end
-    end
+    @entries = @current_user.calendars.entries
     @entries = @entries.find_all{|e| e.substitution.nil?}
     @substitution = Substitution.new
 
@@ -51,20 +46,13 @@ class SubstitutionsController < ApplicationController
     params[:substitution][:entry] = Entry.find(params[:substitution][:entry])
     params[:substitution][:users] = [User.find(params[:substitution][:users])]
     @substitution = Substitution.new(params[:substitution])
-    @entries = []
-    @current_user.calendars.each do |c|
-      c.entries.each do |e|
-        @entries << e
-      end
-    end
-    @entries = @entries.find_all{|e| e.substitution.nil?}
-
+    @entries = @current_user.calendars.entries
     respond_to do |format|
       if @substitution.save
         format.html { render action: "new", notice: 'Substitution was successfully created.' }
         format.json { render json: @substitution, status: :created, location: @substitution }
       else
-        format.html { render action: "new", notice: 'Substitution could not be created' }
+        format.html { render action: "new", notice: 'Substitution could not be created.' }
         format.json { render json: @substitution.errors, status: :unprocessable_entity }
       end
     end
@@ -89,8 +77,7 @@ class SubstitutionsController < ApplicationController
   # DELETE /substitutions/1
   # DELETE /substitutions/1.json
   def destroy
-    @substitution = Substitution.find_by_id(params[:id])
-   # @substitution = Substitution.find(params[:id])
+    @substitution = Substitution.find(params[:id])
     @substitution.destroy
 
     respond_to do |format|
