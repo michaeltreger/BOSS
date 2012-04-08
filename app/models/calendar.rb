@@ -7,7 +7,7 @@ class Calendar < ActiveRecord::Base
     #This should help with abstraction so we can use calendar.owner
     #instead of calendar.user which is ambiguious.
     def owner
-        @user
+        user_id
     end
     
     def update_calendar(entries)

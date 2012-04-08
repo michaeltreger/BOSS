@@ -14,6 +14,12 @@ class CalendarsController < ApplicationController
   # GET /calendars/1.json
   def show
     @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
+    if Calendar.find(params[:id]).owner != @current_user.id
+      @events.each do |e|
+        e[:readOnly] = true
+        @disable_submit = true
+      end
+    end
     @page_title = "My Calendar"
 
     respond_to do |format|

@@ -46,14 +46,13 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-
     @user = User.new(params[:user])
+    @user.cas_user = session[:cas_user]
+    @user.name = ldapparams[0][:givenname][0] + " " + ldapparams[0][:sn][0]
+    @user.email = ldapparams[0][:mail][0]
+    @user.approved = false
 
     respond_to do |format|
-      @user.cas_user = session[:cas_user]
-      @user.name = ldapparams[0][:givenname][0] + " " + ldapparams[0][:sn][0]
-      @user.email = ldapparams[0][:mail][0]
-      @user.approved = false
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
@@ -69,12 +68,12 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     @user = User.find(params[:id])
+    if not @user.approved?
+      @user.approved = true
+      @user.calendars << Calendar.create!(:calendar_type => 0, :name => "#{@user.name}'s Calendar")
+    end
 
     respond_to do |format|
-      if not @user.approved?
-        @user.approved = true
-        @user.calendars << Calendar.create!(:calendar_type => 0, :name => "#{@user.name}'s Calendar")
-      end
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :ok }
