@@ -253,6 +253,6 @@ Then /^show me the page$/ do
   save_and_open_page
 end
 
-When /^I refresh the calendar$/ do
+When /^I view the calendar$/ do
   visit current_path+".json"
 end
