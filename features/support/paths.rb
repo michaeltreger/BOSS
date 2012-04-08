@@ -17,6 +17,9 @@ module NavigationHelpers
       '/'
     when /^the "Post a Substitution" page$/
       '/substitutions/new'
+    when /^(.*'s) Calendar page$/
+      calendar_id = (Calendar.find_by_name($1+" Calendar")).id
+      '/calendars/'+calendar_id.to_s
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
