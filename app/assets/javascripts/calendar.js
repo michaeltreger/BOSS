@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
    var $calendar = $('#calendar');
-   var id = 10;
+   var id = 999999999;
    var $events;
    
    $('#submit_calendar').bind('click', submit);
@@ -44,8 +44,8 @@ $(document).ready(function() {
    }
    
    function convertTimesOut(event) {
-      event.start_time = new Date(event.start.add(0).hours());
-      event.end_time = new Date(event.end.add(0).hours());
+      event.start_time = new Date(event.start.add(-5).hours());
+      event.end_time = new Date(event.end.add(-5).hours());
    }
    
    function startCalendar() {

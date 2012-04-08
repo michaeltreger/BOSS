@@ -111,21 +111,7 @@
         noEvents: function() {
         },
         eventHeader: function(calEvent, calendar) {
-          var options = calendar.weekCalendar('option');
-          var one_hour = 3600000;
           return calEvent.entry_type;
-          var displayTitleWithTime = calEvent.end.getTime() - calEvent.start.getTime() <= (one_hour / options.timeslotsPerHour);
-          if (displayTitleWithTime) {
-            return calendar.weekCalendar(
-                        'formatTime', calEvent.start) +
-                        ': ' + calEvent.type;
-          } else {
-            return calendar.weekCalendar(
-                        'formatTime', calEvent.start) +
-                    options.timeSeparator +
-                    calendar.weekCalendar(
-                        'formatTime', calEvent.end);
-          }
         },
         eventBody: function(calEvent, calendar) {
           return calEvent.description;
