@@ -93,28 +93,18 @@ class UsersController < ApplicationController
     end
   end
 
-<<<<<<< HEAD
-  def approve
-    @nonApprovedUsers = User.all
-
-=======
   def approveindex
     @nonApprovedUsers = User.find_all_by_approved(false)
-    
->>>>>>> cda03a4ea30a3b212f076945085b860cc1a2de1b
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
     end
   end
 
-<<<<<<< HEAD
-=======
   def approve
     @user = User.find(params[:id])
   end
-  
->>>>>>> cda03a4ea30a3b212f076945085b860cc1a2de1b
+
   def logout
     CASClient::Frameworks::Rails::Filter.logout(self)
   end

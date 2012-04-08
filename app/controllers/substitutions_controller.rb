@@ -25,6 +25,7 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions/new.json
   def new
     @entries = @current_user.calendars.entries
+    @entries = Entry.all
     @substitution = Substitution.new
 
     respond_to do |format|

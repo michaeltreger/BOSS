@@ -1,18 +1,20 @@
 - @page_title = 'Post a Substitution'
 
 %h3 Select a Shift to Substitute
-%table
+%table.gridtable
   %tr
     %tr
+      %th Select
       %th Day
       %th Time
       %th Location
-- @entries.each do |entry|
-  %tr
-    %td= entry.start_tile.to_date
-    %td= entry.start_time.to_time.to_s + ' - ' + entry.end_time.to_time.to_s
-    %td= 'Lab ' + entry.lab_id.to_s
-    %td= radio_button_tag 'Select', entry, @substitution.entry_id == entry.id
+  - @entries.each do |entry|
+    %tr
+      %td= radio_button_tag 'Select', entry, @substitution.entry_id == entry.id
+      %td= entry.start_time.strftime('%a, %m/%d')
+      %td= entry.start_time.strftime('%I:%M%p') + ' -  ' + entry.end_time.strftime('%I:%M%p')
+      %td= 'Lab ' + entry.lab_id.to_s
+
 
 = form_for @substitution do |f|
   = f.label :description, 'Title' 
