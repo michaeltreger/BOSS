@@ -11,7 +11,7 @@
     %tr
       %td= user.name
       %td= user.email
-      %td= link_to 'Approve', "approve/#{user.id}"
+      %td= link_to 'Approve', "/admin/approve/#{user.id}"
       %td= link_to 'Delete', user, :confirm => 'Are you sure?', :method => :delete
 
 %br

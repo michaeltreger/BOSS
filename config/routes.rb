@@ -12,10 +12,11 @@ CS169CampusScheduler::Application.routes.draw do
   match 'logout' => 'users#logout', :as => :logout
   scope '/admin' do
     resources :users
+    match '/approve' => 'users#approveindex'
+    match '/approve/:id' => 'users#approve'
   end
 
-  match '/approve' => 'users#approveindex'
-  match '/approve/:id' => 'users#approve'
+  match '/join' => 'users#new'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
 
   before_filter CASClient::Frameworks::Rails::Filter
   before_filter :set_current_user
+  before_filter :check_login
+  #before_filter :check_admin
 
   def set_current_user
     if !session[:cas_user]
@@ -31,5 +33,21 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def check_login
+    if @current_user.nil? and not session[:cas_user].nil? and request.fullpath != '/join'
+        if not request.post? and request.fullpath != '/admin/users/'
+            redirect_to '/join'
+        end
+    end
+  end
+
+  def check_admin
+    if not @current_user.nil?
+        if @current_user.user_type != 0 and request.fullpath[/^\/admin/]
+            flash[:notice] = "You do not have the correct privileges to access this page."
+            redirect_to '/'
+        end
+    end
+  end
 
 end
