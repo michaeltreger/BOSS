@@ -99,7 +99,7 @@ class UsersController < ApplicationController
 
   def approveindex
     @nonApprovedUsers = User.find_all_by_approved(false)
-    
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
