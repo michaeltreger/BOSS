@@ -6,12 +6,16 @@ class ApplicationController < ActionController::Base
 
 
   if Rails.env.test?
+    before_filter :test_set_current_user
   else
-
     before_filter CASClient::Frameworks::Rails::Filter
     before_filter :set_current_user
     before_filter :check_login
     #before_filter :check_admin
+  end
+
+  def test_set_current_user
+    @current_user = User.find_by_id(session[:test_user_id])
   end
 
   def set_current_user
