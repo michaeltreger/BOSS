@@ -25,7 +25,12 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions/new
   # GET /substitutions/new.json
   def new
-    @entries = @current_user.calendars.entries
+    @entries = []
+    @current_user.calendars.each do |c|
+      c.entries.each do |e|
+        @entries << e
+      end
+    end
     @entries = @entries.find_all{|e| e.substitution.nil?}
     @substitution = Substitution.new
 
@@ -46,7 +51,14 @@ class SubstitutionsController < ApplicationController
     params[:substitution][:entry] = Entry.find(params[:substitution][:entry])
     params[:substitution][:users] = [User.find(params[:substitution][:users])]
     @substitution = Substitution.new(params[:substitution])
-    @entries = @current_user.calendars.entries
+    @entries = []
+    @current_user.calendars.each do |c|
+      c.entries.each do |e|
+        @entries << e
+      end
+    end
+    @entries = @entries.find_all{|e| e.substitution.nil?}
+
     respond_to do |format|
       if @substitution.save
         format.html { render action: "new", notice: 'Substitution was successfully created.' }

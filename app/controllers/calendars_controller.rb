@@ -42,7 +42,9 @@ class CalendarsController < ApplicationController
   # POST /calendars.json
   def create
     @calendar = Calendar.new(params[:calendar])
-
+    if @current_user
+      @calendar.user_id = @current_user.id
+    end
     respond_to do |format|
       if @calendar.save
         format.html { redirect_to @calendar, notice: 'Calendar was successfully created.' }
@@ -58,7 +60,7 @@ class CalendarsController < ApplicationController
   # PUT /calendars/1.json
   def update
     parsed_json = ActiveSupport::JSON.decode(params[:calendar])
-    
+
     @calendar = Calendar.find(params[:id])
     @calendar.update_calendar(parsed_json)
 
