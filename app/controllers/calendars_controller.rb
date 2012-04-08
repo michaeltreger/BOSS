@@ -14,6 +14,7 @@ class CalendarsController < ApplicationController
   # GET /calendars/1.json
   def show
     @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
+    @page_title = "My Calendar"
 
     respond_to do |format|
       format.html # show.html.erb
