@@ -15,8 +15,9 @@ CS169CampusScheduler::Application.routes.draw do
     match '/approve' => 'users#approveindex'
     match '/approve/:id' => 'users#approve'
   end
-
   match '/join' => 'users#new'
+
+  match "/test_setuser/:id" => "users#test_setuser"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

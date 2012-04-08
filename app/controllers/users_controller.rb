@@ -43,6 +43,15 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def test_setuser
+    if Rails.env.test?
+      @current_user = User.find_by_id(params[:id])
+      @current_user.id
+      @current_user.baweo
+    end
+    redirect_to '/'
+  end
+
   # POST /users
   # POST /users.json
   def create

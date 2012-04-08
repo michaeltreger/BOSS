@@ -15,7 +15,7 @@ module NavigationHelpers
 
     when /^the home\s?page$/
       '/'
-    when /^Post a Substitution$/
+    when /^the "Post a Substitution" page$/
       '/substitutions/new'
 
     # Add more mappings here.

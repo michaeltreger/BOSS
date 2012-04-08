@@ -4,9 +4,10 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "pat
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "selectors"))
 
 
-Given /^the following substitutions exist:$/ do |substitions_table|
+Given /^the following substitutions exist:$/ do |substitutions_table|
   substitutions_table.hashes.each do |substitution|
-    Calendar.create!(substitution)
+    substitution[:entry] = Entry.find_by_id(substitution[:entry_id])
+    Substitution.create!(substitution)
   end
 end
 

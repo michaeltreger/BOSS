@@ -21,8 +21,8 @@ Background: A work entry has been added to my calendar
     | Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   |
 
   And the following substitutions exist:
-    | entry_id     | description                | user_id     |
-    | 2            | I have a midterm tonight   | 1           |
+    | entry_id   | description                | user_id     |
+    |   2        | I have a midterm tonight   |    1        |
 
   And I am on the "Post a Substitution" page
 

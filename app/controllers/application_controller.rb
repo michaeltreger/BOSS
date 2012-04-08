@@ -4,10 +4,15 @@ class ApplicationController < ActionController::Base
   helper_method :page_title
   helper_method :current_user
 
-  before_filter CASClient::Frameworks::Rails::Filter
-  before_filter :set_current_user
-  before_filter :check_login
-  #before_filter :check_admin
+
+  if Rails.env.test?
+  else
+
+    before_filter CASClient::Frameworks::Rails::Filter
+    before_filter :set_current_user
+    before_filter :check_login
+    #before_filter :check_admin
+  end
 
   def set_current_user
     if !session[:cas_user]
