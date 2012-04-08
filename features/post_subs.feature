@@ -16,10 +16,8 @@ Background: A work entry has been added to my calendar
 
   And the calendar "Alice's Calendar" has the following entries:
     | name     | description         | start_time        | end_time         |
-repeating  |  finalized
-    | Work     | Work at Wheeler     | 12:00, 1/1/2012   | 14:00 1/1/2012   |false      |  true
+    | Work     | Work at Wheeler     | 12:00, 1/1/2012   | 14:00 1/1/2012   |
     | Lab Hours| Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   |
-false      |  true
 
   And the following substitutions exist:
     | entry_id     | description                | user_id     |
@@ -29,7 +27,7 @@ false      |  true
 
   Scenario: Put my shift up for substitution for anybody
     When I select the entry with id 1
-    And I set “Description” to “Feeling sick today”
+    And I fill in “Description” with “Feeling sick today”
     And I press submit
     And I go to the "View Substitutions" page
     Then "My Posted Substitutions" should have 2 entries

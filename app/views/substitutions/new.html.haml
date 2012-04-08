@@ -16,7 +16,7 @@
         %th Location
     - @entries.each do |entry|
       %tr
-        %td= radio_button_tag 'Select', entry, entry_id = entry.id
+        %td= radio_button_tag 'Select', entry, entry_id = entry.id, :id => entry.id
         %td= entry.start_time.strftime('%a, %m/%d')
         %td= entry.start_time.strftime('%I:%M%p') + ' -  ' + entry.end_time.strftime('%I:%M%p')
         %td= 'Lab ' + entry.lab_id.to_s
