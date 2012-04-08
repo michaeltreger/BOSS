@@ -30,7 +30,7 @@ class CalendarsController < ApplicationController
 
     respond_to do |format|
       if flash[:error]
-        format.html # show.html.erb
+        format.html { redirect_to calendars_path, error: "You are not authorized to view this calendar" }
         format.json { render json: flash }
       else
         format.html # show.html.erb
