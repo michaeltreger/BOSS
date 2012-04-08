@@ -7,7 +7,7 @@ Background: A Calendar has been created
   Given the following users exist:
     | name         | user_type      |
     | Alice        | 1              |
-    | Chris        | o              |
+    | Chris        | 0              |
 
   And I am logged in as "Chris"
 
