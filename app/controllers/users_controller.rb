@@ -45,9 +45,9 @@ class UsersController < ApplicationController
 
   def test_setuser
     if Rails.env.test?
-      @current_user = User.find_by_id(params[:id])
-      @current_user.id
-      @current_user.baweo
+      user_id = Integer(params[:id])
+      @current_user = User.find_by_id(user_id)
+      session[:test_user_id] = user_id
     end
     redirect_to '/'
   end
