@@ -15,7 +15,7 @@ $(document).ready(function() {
       $.ajax({
         type: "PUT",
         url: window.location.pathname+".json",
-        data: {"calendar": json},
+        data: {"calendar_updates": json},
         dataType: "json",
         success: function(data, textStatus, XMLHttpRequest){
            //alert("Succeeded");

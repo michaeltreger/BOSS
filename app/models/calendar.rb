@@ -7,11 +7,11 @@ class Calendar < ActiveRecord::Base
     #This should help with abstraction so we can use calendar.owner
     #instead of calendar.user which is ambiguious.
     def owner
-        @user
+        user_id
     end
 
     def update_calendar(entries)
-      #old_entry_ids = self.entries.map{ |e| e.id}
+      old_entry_ids = self.entries.map{ |e| e.id}
       self.entries.clear
 
       entries.each do |ent|
@@ -26,10 +26,10 @@ class Calendar < ActiveRecord::Base
           e.update_attributes!(ent)
         end
         self.entries << e
-        #old.entry_ids.delete(e.id)
+        old_entry_ids.delete(e.id)
       end
       self.save!
-      #Entry.delete_all(old_entry_ids)
+      Entry.delete(old_entry_ids)
     end
 
 end

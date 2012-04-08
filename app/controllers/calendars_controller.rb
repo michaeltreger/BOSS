@@ -14,6 +14,12 @@ class CalendarsController < ApplicationController
   # GET /calendars/1.json
   def show
     @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
+    if Calendar.find(params[:id]).owner != @current_user.id
+      @events.each do |e|
+        e[:readOnly] = true
+        @disable_submit = true
+      end
+    end
     @page_title = "My Calendar"
 
     respond_to do |format|
@@ -59,19 +65,20 @@ class CalendarsController < ApplicationController
   # PUT /calendars/1
   # PUT /calendars/1.json
   def update
-    parsed_json = ActiveSupport::JSON.decode(params[:calendar])
-
-    @calendar = Calendar.find(params[:id])
-    @calendar.update_calendar(parsed_json)
+    parsed_json = ActiveSupport::JSON.decode(params[:calendar_updates])
+    if Calendar.find(params[:id]).owner == @current_user.id
+      @calendar = Calendar.find(params[:id])
+      @calendar.update_calendar(parsed_json)
+    end
 
     respond_to do |format|
-      #if @calendar.update_attributes(params[:calendar])
+      if @calendar.update_attributes(params[:calendar])
         format.html { redirect_to @calendar, notice: 'Calendar was successfully updated.' }
         format.json { head :ok }
-      #else
-      #  format.html { render action: "edit" }
-      #  format.json { render json: @calendar.errors, status: :unprocessable_entity }
-      #end
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @calendar.errors, status: :unprocessable_entity }
+      end
     end
   end
 
