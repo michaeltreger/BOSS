@@ -1,7 +1,7 @@
 CS169CampusScheduler::Application.routes.draw do
   resources :substitutions
 
-  resources :entries
+  resources :entries, :except => :show
 
   resources :labs
 

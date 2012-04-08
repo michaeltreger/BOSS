@@ -3,7 +3,8 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions.json
   def index
     @substitutions = Substitution.all
-
+    @not_my_subs = @substitutions.find_all{|s| !s.users.include?(@current_user)}
+    @my_subs = @substitutions.find_all{|s| s.users.include?(@current_user)}
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @substitutions }
@@ -12,18 +13,20 @@ class SubstitutionsController < ApplicationController
 
   # GET /substitutions/1
   # GET /substitutions/1.json
-  def show
-    @substitution = Substitution.find(params[:id])
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @substitution }
-    end
-  end
+# this is pretty useless
+#  def show
+#    @substitution = Substitution.find(params[:id])
+#    respond_to do |format|
+#      format.html # show.html.erb
+#      format.json { render json: @substitution }
+#    end
+#  end
 
   # GET /substitutions/new
   # GET /substitutions/new.json
   def new
     @entries = @current_user.calendars.entries
+    @entries = @entries.find_all{|e| e.substitution.nil?}
     @substitution = Substitution.new
 
     respond_to do |format|
@@ -46,7 +49,7 @@ class SubstitutionsController < ApplicationController
     @entries = @current_user.calendars.entries
     respond_to do |format|
       if @substitution.save
-        format.html { redirect_to @substitution, notice: 'Substitution was successfully created.' }
+        format.html { render action: "new", notice: 'Substitution was successfully created.' }
         format.json { render json: @substitution, status: :created, location: @substitution }
       else
         format.html { render action: "new", notice: 'Substitution could not be created' }
