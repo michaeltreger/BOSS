@@ -5,7 +5,7 @@
       %ul
         - @calendar.errors.full_messages.each do |msg|
           %li= msg
-
+  .hidden_field
   .field
     = f.label :calendar_type
     = f.number_field :calendar_type
