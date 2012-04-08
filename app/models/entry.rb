@@ -3,7 +3,7 @@ class Entry < ActiveRecord::Base
     belongs_to :substitution
     belongs_to :calendar
     belongs_to :lab
-    validates_presence_of :start_time, :end_time, :repeating, :finalized
+    validates_presence_of :start_time, :end_time#, :repeating, :finalized
 
     #This might be useful down the line.
     def duration

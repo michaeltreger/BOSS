@@ -11,14 +11,18 @@ $(document).ready(function() {
       finalizedEvents.map(convertTimesOut);
       
       json = JSON.stringify(finalizedEvents);
-      alert(json);
+      //alert(json);
       $.ajax({
         type: "PUT",
         url: window.location.pathname+".json",
         data: {"calendar": json},
         dataType: "json",
-        success: function(data) {
-          alert(a);
+        success: function(data, textStatus, XMLHttpRequest){
+           //alert("Succeeded");
+        },
+        error: function(data, textStatus, XMLHttpRequest){
+           //eval('('+responseText+')');
+           //alert(data);
         }
       });
    }
