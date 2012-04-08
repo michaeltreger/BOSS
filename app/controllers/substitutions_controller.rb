@@ -14,7 +14,6 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions/1.json
   def show
     @substitution = Substitution.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @substitution }
@@ -25,7 +24,6 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions/new.json
   def new
     @entries = @current_user.calendars.entries
-    @entries = Entry.all
     @substitution = Substitution.new
 
     respond_to do |format|
@@ -42,14 +40,16 @@ class SubstitutionsController < ApplicationController
   # POST /substitutions
   # POST /substitutions.json
   def create
+    params[:substitution][:entry] = Entry.find(params[:substitution][:entry])
+    params[:substitution][:users] = [User.find(params[:substitution][:users])]
     @substitution = Substitution.new(params[:substitution])
-
+    @entries = @current_user.calendars.entries
     respond_to do |format|
       if @substitution.save
         format.html { redirect_to @substitution, notice: 'Substitution was successfully created.' }
         format.json { render json: @substitution, status: :created, location: @substitution }
       else
-        format.html { render action: "new" }
+        format.html { render action: "new", notice: 'Substitution could not be created' }
         format.json { render json: @substitution.errors, status: :unprocessable_entity }
       end
     end

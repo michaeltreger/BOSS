@@ -1,30 +1,37 @@
 - @page_title = 'Post a Substitution'
 
-%h3 Select a Shift to Substitute
-%table.gridtable
-  %tr
-    %tr
-      %th Select
-      %th Day
-      %th Time
-      %th Location
-  - @entries.each do |entry|
-    %tr
-      %td= radio_button_tag 'Select', entry, @substitution.entry_id == entry.id
-      %td= entry.start_time.strftime('%a, %m/%d')
-      %td= entry.start_time.strftime('%I:%M%p') + ' -  ' + entry.end_time.strftime('%I:%M%p')
-      %td= 'Lab ' + entry.lab_id.to_s
+- entry_id = 0
+- user_id = @current_user.id
 
+- if @entries.size == 0
+  %h3 You have no shifts to substitute
+- else
+  %h3 Select a Shift to Substitute
+  %table
+    %tr
+      %tr
+        %th Select
+        %th Day
+        %th Time
+        %th Location
+    - @entries.each do |entry|
+      %tr
+        %td= radio_button_tag 'Select', entry, entry_id = entry.id
+        %td= entry.start_time.strftime('%a, %m/%d')
+        %td= entry.start_time.strftime('%I:%M%p') + ' -  ' + entry.end_time.strftime('%I:%M%p')
+        %td= 'Lab ' + entry.lab_id.to_s
 
-= form_for @substitution do |f|
-  = f.label :description, 'Title' 
-  <br>
-  = f.text_field :description
-  <br>
-  <br>
-  <br>
-  = f.label :message, 'Notes about this Substitution'
-  <br>
-  = f.text_area :message
-  <br>
-  = f.submit
+  = form_for @substitution do |f|
+    = f.hidden_field :entry, :value => entry_id
+    = f.hidden_field :users, :value => @current_user.id
+    = f.label :description, 'Title' 
+    <br>
+    = f.text_field :description
+    <br>
+    <br>
+    <br>
+    = f.label :message, 'Notes about this Substitution'
+    <br>
+    = f.text_area :message, :cols => 80, :rows => 10
+    <br>
+    = f.submit
