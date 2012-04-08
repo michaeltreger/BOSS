@@ -13,7 +13,7 @@ class CalendarsController < ApplicationController
   # GET /calendars/1
   # GET /calendars/1.json
   def show
-    @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description] )
+    @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
 
     respond_to do |format|
       format.html # show.html.erb

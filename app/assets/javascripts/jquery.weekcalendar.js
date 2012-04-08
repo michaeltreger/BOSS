@@ -113,7 +113,7 @@
         eventHeader: function(calEvent, calendar) {
           var options = calendar.weekCalendar('option');
           var one_hour = 3600000;
-          return calEvent.type;
+          return calEvent.entry_type;
           var displayTitleWithTime = calEvent.end.getTime() - calEvent.start.getTime() <= (one_hour / options.timeslotsPerHour);
           if (displayTitleWithTime) {
             return calendar.weekCalendar(

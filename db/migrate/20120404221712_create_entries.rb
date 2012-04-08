@@ -6,7 +6,7 @@ class CreateEntries < ActiveRecord::Migration
       t.timestamp :end_time
       t.boolean :repeating
       t.boolean :finalized
-      t.integer :entry_type
+      t.string :entry_type
       t.string :initials
 
       t.references :user

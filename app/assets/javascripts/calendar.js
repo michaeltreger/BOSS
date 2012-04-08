@@ -41,12 +41,11 @@ $(document).ready(function() {
    function convertTimesIn(event) {
       event.start = Date.parse(event.start_time).add(-2).hours();
       event.end = Date.parse(event.end_time).add(-2).hours();
-      event.entry_type= event.description;
    }
    
    function convertTimesOut(event) {
-      event.start_time = new Date(event.start.add(-5).hours());
-      event.end_time = new Date(event.end.add(-5).hours());
+      event.start_time = new Date(event.start.add(0).hours());
+      event.end_time = new Date(event.end.add(0).hours());
    }
    
    function startCalendar() {
@@ -58,7 +57,6 @@ $(document).ready(function() {
         firstDayOfWeek : 0,
         businessHours :{start: 6, end: 24, limitDisplay: true },
         daysToShow : 7,
-        switchDisplay: {'1 day': 1, '3 next days': 3, 'work week': 5, 'full week': 7},
         title: function(daysToShow) {
 		       return daysToShow == 1 ? '%date%' : '%start% - %end%';
         },
@@ -103,7 +101,7 @@ $(document).ready(function() {
            resetForm($dialogContent);
            var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
            var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
-           var typeField = $dialogContent.find("select[name='type']").val(calEvent.type);
+           var entry_typeField = $dialogContent.find("select[name='entry_type']").val(calEvent.entry_type);
            var descriptionField = $dialogContent.find("textarea[name='description']");
 
            setDescriptionVisibility()
@@ -122,7 +120,7 @@ $(document).ready(function() {
                     id++;
                     calEvent.start = new Date(startField.val());
                     calEvent.end = new Date(endField.val());
-                    calEvent.entry_type= typeField.val();
+                    calEvent.entry_type = entry_typeField.val();
                     calEvent.description = descriptionField.val();
 
                     $calendar.weekCalendar("removeUnsavedEvents");
@@ -155,14 +153,14 @@ $(document).ready(function() {
            resetForm($dialogContent);
            var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
            var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
-           var typeField = $dialogContent.find("select[name='type']").val(calEvent.type);
+           var entry_typeField = $dialogContent.find("select[name='entry_type']").val(calEvent.entry_type);
            var descriptionField = $dialogContent.find("textarea[name='description']").val(calEvent.description);
 
            setDescriptionVisibility();
 
            $dialogContent.dialog({
               modal: true,
-              title: "Edit - " + calEvent.type,
+              title: "Edit - " + calEvent.entry_type,
               close: function() {
                  $dialogContent.dialog("destroy");
                  $dialogContent.hide();
@@ -173,7 +171,7 @@ $(document).ready(function() {
 
                     calEvent.start = new Date(startField.val());
                     calEvent.end = new Date(endField.val());
-                    calEvent.entry_type= typeField.val();
+                    calEvent.entry_type= entry_typeField.val();
                     calEvent.description = descriptionField.val();
 
                     $calendar.weekCalendar("updateEvent", calEvent);
@@ -275,7 +273,7 @@ $(document).ready(function() {
    });
 
    function setDescriptionVisibility() {
-      if ($("select[name='type']").val() === "obligation") {
+      if ($("select[name='entry_type']").val() === "obligation") {
          document.getElementById("description").style.display='block';
       } else {
          $('#description > textarea').val("");
@@ -283,6 +281,6 @@ $(document).ready(function() {
       }
    }
 
-   $("select[name='type']").change(setDescriptionVisibility);
+   $("select[name='entry_type']").change(setDescriptionVisibility);
 
 });

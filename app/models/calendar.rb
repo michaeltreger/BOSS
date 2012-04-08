@@ -12,7 +12,6 @@ class Calendar < ActiveRecord::Base
     
     def update_calendar(entries)
 
-      debugger
       self.entries.clear
       
       entries.each do |ent|
