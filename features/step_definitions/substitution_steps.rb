@@ -11,4 +11,4 @@ Given /^the following substitutions exist:$/ do |substitions_table|
 end
 
 When /^I select the entry with id \d+ for substitution$/ do |sub_id|
-
+end
