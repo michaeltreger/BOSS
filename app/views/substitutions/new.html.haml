@@ -26,6 +26,6 @@
     = f.hidden_field :users, :value => @current_user.id
     = f.label :description, 'Notes about this Substitution'
     <br><br>
-    = f.text_area :description, :cols => 80, :rows => 10
+    = f.text_area :description, :id => 'Description', :cols => 80, :rows => 10
     <br>
-    = f.submit
+    = f.submit 'Make Substitution'

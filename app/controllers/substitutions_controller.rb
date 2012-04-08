@@ -57,7 +57,7 @@ class SubstitutionsController < ApplicationController
         @entries << e
       end
     end
-    @entries = @entries.find_all{|e| e.substitution.nil?}
+    @entries = @entries.find_all{|e| e.substitution.nil? && e.substitution != @substition}
 
     respond_to do |format|
       if @substitution.save

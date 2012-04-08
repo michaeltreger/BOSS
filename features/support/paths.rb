@@ -17,6 +17,8 @@ module NavigationHelpers
       '/'
     when /^the "Post a Substitution" page$/
       '/substitutions/new'
+    when /^the "View Substitutions" page$/
+      '/substitutions'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

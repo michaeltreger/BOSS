@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   has_many :calendars
-  belongs_to :substitution
+  has_and_belongs_to_many :substitutions
   has_one :preference
   belongs_to :entry
   belongs_to :lab
