@@ -3,7 +3,7 @@
 %table
   %tr
     %td
-      %h3 Calendars I Administrate
+      %h3= @calendar.name
     %td
       -if !@disable_submit
         = button_tag :submit, :id=>:submit_calendar
