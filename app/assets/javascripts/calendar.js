@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
    var $calendar = $('#calendar');
-   var id = 10;
+   var id = 999999999;
    var $events;
    
    $('#submit_calendar').bind('click', submit);
@@ -11,14 +11,18 @@ $(document).ready(function() {
       finalizedEvents.map(convertTimesOut);
       
       json = JSON.stringify(finalizedEvents);
-      alert(json);
+      //alert(json);
       $.ajax({
         type: "PUT",
         url: window.location.pathname+".json",
         data: {"calendar": json},
         dataType: "json",
-        success: function(data) {
-          alert(a);
+        success: function(data, textStatus, XMLHttpRequest){
+           //alert("Succeeded");
+        },
+        error: function(data, textStatus, XMLHttpRequest){
+           //eval('('+responseText+')');
+           //alert(data);
         }
       });
    }
@@ -44,8 +48,8 @@ $(document).ready(function() {
    }
    
    function convertTimesOut(event) {
-      event.start_time = new Date(event.start.add(0).hours());
-      event.end_time = new Date(event.end.add(0).hours());
+      event.start_time = new Date(event.start.add(-5).hours());
+      event.end_time = new Date(event.end.add(-5).hours());
    }
    
    function startCalendar() {

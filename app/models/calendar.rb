@@ -9,11 +9,11 @@ class Calendar < ActiveRecord::Base
     def owner
         @user
     end
-    
-    def update_calendar(entries)
 
+    def update_calendar(entries)
+      #old_entry_ids = self.entries.map{ |e| e.id}
       self.entries.clear
-      
+
       entries.each do |ent|
         ent.delete("start")
         ent.delete("end")
@@ -26,11 +26,10 @@ class Calendar < ActiveRecord::Base
           e.update_attributes!(ent)
         end
         self.entries << e
-          
-                            
-        
-
+        #old.entry_ids.delete(e.id)
       end
+      self.save!
+      #Entry.delete_all(old_entry_ids)
     end
 
 end

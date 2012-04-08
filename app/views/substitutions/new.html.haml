@@ -16,7 +16,7 @@
         %th Location
     - @entries.each do |entry|
       %tr
-        %td= radio_button_tag 'Select', entry, entry_id = entry.id
+        %td= radio_button_tag 'Select', entry, entry_id = entry.id, :id => entry.id
         %td= entry.start_time.strftime('%a, %m/%d')
         %td= entry.start_time.strftime('%I:%M%p') + ' -  ' + entry.end_time.strftime('%I:%M%p')
         %td= 'Lab ' + entry.lab_id.to_s
@@ -24,10 +24,8 @@
   = form_for @substitution do |f|
     = f.hidden_field :entry, :value => entry_id
     = f.hidden_field :users, :value => @current_user.id
-    = f.label :description, 'Title' 
-    <br>
     = f.label :description, 'Notes about this Substitution'
-    <br>
+    <br><br>
     = f.text_area :description, :cols => 80, :rows => 10
     <br>
     = f.submit

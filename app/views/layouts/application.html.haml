@@ -27,10 +27,10 @@
 
               #topnav
                 %ul
-                  - if !session[:cas_user]
+                  - if !@current_user
                     %li.first= link_to "Log in", CASClient::Frameworks::Rails::Filter.login_url(controller)
                   - else
-                    %li= link_to "My Profile", users_url
+                    %li= link_to "My Profile", user_url(@current_user)
                     %li= link_to "Log out", logout_url
 	            
             #pagebody
