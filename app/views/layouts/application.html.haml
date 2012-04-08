@@ -68,13 +68,14 @@
                   #section-txt
                     = @page_title
                   #pstrip
+                #content
                   -if flash[:error]
                     #error_explanation
                       %h2= flash[:error]
-                    <br>
-                    <br>
+                  -if flash[:notice]
+                    #error_explanation
+                      %h2= flash[:notice]
                 
-                #content
                   = yield
                     
                     
