@@ -63,19 +63,19 @@ class CalendarsController < ApplicationController
   # PUT /calendars/1
   # PUT /calendars/1.json
   def update
-    parsed_json = ActiveSupport::JSON.decode(params[:calendar])
+    parsed_json = ActiveSupport::JSON.decode(params[:calendar_updates])
     
     @calendar = Calendar.find(params[:id])
     @calendar.update_calendar(parsed_json)
 
     respond_to do |format|
-      #if @calendar.update_attributes(params[:calendar])
+      if @calendar.update_attributes(params[:calendar])
         format.html { redirect_to @calendar, notice: 'Calendar was successfully updated.' }
         format.json { head :ok }
-      #else
-      #  format.html { render action: "edit" }
-      #  format.json { render json: @calendar.errors, status: :unprocessable_entity }
-      #end
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @calendar.errors, status: :unprocessable_entity }
+      end
     end
   end
 
