@@ -5,42 +5,46 @@ Feature: Substitute Shifts
 
 Background: A work entry has been added to my calendar
   Given the following users exist:
-    | name         | type         |
-    | Alice        | standard     |
-    | Bob          | standard     |    
+    | name         | user_type      |
+    | Alice        | 1              |
+    | Bob          | 1              |    
   And I am logged in as “Alice”
-  And the following calendar entries exist:
-    | name       | owner  | description         | start_time        | end_time         |
-    | Work       | Alice  | Work at Wheeler     | 12:00, 1/1/2012   | 14:00 1/1/2012   |
-    | Lab Hours  | Bob    | Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   |
+
+  And the following calendars exist:
+    | name             | calendar_type  | user_id |
+    | Alice's Calendar |   1            |   1     |
+
+  And the calendar "Alice's Calendar" has the following entries:
+    | name     | description         | start_time        | end_time         |
+repeating  |  finalized
+    | Work     | Work at Wheeler     | 12:00, 1/1/2012   | 14:00 1/1/2012   |false      |  true
+    | Lab Hours| Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   |
+false      |  true
+
   And the following substitutions exist:
-    | entry_id     | description                | from     | for        |
-    | 2            | I have a midterm tonight   | Bob      | Alice      |
-  And I am on my finalized calendar page
+    | entry_id     | description                | user_id     |
+    | 2            | I have a midterm tonight   | 1           |
+
+  And I am on the "Post a Substitution" page
 
   Scenario: Put my shift up for substitution for anybody
-    When I press substitute
-    And I set “Entry” to “Work”
+    When I select the entry with id 1
     And I set “Description” to “Feeling sick today”
     And I press submit
-    And I go to my substitutions page
-    Then I should see “Work”
-    And I should see  “Lab Hours”
-  Scenario: See a substituted shift targeted for me
-    When I press substitute
-    And I set “Entry” to “Work”
-    And I set “Description” to “I can trade subs with you Bob”
-    And I set “user” to “Bob”
-    And I press submit
-    And I go to my substitutions page
-    Then I should not see “Work”
-    And I should see “Lab Hours”
-  Scenario: See all substitutions
-    When I press substitute
-    And I set “Entry” to “Work”
-    And I set “Description” to “Can you stay an hour later Bob?”
-    And I set “user” to “Bob”
-    And I press submit
-    And I go to the “All Substitutions” page
-    Then I should see “Work”
-    And I should see “Lab Hours”
+    And I go to the "View Substitutions" page
+    Then "My Posted Substitutions" should have 2 entries
+    Then "My Posted Substitutions" should contain "Work"
+    And "My Posted Substitutions" should contain “Lab Hours”
+
+  Scenario: Substitution cannot be posted twice for one entry
+    Then I should not see an entry with id 2
+
+  Scenario: Substitution cannot be posted with no entry
+    Then I should see "You have no shifts to substitute"
+    And I should not see "Select a Shift to Substitute"
+
+  Scenario: Delete a substitution
+    When I go to the "View Substitutions" page
+    And I press delete next to my first posted substitution
+    Then I should be on the "View Substitutions" page
+    And I should not see "My Posted Substitutions"
