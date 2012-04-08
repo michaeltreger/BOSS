@@ -2,7 +2,7 @@
 - if @my_subs.size != 0
   %h3 My Posted Substitutions
 
-  %table
+  %table#my_subs
     %tr
       %th Day
       %th Time
@@ -15,12 +15,12 @@
         %td= substitution.entry.start_time.strftime('%I:%M%p') + ' -  ' + substitution.entry.end_time.strftime('%I:%M%p')
         %td= 'Lab ' + substitution.entry.lab_id.to_s
         %td= substitution.description
-        %td= link_to 'Delete', substitution_path(substitution), :method => :delete, :confirm => 'Are you sure?'
+        %td= link_to 'Delete', substitution_path(substitution), :method => :delete, :confirm => 'Are you sure?', :id => 'delete_' + substitution.id.to_s
 
 
 %h3 Available Substitutions
 %table
-  %tr
+  %tr#available_subs
     %th Select
     %th Day
     %th Time

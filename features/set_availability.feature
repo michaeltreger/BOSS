@@ -2,15 +2,27 @@ Feature: Set Availability Calendar
   As a student
   I want to put my available times online
   So that I will be scheduled to work at the most convenient times
-Background: Logged in as student
+
+Background: A Calendar has been created
   Given the following users exist:
-    | name     | type       |
-    | Alice    | standard   |
-  And I am logged in as "Alice”
-  Scenario: Add an obligation to my Availability Calendar
-    Given I am on my Availability page
-    When I select the interval “11:00 1/1/2012” to “15:00 1/1/2012“
-    And I set "Name" to be "Classes"
-    And I press "submit"
-    Then I should be on my Availability page
-    And I should see "Classes"  
+    | name         | user_type      |
+    | Alice        | 1              |
+
+  And I am logged in as "Alice"
+
+  And the following calendars exist:
+    | name             | calendar_type  | user_id |
+    | Alice's Calendar | 1              | 1       |
+
+  And the calendar "Alice's Calendar" has the following entries:
+    | description         | start_time        | end_time         | type       |
+    | Work at Wheeler     | 12:00, 1/1/2012   | 14:00 1/1/2012   | prefer     |
+    | Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   | rather_not |
+
+
+  Scenario: Add a class to my Availability Calendar
+    Given I am on Alice's Calendar page
+    And I select the interval "11:00, 1/1/2012" to "15:00, 1/1/2012" as "class"
+    When I view the calendar
+    Then I should see "class"
+

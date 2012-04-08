@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
     before_filter CASClient::Frameworks::Rails::Filter
     before_filter :set_current_user
     before_filter :check_login
-    #before_filter :check_admin
+    before_filter :check_admin
   end
 
   def test_set_current_user

@@ -19,12 +19,17 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe SubstitutionsController do
+  before(:each) do
+      User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
+      session[:test_user_id] = 1
+      Entry.create!(:user_id => '1', :substitution_id => '1', :calendar_id => '1', :start_time => '8:00am', :end_time => '12:00pm')
 
+  end
   describe "GET new" do
     it "assigns a new substitution as @substitution" do
       substitution = mock('Substitution')
       Substitution.stub(:new).and_return(substitution)
-      get :new
+      get :new, {:current_user => User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')}
       assigns(:substitution).should == substitution
     end
   end
@@ -41,35 +46,31 @@ describe SubstitutionsController do
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Substitution" do
-        Substitution.should_receive(:new).with(:substitution)
-        post :create, {:substitution => {'these' => 'params'}, :entry => Entry.new, :users =>[User.new, User.new]}
-        assigns(:substitution).should be_a(Substitution)
+        post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
+        Substitution.count.should == 1
       end
 
-      it "assigns a newly created substitution as @substitution" do
-        post :create, {:substitution => {'these' => 'params'}, :entry => Entry.new, :users =>[User.new, User.new]}
-        assigns(:substitution).should be_a(Substitution)
-      end
-
-      it "redirects to the created substitution" do
-        post :create, {:substitution => {'these' => 'params'}, :entry => Entry.new, :users =>[User.new, User.new]}
-        response.should redirect_to(:substitutions)
+      it "re-renders to the 'new' template" do
+        post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
+        response.should render_template("new")
+        flash[:notice].should == 'Substitution was successfully created.'
       end
     end
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved substitution as @substitution" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Substitution.any_instance.stub(:save).and_return(false)
-        post :create, {:substitution => {'these' => 'params'}, :entry => Entry.new, :users =>[User.new, User.new]}
+        Substitution.stub(:save).and_return(false)
+        post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
         assigns(:substitution).should be_nil
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Substitution.any_instance.stub(:save).and_return(false)
-        post :create, {:substitution => {'these' => 'params'}, :entry => Entry.new, :users =>[User.new, User.new]}
+          post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
         response.should render_template("new")
+        flash[:notice].should == 'Substitution could not be created.'
       end
     end
   end
@@ -84,23 +85,24 @@ describe SubstitutionsController do
       end
 
       it "assigns the requested substitution as @substitution" do
-        Substitution.create! valid_attributes
+        substitution = Substitution.create!(:description => 'haha',:entry =>Entry.new)
         put :update, {:id => '1', :substitution => {'these' => 'params'}}
         assigns(:substitution).should eq(substitution)
       end
 
       it "redirects to the substitution" do
-        substitution = Substitution.create! valid_attributes
-        put :update, {:id => substitution.to_param, :substitution => valid_attributes}
+        substitution = Substitution.create!(:description => 'haha',:entry =>Entry.new)
+        put :update, {:id => '1', :substitution => {'these' => 'params'}}
         response.should redirect_to(substitution)
+        flash[:notice].should == 'Substitution was successfully updated.'
       end
     end
 
     describe "with invalid params" do
       it "assigns the substitution as @substitution" do
-        Substitution.create!(:description => 'haha',:entry =>Entry.new)
+        substitution = Substitution.create!(:description => 'haha',:entry =>Entry.new)
         # Trigger the behavior that occurs when invalid params are submitted
-        Substitution.any_instance.stub(:save).and_return(false)
+        Substitution.stub(:save).and_return(false)
         put :update, {:id => substitution.to_param, :substitution => {:description => 'haha',:entry =>Entry.new}}
         assigns(:substitution).should eq(substitution)
       end
@@ -121,15 +123,15 @@ describe SubstitutionsController do
     end
     it "destroys the requested substitution" do
       Substitution.should_receive(:find).with('1')
-     # @substitution.should_receive(:destroy)
+      @substitution.should_receive(:destroy)
       delete :destroy, {:id => '1'}
-      substitution = Substitution.find('1')
+      #substitution = Substitution.find('1')
       assigns(:substitutions).should be_nil
     end
 
     it "redirects to the substitutions list" do
       delete :destroy, {:id => '1'}
-      response.should redirect_to(substitutions_url)
+      response.should redirect_to substitutions_url
     end
   end
 

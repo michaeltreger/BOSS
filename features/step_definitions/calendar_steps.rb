@@ -17,3 +17,9 @@ Given /^the calendar "([^"]*)" has the following entries:$/ do |calendar_name, e
     Entry.create!(entry)
   end
 end
+
+When /I select the interval "([^"]*)" to "([^"]*)" as "([^"]*)"$/ do |start_time, end_time, entry_type|
+  calendar_id = current_path.split('/')[-1]
+  entry = {:calendar_id=>calendar_id, :start_time=>start_time, :end_time=>end_time, :entry_type=>entry_type}
+  Entry.create!(entry)
+end

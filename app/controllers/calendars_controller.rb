@@ -13,8 +13,9 @@ class CalendarsController < ApplicationController
   # GET /calendars/1
   # GET /calendars/1.json
   def show
+    @calendar = Calendar.find(params[:id])
     @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
-    if Calendar.find(params[:id]).owner != @current_user.id
+    if @calendar.owner != @current_user.id
       @events.each do |e|
         e[:readOnly] = true
         @disable_submit = true
@@ -65,9 +66,9 @@ class CalendarsController < ApplicationController
   # PUT /calendars/1
   # PUT /calendars/1.json
   def update
-    parsed_json = ActiveSupport::JSON.decode(params[:calendar_updates])
-    if Calendar.find(params[:id]).owner == @current_user.id
-      @calendar = Calendar.find(params[:id])
+    @calendar = Calendar.find(params[:id])
+    if @calendar.owner == @current_user.id and params[:calendar_updates]
+      parsed_json = ActiveSupport::JSON.decode(params[:calendar_updates])
       @calendar.update_calendar(parsed_json)
     end
 
