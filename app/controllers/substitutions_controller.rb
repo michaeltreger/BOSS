@@ -89,10 +89,8 @@ class SubstitutionsController < ApplicationController
   # DELETE /substitutions/1
   # DELETE /substitutions/1.json
   def destroy
-    @substitution = Substitution.find_by_id(params[:id])
-   # @substitution = Substitution.find(params[:id])
+    @substitution = Substitution.find(params[:id])
     @substitution.destroy
-
     respond_to do |format|
       format.html { redirect_to substitutions_url }
       format.json { head :ok }
