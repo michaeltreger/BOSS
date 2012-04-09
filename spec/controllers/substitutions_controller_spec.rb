@@ -57,12 +57,20 @@ describe SubstitutionsController do
 
   describe "POST create" do
     describe "with valid params" do
+      describe "with invlid entry id" do
+        it "redirect to the new substitution path" do
+          post :create, {:substitution => {:users => '1', :user_id => '1'}}
+          response.should redirect_to new_substitution_path
+          flash[:notice].should == 'Please select a shift to substitute.'
+        end
+      end
+
       it "creates a new Substitution" do
         post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
         Substitution.count.should == 1
       end
 
-      it "re-renders to the 'new' template" do
+      it "redirect to the new substitution path" do
         post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
         response.should redirect_to new_substitution_path
         flash[:notice].should == 'Substitution was successfully created.'
@@ -70,7 +78,7 @@ describe SubstitutionsController do
     end
 
     describe "with invalid params" do
-      it "re-renders the 'new' template" do
+      it "redirect to the new substitution path" do
         # Trigger the behavior that occurs when invalid params are submitted
         Substitution.any_instance.stub(:save).and_return(false)
           post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}

@@ -50,7 +50,7 @@ class SubstitutionsController < ApplicationController
   def create
     entry_id = params[:substitution][:entry]
     if entry_id.nil?
-      flash[:notice] = 'Please select a shift to substitute'
+      flash[:notice] = 'Please select a shift to substitute.'
       redirect_to new_substitution_path
     else
       params[:substitution][:entry] = Entry.find(params[:substitution][:entry])
