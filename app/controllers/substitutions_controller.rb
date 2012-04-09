@@ -48,20 +48,13 @@ class SubstitutionsController < ApplicationController
   # POST /substitutions
   # POST /substitutions.json
   def create
+    entry_id = params[:substitution][:entry]
     params[:substitution][:entry] = Entry.find(params[:substitution][:entry])
     params[:substitution][:users] = [User.find(params[:substitution][:users])]
     @substitution = Substitution.new(params[:substitution])
-    @entries = []
-    @current_user.calendars.each do |c|
-      c.entries.each do |e|
-        @entries << e
-      end
-    end
-    @entries = @entries.find_all{|e| e.substitution.nil? && e.substitution != @substition}
-
     respond_to do |format|
       if @substitution.save
-        format.html { render action: "new", notice: 'Substitution was successfully created.' }
+        format.html { redirect_to new_substitution_path, notice: 'Substitution was successfully created.' }
         format.json { render json: @substitution, status: :created, location: @substitution }
       else
         format.html { render action: "new", notice: 'Substitution could not be created' }
