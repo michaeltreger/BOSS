@@ -23,3 +23,8 @@ When /I select the interval "([^"]*)" to "([^"]*)" as "([^"]*)"$/ do |start_time
   entry = {:calendar_id=>calendar_id, :start_time=>start_time, :end_time=>end_time, :entry_type=>entry_type}
   Entry.create!(entry)
 end
+
+
+When /^I view the calendar$/ do
+  visit current_path+".json"
+end
