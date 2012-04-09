@@ -49,16 +49,21 @@ class SubstitutionsController < ApplicationController
   # POST /substitutions.json
   def create
     entry_id = params[:substitution][:entry]
-    params[:substitution][:entry] = Entry.find(params[:substitution][:entry])
-    params[:substitution][:users] = [User.find(params[:substitution][:users])]
-    @substitution = Substitution.new(params[:substitution])
-    respond_to do |format|
-      if @substitution.save
-        format.html { redirect_to new_substitution_path, notice: 'Substitution was successfully created.' }
-        format.json { render json: @substitution, status: :created, location: @substitution }
-      else
-        format.html { render action: "new", notice: 'Substitution could not be created' }
-        format.json { render json: @substitution.errors, status: :unprocessable_entity }
+    if entry_id.nil?
+      flash[:notice] = 'Please select a shift to substitute'
+      redirect_to new_substitution_path
+    else
+      params[:substitution][:entry] = Entry.find(params[:substitution][:entry])
+      params[:substitution][:users] = [User.find(params[:substitution][:users])]
+      @substitution = Substitution.new(params[:substitution])
+      respond_to do |format|
+        if @substitution.save
+          format.html { redirect_to new_substitution_path, notice: 'Substitution was successfully created.' }
+          format.json { render json: @substitution, status: :created, location: @substitution }
+        else
+          format.html { redirect_to new_substitution_path, notice: 'Substitution could not be created' }
+          format.json { render json: @substitution.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
