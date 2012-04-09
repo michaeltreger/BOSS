@@ -27,6 +27,7 @@ describe SubstitutionsController do
 
   describe "GET index" do
     it "should assign all subtitutions as @substitutions" do
+      Substitution.create!(:description => 'haha',:entry =>Entry.new)
       get :index
       assigns(:substitutions).count.should == 1
     end
@@ -73,7 +74,7 @@ describe SubstitutionsController do
         # Trigger the behavior that occurs when invalid params are submitted
         Substitution.any_instance.stub(:save).and_return(false)
           post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
-        response.should render_template("new")
+        response.should redirect_to new_substitution_path
         flash[:notice].should == 'Substitution could not be created.'
       end
     end
