@@ -44,6 +44,10 @@ describe SubstitutionsController do
       get :new, {:current_user => User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')}
       assigns(:substitution).should == substitution
     end
+    it "assigns current user's calendars' entries to @entries" do
+      get :new, {:current_user => User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')}
+      assigns(:entries).should_not be nil
+    end
   end
 
   describe "GET edit" do
