@@ -15,17 +15,27 @@ class CalendarsController < ApplicationController
   def show
     @calendar = Calendar.find(params[:id])
     @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
+
     if @calendar.owner != @current_user.id
-      @events.each do |e|
-        e[:readOnly] = true
-        @disable_submit = true
+      if @current_user.isAdmin?
+        @events.each do |e|
+          e[:readOnly] = true
+          @disable_submit = true
+        end
+      else
+        flash[:error] = "You are not authorized to view this calendar"
       end
     end
     @page_title = "My Calendar"
 
     respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @events }
+      if flash[:error]
+        format.html { redirect_to calendars_path, error: "You are not authorized to view this calendar" }
+        format.json { render json: flash }
+      else
+        format.html # show.html.erb
+        format.json { render json: @events }
+      end
     end
   end
 

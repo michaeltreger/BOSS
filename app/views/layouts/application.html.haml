@@ -27,10 +27,10 @@
               #topnav
                 %ul
                   - if !@current_user
-                    %li.first= link_to "Log in", CASClient::Frameworks::Rails::Filter.login_url(controller)
+                    %li.first= link_to "CalNet Login", CASClient::Frameworks::Rails::Filter.login_url(controller)
                   - else
                     %li= link_to "My Profile", user_url(@current_user)
-                    %li= link_to "Log out", logout_url
+                    %li= link_to "CalNet Logout", logout_url
 	            
             #pagebody
               #navcol
@@ -61,15 +61,20 @@
                           %li
                             = link_to "Approve Users", '/approve/'
 
-                %div#addon
+                #addon
               
-              %div#contentcol
-                %div#section
-                  %div#section-txt
+              #contentcol
+                #section
+                  #section-txt
                     = @page_title
-                  %div#pstrip
+                  #pstrip
+                  -if flash[:error]
+                    #error_explanation
+                      %h2= flash[:error]
+                    <br>
+                    <br>
                 
-                %div#content
+                #content
                   = yield
                     
                     
