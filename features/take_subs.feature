@@ -24,7 +24,7 @@ Background: Substitutions created
 
   Scenario: Take available substitutions
     Given I am on my substitutions page
-    When I select “Lab Hours”
+    When I select "Lab Hours"
     And I select "Patching"
     And I select "Claim"
     And I go to my finalized calendar page
