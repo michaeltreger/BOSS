@@ -23,8 +23,19 @@ describe SubstitutionsController do
       User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
       session[:test_user_id] = 1
       Entry.create!(:user_id => '1', :substitution_id => '1', :calendar_id => '1', :start_time => '8:00am', :end_time => '12:00pm')
-
   end
+
+  describe "GET index" do
+    it "should assign all subtitutions as @substitutions" do
+      get :index
+      assigns(:substitutions).count.should == 1
+    end
+    it "should render to index page" do
+      get :index
+      response.should render_template('index')
+    end
+  end
+
   describe "GET new" do
     it "assigns a new substitution as @substitution" do
       substitution = mock('Substitution')
@@ -52,19 +63,12 @@ describe SubstitutionsController do
 
       it "re-renders to the 'new' template" do
         post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
-        response.should render_template("new")
+        response.should redirect_to new_substitution_path
         flash[:notice].should == 'Substitution was successfully created.'
       end
     end
 
     describe "with invalid params" do
-      it "assigns a newly created but unsaved substitution as @substitution" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Substitution.stub(:save).and_return(false)
-        post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
-        assigns(:substitution).should be_nil
-      end
-
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Substitution.any_instance.stub(:save).and_return(false)
@@ -80,19 +84,19 @@ describe SubstitutionsController do
       it "updates the requested substitution" do
         substitution = mock('Substitution')
         Substitution.stub(:find).with('1').and_return(substitution)
-        substitution.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => '1', :substitution => {'these' => 'params'}}
+        substitution.should_receive(:update_attributes).with({"user_id" => '1', "entry" => '1', "entry_id" => '1', "description" => 'params'})
+        put :update, {:id => '1', :substitution => {:user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
       end
 
       it "assigns the requested substitution as @substitution" do
         substitution = Substitution.create!(:description => 'haha',:entry =>Entry.new)
-        put :update, {:id => '1', :substitution => {'these' => 'params'}}
-        assigns(:substitution).should eq(substitution)
+        put :update, {:id => '1', :substitution => {:user_id => '1', :entry_id => '1', :description => 'params'}}
+        assigns(:substitution).should == substitution
       end
 
       it "redirects to the substitution" do
         substitution = Substitution.create!(:description => 'haha',:entry =>Entry.new)
-        put :update, {:id => '1', :substitution => {'these' => 'params'}}
+        put :update, {:id => '1', :substitution => {:user_id => '1', :entry_id => '1', :description => 'params'}}
         response.should redirect_to(substitution)
         flash[:notice].should == 'Substitution was successfully updated.'
       end
@@ -121,14 +125,15 @@ describe SubstitutionsController do
     before(:each) do
       @substitution = Substitution.create!(:description => 'haha',:entry =>Entry.new)
     end
-    it "destroys the requested substitution" do
-      Substitution.should_receive(:find).with('1')
+    it "should perform destroy substitution action" do
+      Substitution.should_receive(:find).with('1').and_return @substitution
       @substitution.should_receive(:destroy)
       delete :destroy, {:id => '1'}
-      #substitution = Substitution.find('1')
-      assigns(:substitutions).should be_nil
     end
-
+    it "should destroy substitution sucessfully" do
+      delete :destroy, {:id => '1'}
+      Substitution.count.should == 0
+    end
     it "redirects to the substitutions list" do
       delete :destroy, {:id => '1'}
       response.should redirect_to substitutions_url

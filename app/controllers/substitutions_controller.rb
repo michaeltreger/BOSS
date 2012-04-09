@@ -65,7 +65,7 @@ class SubstitutionsController < ApplicationController
         format.html { redirect_to new_substitution_path, notice: 'Substitution was successfully created.' }
         format.json { render json: @substitution, status: :created, location: @substitution }
       else
-        format.html { render action: "new", notice: 'Substitution could not be created' }
+        format.html { render action: "new", notice: 'Substitution could not be created.' }
         format.json { render json: @substitution.errors, status: :unprocessable_entity }
       end
     end
