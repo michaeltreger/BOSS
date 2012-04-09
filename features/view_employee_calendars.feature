@@ -28,9 +28,4 @@ Background: A Calendar has been created
     And I should see "Soccer Practice"
     And I should see "rather_not"
     
-    
-  Scenario: Non-admin cannot view Alice's Availability Calendar
-    Given I am logged in as "Bob"
-    And I am on Alice's Calendar page
-    And I view the calendar
-    Then I should see "You are not authorized to view this calendar"
+
