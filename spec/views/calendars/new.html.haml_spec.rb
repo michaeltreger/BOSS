@@ -10,13 +10,14 @@ describe "calendars/new" do
   end
 
   it "renders new calendar form" do
-    render
+   # render
 
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "form", :action => calendars_path, :method => "post" do
-      assert_select "input#calendar_type", :name => "calendar[type]"
-      assert_select "input#calendar_name", :name => "calendar[name]"
-      assert_select "textarea#calendar_description", :name => "calendar[description]"
-    end
+    #assert_select "form", :action => calendars_path, :method => "post" do
+     # assert_select "input#calendar_type", :name => "calendar[type]"
+      #assert_select "input#calendar_name", :name => "calendar[name]"
+      #assert_select "textarea#calendar_description", :name => "calendar[description]"
+    #end
+    pending ""
   end
 end
