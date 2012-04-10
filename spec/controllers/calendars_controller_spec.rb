@@ -43,7 +43,7 @@ describe CalendarsController do
   end
 
   describe "GET index" do
-    it "assigns all calendars as @calendars" do
+    it "show calendar list" do
       calendars = Calendar.all
       calendars.each do |calendar|
         calendar.user_id.should == 1
@@ -52,7 +52,7 @@ describe CalendarsController do
   end
 
   describe "GET show" do
-    it "assigns the requested calendar as @calendar" do
+    it "show calendar form" do
       calendar = Calendar.create! valid_attributes
       get :show, {:id => calendar.id}, valid_session
       assigns(:calendar).should eq(calendar)
@@ -60,7 +60,7 @@ describe CalendarsController do
   end
 
   describe "GET new" do
-    it "assigns a new calendar as @calendar" do
+    it "set new calendar" do
       get :new, {}, valid_session
       assigns(:calendar).should be_a_new(Calendar)
     end
@@ -69,7 +69,7 @@ describe CalendarsController do
   describe
 
   describe "GET edit" do
-    it "assigns the requested calendar as @calendar" do
+    it "edit caldendar" do
       calendar = Calendar.create! valid_attributes
       get :edit, {:id => calendar.to_param}, valid_session
       assigns(:calendar).should eq(calendar)
@@ -97,7 +97,7 @@ describe CalendarsController do
     end
 
   describe "with invalid params" do
-      it "assigns a newly created but unsaved calendar as @calendar" do
+      it "assigns a newly created caldendar but does not save it" do
         # Trigger the behavior that occurs when invalid params are submitted
         Calendar.any_instance.stub(:save).and_return(false)
         post :create, {:calendar => {}}, valid_session
@@ -133,7 +133,7 @@ describe CalendarsController do
         @calendar.entries[1].end_time.should == "Mon, 09 Apr 2012 21:00:00 UTC +00:00"
       end
 
-      it "assigns the requested calendar as @calendar" do
+      it "update the calendar" do
         calendar = Calendar.create! valid_attributes
         put :update, {:id => calendar.to_param, :calendar => valid_attributes}, valid_session
         assigns(:calendar).should eq(calendar)
@@ -147,7 +147,7 @@ describe CalendarsController do
     end
 
     describe "with invalid params" do
-      it "assigns the calendar as @calendar" do
+      it "does not update the calendar" do
         calendar = Calendar.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Calendar.any_instance.stub(:save).and_return(false)
@@ -166,7 +166,7 @@ describe CalendarsController do
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested calendar" do
+    it "destroy the calendar" do
       calendar = Calendar.create! valid_attributes
       expect {
         delete :destroy, {:id => calendar.to_param}, valid_session
