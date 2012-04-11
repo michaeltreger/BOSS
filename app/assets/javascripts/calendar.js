@@ -44,15 +44,13 @@ $(document).ready(function() {
    
    function convertTimesIn(event) {
       timezone_offset = new Date().getTimezoneOffset();
-      event.start_time = Date.parse(event.start_time).add(-timezone_offset).minutes();//.add(-2).hours();
-      event.end_time = Date.parse(event.end_time).add(-timezone_offset).minutes();//.add(-2).hours();
+      event.start_time = Date.parse(event.start_time).add(-timezone_offset).minutes().add(-2).hours();
+      event.end_time = Date.parse(event.end_time).add(-timezone_offset).minutes().add(-2).hours();
    }
    
    function convertTimesOut(event) {
-      //event.start_time = event.start_time.add(2).hours();
-      //event.end_time = event.end_time.add(2).hours();
-      
-      alert(event.start_time);
+      event.start_time = event.start_time.add(2).hours();
+      event.end_time = event.end_time.add(2).hours();
    }
    
    function startCalendar() {
@@ -142,7 +140,7 @@ $(document).ready(function() {
 
         },
         eventDrop : function(calEvent, $event) {
-           $calendar.weekCalendar("updateEvent", calEvent);
+           //$calendar.weekCalendar("updateEvent", calEvent);
         },
         eventResize : function(calEvent, $event) {
            $calendar.weekCalendar("updateEvent", calEvent);

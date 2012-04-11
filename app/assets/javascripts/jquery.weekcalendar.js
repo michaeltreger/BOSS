@@ -1794,7 +1794,7 @@
                 var $calEvent = ui.element;
                 var newEnd = new Date($calEvent.data('calEvent').start_time.getTime() + Math.max(1, Math.round(ui.size.height / options.timeslotHeight)) * options.millisPerTimeslot);
                 if (self._needDSTdayShift($calEvent.data('calEvent').start_time, newEnd))
-            newEnd = self._getDSTdayShift(newEnd, -1);
+                newEnd = self._getDSTdayShift(newEnd, -1);
                 var newCalEvent = $.extend(true, {}, calEvent, {start_time: calEvent.start_time, end_time: newEnd});
                 self._adjustForEventCollisions($weekDay, $calEvent, newCalEvent, calEvent);
 
