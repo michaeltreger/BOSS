@@ -1,8 +1,13 @@
 = javascript_include_tag "jquery.weekcalendar.js"
 = javascript_include_tag "date.js"
 
-%div#calendar
-%div#event_edit_container
+<input type='radio' name='entry_type_select' value='prefer' checked>Prefer</input><br>
+<input type='radio' name='entry_type_select' value='rather_not'>R/N</input><br>
+<input type='radio' name='entry_type_select' value='class'>Class</input><br>
+<input type='radio' name='entry_type_select' value='obligation'>Obligation</input><br>
+
+#calendar
+#event_edit_container
   = form_tag '/'
   %ul
     %li

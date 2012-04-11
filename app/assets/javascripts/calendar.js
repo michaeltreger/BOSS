@@ -99,45 +99,53 @@ $(document).ready(function() {
            return calEvent.readOnly != true;
         },
         eventNew : function(calEvent, $event) {
-           var $dialogContent = $("#event_edit_container");
-           resetForm($dialogContent);
-           var startField = $dialogContent.find("select[name='start']").val(calEvent.start_time);
-           var endField = $dialogContent.find("select[name='end']").val(calEvent.end_time);
-           var entry_typeField = $dialogContent.find("select[name='entry_type']").val(calEvent.entry_type);
-           var descriptionField = $dialogContent.find("textarea[name='description']");
+           currentType = $('input[name=entry_type_select]:checked').val();
+           calEvent.entry_type = currentType;
+           if (currentType == 'obligation') {
+              var $dialogContent = $("#event_edit_container");
+              resetForm($dialogContent);
+              var startField = $dialogContent.find("select[name='start']").val(calEvent.start_time);
+              var endField = $dialogContent.find("select[name='end']").val(calEvent.end_time);
+              var entry_typeField = $dialogContent.find("select[name='entry_type']").val(calEvent.entry_type);
+              var descriptionField = $dialogContent.find("textarea[name='description']");
 
-           setDescriptionVisibility()
+              setDescriptionVisibility();
 
-           $dialogContent.dialog({
-              modal: true,
-              title: "New Calendar Event",
-              close: function() {
-                 $dialogContent.dialog("destroy");
-                 $dialogContent.hide();
-                 $('#calendar').weekCalendar("removeUnsavedEvents");
-              },
-              buttons: {
-                 save : function() {
-                    calEvent.id = id;
-                    id++;
-                    calEvent.start_time = new Date(startField.val());
-                    calEvent.end_time = new Date(endField.val());
-                    calEvent.entry_type = entry_typeField.val();
-                    calEvent.description = descriptionField.val();
-
-                    $calendar.weekCalendar("removeUnsavedEvents");
-                    $calendar.weekCalendar("updateEvent", calEvent);
-                    $dialogContent.dialog("close");
+              $dialogContent.dialog({
+                 modal: true,
+                 title: "New Calendar Event",
+                 close: function() {
+                    $dialogContent.dialog("destroy");
+                    $dialogContent.hide();
+                    $('#calendar').weekCalendar("removeUnsavedEvents");
                  },
-                 cancel : function() {
-                    $dialogContent.dialog("close");
+                 buttons: {
+                    save : function() {
+                       calEvent.id = id;
+                       id++;
+                       calEvent.start_time = new Date(startField.val());
+                       calEvent.end_time = new Date(endField.val());
+                       calEvent.entry_type = entry_typeField.val();
+                       calEvent.description = descriptionField.val();
+
+                       $calendar.weekCalendar("removeUnsavedEvents");
+                       $calendar.weekCalendar("updateEvent", calEvent);
+                       $dialogContent.dialog("close");
+                    },
+                    cancel : function() {
+                       $dialogContent.dialog("close");
+                    }
                  }
-              }
-           }).show();
+              }).show();
 
-           $dialogContent.find(".date_holder").text($calendar.weekCalendar("formatDate", calEvent.start_time));
-           setupStartAndEndTimeFields(startField, endField, calEvent, $calendar.weekCalendar("getTimeslotTimes", calEvent.start_time));
-
+              $dialogContent.find(".date_holder").text($calendar.weekCalendar("formatDate", calEvent.start_time));
+              setupStartAndEndTimeFields(startField, endField, calEvent, $calendar.weekCalendar("getTimeslotTimes", calEvent.start_time));
+           } else {
+              calEvent.id = id;
+              id++;
+              $calendar.weekCalendar("removeUnsavedEvents");
+              $calendar.weekCalendar("updateEvent", calEvent);
+           }
         },
         eventDrop : function(calEvent, $event) {
            //$calendar.weekCalendar("updateEvent", calEvent);
@@ -170,7 +178,6 @@ $(document).ready(function() {
               },
               buttons: {
                  save : function() {
-
                     calEvent.start_time = new Date(startField.val());
                     calEvent.end_time = new Date(endField.val());
                     calEvent.entry_type= entry_typeField.val();
