@@ -21,8 +21,6 @@
                 =link_to "UC Berkeley", "http://www.berkeley.edu"
               #logo
                 = link_to image_tag("/img/logo.png", :alt=>"UC Berkeley templates"), root_url
-                %br
-                = flash[:notice]
 
               #topnav
                 %ul
@@ -73,7 +71,7 @@
                     #error_explanation
                       %h2= flash[:error]
                   -if flash[:notice]
-                    #error_explanation
+                    #notice_explanation
                       %h2= flash[:notice]
                 
                   = yield
