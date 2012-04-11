@@ -421,7 +421,7 @@
         */
       getTimeslotTimes: function(date) {
           var options = this.options;
-          var firstHourDisplayed = options.businessHours.limitDisplay ? options.businessHours.start : 0;
+          var firstHourDisplayed = options.businessHours.limitDisplay ? options.businessHours.start_time : 0;
           var startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), firstHourDisplayed);
 
           var times = [],
@@ -527,8 +527,8 @@
       _computeOptions: function() {
         var options = this.options;
         if (options.businessHours.limitDisplay) {
-          options.timeslotsPerDay = options.timeslotsPerHour * (options.businessHours.end - options.businessHours.start);
-          options.millisToDisplay = (options.businessHours.end - options.businessHours.start) * 3600000; // 60 * 60 * 1000
+          options.timeslotsPerDay = options.timeslotsPerHour * (options.businessHours.end_time - options.businessHours.start_time);
+          options.millisToDisplay = (options.businessHours.end_time - options.businessHours.start_time) * 3600000; // 60 * 60 * 1000
           options.millisPerTimeslot = options.millisToDisplay / options.timeslotsPerDay;
         } else {
           options.timeslotsPerDay = options.timeslotsPerHour * 24;
@@ -844,8 +844,8 @@
         var options = this.options,
             renderRow, i, j,
             showAsSeparatedUser = options.showAsSeparateUsers && options.users && options.users.length,
-            start = (options.businessHours.limitDisplay ? options.businessHours.start : 0),
-            end = (options.businessHours.limitDisplay ? options.businessHours.end : 24),
+            start = (options.businessHours.limitDisplay ? options.businessHours.start_time : 0),
+            end = (options.businessHours.limitDisplay ? options.businessHours.end_time : 24),
             rowspan = 1;
 
         //calculate the rowspan
@@ -967,12 +967,12 @@
         var self = this, options = this.options,
             renderRow,
             showAsSeparatedUser = options.showAsSeparateUsers && options.users && options.users.length,
-            start = (options.businessHours.limitDisplay ? options.businessHours.start : 0),
-            end = (options.businessHours.limitDisplay ? options.businessHours.end : 24);
+            start = (options.businessHours.limitDisplay ? options.businessHours.start_time : 0),
+            end = (options.businessHours.limitDisplay ? options.businessHours.end_time : 24);
         renderRow = '<tr class=\"wc-grid-row-events\">';
         renderRow += '<td class=\"wc-grid-timeslot-header\">';
         for (var i = start; i < end; i++) {
-          var bhClass = (options.businessHours.start <= i && options.businessHours.end > i) ? 'ui-state-active wc-business-hours' : 'ui-state-default';
+          var bhClass = (options.businessHours.start_time <= i && options.businessHours.end_time > i) ? 'ui-state-active wc-business-hours' : 'ui-state-default';
           renderRow += '<div class=\"wc-hour-header ' + bhClass + '\">';
           if (options.use24Hour) {
             renderRow += '<div class=\"wc-time-header-cell\">' + self._24HourForIndex(i) + '</div>';
@@ -1081,7 +1081,7 @@
                 var eventDuration = self._getEventDurationFromPositionedEventElement($weekDay, $newEvent, top);
 
                 $newEvent.remove();
-                var newCalEvent = {start: eventDuration.start, end: eventDuration.end, type: options.newEventText};
+                var newCalEvent = {start_time: eventDuration.start_time, end_time: eventDuration.end_time, entry_type: options.newEventText};
                 var showAsSeparatedUser = options.showAsSeparateUsers && options.users && options.users.length;
 
                 if (showAsSeparatedUser) {
@@ -1171,8 +1171,8 @@
               }
             }
             var jsonOptions = self._getJsonOptions();
-            jsonOptions[options.startParam || 'start'] = Math.round(weekStartDate.getTime() / 1000);
-            jsonOptions[options.endParam || 'end'] = Math.round(weekEndDate.getTime() / 1000);
+            jsonOptions[options.start_timeParam || 'start'] = Math.round(weekStartDate.getTime() / 1000);
+            jsonOptions[options.end_timeParam || 'end'] = Math.round(weekEndDate.getTime() / 1000);
             _currentAjaxCall = $.ajax({
               url: options.data,
               data: jsonOptions,
@@ -1251,7 +1251,6 @@
           currentDay = self._cloneDate(self.element.data('startDate'));
 
           $weekDayColumns.each(function(i, val) {
-
             $(this).data('startDate', self._cloneDate(currentDay));
             $(this).data('endDate', new Date(currentDay.getTime() + (MILLIS_IN_DAY)));
             if (self._isToday(currentDay)) {
@@ -1347,10 +1346,10 @@
           $.each(eventsToRender, function(i, calEvent) {
               //render a multi day event as various event :
               //thanks to http://github.com/fbeauchamp/jquery-week-calendar
-              var initialStart = new Date(calEvent.start);
-              var initialEnd = new Date(calEvent.end);
-              var maxHour = self.options.businessHours.limitDisplay ? self.options.businessHours.end : 24;
-              var minHour = self.options.businessHours.limitDisplay ? self.options.businessHours.start : 0;
+              var initialStart = new Date(calEvent.start_time);
+              var initialEnd = new Date(calEvent.end_time);
+              var maxHour = self.options.businessHours.limitDisplay ? self.options.businessHours.end_time : 24;
+              var minHour = self.options.businessHours.limitDisplay ? self.options.businessHours.start_time : 0;
               var start = new Date(initialStart);
               var startDate = self._formatDate(start, 'Ymd');
               var endDate = self._formatDate(initialEnd, 'Ymd');
@@ -1358,14 +1357,14 @@
               var isMultiday = false;
 
               while (startDate < endDate) {
-                calEvent.start = start;
+                calEvent.start_time = start;
                 //end of this virual calEvent is set to the end of the day
-                calEvent.end.setFullYear(start.getFullYear());
-                calEvent.end.setDate(start.getDate());
-                calEvent.end.setMonth(start.getMonth());
-                calEvent.end.setHours(maxHour);
-                calEvent.end.setMinutes(0);
-                calEvent.end.setSeconds(0);
+                calEvent.end_time.setFullYear(start.getFullYear());
+                calEvent.end_time.setDate(start.getDate());
+                calEvent.end_time.setMonth(start.getMonth());
+                calEvent.end_time.setHours(maxHour);
+                calEvent.end_time.setMinutes(0);
+                calEvent.end_time.setSeconds(0);
                 if (($weekDay = self._findWeekDayForEvent(calEvent, $weekDayColumns))) {
                   self._renderEvent(calEvent, $weekDay);
                 }
@@ -1378,15 +1377,15 @@
                 isMultiday = true;
               }
               if (start <= initialEnd) {
-                calEvent.start = start;
-                calEvent.end = initialEnd;
-                if (((isMultiday && calEvent.start.getTime() != calEvent.end.getTime()) || !isMultiday) && ($weekDay = self._findWeekDayForEvent(calEvent, $weekDayColumns))) {
+                calEvent.start_time = start;
+                calEvent.end_time = initialEnd;
+                if (((isMultiday && calEvent.start_time.getTime() != calEvent.end_time.getTime()) || !isMultiday) && ($weekDay = self._findWeekDayForEvent(calEvent, $weekDayColumns))) {
                   self._renderEvent(calEvent, $weekDay);
                 }
               }
 
               //put back the initial start date
-              calEvent.start = initialStart;
+              calEvent.start_time = initialStart;
           });
 
           $weekDayColumns.each(function() {
@@ -1408,7 +1407,7 @@
       _renderEvent: function(calEvent, $weekDay) {
           var self = this;
           var options = this.options;
-          if (calEvent.start.getTime() > calEvent.end.getTime()) {
+          if (calEvent.start_time.getTime() > calEvent.end_time.getTime()) {
             return; // can't render a negative height
           }
 
@@ -1496,7 +1495,7 @@
       _groupOverlappingEventElements: function($weekDay) {
           var $events = $weekDay.find('.wc-cal-event:visible');
           var sortedEvents = $events.sort(function(a, b) {
-            return $(a).data('calEvent').start.getTime() - $(b).data('calEvent').start.getTime();
+            return $(a).data('calEvent').start_time.getTime() - $(b).data('calEvent').start_time.getTime();
           });
 
           var lastEndTime = new Date(0, 0, 0);
@@ -1507,7 +1506,7 @@
             $curEvent = $(this);
             //checks, if the current group list is not empty, if the overlapping is finished
             if (curGroups.length > 0) {
-                if (lastEndTime.getTime() <= $curEvent.data('calEvent').start.getTime()) {
+                if (lastEndTime.getTime() <= $curEvent.data('calEvent').start_time.getTime()) {
                   //finishes the current group list by adding it to the resulting list of groups and cleans it
 
                   groups.push(curGroups);
@@ -1519,10 +1518,10 @@
             for (var groupIndex = 0; groupIndex < curGroups.length; groupIndex++) {
                 if (curGroups[groupIndex].length > 0) {
                   //checks if the event starts after the end of the last event of the group
-                  if (curGroups[groupIndex][curGroups[groupIndex].length - 1].data('calEvent').end.getTime() <= $curEvent.data('calEvent').start.getTime()) {
+                  if (curGroups[groupIndex][curGroups[groupIndex].length - 1].data('calEvent').end_time.getTime() <= $curEvent.data('calEvent').start_time.getTime()) {
                       curGroups[groupIndex].push($curEvent);
-                      if (lastEndTime.getTime() < $curEvent.data('calEvent').end.getTime()) {
-                        lastEndTime = $curEvent.data('calEvent').end;
+                      if (lastEndTime.getTime() < $curEvent.data('calEvent').end_time.getTime()) {
+                        lastEndTime = $curEvent.data('calEvent').end_time;
                       }
                       return;
                   }
@@ -1530,8 +1529,8 @@
             }
             //if not found, creates a new group
             curGroups.push([$curEvent]);
-            if (lastEndTime.getTime() < $curEvent.data('calEvent').end.getTime()) {
-                lastEndTime = $curEvent.data('calEvent').end;
+            if (lastEndTime.getTime() < $curEvent.data('calEvent').end_time.getTime()) {
+                lastEndTime = $curEvent.data('calEvent').end_time;
             }
           });
           //adds the last groups in result
@@ -1557,8 +1556,8 @@
           }
 
           $weekDayColumns.each(function(index, curDay) {
-            if ($(this).data('startDate').getTime() <= calEvent.start.getTime() &&
-                  $(this).data('endDate').getTime() >= calEvent.end.getTime() &&
+            if ($(this).data('startDate').getTime() <= calEvent.start_time.getTime() &&
+                  $(this).data('endDate').getTime() >= calEvent.end_time.getTime() &&
                   (!showAsSeparatedUser || $.inArray($(this).data('wcUserId'), user_ids) !== -1)
             ) {
                 if ($weekDay) {
@@ -1609,9 +1608,9 @@
           var options = this.options;
           var calEvent = $calEvent.data('calEvent');
           var pxPerMillis = $weekDay.height() / options.millisToDisplay;
-          var firstHourDisplayed = options.businessHours.limitDisplay ? options.businessHours.start : 0;
-          var startMillis = this._getDSTdayShift(calEvent.start).getTime() - this._getDSTdayShift(new Date(calEvent.start.getFullYear(), calEvent.start.getMonth(), calEvent.start.getDate(), firstHourDisplayed)).getTime();
-          var eventMillis = this._getDSTdayShift(calEvent.end).getTime() - this._getDSTdayShift(calEvent.start).getTime();
+          var firstHourDisplayed = options.businessHours.limitDisplay ? options.businessHours.start_time : 0;
+          var startMillis = this._getDSTdayShift(calEvent.start_time).getTime() - this._getDSTdayShift(new Date(calEvent.start_time.getFullYear(), calEvent.start_time.getMonth(), calEvent.start_time.getDate(), firstHourDisplayed)).getTime();
+          var eventMillis = this._getDSTdayShift(calEvent.end_time).getTime() - this._getDSTdayShift(calEvent.start_time).getTime();
           var pxTop = pxPerMillis * startMillis;
           var pxHeight = pxPerMillis * eventMillis;
           //var pxHeightFallback = pxPerMillis * (60 / options.timeslotsPerHour) * 60 * 1000;
@@ -1625,10 +1624,10 @@
         */
       _getEventDurationFromPositionedEventElement: function($weekDay, $calEvent, top) {
           var options = this.options;
-          var startOffsetMillis = options.businessHours.limitDisplay ? options.businessHours.start * 3600000 : 0;
+          var startOffsetMillis = options.businessHours.limitDisplay ? options.businessHours.start_time * 3600000 : 0;
           var start = new Date($weekDay.data('startDate').getTime() + startOffsetMillis + Math.round(top / options.timeslotHeight) * options.millisPerTimeslot);
           var end = new Date(start.getTime() + ($calEvent.height() / options.timeslotHeight) * options.millisPerTimeslot);
-          return {start: this._getDSTdayShift(start, -1), end: this._getDSTdayShift(end, -1)};
+          return {start_time: this._getDSTdayShift(start, -1), end_time: this._getDSTdayShift(end, -1)};
       },
 
       /*
@@ -1650,46 +1649,46 @@
             var currentCalEvent = $(this).data('calEvent');
 
             //has been dropped onto existing event overlapping the end time
-            if (newCalEvent.start.getTime() < currentCalEvent.end.getTime() &&
-                  newCalEvent.end.getTime() >= currentCalEvent.end.getTime()) {
+            if (newCalEvent.start_time.getTime() < currentCalEvent.end_time.getTime() &&
+                  newCalEvent.end_time.getTime() >= currentCalEvent.end_time.getTime()) {
 
-                adjustedStart = currentCalEvent.end;
+                adjustedStart = currentCalEvent.end_time;
             }
 
 
             //has been dropped onto existing event overlapping the start time
-            if (newCalEvent.end.getTime() > currentCalEvent.start.getTime() &&
-                  newCalEvent.start.getTime() <= currentCalEvent.start.getTime()) {
+            if (newCalEvent.end_time.getTime() > currentCalEvent.start_time.getTime() &&
+                  newCalEvent.start_time.getTime() <= currentCalEvent.start_time.getTime()) {
 
-                adjustedEnd = currentCalEvent.start;
+                adjustedEnd = currentCalEvent.start_time;
             }
             //has been dropped inside existing event with same or larger duration
             if (oldCalEvent.resizable == false ||
-                  (newCalEvent.end.getTime() <= currentCalEvent.end.getTime() &&
-                    newCalEvent.start.getTime() >= currentCalEvent.start.getTime())) {
+                  (newCalEvent.end_time.getTime() <= currentCalEvent.end_time.getTime() &&
+                    newCalEvent.start_time.getTime() >= currentCalEvent.start_time.getTime())) {
 
-                adjustedStart = oldCalEvent.start;
-                adjustedEnd = oldCalEvent.end;
+                adjustedStart = oldCalEvent.start_time;
+                adjustedEnd = oldCalEvent.end_time;
                 return false;
             }
 
           });
 
 
-          newCalEvent.start = adjustedStart || newCalEvent.start;
+          newCalEvent.start_time = adjustedStart || newCalEvent.start_time;
 
           if (adjustedStart && maintainEventDuration) {
-            newCalEvent.end = new Date(adjustedStart.getTime() + (oldCalEvent.end.getTime() - oldCalEvent.start.getTime()));
+            newCalEvent.end_time = new Date(adjustedStart.getTime() + (oldCalEvent.end_time.getTime() - oldCalEvent.start_time.getTime()));
             self._adjustForEventCollisions($weekDay, $calEvent, newCalEvent, oldCalEvent);
           } else {
-            newCalEvent.end = adjustedEnd || newCalEvent.end;
+            newCalEvent.end_time = adjustedEnd || newCalEvent.end_time;
           }
 
 
           //reset if new cal event has been forced to zero size
-          if (newCalEvent.start.getTime() >= newCalEvent.end.getTime()) {
-            newCalEvent.start = oldCalEvent.start;
-            newCalEvent.end = oldCalEvent.end;
+          if (newCalEvent.start_time.getTime() >= newCalEvent.end_time.getTime()) {
+            newCalEvent.start_time = oldCalEvent.start_time;
+            newCalEvent.end_time = oldCalEvent.end_time;
           }
 
           $calEvent.data('calEvent', newCalEvent);
@@ -1729,7 +1728,7 @@
                 var top = Math.round(parseInt(ui.position.top));
                 var eventDuration = self._getEventDurationFromPositionedEventElement($weekDay, $calEvent, top);
                 var calEvent = $calEvent.data('calEvent');
-                var newCalEvent = $.extend(true, {}, calEvent, {start: eventDuration.start, end: eventDuration.end});
+                var newCalEvent = $.extend(true, {}, calEvent, {start_time: eventDuration.start_time, end_time: eventDuration.end_time});
                 var showAsSeparatedUser = options.showAsSeparateUsers && options.users && options.users.length;
                 if (showAsSeparatedUser) {
                   // we may have dragged the event on column with a new user.
@@ -1793,10 +1792,10 @@
             minHeight: options.timeslotHeight,
             stop: function(event, ui) {
                 var $calEvent = ui.element;
-                var newEnd = new Date($calEvent.data('calEvent').start.getTime() + Math.max(1, Math.round(ui.size.height / options.timeslotHeight)) * options.millisPerTimeslot);
-                if (self._needDSTdayShift($calEvent.data('calEvent').start, newEnd))
+                var newEnd = new Date($calEvent.data('calEvent').start_time.getTime() + Math.max(1, Math.round(ui.size.height / options.timeslotHeight)) * options.millisPerTimeslot);
+                if (self._needDSTdayShift($calEvent.data('calEvent').start_time, newEnd))
             newEnd = self._getDSTdayShift(newEnd, -1);
-                var newCalEvent = $.extend(true, {}, calEvent, {start: calEvent.start, end: newEnd});
+                var newCalEvent = $.extend(true, {}, calEvent, {start_time: calEvent.start_time, end_time: newEnd});
                 self._adjustForEventCollisions($weekDay, $calEvent, newCalEvent, calEvent);
 
                 self._refreshEventDetails(newCalEvent, $calEvent);
@@ -1846,12 +1845,12 @@
           var $scrollable = this.element.find('.wc-scrollable-grid');
           var slot = hour;
           if (self.options.businessHours.limitDisplay) {
-            if (hour <= self.options.businessHours.start) {
+            if (hour <= self.options.businessHours.start_time) {
                 slot = 0;
-            } else if (hour >= self.options.businessHours.end) {
-                slot = self.options.businessHours.end - self.options.businessHours.start - 1;
+            } else if (hour >= self.options.businessHours.end_time) {
+                slot = self.options.businessHours.end_time - self.options.businessHours.start_time - 1;
             } else {
-                slot = hour - self.options.businessHours.start;
+                slot = hour - self.options.businessHours.start_time;
             }
           }
 
@@ -1923,12 +1922,12 @@
        */
       _cleanEvent: function(event) {
           if (event.date) {
-            event.start = event.date;
+            event.start_time = event.date;
           }
-          event.start = this._cleanDate(event.start);
-          event.end = this._cleanDate(event.end);
-          if (!event.end) {
-            event.end = this._addDays(this._cloneDate(event.start), 1);
+          event.start_time = this._cleanDate(event.start_time);
+          event.end_time = this._cleanDate(event.end_time);
+          if (!event.end_time) {
+            event.end_time = this._addDays(this._cloneDate(event.start_time), 1);
           }
       },
 
@@ -2269,8 +2268,8 @@
               $freeBusyPlaceholders = self.element.find('.wc-grid-row-freebusy .wc-column-freebusy');
           $freeBusyPlaceholders.each(function() {
             $(this).data('wcFreeBusyManager', new FreeBusyManager({
-                start: self._cloneDate($(this).data('startDate')),
-                end: self._cloneDate($(this).data('endDate')),
+                start_time: self._cloneDate($(this).data('startDate')),
+                end_time: self._cloneDate($(this).data('endDate')),
                 defaultFreeBusy: options.defaultFreeBusy || {}
             }));
           });
@@ -2346,8 +2345,8 @@
         if (this.options.displayFreeBusys && $freeBusyPlaceholders) {
           var self = this,
               options = this.options,
-              start = (options.businessHours.limitDisplay ? options.businessHours.start : 0),
-              end = (options.businessHours.limitDisplay ? options.businessHours.end : 24);
+              start = (options.businessHours.limitDisplay ? options.businessHours.start_time : 0),
+              end = (options.businessHours.limitDisplay ? options.businessHours.end_time : 24);
 
           $freeBusyPlaceholders.each(function() {
               var $placehoder = $(this);
@@ -2387,7 +2386,7 @@
           var options = this.options;
           var freeBusy = $freeBusy.data('wcFreeBusy');
           var pxPerMillis = $placeholder.height() / options.millisToDisplay;
-          var firstHourDisplayed = options.businessHours.limitDisplay ? options.businessHours.start : 0;
+          var firstHourDisplayed = options.businessHours.limitDisplay ? options.businessHours.start_time : 0;
           var startMillis = freeBusy.getStart().getTime() - new Date(freeBusy.getStart().getFullYear(), freeBusy.getStart().getMonth(), freeBusy.getStart().getDate(), firstHourDisplayed).getTime();
           var eventMillis = freeBusy.getEnd().getTime() - freeBusy.getStart().getTime();
           var pxTop = pxPerMillis * startMillis;
@@ -2414,10 +2413,10 @@
         */
       _cleanFreeBusy: function(freebusy) {
           if (freebusy.date) {
-            freebusy.start = freebusy.date;
+            freebusy.start_time = freebusy.date;
           }
-          freebusy.start = this._cleanDate(freebusy.start);
-          freebusy.end = this._cleanDate(freebusy.end);
+          freebusy.start_time = this._cleanDate(freebusy.start_time);
+          freebusy.end_time = this._cleanDate(freebusy.end_time);
           return freebusy;
       },
 
@@ -2426,8 +2425,8 @@
         */
       getFreeBusyManagersFor: function(date, users) {
         var calEvent = {
-          start: date,
-          end: date
+          start_time: date,
+          end_time: date
         };
         this._setEventUserId(calEvent, users);
         return this.getFreeBusyManagerForEvent(calEvent);
@@ -2441,7 +2440,7 @@
             freeBusyManager;
         if (options.displayFreeBusys) {
           var $freeBusyPlaceHoders = self.element.find('.wc-grid-row-freebusy .wc-column-freebusy'),
-              freeBusy = new FreeBusy({start: newCalEvent.start, end: newCalEvent.end}),
+              freeBusy = new FreeBusy({start_time: newCalEvent.start_time, end_time: newCalEvent.end_time}),
               showAsSeparatedUser = options.showAsSeparateUsers && options.users && options.users.length,
               userId = showAsSeparatedUser ? self._getEventUserId(newCalEvent) : null;
           if (!$.isArray(userId)) {
@@ -2508,7 +2507,7 @@
           var $scrollable = this.element.find('.wc-scrollable-grid');
           var scroll = $scrollable.scrollTop();
           if (self.options.businessHours.limitDisplay) {
-            scroll = scroll + options.businessHours.start * options.timeslotHeight * options.timeslotsPerHour;
+            scroll = scroll + options.businessHours.start_time * options.timeslotHeight * options.timeslotsPerHour;
           }
           return Math.round(scroll / (options.timeslotHeight * options.timeslotsPerHour)) + 1;
       },

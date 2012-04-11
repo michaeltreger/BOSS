@@ -43,13 +43,16 @@ $(document).ready(function() {
    }
    
    function convertTimesIn(event) {
-      event.start = Date.parse(event.start_time).add(-2).hours();
-      event.end = Date.parse(event.end_time).add(-2).hours();
+      timezone_offset = new Date().getTimezoneOffset();
+      event.start_time = Date.parse(event.start_time).add(-timezone_offset).minutes();//.add(-2).hours();
+      event.end_time = Date.parse(event.end_time).add(-timezone_offset).minutes();//.add(-2).hours();
    }
    
    function convertTimesOut(event) {
-      event.start_time = new Date(event.start.add(-5).hours());
-      event.end_time = new Date(event.end.add(-5).hours());
+      //event.start_time = event.start_time.add(2).hours();
+      //event.end_time = event.end_time.add(2).hours();
+      
+      alert(event.start_time);
    }
    
    function startCalendar() {
@@ -59,11 +62,8 @@ $(document).ready(function() {
         allowCalEventOverlap : false,
         overlapEventsSeparate: true,
         firstDayOfWeek : 0,
-        businessHours :{start: 6, end: 24, limitDisplay: true },
+        businessHours :{start_time: 6, end_time: 24, limitDisplay: true },
         daysToShow : 7,
-        title: function(daysToShow) {
-		       return daysToShow == 1 ? '%date%' : '%start% - %end%';
-        },
         height : function($calendar) {
            return 760;//$(window).height() - $("h1").outerHeight() - 1;
         },
@@ -103,8 +103,8 @@ $(document).ready(function() {
         eventNew : function(calEvent, $event) {
            var $dialogContent = $("#event_edit_container");
            resetForm($dialogContent);
-           var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
-           var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
+           var startField = $dialogContent.find("select[name='start']").val(calEvent.start_time);
+           var endField = $dialogContent.find("select[name='end']").val(calEvent.end_time);
            var entry_typeField = $dialogContent.find("select[name='entry_type']").val(calEvent.entry_type);
            var descriptionField = $dialogContent.find("textarea[name='description']");
 
@@ -122,8 +122,8 @@ $(document).ready(function() {
                  save : function() {
                     calEvent.id = id;
                     id++;
-                    calEvent.start = new Date(startField.val());
-                    calEvent.end = new Date(endField.val());
+                    calEvent.start_time = new Date(startField.val());
+                    calEvent.end_time = new Date(endField.val());
                     calEvent.entry_type = entry_typeField.val();
                     calEvent.description = descriptionField.val();
 
@@ -137,8 +137,8 @@ $(document).ready(function() {
               }
            }).show();
 
-           $dialogContent.find(".date_holder").text($calendar.weekCalendar("formatDate", calEvent.start));
-           setupStartAndEndTimeFields(startField, endField, calEvent, $calendar.weekCalendar("getTimeslotTimes", calEvent.start));
+           $dialogContent.find(".date_holder").text($calendar.weekCalendar("formatDate", calEvent.start_time));
+           setupStartAndEndTimeFields(startField, endField, calEvent, $calendar.weekCalendar("getTimeslotTimes", calEvent.start_time));
 
         },
         eventDrop : function(calEvent, $event) {
@@ -155,8 +155,8 @@ $(document).ready(function() {
 
            var $dialogContent = $("#event_edit_container");
            resetForm($dialogContent);
-           var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
-           var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
+           var startField = $dialogContent.find("select[name='start']").val(calEvent.start_time);
+           var endField = $dialogContent.find("select[name='end']").val(calEvent.end_time);
            var entry_typeField = $dialogContent.find("select[name='entry_type']").val(calEvent.entry_type);
            var descriptionField = $dialogContent.find("textarea[name='description']").val(calEvent.description);
 
@@ -173,8 +173,8 @@ $(document).ready(function() {
               buttons: {
                  save : function() {
 
-                    calEvent.start = new Date(startField.val());
-                    calEvent.end = new Date(endField.val());
+                    calEvent.start_time = new Date(startField.val());
+                    calEvent.end_time = new Date(endField.val());
                     calEvent.entry_type= entry_typeField.val();
                     calEvent.description = descriptionField.val();
 
@@ -191,10 +191,10 @@ $(document).ready(function() {
               }
            }).show();
 
-           var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
-           var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
-           $dialogContent.find(".date_holder").text($calendar.weekCalendar("formatDate", calEvent.start));
-           setupStartAndEndTimeFields(startField, endField, calEvent, $calendar.weekCalendar("getTimeslotTimes", calEvent.start));
+           var startField = $dialogContent.find("select[name='start']").val(calEvent.start_time);
+           var endField = $dialogContent.find("select[name='end']").val(calEvent.end_time);
+           $dialogContent.find(".date_holder").text($calendar.weekCalendar("formatDate", calEvent.start_time));
+           setupStartAndEndTimeFields(startField, endField, calEvent, $calendar.weekCalendar("getTimeslotTimes", calEvent.start_time));
            $(window).resize().resize(); //fixes a bug in modal overlay size ??
 
         },
@@ -228,11 +228,11 @@ $(document).ready(function() {
          var startTime = timeslotTimes[i].start;
          var endTime = timeslotTimes[i].end;
          var startSelected = "";
-         if (startTime.getTime() === calEvent.start.getTime()) {
+         if (startTime.getTime() === calEvent.start_time.getTime()) {
             startSelected = "selected=\"selected\"";
          }
          var endSelected = "";
-         if (endTime.getTime() === calEvent.end.getTime()) {
+         if (endTime.getTime() === calEvent.end_time.getTime()) {
             endSelected = "selected=\"selected\"";
          }
          $startTimeField.append("<option value=\"" + startTime + "\" " + startSelected + ">" + timeslotTimes[i].startFormatted + "</option>");
