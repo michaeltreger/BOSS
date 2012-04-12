@@ -15,9 +15,6 @@ class Calendar < ActiveRecord::Base
       self.entries.clear
 
       entries.each do |ent|
-        ent.delete("start")
-        ent.delete("end")
-        ent.delete("type")
         e = Entry.find_by_id(ent["id"].to_i)
         ent.delete("id")
         if e.blank?
