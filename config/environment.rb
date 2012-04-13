@@ -8,5 +8,5 @@ require 'casclient/frameworks/rails/filter'
 CS169CampusScheduler::Application.initialize!
 
 CASClient::Frameworks::Rails::Filter.configure(
-   :cas_base_url => "https://auth-test.berkeley.edu/cas"
+   :cas_base_url => "https://auth.berkeley.edu/cas"
 )
