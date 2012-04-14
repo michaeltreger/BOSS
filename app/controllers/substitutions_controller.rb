@@ -5,11 +5,11 @@ class SubstitutionsController < ApplicationController
     @substitutions = Substitution.all
     @my_subs = @substitutions.find_all{|s| s.users.size >= 1 && s.users[0] == @current_user}
     if @current_user.isAdmin?
-        @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2}
+      @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2}
     else
       @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2 && s.users[1]==@current_user}
     end
-    @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (!s.users.size==2 || !s.users[1]==@current_user)}
+    @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (!(s.users.size==2) || !(s.users[1]==@current_user))}
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @substitutions }
@@ -63,7 +63,7 @@ class SubstitutionsController < ApplicationController
       from_user = User.find(params[:substitution][:from_user])
       if from_user
         @substitution.users << from_user
-        if params[:user][:id] && params[:user][:id] != "" && User.find(params[:user][:id])
+        if params[:user] && params[:user][:id] && params[:user][:id] != "" && User.find(params[:user][:id])
           to_user = User.find(params[:user][:id])
           @substitution.users << to_user
         end
