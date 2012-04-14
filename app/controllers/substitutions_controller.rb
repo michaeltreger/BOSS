@@ -3,8 +3,13 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions.json
   def index
     @substitutions = Substitution.all
-    @not_my_subs = @substitutions.find_all{|s| !s.users.include?(@current_user)}
-    @my_subs = @substitutions.find_all{|s| s.users.include?(@current_user)}
+    @my_subs = @substitutions.find_all{|s| s.users.size >= 1 && s.users[0] == @current_user}
+    if @current_user.isAdmin?
+        @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2}
+    else
+      @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2 && s.users[1]==@current_user}
+    end
+    @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (!s.users.size==2 || !s.users[1]==@current_user)}
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @substitutions }

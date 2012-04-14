@@ -50,8 +50,8 @@ end
 
 Then /^"My Posted Substitutions" should contain "([^"]*)" for the user with initials "([^"]*)"$/ do |entry, initials|
   a = 'My Posted Substitutions'
-  b = entry
-  c = initials
+  b = initials
+  c = entry
   d = 'Available Substitutions'
   assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*#{Regexp.quote(d)}.*/m
 end
@@ -64,3 +64,60 @@ Then /^"My Posted Substitutions" should not contain "([^"]*)"$/ do |entry|
   assert !(page.html =~  /#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}/m)
 end
 
+Then /^"Reserved Substitutions" should have (\d+) entries$/ do |num|
+  page.all('table#my_subs tr').count.should == Integer(num) + 1
+end
+
+
+Then /^"Reserved Substitutions" should contain "([^"]*)"$/ do |entry|
+  a = 'Reserved Substitutions'
+  b = entry
+  c = 'Available Substitutions'
+  assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*/m
+end
+
+
+Then /^"Reserved Substitutions" should contain "([^"]*)" for the user with initials "([^"]*)"$/ do |entry, initials|
+  a = 'Reserved Substitutions'
+  b = initials
+  c = entry
+  d = 'Available Substitutions'
+  assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*#{Regexp.quote(d)}.*/m
+end
+
+
+Then /^"Reserved Substitutions" should not contain "([^"]*)"$/ do |entry|
+  a = 'Reserved Substitutions'
+  b = entry
+  c = 'Available Substitutions'
+  assert !(page.html =~  /#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}/m)
+end
+
+Then /^"Available Substitutions" should have (\d+) entries$/ do |num|
+  page.all('table#my_subs tr').count.should == Integer(num) + 1
+end
+
+
+Then /^"Available Substitutions" should contain "([^"]*)"$/ do |entry|
+  a = 'Available Substitutions'
+  b = entry
+  c = 'Take Selected Substitutions'
+  assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*/m
+end
+
+
+Then /^"Available Substitutions" should contain "([^"]*)" for the user with initials "([^"]*)"$/ do |entry, initials|
+  a = 'Available Substitutions'
+  b = initials
+  c = entry
+  d = 'Take Selected Substitutions'
+  assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*#{Regexp.quote(d)}.*/m
+end
+
+
+Then /^"Available Substitutions" should not contain "([^"]*)"$/ do |entry|
+  a = 'Available Substitutions'
+  b = entry
+  c = 'Take Selected Substitutions'
+  assert !(page.html =~  /#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}/m)
+end

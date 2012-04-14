@@ -1,7 +1,7 @@
-Feature: Substitute Shifts
+Feature: Substitute Shifts For Anyone
   As a student
   I want to be able to post substitutions for my shifts
-  So that other students can view and claim the shifts I can’t make.
+  so that any student can view and claim the shifts I can’t make.
 
 Background: A work entry has been added to my calendar
   Given the following users exist:
@@ -9,6 +9,7 @@ Background: A work entry has been added to my calendar
     | Alice        | 1              |   AA      |
     | Bob          | 1              |   BB      |
     | Carl         | 1              |   CC      |
+    | David        | 0              |   DD      |
     
   And I am logged in as "Alice"
 
@@ -35,17 +36,6 @@ Background: A work entry has been added to my calendar
     Then "My Posted Substitutions" should have 2 entries
     Then "My Posted Substitutions" should contain "Urgent - fix printer"
     And "My Posted Substitutions" should contain "Software Training"
-
-  Scenario: Post Substitution for someone else
-    When I select the entry with id 1 for substitution
-    And I select the user with initials "CC" for my substitution
-    And I fill in "Description" with "Urgent - fix printer"
-    And I press "Make Substitution"
-    And I go to the "View Substitutions" page
-    Then "My Posted Substitutions" should have 2 entries
-    Then "My Posted Substitutions" should contain "Urgent - fix printer" for the user with initials "CC"
-    And "My Posted Substitutions" should contain "Software Training"
-    
 
   Scenario: Substitution cannot be posted twice for one entry
     Then I should not see the entry with id 2 for substitution
