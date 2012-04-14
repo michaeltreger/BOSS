@@ -3,8 +3,12 @@ class Substitution < ActiveRecord::Base
     has_one :entry
     validates_presence_of :entry
 
-    def set_substituter(user)
-      self.users[0] = user
+    def get_from_user()
+      self.users[0]
+    end
+
+    def get_to_user()
+      self.users[1]
     end
 
 end

@@ -8,6 +8,7 @@
       %th Time
       %th Location
       %th Notes
+      %th Reserved For
       %th
     - @my_subs.each do |substitution|
       %tr
@@ -15,6 +16,10 @@
         %td= substitution.entry.start_time.strftime('%I:%M%p') + ' -  ' + substitution.entry.end_time.strftime('%I:%M%p')
         %td= 'Lab ' + substitution.entry.lab_id.to_s
         %td= substitution.description
+        - if substitution.users.size == 2
+          %td= substitution.users[1].initials
+        - else
+          %td
         %td= link_to 'Delete', substitution_path(substitution), :method => :delete, :confirm => 'Are you sure?', :id => 'delete_' + substitution.id.to_s
 
 
