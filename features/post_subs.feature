@@ -1,13 +1,15 @@
-Feature: Substitute Shifts
+Feature: Substitute Shifts For Anyone
   As a student
   I want to be able to post substitutions for my shifts
-  So that other students can view and claim the shifts I can’t make.
+  so that any student can view and claim the shifts I can’t make.
 
 Background: A work entry has been added to my calendar
   Given the following users exist:
-    | name         | user_type      |
-    | Alice        | 1              |
-    | Bob          | 1              |
+    | name         | user_type      | initials  |
+    | Alice        | 1              |   AA      |
+    | Bob          | 1              |   BB      |
+    | Carl         | 1              |   CC      |
+    | David        | 0              |   DD      |
     
   And I am logged in as "Alice"
 
@@ -21,8 +23,8 @@ Background: A work entry has been added to my calendar
     | Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   |
 
   And the following substitutions exist:
-    | entry_id   | description                | user_id     |
-    |   2        | Software Training          |    1        |
+    | entry_id   | description                | from_user_id    | to_user_id |
+    |   2        | Software Training          |    1            |    2       |
 
   And I am on the "Post a Substitution" page
 

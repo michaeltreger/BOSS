@@ -3,8 +3,19 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions.json
   def index
     @substitutions = Substitution.all
-    @not_my_subs = @substitutions.find_all{|s| !s.users.include?(@current_user)}
-    @my_subs = @substitutions.find_all{|s| s.users.include?(@current_user)}
+    @my_subs = @substitutions.find_all{|s| s.users.size >= 1 && s.users[0] == @current_user}
+    if @current_user.isAdmin?
+      @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2}
+    else
+      @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2 && s.users[1]==@current_user}
+    end
+    @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (!(s.users.size==2) || !(s.users[1]==@current_user))}
+
+    @mycalendars = @current_user.calendars
+
+    if @current_user.isAdmin?
+      @admin_allCalendars = Calendar.all
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @substitutions }
@@ -32,8 +43,8 @@ class SubstitutionsController < ApplicationController
       end
     end
     @entries = @entries.find_all{|e| e.substitution.nil?}
+    @users = User.find(:all, :conditions => ["id != ?", @current_user.id])
     @substitution = Substitution.new
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @substitution }
@@ -48,14 +59,21 @@ class SubstitutionsController < ApplicationController
   # POST /substitutions
   # POST /substitutions.json
   def create
-    entry_id = params[:substitution][:entry]
-    if entry_id.nil?
+    if params[:substitution][:entry].nil?
       flash[:notice] = 'Please select a shift to substitute.'
       redirect_to new_substitution_path
     else
-      params[:substitution][:entry] = Entry.find(params[:substitution][:entry])
-      params[:substitution][:users] = [User.find(params[:substitution][:users])]
-      @substitution = Substitution.new(params[:substitution])
+      new_sub_params = {:entry => Entry.find(params[:substitution][:entry]),
+                        :description => params[:substitution][:description]}
+      @substitution = Substitution.new(new_sub_params)
+      from_user = User.find(params[:substitution][:from_user])
+      if from_user
+        @substitution.users << from_user
+        if params[:user] && params[:user][:id] && params[:user][:id] != "" && User.find(params[:user][:id])
+          to_user = User.find(params[:user][:id])
+          @substitution.users << to_user
+        end
+      end
       respond_to do |format|
         if @substitution.save
           format.html { redirect_to new_substitution_path, notice: 'Substitution was successfully created.' }
@@ -72,7 +90,6 @@ class SubstitutionsController < ApplicationController
   # PUT /substitutions/1.json
   def update
     @substitution = Substitution.find(params[:id])
-
     respond_to do |format|
       if @substitution.update_attributes(params[:substitution])
         format.html { redirect_to @substitution, notice: 'Substitution was successfully updated.' }
@@ -89,6 +106,28 @@ class SubstitutionsController < ApplicationController
   def destroy
     @substitution = Substitution.find(params[:id])
     @substitution.destroy
+    respond_to do |format|
+      format.html { redirect_to substitutions_url }
+      format.json { head :ok }
+    end
+  end
+
+  def take_or_assign_subs
+    if (params[:calendar][:id]) && (params[:entries])
+      targetCalendar = Calendar.find(params[:calendar][:id])
+      taken_subs = params[:entries]
+      taken_subs.each_pair do |k,v|
+        if v == "1"
+          currSub = Substitution.find(k)
+          currEntry = currSub.entry
+          currEntry.user = targetCalendar.user
+          currEntry.substitution = nil
+          currEntry.calendar = targetCalendar
+          currEntry.save!
+          Substitution.delete(k)
+        end
+      end
+    end
     respond_to do |format|
       format.html { redirect_to substitutions_url }
       format.json { head :ok }

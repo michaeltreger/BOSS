@@ -20,16 +20,30 @@ require 'spec_helper'
 
 describe SubstitutionsController do
   before(:each) do
-      User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
+      @me = User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
+      @other = User.create!(:user_type => 1, :name => 'Other', :approved => 'true', :initials => 'O')
       session[:test_user_id] = 1
       Entry.create!(:user_id => '1', :substitution_id => '1', :calendar_id => '1', :start_time => '8:00am', :end_time => '12:00pm')
   end
 
   describe "GET index" do
-    it "should assign all subtitutions as @substitutions" do
-      Substitution.create!(:description => 'haha',:entry =>Entry.new)
+    it "should group subtitutions into categories for display" do
+      mySub = Substitution.create(:description => 'mySub', :entry => Entry.new)
+      mySub.users << @me
+      mySub.save!
+      reservedSub = Substitution.create(:description => 'reservedSub', :entry => Entry.new)
+      reservedSub.users << @other
+      reservedSub.users << @me
+      reservedSub.save!
+      availableSub = Substitution.create(:description => 'availableSub', :entry => Entry.new)
+      availableSub.users << @other
+      availableSub.save!
+
       get :index
-      assigns(:substitutions).count.should == 1
+      assigns(:substitutions).count.should == 3
+      assigns(:my_subs).count.should == 1
+      assigns(:reserved_subs).count.should == 1
+      assigns(:available_subs).count.should == 1
     end
     it "should render to index page" do
       get :index
@@ -63,19 +77,19 @@ describe SubstitutionsController do
     describe "with valid params" do
       describe "with invlid entry id" do
         it "redirect to the new substitution path" do
-          post :create, {:substitution => {:users => '1', :user_id => '1'}}
+          post :create, {:substitution => {:from_user => '1'}}
           response.should redirect_to new_substitution_path
           flash[:notice].should == 'Please select a shift to substitute.'
         end
       end
 
       it "creates a new Substitution" do
-        post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
+        post :create, {:substitution => {:from_user => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
         Substitution.count.should == 1
       end
 
       it "redirect to the new substitution path" do
-        post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
+        post :create, {:substitution => {:from_user => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
         response.should redirect_to new_substitution_path
         flash[:notice].should == 'Substitution was successfully created.'
       end
@@ -85,7 +99,7 @@ describe SubstitutionsController do
       it "redirect to the new substitution path" do
         # Trigger the behavior that occurs when invalid params are submitted
         Substitution.any_instance.stub(:save).and_return(false)
-          post :create, {:substitution => {:users => '1', :user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
+          post :create, {:substitution => {:from_user => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
         response.should redirect_to new_substitution_path
         flash[:notice].should == 'Substitution could not be created.'
       end

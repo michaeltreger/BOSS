@@ -5,17 +5,26 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "sel
 
 
 Given /^the following substitutions exist:$/ do |substitutions_table|
-  substitutions_table.hashes.each do |substitution|
-    substitution[:entry] = Entry.find_by_id(substitution[:entry_id])
+  substitutions_table.hashes.each do |s|
+    substitution = {:entry => Entry.find_by_id(s[:entry_id]),
+                    :description => s[:description]}
     new_sub = Substitution.create!(substitution)
-    owner = User.find_by_id(substitution[:user_id])
+    owner = User.find_by_id(s[:from_user_id])
     new_sub.users << owner
+    if (s[:to_user_id])
+      target = User.find_by_id(s[:to_user_id])
+      new_sub.users << target
+    end
     new_sub.save!
   end
 end
 
 When /^I select the entry with id (\d+) for substitution$/ do |entry_id|
-  choose(entry_id.to_s)
+  choose('entry_' + entry_id.to_s)
+end
+
+When /^I select the user with initials "([^"]*)" for my substitution$/ do |initials|
+  select(initials)
 end
 
 When /^I delete my substitution with id (\d+)$/ do |sub_id|
@@ -35,8 +44,18 @@ Then /^"My Posted Substitutions" should contain "([^"]*)"$/ do |entry|
   a = 'My Posted Substitutions'
   b = entry
   c = 'Available Substitutions'
-  assert page.html =~  /#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}/m
+  assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*/m
 end
+
+
+Then /^"My Posted Substitutions" should contain "([^"]*)" for the user with initials "([^"]*)"$/ do |entry, initials|
+  a = 'My Posted Substitutions'
+  b = initials
+  c = entry
+  d = 'Available Substitutions'
+  assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*#{Regexp.quote(d)}.*/m
+end
+
 
 Then /^"My Posted Substitutions" should not contain "([^"]*)"$/ do |entry|
   a = 'My Posted Substitutions'
@@ -45,3 +64,60 @@ Then /^"My Posted Substitutions" should not contain "([^"]*)"$/ do |entry|
   assert !(page.html =~  /#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}/m)
 end
 
+Then /^"Reserved Substitutions" should have (\d+) entries$/ do |num|
+  page.all('table#my_subs tr').count.should == Integer(num) + 1
+end
+
+
+Then /^"Reserved Substitutions" should contain "([^"]*)"$/ do |entry|
+  a = 'Reserved Substitutions'
+  b = entry
+  c = 'Available Substitutions'
+  assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*/m
+end
+
+
+Then /^"Reserved Substitutions" should contain "([^"]*)" for the user with initials "([^"]*)"$/ do |entry, initials|
+  a = 'Reserved Substitutions'
+  b = initials
+  c = entry
+  d = 'Available Substitutions'
+  assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*#{Regexp.quote(d)}.*/m
+end
+
+
+Then /^"Reserved Substitutions" should not contain "([^"]*)"$/ do |entry|
+  a = 'Reserved Substitutions'
+  b = entry
+  c = 'Available Substitutions'
+  assert !(page.html =~  /#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}/m)
+end
+
+Then /^"Available Substitutions" should have (\d+) entries$/ do |num|
+  page.all('table#my_subs tr').count.should == Integer(num) + 1
+end
+
+
+Then /^"Available Substitutions" should contain "([^"]*)"$/ do |entry|
+  a = 'Available Substitutions'
+  b = entry
+  c = 'Take Selected Substitutions'
+  assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*/m
+end
+
+
+Then /^"Available Substitutions" should contain "([^"]*)" for the user with initials "([^"]*)"$/ do |entry, initials|
+  a = 'Available Substitutions'
+  b = initials
+  c = entry
+  d = 'Take Selected Substitutions'
+  assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*#{Regexp.quote(d)}.*/m
+end
+
+
+Then /^"Available Substitutions" should not contain "([^"]*)"$/ do |entry|
+  a = 'Available Substitutions'
+  b = entry
+  c = 'Take Selected Substitutions'
+  assert !(page.html =~  /#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}/m)
+end
