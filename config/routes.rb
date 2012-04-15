@@ -17,6 +17,8 @@ CS169CampusScheduler::Application.routes.draw do
   end
   match '/join' => 'users#new'
 
+  match '/take_subs' => 'substitutions#take_subs'
+
   match "/test_setuser/:id" => "users#test_setuser"
 
   # The priority is based upon order of creation:
