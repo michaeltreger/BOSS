@@ -5,11 +5,17 @@ class SubstitutionsController < ApplicationController
     @substitutions = Substitution.all
     @my_subs = @substitutions.find_all{|s| s.users.size >= 1 && s.users[0] == @current_user}
     if @current_user.isAdmin?
-        @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2}
+      @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2}
     else
       @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2 && s.users[1]==@current_user}
     end
-    @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (!s.users.size==2 || !s.users[1]==@current_user)}
+    @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (!(s.users.size==2) || !(s.users[1]==@current_user))}
+
+    @mycalendars = @current_user.calendars
+
+    if @current_user.isAdmin?
+      @admin_allCalendars = Calendar.all
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @substitutions }
@@ -63,7 +69,7 @@ class SubstitutionsController < ApplicationController
       from_user = User.find(params[:substitution][:from_user])
       if from_user
         @substitution.users << from_user
-        if params[:user][:id] && params[:user][:id] != "" && User.find(params[:user][:id])
+        if params[:user] && params[:user][:id] && params[:user][:id] != "" && User.find(params[:user][:id])
           to_user = User.find(params[:user][:id])
           @substitution.users << to_user
         end
@@ -100,6 +106,28 @@ class SubstitutionsController < ApplicationController
   def destroy
     @substitution = Substitution.find(params[:id])
     @substitution.destroy
+    respond_to do |format|
+      format.html { redirect_to substitutions_url }
+      format.json { head :ok }
+    end
+  end
+
+  def take_or_assign_subs
+    if (params[:calendar][:id]) && (params[:entries])
+      targetCalendar = Calendar.find(params[:calendar][:id])
+      taken_subs = params[:entries]
+      taken_subs.each_pair do |k,v|
+        if v == "1"
+          currSub = Substitution.find(k)
+          currEntry = currSub.entry
+          currEntry.user = targetCalendar.user
+          currEntry.substitution = nil
+          currEntry.calendar = targetCalendar
+          currEntry.save!
+          Substitution.delete(k)
+        end
+      end
+    end
     respond_to do |format|
       format.html { redirect_to substitutions_url }
       format.json { head :ok }

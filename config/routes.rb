@@ -1,5 +1,6 @@
 CS169CampusScheduler::Application.routes.draw do
   resources :time_off_requests
+  resources :time_edits
 
   resources :substitutions
 
@@ -18,6 +19,8 @@ CS169CampusScheduler::Application.routes.draw do
     match '/approve/:id' => 'users#approve'
   end
   match '/join' => 'users#new'
+
+  match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'
 
   match "/test_setuser/:id" => "users#test_setuser"
 

@@ -7,14 +7,17 @@ $(document).ready(function() {
    $('#submit_calendar').bind('click', submit);
    
    function submit() {
-      finalizedEvents = $calendar.weekCalendar("serializeEvents");
+      finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
       finalizedEvents.map(convertTimesOut);
       
       json = JSON.stringify(finalizedEvents);
       //alert(json);
       $.ajax({
         type: "PUT",
-        url: window.location.pathname+".json",
+        beforeSend : function(xhr) {
+          xhr.setRequestHeader("Accept", "application/json")
+        },
+        url: window.location.pathname,
         data: {"calendar_updates": json},
         dataType: "json",
         success: function(data, textStatus, XMLHttpRequest){
@@ -32,7 +35,10 @@ $(document).ready(function() {
    function getEventData() {   
       $.ajax({
          type: "GET",
-         url: window.location.pathname+".json",
+         beforeSend : function(xhr) {
+          xhr.setRequestHeader("Accept", "application/json")
+         },
+         url: window.location.pathname,
          dataType: "json",
          success: function(data) {
             data.map(convertTimesIn);
@@ -62,6 +68,9 @@ $(document).ready(function() {
         firstDayOfWeek : 0,
         businessHours :{start_time: 6, end_time: 24, limitDisplay: true },
         daysToShow : 7,
+        title: function(daysToShow) {
+           return daysToShow == 1 ? '%date%' : '%start% - %end%';
+        },
         height : function($calendar) {
            return 760;//$(window).height() - $("h1").outerHeight() - 1;
         },

@@ -22,9 +22,31 @@
         %td= substitution.description
         %td= link_to 'Delete', substitution_path(substitution), :method => :delete, :confirm => 'Are you sure?', :id => 'delete_' + substitution.id.to_s
 
-- if @reserved_subs && @reserved_subs.size != 0
-  %h3 Reserved Substitutions
-  %table#reserved_subs
+= form_tag :controller => "substitutions", :action => "take_or_assign_subs" do
+  - if @reserved_subs && @reserved_subs.size != 0
+    %h3 Reserved Substitutions
+    %table#reserved_subs
+      %tr
+        %th Select
+        %th Day
+        %th Time
+        %th Location
+        %th Posted By
+        %th Notes
+      - @reserved_subs.each do |substitution|
+        %tr
+          %td= check_box_tag "entries[#{substitution.id.to_s}]"
+          %td= substitution.entry.start_time.strftime('%a, %m/%d')
+          %td= substitution.entry.start_time.strftime('%I:%M%p') + ' -  ' + substitution.entry.end_time.strftime('%I:%M%p')
+          %td= 'Lab ' + substitution.entry.lab_id.to_s
+          - if substitution.users.size > 0
+            %td= substitution.users[0].initials
+          - else
+            %td
+          %td= substitution.description
+  
+  %h3 Available Substitutions
+  %table#available_subs
     %tr
       %th Select
       %th Day
@@ -32,9 +54,9 @@
       %th Location
       %th Posted By
       %th Notes
-    - @reserved_subs.each do |substitution|
+    - @available_subs.each do |substitution|
       %tr
-        %td= check_box "dummy", "dummy"
+        %td= check_box_tag "entries[#{substitution.id.to_s}]"
         %td= substitution.entry.start_time.strftime('%a, %m/%d')
         %td= substitution.entry.start_time.strftime('%I:%M%p') + ' -  ' + substitution.entry.end_time.strftime('%I:%M%p')
         %td= 'Lab ' + substitution.entry.lab_id.to_s
@@ -44,28 +66,14 @@
           %td
         %td= substitution.description
   <br>
-  = link_to 'Take Selected Substitutions', '/'
+  - if @current_user.isAdmin?
+    %h3 Assign Substitution To:
+    = collection_select(:calendar, :id, @admin_allCalendars, :id, :full_name)
+    <br><br>
+    = submit_tag 'Submit'
+  - else
+    %h3 Choose a destination calendar
+    = collection_select(:calendar, :id, @mycalendars, :id, :name)
+    <br><br>
+    = submit_tag 'Take Selected Substitutions'
 
-
-%h3 Available Substitutions
-%table#available_subs
-  %tr
-    %th Select
-    %th Day
-    %th Time
-    %th Location
-    %th Posted By
-    %th Notes
-  - @available_subs.each do |substitution|
-    %tr
-      %td= check_box "dummy", "dummy"
-      %td= substitution.entry.start_time.strftime('%a, %m/%d')
-      %td= substitution.entry.start_time.strftime('%I:%M%p') + ' -  ' + substitution.entry.end_time.strftime('%I:%M%p')
-      %td= 'Lab ' + substitution.entry.lab_id.to_s
-      - if substitution.users.size > 0
-        %td= substitution.users[0].initials
-      - else
-        %td
-      %td= substitution.description
-<br>
-= link_to 'Take Selected Substitutions', '/'

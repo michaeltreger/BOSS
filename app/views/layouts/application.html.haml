@@ -48,7 +48,12 @@
                       %li
                         = link_to "View Substitutions", substitutions_path
                   %li
-                    = link_to "Time Edit", '/'
+                    = link_to "Time Edit", time_edits_path
+                    %ul
+                      %li
+                        = link_to "New Time Edit", new_time_edit_path
+                      %li
+                        = link_to "View Time Edits", time_edits_path
                   - if not @current_user.nil?
                     - if @current_user.user_type == 0
                       %li
