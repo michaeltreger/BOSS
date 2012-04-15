@@ -11,7 +11,7 @@ Background: Substitutions created
     | Carl         | 1              |   CC      |
     | David        | 0              |   DD      |
 
-  And I am logged in as “David”
+  And I am logged in as "David"
 
   And the following calendars exist:
     | name             | calendar_type  | user_id |
@@ -32,40 +32,40 @@ Background: Substitutions created
 
   And the following substitutions exist:
     | entry_id   | description           | from_user_id    | to_user_id |
-    |   1        | Work at Moffit        |    2            |    3       |
-    |   2        | Presentation          |    2            |            |
+    |   3        | Work at Moffit        |    2            |    3       |
+    |   4        | Presentation          |    2            |    nil     |
 
   Given I am on the "View Substitutions" page
 
   Scenario: Admins can assign substitutions
-    Then I should see "Assign Selected Substitutions"
+    Then I should see "Assign Substitution To:"
 
   Scenario: Non-admins cannot assign substitutions
     When I am logged in as "Alice"
     And I am on the "View Substitutions" page
-    Then I should not see "Assign Selected Substitutions"
+    Then I should not see "Assign Substitution To:"
   
 
   Scenario: Assign a reserved substitution to somebody
-    When I check "Work at Moffit"
-    And I assign the substitution to the user with initials "AA"
-    And I click "Assign Selected Substitutions"
+    When I check the substitution "Work at Moffit"
+    And I assign the substitution to "Alice's Calendar"
+    And I press "Submit"
     And I am on Alice's Calendar page
     And I view the calendar
     Then I should see "Work at Moffit"
 
   Scenario: Assign an open substitution to somebody
-    When I check "Presentation"
-    And I assign the substitution to the user with initials "AA"
-    And I click "Assign Selected Substitutions"
+    When I check the substitution "Presentation"
+    And I assign the substitution to "Alice's Calendar"
+    And I press "Submit"
     And I am on Alice's Calendar page
     And I view the calendar
-    Then I should see "Work at Moffit"
+    Then I should see "Presentation"
 
   Scenario: Assigned substitutions are no longer available
-    When I check "Work at Moffit"
-    And I assign the substitution to the user with initials "AA"
-    And I click "Assign Selected Substitutions"
-    And I go the "View Substitutions" page
+    When I check the substitution "Work at Moffit"
+    And I assign the substitution to "Alice's Calendar"
+    And I press "Submit"
+    And I go to the "View Substitutions" page
     Then I should see "Presentation"
     And I should not see "Work at Moffit"
