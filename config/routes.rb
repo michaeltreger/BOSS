@@ -17,7 +17,7 @@ CS169CampusScheduler::Application.routes.draw do
   end
   match '/join' => 'users#new'
 
-  match '/take_subs' => 'substitutions#take_subs'
+  match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'
 
   match "/test_setuser/:id" => "users#test_setuser"
 

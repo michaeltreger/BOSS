@@ -22,7 +22,7 @@
         %td= substitution.description
         %td= link_to 'Delete', substitution_path(substitution), :method => :delete, :confirm => 'Are you sure?', :id => 'delete_' + substitution.id.to_s
 
-= form_tag :controller => "substitutions", :action => "take_subs" do
+= form_tag :controller => "substitutions", :action => "take_or_assign_subs" do
   - if @reserved_subs && @reserved_subs.size != 0
     %h3 Reserved Substitutions
     %table#reserved_subs
@@ -67,6 +67,12 @@
         %td= substitution.description
   <br>
   %h3 Choose a destination calendar
-  = collection_select(:calendar, :id, @mycalendars, :id, :name)
-  <br>
-  = submit_tag 'Take Selected Substitutions'
+  - if @current_user.isAdmin?
+    = collection_select(:calendar, :id, @admin_allCalendars, :id, :full_name)
+    <br>
+    = submit_tag 'Assign Selected Substitutions'
+  - else
+    = collection_select(:calendar, :id, @mycalendars, :id, :name)
+    <br>
+    = submit_tag 'Take Selected Substitutions'
+

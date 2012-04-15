@@ -13,6 +13,9 @@ class SubstitutionsController < ApplicationController
 
     @mycalendars = @current_user.calendars
 
+    if @current_user.isAdmin?
+      @admin_allCalendars = Calendar.all
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @substitutions }
@@ -109,7 +112,7 @@ class SubstitutionsController < ApplicationController
     end
   end
 
-  def take_subs
+  def take_or_assign_subs
     if (params[:calendar][:id]) && (params[:entries])
       targetCalendar = Calendar.find(params[:calendar][:id])
       taken_subs = params[:entries]
@@ -117,7 +120,7 @@ class SubstitutionsController < ApplicationController
         if v == "1"
           currSub = Substitution.find(k)
           currEntry = currSub.entry
-          currEntry.user = @current_user
+          currEntry.user = targetCalendar.user
           currEntry.substitution = nil
           currEntry.calendar = targetCalendar
           currEntry.save!
