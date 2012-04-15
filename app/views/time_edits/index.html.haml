@@ -1,0 +1,27 @@
+%h1 Listing time_edits
+
+%table
+  %tr
+    %th User
+    %th Start time
+    %th Duration
+    %th Lab
+    %th Comment
+    %th
+    %th
+    %th
+
+  - @time_edits.each do |time_edit|
+    %tr
+      %td= time_edit.user_id
+      %td= time_edit.start_time
+      %td= time_edit.duration
+      %td= time_edit.lab_id
+      %td= time_edit.comment
+      %td= link_to 'Show', time_edit
+      %td= link_to 'Edit', edit_time_edit_path(time_edit)
+      %td= link_to 'Destroy', time_edit, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Time edit', new_time_edit_path
