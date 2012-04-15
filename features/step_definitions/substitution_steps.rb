@@ -11,7 +11,7 @@ Given /^the following substitutions exist:$/ do |substitutions_table|
     new_sub = Substitution.create!(substitution)
     owner = User.find_by_id(s[:from_user_id])
     new_sub.users << owner
-    if (s[:to_user_id])
+    if (s[:to_user_id] != "nil")
       target = User.find_by_id(s[:to_user_id])
       new_sub.users << target
     end
@@ -25,6 +25,21 @@ end
 
 When /^I select the user with initials "([^"]*)" for my substitution$/ do |initials|
   select(initials)
+end
+
+When /^I check the substitution "([^"]*)"$/ do |sub|
+  targetSub = Substitution.find_by_description(sub)
+  id = 'entries[' + targetSub.id.to_s + ']'
+  check(id)
+end
+
+When /^I assign the substitution to "([^"]*)"$/ do |calendar|
+  targetCalendar = Calendar.find_by_name(calendar)
+  select(targetCalendar.full_name)
+end
+
+When /^I put the substitution in "([^"]*)"$/ do |calendar|
+  select(calendar)
 end
 
 When /^I delete my substitution with id (\d+)$/ do |sub_id|
