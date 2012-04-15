@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b User:
+  = @time_edit.user_id
+%p
+  %b Start time:
+  = @time_edit.start_time
+%p
+  %b Duration:
+  = @time_edit.duration
+%p
+  %b Lab:
+  = @time_edit.lab_id
+%p
+  %b Comment:
+  = @time_edit.comment
+
+= link_to 'Edit', edit_time_edit_path(@time_edit)
+\|
+= link_to 'Back', time_edits_path
