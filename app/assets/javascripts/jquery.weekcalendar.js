@@ -385,6 +385,7 @@
           self.element.find('.wc-day-column-inner').each(function() {
             self._adjustOverlappingEvents($(this));
           });
+          self._removeEventInData(calEvent);
       },
 
       /*
@@ -411,6 +412,7 @@
         * it will be added.
         */
       updateEvent: function(calEvent) {
+          this._updateEventInData(calEvent);
           this._updateEventInCalendar(calEvent);
       },
 
@@ -468,6 +470,10 @@
         });
         return calEvents;
       },
+      
+      serializeAllEvents: function() {
+        return this.options.data;
+      },
 
       next: function() {
         if (this._startOnFirstDayOfWeek()) {
@@ -500,6 +506,30 @@
       /*********************
         * private functions *
         *********************/
+      _updateEventInData: function(calEvent) {
+        options = this.options;
+        newEvent = true;
+        $.each(options.data, function(i, event) {
+          if (event.id === calEvent.id) {
+            event = calEvent;
+            newEvent = false;
+          }
+        });
+        if (newEvent) {
+          options.data.push(calEvent);
+        }
+      },
+      
+      _removeEventInData: function(calEvent) {
+      options = this.options;
+        for(i=0; i<options.data.length; i++) {
+          if(options.data[i].id === calEvent.id) {
+            options.data.splice(i,1);
+            break;
+          }
+        }
+      },
+        
       _setOption: function(key, value) {
         var self = this;
         if (self.options[key] != value) {
@@ -651,7 +681,6 @@
         * render the nav buttons on top of the calendar
         */
       _renderCalendarButtons: function($calendarContainer) {
-        return;
         var self = this, options = this.options;
         if (options.buttons) {
             var calendarNavHtml = '';
@@ -1449,6 +1478,7 @@
 
       },
       addEvent: function() {
+        alert("a");
         return this._renderEvent.apply(this, arguments);
       },
 
