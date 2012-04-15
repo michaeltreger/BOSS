@@ -22,14 +22,14 @@ describe CalendarsController do
 
   before (:each) do
     @student = User.create!(:user_type => 1, :name => "John", :approved => true, :initials => "J")
-    session[:test_user_id] = 1
+    #session[:test_user_id] = @student.id
   end
   # This should return the minimal set of attributes required to create a valid
   # Calendar. As you add validations to Calendar, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
     {
-      :calendar_type => 1, :name =>'testing'
+      :calendar_type => 1, :name => 'testing'
     }
   end
 
@@ -38,7 +38,7 @@ describe CalendarsController do
   # CalendarsController. Be sure to keep this updated too.
   def valid_session
     {
-      :test_user_id => 1
+      :test_user_id => @student.id
     }
   end
 
@@ -118,10 +118,9 @@ describe CalendarsController do
   describe "PUT update" do
     describe "with valid params" do
       before do
-
         @calendar = Calendar.create!(:calendar_type => 1, :name => "testing11", :description => "student1 clendar1", :user_id => @student.id)
-
       end
+
       it "updates the requested calendar" do
         # Assuming there are no other calendars in the database, this
         # specifies that the Calendar created on the previous line
