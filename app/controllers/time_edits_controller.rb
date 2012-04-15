@@ -25,6 +25,11 @@ class TimeEditsController < ApplicationController
   # GET /time_edits/new.json
   def new
     @time_edit = TimeEdit.new
+   
+    @mycalendars = @current_user.calendars
+    if @current_user.isAdmin?
+      @admin_allCalendars = Calendar.all
+    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -40,6 +45,8 @@ class TimeEditsController < ApplicationController
   # POST /time_edits
   # POST /time_edits.json
   def create
+    params[:time_edit][:user_id] = @current_user.id
+    params[:time_edit][:calendar_id] = @current_user.id
     @time_edit = TimeEdit.new(params[:time_edit])
 
     respond_to do |format|

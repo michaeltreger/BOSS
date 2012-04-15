@@ -74,18 +74,18 @@ describe TimeEditsController do
     describe "with valid params" do
       it "creates a new TimeEdit" do
         expect {
-          post :create, {:time_edit => valid_attributes}, valid_session
+          post :create, {:time_edit => valid_attributes_post}, valid_session
         }.to change(TimeEdit, :count).by(1)
       end
 
       it "assigns a newly created time_edit as @time_edit" do
-        post :create, {:time_edit => valid_attributes}, valid_session
+        post :create, {:time_edit => valid_attributes_post}, valid_session
         assigns(:time_edit).should be_a(TimeEdit)
         assigns(:time_edit).should be_persisted
       end
 
       it "redirects to the created time_edit" do
-        post :create, {:time_edit => valid_attributes}, valid_session
+        post :create, {:time_edit => valid_attributes_post}, valid_session
         response.should redirect_to(TimeEdit.last)
       end
     end
@@ -121,13 +121,13 @@ describe TimeEditsController do
 
       it "assigns the requested time_edit as @time_edit" do
         time_edit = TimeEdit.create! valid_attributes
-        put :update, {:id => time_edit.to_param, :time_edit => valid_attributes}, valid_session
+        put :update, {:id => time_edit.to_param, :time_edit => valid_attributes_post}, valid_session
         assigns(:time_edit).should eq(time_edit)
       end
 
       it "redirects to the time_edit" do
         time_edit = TimeEdit.create! valid_attributes
-        put :update, {:id => time_edit.to_param, :time_edit => valid_attributes}, valid_session
+        put :update, {:id => time_edit.to_param, :time_edit => valid_attributes_post}, valid_session
         response.should redirect_to(time_edit)
       end
     end
