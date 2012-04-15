@@ -1,0 +1,16 @@
+- @page_title = 'Time Off Requests'
+%h3 New Request
+
+= form_tag time_off_requests_path do
+
+  = label :time_off_request, :start_time, 'Start Time'
+  = datetime_select :time_off_request, :start_time , :prompt => true
+
+  = label :time_off_request, :end_time, 'End Time'
+  = datetime_select :time_off_request, :end_time, :prompt => true
+
+  = label :time_off_request, 'Reason'
+  = text_area :time_off_request, :description
+
+  = submit_tag 'Save Changes'
+  

@@ -1,4 +1,6 @@
 CS169CampusScheduler::Application.routes.draw do
+  resources :time_off_requests
+
   resources :substitutions
 
   resources :entries, :except => :show
