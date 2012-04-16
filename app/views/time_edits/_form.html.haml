@@ -20,9 +20,6 @@
     = f.text_field :comment
   .field
     = f.label :calendar_id
-    - if @current_user.isAdmin?
-      = collection_select(:calendar, :id, @mycalendars, :id, :full_name)
-    - else
-      = collection_select(:calendar, :id, @mycalendars, :id, :name)
+    = f.text_field :calendar_id
   .actions
     = f.submit 'Save'

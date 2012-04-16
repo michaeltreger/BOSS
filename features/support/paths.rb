@@ -22,6 +22,10 @@ module NavigationHelpers
     when /^(.*'s) Calendar page$/
       calendar_id = (Calendar.find_by_name($1+" Calendar")).id
       '/calendars/'+calendar_id.to_s
+    when /^the "Time Edit" page$/
+      '/time_edits'
+    when /^the "New Time Edit" page$/
+      '/time_edits/new'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
