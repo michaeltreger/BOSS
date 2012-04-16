@@ -66,13 +66,14 @@
           %td
         %td= substitution.description
   <br>
-  %h3 Choose a destination calendar
   - if @current_user.isAdmin?
+    %h3 Assign Substitution To:
     = collection_select(:calendar, :id, @admin_allCalendars, :id, :full_name)
-    <br>
-    = submit_tag 'Assign Selected Substitutions'
+    <br><br>
+    = submit_tag 'Submit'
   - else
+    %h3 Choose a destination calendar
     = collection_select(:calendar, :id, @mycalendars, :id, :name)
-    <br>
+    <br><br>
     = submit_tag 'Take Selected Substitutions'
 
