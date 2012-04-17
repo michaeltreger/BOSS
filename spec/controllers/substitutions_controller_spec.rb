@@ -98,9 +98,19 @@ describe SubstitutionsController do
         end
       end
 
-      it "creates a new Substitution" do
-        post :create, {:substitution => {:from_user => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
-        Substitution.count.should == 1
+      describe "with no reserved employee" do
+        it "creates a new non-specific Substitution" do
+          post :create, {:substitution => {:from_user => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
+          Substitution.count.should == 1
+        end
+      end
+      describe "with a reserved employee" do
+        it "creates a new specific Substitution" do
+          @substitution1 = Substitution.create!(:description => "testing", :user_id => @other, :entry => @other_entry, :entry_id => @other_entry.id)
+          post :create, :substitution => {:from_user =>@other, :entry => @other_entry, :entry_id => @other_entry.id, :description => 'testing2'}, :user => {:id => @me.id}
+          Substitution.count.should == 2
+          #@substitution.class.get_to_user().user_id.should == @me.id
+        end
       end
 
       it "redirect to the new substitution path" do
@@ -164,20 +174,21 @@ describe SubstitutionsController do
     end
   end
 
-  describe "Take Sub" do
+  describe "Take or Assign Sub" do
     before do
-      @substitution = Substitution.create!(:description => 'haha', :user_id => @other.id, :entry => @other_entry)
+      @substitution = Substitution.create!(:description => 'haha', :user_id => @other.id, :entry => @other_entry, :entry_id => @other_entry.id)
     end
     describe "for available time" do
       it "would take sub successfully" do
-        debugger
-        put :take_or_assign_subs, :params => {:calendar =>  @my_calendar, :entries => @substitution.id}
-        debugger
+        put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@substitution.id => "1"}
+        #debugger
+        changedEntry = Entry.find(@substitution.entry_id)
+        changedEntry.calendar_id.should == @my_calendar.id
+        #changedEntry.user_id.should == @me.id
       end
     end
     describe "for not-available time" do
     end
-
   end
 
   describe "DELETE destroy" do
