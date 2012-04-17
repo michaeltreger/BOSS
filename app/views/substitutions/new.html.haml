@@ -5,7 +5,7 @@
 - if @entries.size == 0
   %h3 You have no shifts to substitute
 - else
-  %h3 Select a Shift to Substitute
+  %h3 Select a Shift
   = form_for @substitution do |f|
     %table
       %tr
@@ -21,13 +21,13 @@
           %td= entry.start_time.strftime('%I:%M%p') + ' -  ' + entry.end_time.strftime('%I:%M%p')
           %td= 'Lab ' + entry.lab_id.to_s
     %h3 Select a user to offer this substitution to (Optional)
-    = collection_select(:user, :id, @users, :id, :initials, {:prompt => true})
+    = collection_select(:user, :id, @users, :id, :initials)
 
 
 
     = f.hidden_field :from_user, :value => @current_user.id
-    = f.label :description, 'Notes about this Substitution'
-    <br><br>
+    %h3 Notes about this Substitution
+    
     = f.text_area :description, :id => 'Description', :cols => 80, :rows => 10
     <br>
     = f.submit 'Make Substitution'
