@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
     if !session[:cas_user]
       @current_user = nil
     else
-      @current_user = User.find(1)
+      @current_user = User.find_by_id(1)
 
     end
   end
