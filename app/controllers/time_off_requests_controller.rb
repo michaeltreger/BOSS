@@ -12,20 +12,20 @@ class TimeOffRequestsController < ApplicationController
 
   # GET /time_off_requests/1
   # GET /time_off_requests/1.json
- # def show
-  #  @time_off_request = TimeOffRequest.find(params[:id])
+def show
+   @time_off_request = TimeOffRequest.find(params[:id])
 
-   # respond_to do |format|
-    #  format.html # show.html.erb
-     # format.json { render json: @time_off_request }
-    #end
-  #end
+   respond_to do |format|
+     format.html # show.html.erb
+     format.json { render json: @time_off_request }
+   end
+ end
 
   # GET /time_off_requests/new
   # GET /time_off_requests/new.json
   def new
     @time_off_request = TimeOffRequest.new
-
+    debugger
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @time_off_request }
@@ -41,9 +41,12 @@ class TimeOffRequestsController < ApplicationController
   # POST /time_off_requests.json
   def create
     @time_off_request = TimeOffRequest.new(params[:time_off_request])
-
     respond_to do |format|
-      if @time_off_request.save
+      if @time_off_request.isNotTimeValid?
+        flash.now[:error] = "invailid end time"
+        format.html { render action: "new" }
+        format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
+      elsif @time_off_request.save
         format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully created.' }
         format.json { render json: @time_off_request, status: :created, location: @time_off_request }
       else
@@ -57,11 +60,16 @@ class TimeOffRequestsController < ApplicationController
   # PUT /time_off_requests/1.json
   def update
     @time_off_request = TimeOffRequest.find(params[:id])
-
     respond_to do |format|
       if @time_off_request.update_attributes(params[:time_off_request])
-        format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully updated.' }
-        format.json { head :ok }
+        if @time_off_request.isNotTimeValid?
+          flash.now[:error] = "invailid end time"
+          format.html { render action: "edit" }
+          format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
+        else
+          format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully updated.' }
+          format.json { head :ok }
+        end
       else
         format.html { render action: "edit" }
         format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
