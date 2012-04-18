@@ -5,7 +5,9 @@
       %ul
         - @user.errors.full_messages.each do |msg|
           %li= msgi
-
+  .field
+    = f.label :initials
+    = f.text_field :initials
   .field
     = f.label :phone
     = f.text_field :phone
