@@ -1,8 +1,27 @@
 class CalendarsController < ApplicationController
+  before_filter :check_login, :only => [:show, :edit, :update, :destroy]
+  
+  def check_login
+    if @calendar.owner != @current_user.id and !@current_user.isAdmin?
+      respond_to do |format|
+        format.html { redirect_to calendars_path, error: "You are not authorized to access this calendar" }
+        format.json { render json: "You are not authorized to access this calendar" }
+      end
+    end
+  end
+  
   # GET /calendars
   # GET /calendars.json
   def index
-    @calendars = Calendar.all
+    if @current_user.isAdmin?
+      @calendars = Calendar.all
+    else
+      @calendars = Calendar.find_by_user_id(@current_user.id)
+    end
+    
+    if !@calendars
+      @calendars = Calendar.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,26 +35,17 @@ class CalendarsController < ApplicationController
     @calendar = Calendar.find(params[:id])
     @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
 
-    if @calendar.owner != @current_user.id
-      if @current_user.isAdmin?
-        @events.each do |e|
-          e[:readOnly] = true
-          @disable_submit = true
-        end
-      else
-        flash[:error] = "You are not authorized to view this calendar"
+    if @current_user.isAdmin?
+      @events.each do |e|
+        e[:readOnly] = true
+        @disable_submit = true
       end
     end
     @page_title = "My Calendar"
 
     respond_to do |format|
-      if flash[:error]
-        format.html { redirect_to calendars_path, error: "You are not authorized to view this calendar" }
-        format.json { render json: flash }
-      else
-        format.html # show.html.erb
-        format.json { render json: @events }
-      end
+      format.html # show.html.erb
+      format.json { render json: @events }
     end
   end
 

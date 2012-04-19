@@ -53,7 +53,7 @@ class ApplicationController < ActionController::Base
   def check_admin
     if not @current_user.nil?
         if @current_user.user_type != 0 and request.fullpath[/^\/admin/]
-            flash[:notice] = "You do not have the correct privileges to access this page."
+            flash[:error] = "You do not have the correct privileges to access this page."
             redirect_to '/'
         end
     end
