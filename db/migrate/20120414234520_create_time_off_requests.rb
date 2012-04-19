@@ -4,7 +4,7 @@ class CreateTimeOffRequests < ActiveRecord::Migration
       t.text :description
       t.datetime :start_time
       t.datetime :end_time
-      t.integer :day_notice
+      t.string :day_notice
 
       t.references :user
 
