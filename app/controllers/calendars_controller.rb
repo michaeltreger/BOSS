@@ -2,6 +2,7 @@ class CalendarsController < ApplicationController
   before_filter :check_login, :only => [:show, :edit, :update, :destroy]
   
   def check_login
+    @calendar = Calendar.find(params[:id])
     if @calendar.owner != @current_user.id and !@current_user.isAdmin?
       respond_to do |format|
         format.html { redirect_to calendars_path, error: "You are not authorized to access this calendar" }
