@@ -20,9 +20,7 @@ class CalendarsController < ApplicationController
       @calendars = Calendar.find_by_user_id(@current_user.id)
     end
     
-    if !@calendars
-      @calendars = Calendar.all
-    end
+    @calendars = Calendar.all
 
     respond_to do |format|
       format.html # index.html.erb
