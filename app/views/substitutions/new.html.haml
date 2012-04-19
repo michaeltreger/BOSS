@@ -21,7 +21,7 @@
           %td= entry.start_time.strftime('%I:%M%p') + ' -  ' + entry.end_time.strftime('%I:%M%p')
           %td= 'Lab ' + entry.lab_id.to_s
     %h3 Select a user to offer this substitution to (Optional)
-    = collection_select(:user, :id, @users, :id, :initials)
+    = collection_select(:user, :id, @users, :id, :initials, :include_blank => true)
 
 
 
