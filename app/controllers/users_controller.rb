@@ -43,6 +43,12 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def changeAdmin
+    @current_user.user_type = Integer(params[:user_type])
+    @current_user.save!
+    redirect_to '/'
+  end
+
   def test_setuser
     if Rails.env.test?
       user_id = Integer(params[:id])
