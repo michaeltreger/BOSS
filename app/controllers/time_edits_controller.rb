@@ -51,7 +51,7 @@ class TimeEditsController < ApplicationController
 
     respond_to do |format|
       if @time_edit.save
-        format.html { redirect_to @time_edit, notice: 'Time edit was successfully created.' }
+        format.html { redirect_to time_edits_path, notice: 'Time edit was successfully created.' }
         format.json { render json: @time_edit, status: :created, location: @time_edit }
       else
         format.html { render action: "new" }

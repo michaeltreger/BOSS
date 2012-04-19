@@ -14,10 +14,7 @@ $(document).ready(function() {
       //alert(json);
       $.ajax({
         type: "PUT",
-        beforeSend : function(xhr) {
-          xhr.setRequestHeader("Accept", "application/json")
-        },
-        url: window.location.pathname,
+        url: window.location.pathname+".json",
         data: {"calendar_updates": json},
         dataType: "json",
         success: function(data, textStatus, XMLHttpRequest){
@@ -35,10 +32,7 @@ $(document).ready(function() {
    function getEventData() {   
       $.ajax({
          type: "GET",
-         beforeSend : function(xhr) {
-          xhr.setRequestHeader("Accept", "application/json")
-         },
-         url: window.location.pathname,
+         url: window.location.pathname+".json",
          dataType: "json",
          success: function(data) {
             data.map(convertTimesIn);
