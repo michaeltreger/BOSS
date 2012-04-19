@@ -48,5 +48,6 @@ module CS169CampusScheduler
     config.generators do |g|
       g.template_engine :haml
     end
+    config.time_zone = "Pacific Time (US & Canada)"
   end
 end
