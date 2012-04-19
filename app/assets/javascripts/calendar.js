@@ -59,7 +59,7 @@ $(document).ready(function() {
         timeslotsPerHour : 2,
         allowCalEventOverlap : false,
         overlapEventsSeparate: true,
-        firstDayOfWeek : 0,
+        firstDayOfWeek : 1,
         businessHours :{start_time: 6, end_time: 24, limitDisplay: true },
         daysToShow : 7,
         title: function(daysToShow) {
