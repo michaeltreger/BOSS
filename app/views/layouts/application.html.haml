@@ -60,6 +60,11 @@
                             = link_to "Approve Users", '/approve/'
                   %li
                     = link_to "Time Off Request", time_off_requests_path
+                    %ul
+                      %li
+                        = link_to "New Request", new_time_off_request_path
+                      %li
+                        = link_to "View Current Requests", time_off_requests_path
                 #addon
               
               #contentcol
