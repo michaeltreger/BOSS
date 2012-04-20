@@ -84,7 +84,7 @@ describe CalendarsController do
         }.to change(Calendar, :count).by(1)
       end
 
-      it "assigns a newly created calendar as @calendar" do
+      it "should assign a newly created calendar to @calendar" do
         post :create, {:calendar => valid_attributes}, valid_session
         assigns(:calendar).should be_a(Calendar)
         assigns(:calendar).should be_persisted

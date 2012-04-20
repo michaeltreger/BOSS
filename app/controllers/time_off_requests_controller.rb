@@ -46,7 +46,7 @@ def show
 
     respond_to do |format|
       if @time_off_request.isNotTimeValid?
-        flash.now[:error] = "invailid end time"
+        flash.now[:error] = "Invalid end time"
         format.html { render action: "new" }
         format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
       elsif @time_off_request.save

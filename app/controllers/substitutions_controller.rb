@@ -66,7 +66,9 @@ class SubstitutionsController < ApplicationController
       new_sub_params = {:entry => Entry.find(params[:substitution][:entry]),
                         :description => params[:substitution][:description]}
       @substitution = Substitution.new(new_sub_params)
+      @substitution.entry_id = Entry.find(params[:substitution][:entry]).id
       from_user = User.find(params[:substitution][:from_user])
+      @substitution.user_id = from_user.id
       if from_user
         @substitution.users << from_user
         if params[:user] && params[:user][:id] && params[:user][:id] != "" && User.find(params[:user][:id])

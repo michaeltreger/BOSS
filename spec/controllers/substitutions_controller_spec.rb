@@ -31,13 +31,13 @@ describe SubstitutionsController do
   end
   def valid_attributes
     {
-      :description => 'haha',:entry =>Entry.new
+      :description => 'creating', :user_id => @me.id,  :entry => @my_entry, :entry_id => @my_entry.id
     }
   end
 
   def valid_session
     {
-      :test_user_id => @student.id
+      :test_user_id => @me.id
     }
   end
 
@@ -67,20 +67,20 @@ describe SubstitutionsController do
   end
 
   describe "GET new" do
-    it "assigns a new substitution as @substitution" do
+    it "should assign a new substitution as @substitution" do
       substitution = mock('Substitution')
       Substitution.stub(:new).and_return(substitution)
       get :new, {:current_user => User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')}
       assigns(:substitution).should == substitution
     end
-    it "assigns current user's calendars' entries to @entries" do
+    it "should assign current user's calendars' entries to @entries" do
       get :new, {:current_user => User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')}
       assigns(:entries).should_not be nil
     end
   end
 
   describe "GET edit" do
-    it "assigns the requested substitution as @substitution" do
+    it "should assign the requested substitution as @substitution" do
       substitution = mock('Substitution')
       Substitution.stub(:find).with('1').and_return(substitution)
       get :edit, {:id => '1'}
@@ -89,42 +89,50 @@ describe SubstitutionsController do
   end
 
   describe "POST create" do
+    before (:each) do
+      def valid_attributes
+        {
+          :from_user => @me, :entry => @my_entry, :entry_id => @my_entry.id, :description => 'creating'
+        }
+      end
+    end
     describe "with valid params" do
       describe "with invlid entry id" do
-        it "redirect to the new substitution path" do
-          post :create, {:substitution => {:from_user => '1'}}
+        it "should redirect to the new substitution path" do
+          post :create, {:substitution => {:from_user => @me, :entry => nil, :entry_id => nil}}
           response.should redirect_to new_substitution_path
           flash[:notice].should == 'Please select a shift to substitute.'
         end
       end
 
       describe "with no reserved employee" do
-        it "creates a new non-specific Substitution" do
-          post :create, {:substitution => {:from_user => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
+        it "should create a new normal substitution" do
+          post :create, {:substitution => valid_attributes}, valid_session
           Substitution.count.should == 1
         end
       end
       describe "with a reserved employee" do
-        it "creates a new specific Substitution" do
-          @substitution1 = Substitution.create!(:description => "testing", :user_id => @other, :entry => @other_entry, :entry_id => @other_entry.id)
-          post :create, :substitution => {:from_user =>@other, :entry => @other_entry, :entry_id => @other_entry.id, :description => 'testing2'}, :user => {:id => @me.id}
-          Substitution.count.should == 2
-          #@substitution.class.get_to_user().user_id.should == @me.id
+        it "should create a new reserve substitution" do
+          post :create, {:substitution => valid_attributes}, :user=> {:id => @other.id}
+          Substitution.count.should == 1
+          #debugger
+          #don't have to_user here.
+          Substitution.find(:last).users[1].id.should == @other.id
         end
       end
 
-      it "redirect to the new substitution path" do
-        post :create, {:substitution => {:from_user => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
+      it "should redirect to the new substitution path" do
+          post :create, {:substitution => valid_attributes}
         response.should redirect_to new_substitution_path
         flash[:notice].should == 'Substitution was successfully created.'
       end
     end
 
     describe "with invalid params" do
-      it "redirect to the new substitution path" do
+      it "should redirect to the new substitution path" do
         # Trigger the behavior that occurs when invalid params are submitted
         Substitution.any_instance.stub(:save).and_return(false)
-          post :create, {:substitution => {:from_user => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
+          post :create, :substitution => valid_attributes
         response.should redirect_to new_substitution_path
         flash[:notice].should == 'Substitution could not be created.'
       end
@@ -133,25 +141,26 @@ describe SubstitutionsController do
 
   describe "PUT update" do
     describe "with valid params" do
-      it "updates the requested substitution" do
-        substitution = mock('Substitution')
-        Substitution.stub(:find).with('1').and_return(substitution)
-        substitution.should_receive(:update_attributes).with({"user_id" => '1', "entry" => '1', "entry_id" => '1', "description" => 'params'})
-        put :update, {:id => '1', :substitution => {:user_id => '1', :entry => '1', :entry_id => '1', :description => 'params'}}
+      it "should update the requested substitution" do
+        #substitution = mock('Substitution')
+        #Substitution.stub(:find).with('1').and_return(substitution)
+        substitution = Substitution.create! valid_attributes
+        substitution.should_receive(:update_attributes).with({ "description" => 'updating'})
+        put :update, {:id => substitution.to_param, :substitution => {:description => 'updating!'}}
+        substitution.description.should == 'updating!'
       end
 
       it "assigns the requested substitution as @substitution" do
         substitution = Substitution.create!(:description => 'haha',:entry =>Entry.new)
-        put :update, {:id => '1', :substitution => {:user_id => '1', :entry_id => '1', :description => 'params'}}
+        put :update, {:id => substitution.to_param, :substitution => {:description => 'updating'}}
         assigns(:substitution).should == substitution
       end
 
       it "redirects to the substitution" do
-        substitution = Substitution.create!(:description => 'haha',:entry =>Entry.new)
-        put :update, {:id => '1', :substitution => {:user_id => '1', :entry_id => '1', :description => 'params'}}
-        assert_response :ok
-        #something to fix here
-        #flash[:notice].should == 'Substitution was successfully updated.'
+        substitution = Substitution.create! valid_attributes
+        put :update, {:id => substitution.to_param, :description => 'udating!'}, valid_session
+        assert_response :found
+        #flash[:notice].should  == 'Substitution was successfully updated.'
       end
     end
 
@@ -181,10 +190,10 @@ describe SubstitutionsController do
     describe "for available time" do
       it "would take sub successfully" do
         put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@substitution.id => "1"}
-        #debugger
         changedEntry = Entry.find(@substitution.entry_id)
         changedEntry.calendar_id.should == @my_calendar.id
-        #changedEntry.user_id.should == @me.id
+        #debugger
+        changedEntry.user_id.should == @me.id
       end
     end
     describe "for not-available time" do
