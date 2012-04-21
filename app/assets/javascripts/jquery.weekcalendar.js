@@ -1902,7 +1902,7 @@
         * find the hour (12 hour day) for a given hour index
         */
       _hourForIndex: function(index) {
-          //index = (index+2) % 24;
+          index = (index+2) % 24;
           if (index === 0) { //midnight
             return 12;
           } else if (index < 13) { //am
@@ -1913,7 +1913,7 @@
       },
 
       _24HourForIndex: function(index) {
-          //index = (index+2) % 24;
+          index = (index+2) % 24;
           if (index === 0) { //midnight
             return '00:00';
           } else if (index < 10) {
@@ -1924,7 +1924,7 @@
       },
 
       _amOrPm: function(hourOfDay) {
-          //hourOfDay = (hourOfDay+2) %24;
+          hourOfDay = (hourOfDay+2) %24;
           return hourOfDay < 12 ? 'AM' : 'PM';
       },
 

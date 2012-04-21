@@ -41,7 +41,7 @@ class PeriodsController < ApplicationController
   # POST /periods.json
   def create
     @period = Period.new(params[:period])
-    debugger
+    #debugger
     
     # TODO transactions?
     User.all.each do |user|
