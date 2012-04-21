@@ -9,8 +9,7 @@ class SubstitutionsController < ApplicationController
     else
       @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2 && s.users[1]==@current_user}
     end
-    @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (!(s.users.size==2) || !(s.users[1]==@current_user))}
-
+    @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (s.users.size!=2)}
     @mycalendars = @current_user.calendars
     @mycalendars = @mycalendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
 
@@ -38,7 +37,8 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions/new.json
   def new
     @entries = []
-    @current_user.calendars.each do |c|
+    shiftcalendars = @current_user.calendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
+    shiftcalendars.each do |c|
       c.entries.each do |e|
         @entries << e
       end
