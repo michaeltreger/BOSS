@@ -4,7 +4,8 @@ class CreateCalendars < ActiveRecord::Migration
       t.integer :calendar_type
       t.string :name
       t.text :description
-        
+      t.integer :period_id
+       
       t.references :lab
       t.references :entries
       t.references :user

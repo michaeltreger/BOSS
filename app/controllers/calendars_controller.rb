@@ -17,10 +17,8 @@ class CalendarsController < ApplicationController
     if @current_user.isAdmin?
       @calendars = Calendar.all
     else
-      @calendars = Calendar.find_by_user_id(@current_user.id)
+      @calendars = Calendar.find_all_by_user_id(@current_user.id)
     end
-    
-    @calendars = Calendar.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -32,19 +30,22 @@ class CalendarsController < ApplicationController
   # GET /calendars/1.json
   def show
     @calendar = Calendar.find(params[:id])
-    @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
-
-    if @current_user.isAdmin?
-      @events.each do |e|
-        e[:readOnly] = true
-        @disable_submit = true
-      end
-    end
-    @page_title = "My Calendar"
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @events }
+      format.json do
+        results = {}
+        results[:start_date] = @calendar.period.start_date
+        results[:end_date] = @calendar.period.end_date
+        @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
+        if @current_user.id != @calendar.owner
+          @events.each do |e|
+            e[:readOnly] = true
+          end
+        end
+        results[:events] = @events
+       render json: results
+      end
     end
   end
 
