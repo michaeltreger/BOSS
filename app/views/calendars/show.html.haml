@@ -1,10 +1,5 @@
+-@page_title = @calendar.name
+
 %p#notice= notice
 
-%table
-  %tr
-    %td
-      %h3= @calendar.name
-    %td
-      -if !@disable_submit
-        = button_tag :submit, :id=>:submit_calendar
 = render 'calendar'

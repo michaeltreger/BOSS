@@ -35,8 +35,11 @@ $(document).ready(function() {
          url: window.location.pathname+".json",
          dataType: "json",
          success: function(data) {
-            data.map(convertTimesIn);
-            $events = data;
+            events = data.events;
+            events.map(convertTimesIn);
+            $events = events;
+            $start_date = Date.parse(data.start_date);
+            $end_date = Date.parse(data.end_date);
             startCalendar();
          }
       });
@@ -60,6 +63,8 @@ $(document).ready(function() {
    
    function startCalendar() {
      $calendar.weekCalendar({
+        minDate: $start_date,
+        maxDate: $end_date,
         displayOddEven:true,
         timeslotsPerHour : 2,
         allowCalEventOverlap : false,
@@ -156,7 +161,7 @@ $(document).ready(function() {
            }
         },
         eventDrop : function(calEvent, $event) {
-           //$calendar.weekCalendar("updateEvent", calEvent);
+           $calendar.weekCalendar("updateEvent", calEvent);
         },
         eventResize : function(calEvent, $event) {
            $calendar.weekCalendar("updateEvent", calEvent);
