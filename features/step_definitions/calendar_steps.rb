@@ -5,7 +5,9 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "sel
 
 
 Given /^the following calendars exist:$/ do |calendars_table|
+  period = Period.create!(:name=>"Spring 2012")
   calendars_table.hashes.each do |calendar|
+    calendar[:period_id] = period.id
     new_calendar = Calendar.create!(calendar)
   end
 end
