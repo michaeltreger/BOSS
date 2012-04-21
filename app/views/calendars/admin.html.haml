@@ -19,7 +19,7 @@
       %td= c.period.end_date
       %td= c.updated_at.strftime('%a, %m/%d -- %I:%M%p')
       %td= link_to 'Edit', edit_calendar_path(c)
-      %td= link_to 'Delete', calendar, :confirm => 'Are you sure?', :method => :delete
+      %td= link_to 'Delete', c, :confirm => 'Are you sure?', :method => :delete
 
 %h3 Work Calendars
 %table

@@ -6,11 +6,19 @@
         - @user.errors.full_messages.each do |msg|
           %li= msgi
   .field
-    = f.label :initials
-    = f.text_field :initials
+    = f.label :user_type
+    = f.number_field :user_type
+  .field
+    = f.label :name
+    = f.text_field :name
+  .field
+    = f.label :email
+    = f.text_field :email
   .field
     = f.label :phone
     = f.text_field :phone
-
+  .field
+    = f.label :initials
+    = f.text_field :initials
   .actions
     = f.submit 'Save'

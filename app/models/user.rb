@@ -15,5 +15,5 @@ class User < ActiveRecord::Base
   def isAdmin?
     user_type == ADMIN
   end
-
+  
 end
