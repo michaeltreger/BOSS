@@ -20,6 +20,11 @@
           %td= entry.start_time.strftime('%a, %m/%d')
           %td= entry.start_time.strftime('%I:%M%p') + ' -  ' + entry.end_time.strftime('%I:%M%p')
           %td= 'Lab ' + entry.lab_id.to_s
+    %h3 Substitute Partial Shift?
+    = check_box "partial_shift", "enabled", {:id => "partial_shift"}
+    = time_select "partial_shift", "start", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_start" }
+    = '---'
+    = time_select "partial_shift", "end", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_end" }
     %h3 Select a user to offer this substitution to (Optional)
     = collection_select(:user, :id, @users, :id, :initials, :include_blank => true)
 

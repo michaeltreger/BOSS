@@ -1,7 +1,7 @@
-Feature: Substitute Shifts For Anyone
+Feature: Post a partial substitution
   As a student
-  I want to be able to post substitutions for my shifts
-  so that any student can view and claim the shifts I can’t make.
+  I want to be able to post substitutions for only parts of my shifts
+  so that I can break my shift into pieces if I am not free
 
 Background: A work entry has been added to my calendar
   Given the following users exist:
@@ -10,7 +10,7 @@ Background: A work entry has been added to my calendar
     | Bob          | 1              |   BB      |
     | Carl         | 1              |   CC      |
     | David        | 0              |   DD      |
-    
+
   And I am logged in as "Alice"
 
   And the following calendars exist:
@@ -18,9 +18,9 @@ Background: A work entry has been added to my calendar
     | Alice's Calendar |   1            |   1     |
 
   And the calendar "Alice's Calendar" has the following entries:
-    | description         | start_time        | end_time         |
-    | Work at Wheeler     | 12:00, 1/1/2012   | 14:00 1/1/2012   |
-    | Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   |
+    | description         | start_time                             | end_time                              |
+    | Work at Wheeler     | Wed, 18 Apr 2012 9:00:00 PDT -07:00    | Wed, 18 Apr 2012 12:00:00 PDT -07:00  |
+    | Software Training   | Thu, 19 Apr 2012 10:00:00 PDT -07:00   | Thu, 19 Apr 2012 11:00:00 PDT -07:00  |
 
   And the following substitutions exist:
     | entry_id   | description                | from_user_id    | to_user_id |
@@ -28,35 +28,33 @@ Background: A work entry has been added to my calendar
 
   And I am on the "Post a Substitution" page
 
-  Scenario: Put my shift up for substitution for anybody
+  Scenario: Post a substitution for part of my shift
     When I select the entry with id 1 for substitution
+    And I choose to substitute a partial shift
+    And I select "9:30 AM" from "partial_shift_start"
+    And I select "11:30 AM" from "partial_shift_end"
     And I fill in "Description" with "Urgent - fix printer"
     And I press "Make Substitution"
     And I go to the "View Substitutions" page
     Then "My Posted Substitutions" should have 2 entries
     And "My Posted Substitutions" should contain "Urgent - fix printer"
     And "My Posted Substitutions" should contain "Software Training"
-  
-  Scenario: Posted subs are still on my calendar
-    When I select the entry with id 1 for substitution
-    And I fill in "Description" with "Wheeler Work"
-    And I press "Make Substitution"
-    And I am on Alice's Calendar page
-    And I view the calendar
-    Then I should see "Work at Wheeler"
+    And I should see "09:30AM - 11:30AM"
 
-  Scenario: Substitution cannot be posted twice for one entry
-    Then I should not see the entry with id 2 for substitution
-
-  Scenario: Substitution cannot be posted with no entry
+  Scenario: Cannot set partial shift end time earlier than partial shift begin time
     When I select the entry with id 1 for substitution
+    And I choose to substitute a partial shift
+    And I select "1:30 PM" from "partial_shift_start"
+    And I select "1:00 PM" from "partial_shift_end"
     And I fill in "Description" with "Urgent - fix printer"
     And I press "Make Substitution"
-    Then I should see "You have no shifts to substitute"
-    And I should not see "Select a Shift to Substitute"
+    Then I should see "Invalid partial shift times"
 
-  Scenario: Delete a substitution
-    When I go to the "View Substitutions" page
-    And I delete my substitution with id 1
-    Then I should be on the "View Substitutions" page
-    And "My Posted Substitutions" should not contain "Software Training"
+  Scenario: Cannot select partial shift times outside of the selected shift
+    When I select the entry with id 1 for substitution
+    And I choose to substitute a partial shift
+    And I select "11:00 AM" from "partial_shift_start"
+    And I select "4:30 PM" from "partial_shift_end"
+    And I fill in "Description" with "Urgent - fix printer"
+    And I press "Make Substitution"
+    Then I should see "Invalid partial shift times"
