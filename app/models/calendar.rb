@@ -14,6 +14,11 @@ class Calendar < ActiveRecord::Base
       user_id
     end
 
+    def shift?
+      calendar_type == SHIFTS
+    end
+
+
     def full_name
       start = ''
       if user && user.initials
