@@ -20,21 +20,11 @@ Background: A Calendar has been created
   Scenario: Alice can create a time edit
     Given I am logged in as "Alice"
     And I am on the "New Time Edit" page
-    When I fill in Start Time with "14:00, 1/1/2012"
+    When I select "14" from "time_edit_start_time_4i"
     And I fill in "Duration" with "2"
     And I fill in "Comment" with "Lab training"
-    And I select MMF facility
-    And I press "Save"
-    Then I should be on the "Time Edits" page
-    And I should see "Lab training" 
-    
-    
-  Scenario: Alice can edit a time edit
-    Given I am logged in as "Alice"
-    And I am on the "Time Edit" page
-    And I follow "Edit"
-    And I fill in "Duration" with "2"
+    #And I select "MMF" from "time_edit_lab_id"
     And I press "Save"
     Then I should be on the "Time Edit" page
-    And I should see "2"
-
+    And I should see "Alarm did not go off" 
+    
