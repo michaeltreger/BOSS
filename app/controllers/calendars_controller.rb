@@ -17,10 +17,8 @@ class CalendarsController < ApplicationController
     if @current_user.isAdmin?
       @calendars = Calendar.all
     else
-      @calendars = Calendar.find_by_user_id(@current_user.id)
+      @calendars = Calendar.find_all_by_user_id(@current_user.id)
     end
-    
-    @calendars = Calendar.all
 
     respond_to do |format|
       format.html # index.html.erb
