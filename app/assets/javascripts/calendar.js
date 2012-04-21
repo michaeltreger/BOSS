@@ -41,16 +41,13 @@ $(document).ready(function() {
             $readOnly = string2boolean(data.read_only);
             $start_date = Date.parse(data.start_date);
             $end_date = Date.parse(data.end_date);
-            //alert($readOnly==true);
             startCalendar();
          }
       });
    }
 
    function string2boolean(s) {
-      //alert(s);
       if (s === "true") {
-        //alert(s);
         return true;
       } else {
         return false;
@@ -60,6 +57,7 @@ $(document).ready(function() {
    function convertTimesIn(event) {
       //alert(event.start_time);
       timezone_offset = new Date().getTimezoneOffset();
+      timezone_offset = 0;
       //alert(event.start_time);
       event.start_time = Date.parse(event.start_time).add(-timezone_offset).minutes().add(-2).hours();
       event.end_time = Date.parse(event.end_time).add(-timezone_offset).minutes().add(-2).hours();
@@ -76,8 +74,7 @@ $(document).ready(function() {
      $calendar.weekCalendar({
         minDate: $start_date,
         maxDate: $end_date,
-        //readOnly: $readOnly,
-        //allowEventCreation: !$readOnly,
+        allowEventCreation: !$readOnly,
         displayOddEven:true,
         timeslotsPerHour : 2,
         allowCalEventOverlap : false,

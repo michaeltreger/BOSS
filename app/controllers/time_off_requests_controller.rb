@@ -14,14 +14,15 @@ class TimeOffRequestsController < ApplicationController
 
   # GET /time_off_requests/1
   # GET /time_off_requests/1.json
-def show
-   @time_off_request = TimeOffRequest.find(params[:id])
+  #useless
+  #def show
+  #@time_off_request = TimeOffRequest.find(params[:id])
 
-   respond_to do |format|
-     format.html # show.html.erb
-     format.json { render json: @time_off_request }
-   end
- end
+  #respond_to do |format|
+  # format.html # show.html.erb
+  #format.json { render json: @time_off_request }
+  #end
+  #end
 
   # GET /time_off_requests/new
   # GET /time_off_requests/new.json
