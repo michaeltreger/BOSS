@@ -43,8 +43,10 @@ class PeriodsController < ApplicationController
     @period = Period.new(params[:period])
     
     User.all.each do |user|
-      user.calendars << Calendar.create!(:name=> "#{user.name} #{@period.name}", :calendar_type=>Calendar::PREFERENCE)
+      calendar = Calendar.create!(:name=> "#{user.name} #{@period.name}", :calendar_type=>Calendar::AVAILABILITY, :user_id=>user.id, :period_id=>@period.id)
+      user.calendars << calendar
       user.save!
+      @period.calendars << calendar
     end
 
     respond_to do |format|
