@@ -42,6 +42,7 @@ class PeriodsController < ApplicationController
   def create
     @period = Period.new(params[:period])
     
+    # TODO transactions?
     User.all.each do |user|
       calendar = Calendar.create!(:name=> "#{user.name} #{@period.name}", :calendar_type=>Calendar::AVAILABILITY, :user_id=>user.id, :period_id=>@period.id)
       user.calendars << calendar
