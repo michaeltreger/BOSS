@@ -45,11 +45,16 @@ class PeriodsController < ApplicationController
     
     # TODO transactions?
     User.all.each do |user|
-      calendar = Calendar.create!(:name=> "#{user.name} #{@period.name}", 
+      availability_calendar = Calendar.create!(:name=> "#{user.name} #{@period.name} Availabilities", 
                                   :calendar_type=>Calendar::AVAILABILITY, :user_id=>user.id, :period_id=>@period.id)
-      user.calendars << calendar
+      shifts_calendar = Calendar.create!(:name=> "#{user.name} #{@period.name} Shifts", 
+                                  :calendar_type=>Calendar::SHIFTS, :user_id=>user.id, :period_id=>@period.id)
+
+      user.calendars << availability_calendar
+      user.calendars << shifts_calendar
       user.save!
-      @period.calendars << calendar
+      @period.calendars << availability_calendar
+      @period.calendars << shifts_calendar
     end
 
     respond_to do |format|
