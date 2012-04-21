@@ -13,7 +13,7 @@
       %td= c.description
       %td= c.period.start_date
       %td= c.period.end_date
-      %td= 'not implemented yet'
+      %td= c.updated_at.strftime('%a, %m/%d -- %I:%M%p')
 
 %h3 My Work Calendars
 %table
@@ -29,4 +29,4 @@
       %td= c.description
       %td= c.period.start_date
       %td= c.period.end_date
-      %td= 'not implemented yet'
+      %td= c.updated_at.strftime('%a, %m/%d -- %I:%M%p')
