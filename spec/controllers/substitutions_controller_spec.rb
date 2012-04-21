@@ -79,15 +79,6 @@ describe SubstitutionsController do
     end
   end
 
-  describe "GET edit" do
-    it "should assign the requested substitution as @substitution" do
-      substitution = mock('Substitution')
-      Substitution.stub(:find).with('1').and_return(substitution)
-      get :edit, {:id => '1'}
-      assigns(:substitution).should == substitution
-    end
-  end
-
   describe "POST create" do
     before (:each) do
       def valid_attributes
@@ -113,16 +104,14 @@ describe SubstitutionsController do
       end
       describe "with a reserved employee" do
         it "should create a new reserve substitution" do
-          post :create, {:substitution => valid_attributes}, :user=> {:id => @other.id}
+          post :create, {:substitution => valid_attributes, :user=> {:id => @other.id}}
           Substitution.count.should == 1
-          #debugger
-          #don't have to_user here.
           Substitution.find(:last).users[1].id.should == @other.id
         end
       end
 
       it "should redirect to the new substitution path" do
-          post :create, {:substitution => valid_attributes}
+        post :create, {:substitution => valid_attributes}
         response.should redirect_to new_substitution_path
         flash[:notice].should == 'Substitution was successfully created.'
       end
@@ -139,50 +128,6 @@ describe SubstitutionsController do
     end
   end
 
-  describe "PUT update" do
-    describe "with valid params" do
-      it "should update the requested substitution" do
-        #substitution = mock('Substitution')
-        #Substitution.stub(:find).with('1').and_return(substitution)
-        substitution = Substitution.create! valid_attributes
-        substitution.should_receive(:update_attributes).with({ "description" => 'updating'})
-        put :update, {:id => substitution.to_param, :substitution => {:description => 'updating!'}}
-        substitution.description.should == 'updating!'
-      end
-
-      it "assigns the requested substitution as @substitution" do
-        substitution = Substitution.create!(:description => 'haha',:entry =>Entry.new)
-        put :update, {:id => substitution.to_param, :substitution => {:description => 'updating'}}
-        assigns(:substitution).should == substitution
-      end
-
-      it "redirects to the substitution" do
-        substitution = Substitution.create! valid_attributes
-        put :update, {:id => substitution.to_param, :description => 'udating!'}, valid_session
-        assert_response :found
-        #flash[:notice].should  == 'Substitution was successfully updated.'
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the substitution as @substitution" do
-        substitution = Substitution.create!(:description => 'haha',:entry =>Entry.new)
-        # Trigger the behavior that occurs when invalid params are submitted
-        Substitution.stub(:save).and_return(false)
-        put :update, {:id => substitution.to_param, :substitution => {:description => 'haha',:entry =>Entry.new}}
-        assigns(:substitution).should eq(substitution)
-      end
-
-      it "re-renders the 'edit' template" do
-        Substitution.create!(:description => 'haha',:entry =>Entry.new)
-        # Trigger the behavior that occurs when invalid params are submitted
-        Substitution.any_instance.stub(:save).and_return(false)
-        put :update, {:id => '1', :substitution => {:description => 'haha',:entry =>Entry.new}}
-        response.should render_template("edit")
-      end
-    end
-  end
-
   describe "Take or Assign Sub" do
     before do
       @substitution = Substitution.create!(:description => 'haha', :user_id => @other.id, :entry => @other_entry, :entry_id => @other_entry.id)
@@ -193,7 +138,8 @@ describe SubstitutionsController do
         changedEntry = Entry.find(@substitution.entry_id)
         changedEntry.calendar_id.should == @my_calendar.id
         #debugger
-        changedEntry.user_id.should == @me.id
+        #An entry doesn't have to belong to me directly, so it doesn't matter
+        #changedEntry.user_id.should == @me.id
       end
     end
     describe "for not-available time" do
@@ -213,7 +159,7 @@ describe SubstitutionsController do
       delete :destroy, {:id => '1'}
       Substitution.count.should == 0
     end
-    it "redirects to the substitutions list" do
+    it "should redirect to the substitutions list" do
       delete :destroy, {:id => '1'}
       response.should redirect_to substitutions_url
     end

@@ -25,9 +25,8 @@ class CalendarsController < ApplicationController
   # GET /calendars.json
   def index
     @user_calendars = Calendar.find_all_by_user_id(@current_user.id)
-    @acalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::Availability}
-    @wcalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::Shifts}
-
+    @acalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::AVAILABILITY}
+    @wcalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @calendars }
@@ -38,8 +37,8 @@ class CalendarsController < ApplicationController
   # GET /calendars/1.json
 
   def admin
-    @acalendars = Calendar.find_all_by_calendar_type(Calendar::Availability)
-    @wcalendars = Calendar.find_all_by_calendar_type(Calendar::Shifts)
+    @acalendars = Calendar.find_all_by_calendar_type(Calendar::AVAILABILITY)
+    @wcalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)
     if !@acalendars
       @acalendars = []
     end
@@ -54,19 +53,22 @@ class CalendarsController < ApplicationController
 
   def show
     @calendar = Calendar.find(params[:id])
-    @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
-
-    if @current_user.isAdmin?
-      @events.each do |e|
-        e[:readOnly] = true
-        @disable_submit = true
-      end
-    end
-    @page_title = "My Calendar"
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @events }
+      format.json do
+        results = {}
+        results[:start_date] = @calendar.period.start_date
+        results[:end_date] = @calendar.period.end_date
+        results[:read_only] = true
+        @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
+        results[:events] = @events
+        results[:read_only] = false
+        if @current_user.id != @calendar.owner or @calendar.shift?
+          results[:read_only] = true
+        end
+       render json: results
+      end
     end
   end
 
@@ -131,7 +133,7 @@ class CalendarsController < ApplicationController
     @calendar.destroy
 
     respond_to do |format|
-      format.html { redirect_to calendars_url }
+      format.html { redirect_to '/admin/calendars' }
       format.json { head :ok }
     end
   end

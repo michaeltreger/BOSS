@@ -2,16 +2,22 @@ class Calendar < ActiveRecord::Base
     belongs_to :lab
     has_many :entries
     belongs_to :user
+    belongs_to :period
     validates_presence_of :calendar_type, :name
 
-    Availability = 0
-    Shifts = 1
+    AVAILABILITY = 0
+    SHIFTS = 1
 
     #This should help with abstraction so we can use calendar.owner
     #instead of calendar.user which is ambiguious.
     def owner
       user_id
     end
+
+    def shift?
+      calendar_type == SHIFTS
+    end
+
 
     def full_name
       start = ''

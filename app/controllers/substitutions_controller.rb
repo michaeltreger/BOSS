@@ -123,21 +123,6 @@ class SubstitutionsController < ApplicationController
     end
   end
 
-  # PUT /substitutions/1
-  # PUT /substitutions/1.json
-  def update
-    @substitution = Substitution.find(params[:id])
-    respond_to do |format|
-      if @substitution.update_attributes(params[:substitution])
-        format.html { redirect_to @substitution, notice: 'Substitution was successfully updated.' }
-        format.json { head :ok }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @substitution.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   # DELETE /substitutions/1
   # DELETE /substitutions/1.json
   def destroy

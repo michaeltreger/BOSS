@@ -35,26 +35,49 @@ $(document).ready(function() {
          url: window.location.pathname+".json",
          dataType: "json",
          success: function(data) {
-            data.map(convertTimesIn);
-            $events = data;
+            events = data.events;
+            events.map(convertTimesIn);
+            $events = events;
+            $readOnly = string2boolean(data.read_only);
+            $start_date = Date.parse(data.start_date);
+            $end_date = Date.parse(data.end_date);
+            //alert($readOnly==true);
             startCalendar();
          }
       });
    }
+
+   function string2boolean(s) {
+      //alert(s);
+      if (s === "true") {
+        //alert(s);
+        return true;
+      } else {
+        return false;
+      }
+   }
    
    function convertTimesIn(event) {
+      //alert(event.start_time);
       timezone_offset = new Date().getTimezoneOffset();
+      //alert(event.start_time);
       event.start_time = Date.parse(event.start_time).add(-timezone_offset).minutes().add(-2).hours();
       event.end_time = Date.parse(event.end_time).add(-timezone_offset).minutes().add(-2).hours();
+      //alert(event.start_time);
    }
    
    function convertTimesOut(event) {
       event.start_time = event.start_time.add(2).hours();
       event.end_time = event.end_time.add(2).hours();
+      //alert(event.start_time);
    }
    
    function startCalendar() {
      $calendar.weekCalendar({
+        minDate: $start_date,
+        maxDate: $end_date,
+        //readOnly: $readOnly,
+        //allowEventCreation: !$readOnly,
         displayOddEven:true,
         timeslotsPerHour : 2,
         allowCalEventOverlap : false,
@@ -151,7 +174,7 @@ $(document).ready(function() {
            }
         },
         eventDrop : function(calEvent, $event) {
-           //$calendar.weekCalendar("updateEvent", calEvent);
+           $calendar.weekCalendar("updateEvent", calEvent);
         },
         eventResize : function(calEvent, $event) {
            $calendar.weekCalendar("updateEvent", calEvent);

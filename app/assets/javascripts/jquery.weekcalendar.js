@@ -385,7 +385,7 @@
           self.element.find('.wc-day-column-inner').each(function() {
             self._adjustOverlappingEvents($(this));
           });
-          self._removeEventInData(calEvent);
+          self._removeEventInData(eventId);
       },
 
       /*
@@ -511,7 +511,7 @@
         newEvent = true;
         $.each(options.data, function(i, event) {
           if (event.id === calEvent.id) {
-            event = calEvent;
+            options.data[i] = calEvent;
             newEvent = false;
           }
         });
@@ -520,10 +520,10 @@
         }
       },
       
-      _removeEventInData: function(calEvent) {
+      _removeEventInData: function(eventId) {
       options = this.options;
         for(i=0; i<options.data.length; i++) {
-          if(options.data[i].id === calEvent.id) {
+          if(options.data[i].id === eventId) {
             options.data.splice(i,1);
             break;
           }

@@ -15,7 +15,7 @@ gem 'net-ldap'
 group :development, :test do
   gem 'sqlite3' # use SQLite only in development and testing
   gem 'ruby-debug19', :require => 'ruby-debug'
-  gem 'cucumber-rails'
+
   gem 'cucumber-rails-training-wheels'
   gem 'database_cleaner'
   gem 'capybara'
@@ -51,4 +51,5 @@ gem 'jquery-rails'
 group :test do
   # Pretty printed test output
   gem 'turn', '< 0.8.3'
+  gem 'cucumber-rails'
 end

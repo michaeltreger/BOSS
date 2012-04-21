@@ -1,10 +1,15 @@
 = javascript_include_tag "jquery.weekcalendar.js"
 = javascript_include_tag "date.js"
 
-<input type='radio' name='entry_type_select' value='prefer' checked>Prefer</input><br>
-<input type='radio' name='entry_type_select' value='rather_not'>R/N</input><br>
-<input type='radio' name='entry_type_select' value='class'>Class</input><br>
-<input type='radio' name='entry_type_select' value='obligation'>Obligation</input><br>
+%table{:border=>0}
+  %tr
+    %td#radioGroup
+      <input type='radio' name='entry_type_select' value='prefer' checked>Prefer</input>
+      <input type='radio' name='entry_type_select' value='rather_not'>R/N</input>
+      <input type='radio' name='entry_type_select' value='class'>Class</input>
+      <input type='radio' name='entry_type_select' value='obligation'>Obligation</input>
+      -if @current_user.id == @calendar.owner
+        = button_tag :submit, :id=>:submit_calendar
 
 #calendar
 #event_edit_container
