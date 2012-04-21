@@ -14,7 +14,7 @@ class Period < ActiveRecord::Base
 
       user.calendars << availability_calendar
       user.calendars << shifts_calendar
-      user.preference = pref
+      user.preference << pref
       user.save!
       calendars << availability_calendar
       calendars << shifts_calendar

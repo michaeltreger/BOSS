@@ -11,8 +11,8 @@
     %tr
       %td= link_to c.name, calendar_path(c)
       %td= c.description
-      %td= 'not implemented yet'
-      %td= 'not implemented yet'
+      %td= c.period.start_date
+      %td= c.period.end_date
       %td= 'not implemented yet'
 
 %h3 My Work Calendars
@@ -27,6 +27,6 @@
     %tr
       %td= link_to c.name, calendar_path(c)
       %td= c.description
-      %td= 'not implemented yet'
-      %td= 'not implemented yet'
+      %td= c.period.start_date
+      %td= c.period.end_date
       %td= 'not implemented yet'
