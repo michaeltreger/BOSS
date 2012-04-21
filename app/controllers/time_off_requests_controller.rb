@@ -42,19 +42,21 @@ def show
   # POST /time_off_requests.json
   def create
     @time_off_request = TimeOffRequest.new(params[:time_off_request])
-    @time_off_request.day_notice = @time_off_request.distance_of_time
 
     respond_to do |format|
       if @time_off_request.isNotTimeValid?
         flash.now[:error] = "Invalid end time"
         format.html { render action: "new" }
         format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
-      elsif @time_off_request.save
+      else
+        @time_off_request.day_notice = @time_off_request.distance_of_time
+        if @time_off_request.save
         format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully created.' }
         format.json { render json: @time_off_request, status: :created, location: @time_off_request }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
