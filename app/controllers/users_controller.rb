@@ -43,6 +43,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+
+  ###DEBUGGING FUNCTIONS###########
   def changeAdmin
     @current_user.user_type = Integer(params[:user_type])
     @current_user.save!

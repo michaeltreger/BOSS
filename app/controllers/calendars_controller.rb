@@ -1,6 +1,16 @@
 class CalendarsController < ApplicationController
   before_filter :check_login, :only => [:show, :edit, :update, :destroy]
-  
+  before_filter :check_admin, :only => [:admin]
+
+  def check_admin
+    if !@current_user.isAdmin?
+      respond_to do |format|
+        format.html { redirect_to calendars_path, error: "You must be an admin to view this page" }
+        format.json { render json: "You must be an admin to view this page" }
+      end
+    end
+  end
+
   def check_login
     @calendar = Calendar.find(params[:id])
     if @calendar.owner != @current_user.id and !@current_user.isAdmin?
@@ -10,17 +20,13 @@ class CalendarsController < ApplicationController
       end
     end
   end
-  
+
   # GET /calendars
   # GET /calendars.json
   def index
-    if @current_user.isAdmin?
-      @calendars = Calendar.all
-    else
-      @calendars = Calendar.find_by_user_id(@current_user.id)
-    end
-    
-    @calendars = Calendar.all
+    @user_calendars = Calendar.find_all_by_user_id(@current_user.id)
+    @acalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::Availability}
+    @wcalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::Shifts}
 
     respond_to do |format|
       format.html # index.html.erb
@@ -30,6 +36,22 @@ class CalendarsController < ApplicationController
 
   # GET /calendars/1
   # GET /calendars/1.json
+
+  def admin
+    @acalendars = Calendar.find_all_by_calendar_type(Calendar::Availability)
+    @wcalendars = Calendar.find_all_by_calendar_type(Calendar::Shifts)
+    if !@acalendars
+      @acalendars = []
+    end
+    if !@wcalendars
+      @wcalendars = []
+    end
+    respond_to do |format|
+      format.html
+      format.json { render json: @acalendars }
+    end
+  end
+
   def show
     @calendar = Calendar.find(params[:id])
     @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )

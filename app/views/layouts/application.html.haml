@@ -33,13 +33,20 @@
             #pagebody
               #navcol
                 %ul#menu-flyout
+                  - if not @current_user.nil?
+                    - if @current_user.user_type == 0
+                      %li
+                        = link_to "Admin", users_path
+                        %ul
+                          %li
+                            = link_to "Admin Calendars", '/admin/calendars'
+                          %li
+                            = link_to "View Users", users_path
+                          %li
+                            = link_to "Approve Users", '/approve/'
+
                   %li
-                    = link_to "Calendars", calendars_path
-                    %ul
-                      %li
-                        = link_to "My Calendars", calendars_path
-                      %li
-                        = link_to "Admin Calendars", calendars_path
+                    = link_to "My Calendars", calendars_path
                   %li
                     = link_to "Substitutions", substitutions_path
                     %ul
@@ -48,23 +55,14 @@
                       %li
                         = link_to "View Substitutions", substitutions_path
                   %li
-                    = link_to "Time Edit", time_edits_path
+                    = link_to "Time Edits", time_edits_path
                     %ul
                       %li
                         = link_to "New Time Edit", new_time_edit_path
                       %li
                         = link_to "View Time Edits", time_edits_path
-                  - if not @current_user.nil?
-                    - if @current_user.user_type == 0
-                      %li
-                        = link_to "Admin", users_path
-                        %ul
-                          %li
-                            = link_to "View Users", users_path
-                          %li
-                            = link_to "Approve Users", '/approve/'
                   %li
-                    = link_to "Time Off Request", time_off_requests_path
+                    = link_to "Time Off Requests", time_off_requests_path
                     %ul
                       %li
                         = link_to "New Request", new_time_off_request_path
@@ -95,5 +93,5 @@
 = form_tag ('/changeAdmin') do
   = number_field_tag(:user_type)
   = submit_tag("Change User Type")                    
-                    
+= session[:cas_user]                    
                     

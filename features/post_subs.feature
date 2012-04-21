@@ -34,8 +34,16 @@ Background: A work entry has been added to my calendar
     And I press "Make Substitution"
     And I go to the "View Substitutions" page
     Then "My Posted Substitutions" should have 2 entries
-    Then "My Posted Substitutions" should contain "Urgent - fix printer"
+    And "My Posted Substitutions" should contain "Urgent - fix printer"
     And "My Posted Substitutions" should contain "Software Training"
+  
+  Scenario: Posted subs are still on my calendar
+    When I select the entry with id 1 for substitution
+    And I fill in "Description" with "Wheeler Work"
+    And I press "Make Substitution"
+    And I am on Alice's Calendar page
+    And I view the calendar
+    Then I should see "Work at Wheeler"
 
   Scenario: Substitution cannot be posted twice for one entry
     Then I should not see the entry with id 2 for substitution

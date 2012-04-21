@@ -33,6 +33,10 @@ When /^I check the substitution "([^"]*)"$/ do |sub|
   check(id)
 end
 
+When /^I choose to substitute a partial shift$/ do
+  check('partial_shift')
+end
+
 When /^I assign the substitution to "([^"]*)"$/ do |calendar|
   targetCalendar = Calendar.find_by_name(calendar)
   select(targetCalendar.full_name)

@@ -17,6 +17,7 @@ CS169CampusScheduler::Application.routes.draw do
     resources :users
     match '/approve' => 'users#approveindex'
     match '/approve/:id' => 'users#approve'
+    match '/calendars' => 'calendars#admin'
   end
   match '/join' => 'users#new'
 

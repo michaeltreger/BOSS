@@ -60,31 +60,66 @@ class SubstitutionsController < ApplicationController
   # POST /substitutions.json
   def create
     if params[:substitution][:entry].nil?
-      flash[:notice] = 'Please select a shift to substitute.'
+      flash[:error] = 'Please select a shift to substitute.'
       redirect_to new_substitution_path
-    else
-      new_sub_params = {:entry => Entry.find(params[:substitution][:entry]),
-                        :description => params[:substitution][:description]}
-      @substitution = Substitution.new(new_sub_params)
-      @substitution.entry_id = Entry.find(params[:substitution][:entry]).id
-      from_user = User.find(params[:substitution][:from_user])
-      @substitution.user_id = from_user.id
-      if from_user
-        @substitution.users << from_user
-        if params[:user] && params[:user][:id] && params[:user][:id] != "" && User.find(params[:user][:id])
-          to_user = User.find(params[:user][:id])
-          @substitution.users << to_user
-        end
+      return
+    end
+    sub_entry = Entry.find(params[:substitution][:entry])
+    # split shift into 3 pieces, sub the middle one
+    if params[:partial_shift] && params[:partial_shift][:enabled] && params[:partial_shift][:enabled] == "1"
+      orig_start = sub_entry.start_time
+      orig_end = sub_entry.end_time
+      partial_start = DateTime.parse(params[:partial_shift]["start(5i)"])
+      partial_end = DateTime.parse(params[:partial_shift]["end(5i)"])
+      partial_start = partial_start.change({:year => orig_start.year, :month => orig_start.month, :day => orig_start.day}).in_time_zone
+      partial_end = partial_end.change({:year => orig_end.year, :month => orig_end.month}).in_time_zone
+      partial_start = partial_start + 7.hours
+      partial_end = partial_end + 7.hours
+      if partial_end.hour > orig_end.hour
+        partial_end = partial_end.change({:day => orig_start.day})
+      else
+        partial_end = partial_end.change({:day => orig_end.day})
       end
-      respond_to do |format|
-        if @substitution.save
-          format.html { redirect_to new_substitution_path, notice: 'Substitution was successfully created.' }
-          format.json { render json: @substitution, status: :created, location: @substitution }
-        else
-          format.html { redirect_to new_substitution_path, notice: 'Substitution could not be created.' }
-          format.json { render json: @substitution.errors, status: :unprocessable_entity }
-        end
+      if (orig_start > partial_start) || (partial_start >= partial_end) || (partial_end > orig_end)
+        flash[:error] = "Invalid partial shift times"
+        redirect_to new_substitution_path
+        return
       end
+      if partial_start > orig_start
+        beforeEntry = sub_entry.dup
+        beforeEntry.end_time = partial_start
+        beforeEntry.save!
+        debugger
+      end
+      if partial_end < orig_end
+        afterEntry = sub_entry.dup
+        afterEntry.start_time = partial_end
+        afterEntry.save!
+      end
+      sub_entry.start_time = partial_start
+      sub_entry.end_time = partial_end
+    end
+    new_sub_params = {:entry => sub_entry,
+                      :description => params[:substitution][:description]}
+    @substitution = Substitution.new(new_sub_params)
+    @substitution.entry_id = sub_entry.id
+    from_user = User.find(params[:substitution][:from_user])
+    @substitution.user_id = from_user.id
+    if from_user
+      @substitution.users << from_user
+      if params[:user] && params[:user][:id] && params[:user][:id] != "" && User.find(params[:user][:id])
+        to_user = User.find(params[:user][:id])
+        @substitution.users << to_user
+      end
+    end
+    respond_to do |format|
+      if @substitution.save
+        format.html { redirect_to new_substitution_path, notice: 'Substitution was successfully created.' }
+        format.json { render json: @substitution, status: :created, location: @substitution }
+      else
+        format.html { redirect_to new_substitution_path, notice: 'Substitution could not be created.' }
+        format.json { render json: @substitution.errors, status: :unprocessable_entity }
+       end
     end
   end
 
