@@ -8,11 +8,13 @@ def isNotTimeValid?
 end
 
 def distance_of_time
-  @now = Time.current()
-  if @now >= self.start_time
-    "passed " +  distance_of_time_in_words(@now, self.start_time, include_seconds=false)
+  deadline = self.start_time.prev_week.beginning_of_week.change(:hour => 17)
+  self.submission = Time.current
+  distance = distance_of_time_in_words(self.submission, deadline, include_seconds=false)
+  if self.submission >= deadline
+    "passed " +  distance
   else
-    distance_of_time_in_words(@now, self.start_time, include_seconds=false) + " left"
+    distance + " left"
   end
 end
 
