@@ -14,6 +14,7 @@ CS169CampusScheduler::Application.routes.draw do
 
   match 'logout' => 'users#logout', :as => :logout
   scope '/admin' do
+    resources :periods
     resources :users
     match '/approve' => 'users#approveindex'
     match '/approve/:id' => 'users#approve'

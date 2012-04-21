@@ -9,8 +9,11 @@ class User < ActiveRecord::Base
   validates_presence_of :user_type, :if => :approved?
   validates_presence_of :initials, :if => :approved?
 
+  ADMIN = 0
+  EMPLOYEE = 1
+
   def isAdmin?
-    user_type == 0
+    user_type == ADMIN
   end
 
 end

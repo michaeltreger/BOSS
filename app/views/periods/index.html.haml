@@ -1,0 +1,29 @@
+%h1 Listing periods
+
+%table
+  %tr
+    %th Name
+    %th Start date
+    %th End date
+    %th Visible
+    %th Exception
+    %th Type
+    %th
+    %th
+    %th
+
+  - @periods.each do |period|
+    %tr
+      %td= period.name
+      %td= period.start_date
+      %td= period.end_date
+      %td= period.visible
+      %td= period.exception
+      %td= period.type
+      %td= link_to 'Show', period
+      %td= link_to 'Edit', edit_period_path(period)
+      %td= link_to 'Destroy', period, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Period', new_period_path

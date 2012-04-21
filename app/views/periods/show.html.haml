@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @period.name
+%p
+  %b Start date:
+  = @period.start_date
+%p
+  %b End date:
+  = @period.end_date
+%p
+  %b Visible:
+  = @period.visible
+%p
+  %b Exception:
+  = @period.exception
+%p
+  %b Type:
+  = @period.type
+
+= link_to 'Edit', edit_period_path(@period)
+\|
+= link_to 'Back', periods_path
