@@ -40,9 +40,8 @@ class CalendarsController < ApplicationController
         results[:read_only] = true
         @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
         results[:events] = @events
-        results[:read_only] = false
         if @current_user.id != @calendar.owner or @calendar.shift?
-          results[:read_only] = true
+          results[:read_only] = "true"
         end
        render json: results
       end

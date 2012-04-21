@@ -41,16 +41,13 @@ $(document).ready(function() {
             $readOnly = string2boolean(data.read_only);
             $start_date = Date.parse(data.start_date);
             $end_date = Date.parse(data.end_date);
-            //alert($readOnly==true);
             startCalendar();
          }
       });
    }
 
    function string2boolean(s) {
-      //alert(s);
       if (s === "true") {
-        //alert(s);
         return true;
       } else {
         return false;
@@ -76,8 +73,7 @@ $(document).ready(function() {
      $calendar.weekCalendar({
         minDate: $start_date,
         maxDate: $end_date,
-        //readOnly: $readOnly,
-        //allowEventCreation: !$readOnly,
+        allowEventCreation: !$readOnly,
         displayOddEven:true,
         timeslotsPerHour : 2,
         allowCalEventOverlap : false,
