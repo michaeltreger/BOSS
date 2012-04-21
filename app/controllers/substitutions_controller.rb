@@ -12,9 +12,10 @@ class SubstitutionsController < ApplicationController
     @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (!(s.users.size==2) || !(s.users[1]==@current_user))}
 
     @mycalendars = @current_user.calendars
+    @mycalendars = @mycalendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
 
     if @current_user.isAdmin?
-      @admin_allCalendars = Calendar.all
+      @admin_allCalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)
     end
     respond_to do |format|
       format.html # index.html.erb
@@ -89,7 +90,6 @@ class SubstitutionsController < ApplicationController
         beforeEntry = sub_entry.dup
         beforeEntry.end_time = partial_start
         beforeEntry.save!
-        debugger
       end
       if partial_end < orig_end
         afterEntry = sub_entry.dup
@@ -98,6 +98,7 @@ class SubstitutionsController < ApplicationController
       end
       sub_entry.start_time = partial_start
       sub_entry.end_time = partial_end
+      sub_entry.save!
     end
     new_sub_params = {:entry => sub_entry,
                       :description => params[:substitution][:description]}

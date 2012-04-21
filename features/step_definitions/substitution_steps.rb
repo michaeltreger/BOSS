@@ -55,7 +55,7 @@ Then /^I should not see the entry with id (\d+) for substitution$/ do |entry_id|
 end
 
 Then /^"My Posted Substitutions" should have (\d+) entries$/ do |num|
-  page.all('table#my_subs tr').count.should == Integer(num) + 1
+  ((page.all('table#my_subs tr').count) -1 ).should == Integer(num)
 end
 
 
