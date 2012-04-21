@@ -44,7 +44,8 @@ $(document).ready(function() {
    
    function convertTimesIn(event) {
       timezone_offset = new Date().getTimezoneOffset();
-      event.start_time = Date.parse(event.start_time).add(-timezone_offset).minutes().add(-2).hours();
+       timezone_offset = 0;
+       event.start_time = Date.parse(event.start_time).add(-timezone_offset).minutes().add(-2).hours();
       event.end_time = Date.parse(event.end_time).add(-timezone_offset).minutes().add(-2).hours();
    }
    
