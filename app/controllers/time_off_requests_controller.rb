@@ -73,14 +73,8 @@ class TimeOffRequestsController < ApplicationController
     @time_off_request = TimeOffRequest.find(params[:id])
     respond_to do |format|
       if @time_off_request.update_attributes(params[:time_off_request])
-        if @time_off_request.isNotTimeValid?
-          flash.now[:error] = "invailid end time"
-          format.html { render action: "edit" }
-          format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
-        else
-          format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully updated.' }
-          format.json { head :ok }
-        end
+        format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully updated.' }
+        format.json { head :ok }
       else
         format.html { render action: "edit" }
         format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
