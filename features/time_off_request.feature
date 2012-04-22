@@ -11,36 +11,55 @@ Background: Users created
     | Chris        | 0              |
 
   And the following calendars exist:
-    | name             | calendar_type  | user_id |
-    | Alice's Calendar | 1              | 1       |
+    | name             | calendar_type  | user_id | period_id|
+    | Alice's Calendar | 1              | 1       |  2       |
 
   And the calendar "Alice's Calendar" has the following entries:
     | description         | start_time        | end_time         | entry_type |
     | Soccer Practice     | 12:00, 1/1/2012   | 14:00 1/1/2012   | obligation |
     |                     | 14:00, 1/1/2012   | 16:00 1/1/2012   | rather_not |
-
+  
   And the following time-off requests for Alice exist:
-    | request_id | start           | end              | days notice | reason      |
-    |    1       | 12:00, 1/1/2012 | 16:00, 1/1/2012  | 3           | go shopping |
+    | user_id | start_time                 | end_time                   | submission                  | day_notice    | description |
+    |  1      | 2012-4-29 12:00 PDT -07:00 | 2012-4-29 13:00 PDT -07:00 | 2012-4-21 12:00 PDT -07:00  | passed 4 days | go shopping |
+    |  2      | 2012-4-30 9:00 PDT -07:00  | 2012-4-30 10:00 PDT -07:00 | 2012-4-21 19:00 PDT -07:00  | 2 days left   | go swimming |
 
   Scenario: Make a time-off request
     Given I am logged in as "Alice"
-    And I am on Alice's time-off requests page
-    And I should see a request start at 12:00, 1/1/2012 and end at 16:00, 1/1/2012 
-    And I press "Make a new request"
+    And I am on my time-off requests page
+    And I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00"
+    When I follow "New Request"
     Then I should be on the Create New Request page
-    When I fill in "start time" with "10:00, 1/2/2012"
-    And I fill in "end time" with "12:00, 1/2/2012"
-    And I fill in "reason" with "go shopping"
+    When I select "2012-4-29 12:00" as "time_off_request_start_time"
+    And I select "2012-4-32 13:30" as "time_off_request_end_time"
+    And I fill in "time_off_request_description" with "go gank"
     And I press "Save Changes"
-    Then I should be on Alice's time-off requests page
-    And I should see a request start at 10:00, 1/2/2012 and end at 12:00, 1/2/2012
+    Then I should be on my time-off requests page
+    And I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00"
 
-
+  
   Scenario: Delete a time-off request
     Given I am logged in as "Alice"
-    And I am on Alice's time-off reuqests page
-    When I press delete for a request start at 12:00, 1/1/2012 and end at 16:00, 1/1/2012
-    Then I should be on Alice's time-off requests page
-    And I should not see a request start at 12:00, 1/1/2012 and end at 16:00, 1/1/2012
+    And I am on my time-off requests page
+    When I follow "Delete" on a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00"
+    Then I should be on my time-off requests page
+    And I should not see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00"
+  
 
+  Scenario: Edit description of a time-off request
+    Given I am logged in as "Alice"
+    And I am on my time-off requests page
+    When I follow "Details" on a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00" 
+    Then I should see "go shopping"
+    When I follow "Edit" on description page
+    And I fill in "time_off_request_description" with "go sleeping"
+    And I press "Save Changes"
+    Then I should be on my time-off requests page
+    And I should see "Time off request was successfully updated." on my requests page
+
+
+  Scenario: Can not view other employees' requests
+    Given I am logged in as "Bob"
+    And I am on my time-off requests page
+    Then I should see a request starts at "2012-4-30 9:00 PDT -07:00" and ends at "2012-4-30 10:00 PDT -07:00"
+    And I should not see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00"
