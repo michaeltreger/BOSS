@@ -26,6 +26,12 @@ module NavigationHelpers
       '/time_edits'
     when /^the "New Time Edit" page$/
       '/time_edits/new'
+    when /^my time-off requests page$/
+      '/time_off_requests'
+    when /^New Request$/
+      '/time_off_requests/new'
+    when /^the Create New Request page$/
+      '/time_off_requests/new'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

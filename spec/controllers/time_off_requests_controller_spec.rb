@@ -25,6 +25,7 @@ describe TimeOffRequestsController do
     @my_calendar = Calendar.create!(:calendar_type => 1, :name => 'my_calendar', :user_id => @me.id)
     @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => '10:00am', :end_time => '11:00am')
     @now = Time.current()
+    session[:test_user_id] = @me.id
   end
   # This should return the minimal set of attributes required to create a valid
   # TimeOffRequest. As you add validations to TimeOffRequest, be sure to
@@ -132,9 +133,10 @@ describe TimeOffRequestsController do
         # specifies that the TimeOffRequest created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        TimeOffRequest.any_instance.should_receive(:update_attributes).with({'description' => 'updating!'})
-        put :update, {:id => time_off_request.to_param, :description => 'updating!'}, valid_session
-        #time_off_request.description.should == 'udating!'
+        #TimeOffRequest.any_instance.should_receive(:update_attributes).with({'description' => 'updating!'})
+        put :update, {:id => time_off_request.to_param, :time_off_request => {:description => 'updating!'}}, valid_session
+        time_off_request = TimeOffRequest.find(time_off_request.id)
+        time_off_request.description.should == 'updating!'
       end
 
       it "should assign the requested time_off_request as @time_off_request" do

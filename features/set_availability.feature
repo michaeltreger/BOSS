@@ -19,8 +19,7 @@ Background: A Calendar has been created
     | Work at Wheeler     | 12:00, 1/1/2012   | 14:00 1/1/2012   | prefer     |
     | Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   | rather_not |
 
-
-  Scenario: Add a class to my Availability Calendar
+  Scenario: Add a class to my Availability Calendar  
     Given I am on Alice's Calendar page
     And I select the interval "11:00, 1/1/2012" to "15:00, 1/1/2012" as "class"
     When I view the calendar

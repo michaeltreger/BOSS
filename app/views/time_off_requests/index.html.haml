@@ -14,7 +14,7 @@
 
     - @time_off_requests.each do |time_off_request|
       %tr
-        %td= User.find_by_id(time_off_request.user_id).name
+        %td= time_off_request.user.name
         %td= time_off_request.start_time.strftime('%a, %m/%d/%Y %I:%M%p')
         %td= time_off_request.end_time.strftime('%a, %m/%d/%Y %I:%M%p')
         %td= time_off_request.submission.strftime('%a, %m/%d/%Y %I:%M%p')

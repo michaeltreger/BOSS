@@ -2,6 +2,7 @@ require 'action_view'
 include ActionView::Helpers::DateHelper
 
 class TimeOffRequest < ActiveRecord::Base
+  belongs_to :user
 
 def isNotTimeValid?
   self.start_time > self.end_time

@@ -1,4 +1,5 @@
 - @page_title = 'Substitutions'
+
 - if @my_subs && @my_subs.size != 0
   %h3 My Posted Substitutions
 
@@ -21,6 +22,7 @@
           %td= substitution.users[1].initials
         - else
           %td
+
 
 
 
@@ -79,4 +81,3 @@
     = collection_select(:calendar, :id, @mycalendars, :id, :name, {}, {:class => :calendarselect})
     <br><br>
     = submit_tag 'Take Selected Substitutions'
-
