@@ -27,8 +27,8 @@ Background: Users created
 Scenario: view all time-off requests
    Given I am logged in as "Chris"
    And I am on my time-off requests page
-   And I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00"
-   And I should see a request starts at "2012-4-30 9:00" and ends at "2012-4-30 10:00"
+   And I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00" with name "Alice"
+   And I should see a request starts at "2012-4-30 9:00" and ends at "2012-4-30 10:00" with name "Bob"
    And I should not see "some other requests"
 
 Scenario: view a request's description
