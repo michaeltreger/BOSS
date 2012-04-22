@@ -47,7 +47,7 @@ def show
   def create
     @time_off_request = TimeOffRequest.new(params[:time_off_request])
     @time_off_request.user_id = @current_user.id
-    @time_off_request.user_name = @current_user.name
+
     respond_to do |format|
       if @time_off_request.isNotTimeValid?
         flash.now[:error] = "Invalid end time"
