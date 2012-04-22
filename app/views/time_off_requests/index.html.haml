@@ -19,7 +19,7 @@
         %td= time_off_request.end_time.strftime('%a, %m/%d/%Y %I:%M%p')
         %td= time_off_request.submission.strftime('%a, %m/%d/%Y %I:%M%p')
         %td= time_off_request.day_notice
-        %td= link_to 'Description', time_off_request
+        %td= link_to 'Details', time_off_request
         %td= link_to 'Delete', time_off_request, :confirm => 'Are you sure?', :method => :delete
 - else
   %h3 My Current Requests
@@ -39,7 +39,7 @@
         %td= time_off_request.end_time.strftime('%a, %m/%d/%Y %I:%M%p')
         %td= time_off_request.submission.strftime('%a, %m/%d/%Y %I:%M%p')
         %td= time_off_request.day_notice
-        %td= link_to 'Description', time_off_request
+        %td= link_to 'Details', time_off_request
         %td= link_to 'Delete', time_off_request, :confirm => 'Are you sure?', :method => :delete
 
   %br

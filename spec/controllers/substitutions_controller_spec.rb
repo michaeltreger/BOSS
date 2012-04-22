@@ -143,22 +143,22 @@ describe SubstitutionsController do
           #An entry doesn't have to belong to me directly, so it doesn't matter
           #changedEntry.user_id.should == @me.id
         end
-        describe "While exceeding hour limit" do
-          it "should not take sub" do
-            @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
-            put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@long_substitution.id => "1"}
-            flash[:error].should == 'Exceed hour limit!'
-          end
-          it "should redirect to index" do
-            @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
-            put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@long_substitution.id => "1"}
-            response.should redirect_to substitutions_url
-          end
+      end
+      describe "While exceeding hour limit" do
+        it "should not take sub" do
+          @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
+          put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@long_substitution.id => "1"}
+          flash[:error].should == 'Exceed hour limit!'
+        end
+        it "should redirect to index" do
+          @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
+          put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@long_substitution.id => "1"}
+          response.should redirect_to substitutions_url
         end
       end
     end
-    describe "for not-available time" do
-    end
+  end
+  describe "for not-available time" do
   end
 
   describe "DELETE destroy" do
