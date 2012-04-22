@@ -26,6 +26,7 @@ class Period < ActiveRecord::Base
                              :calendar_type=>Calendar::LAB, :lab_id=>lab.id, :period_id=>id)
       lab.calendar = cal
       calendars << cal
+      lab.save!
     end
     
   end

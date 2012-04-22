@@ -9,7 +9,7 @@ class Calendar < ActiveRecord::Base
 
     AVAILABILITY = 0
     SHIFTS = 1
-    LAB = 1
+    LAB = 2
 
     #This should help with abstraction so we can use calendar.owner
     #instead of calendar.user which is ambiguious.
