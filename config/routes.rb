@@ -2,11 +2,10 @@ CS169CampusScheduler::Application.routes.draw do
   resources :preferences
 
   resources :time_off_requests
+
   resources :time_edits
 
   resources :substitutions
-
-  resources :entires
 
   resources :labs
 
