@@ -32,14 +32,14 @@ describe TimeOffRequestsController do
 
   def valid_attributes
     {
-     :user_id => @me.id, :start_time => '2012-04-08T17:30:00Z', :end_time => '2012-04-09T16:30:00Z', :created_at => '2012-04-06T10:30:00Z', :description => 'nil'
+     :user_id => @me.id, :start_time => '2012-04-08T17:30:00Z', :end_time => '2012-04-09T16:30:00Z', :created_at => '2012-04-06T10:30:00Z', :description => 'creating'
     }
   end
 
    def invalid_attributes
     {
      :user_id => @me.id, :start_time => '2012-04-08T17:30:00Z', :end_time => '2012-04-08T16:30:00Z', :created_at => '2012-04-06T10:30:00Z'
-    }
+     }
   end
 
   # This should return the minimal set of values that should be in the session
@@ -60,13 +60,14 @@ describe TimeOffRequestsController do
     end
   end
 
-  describe "GET show" do
-    it "should show the request" do
-      time_off_request = TimeOffRequest.create! valid_attributes
-      get :show, {:id => time_off_request.to_param}, valid_session
-      assigns(:time_off_request).should == time_off_request
-    end
-  end
+  #useless
+  #describe "GET show" do
+    #it "should show the request" do
+      #time_off_request = TimeOffRequest.create! valid_attributes
+      #get :show, {:id => time_off_request.to_param}, valid_session
+      #assigns(:time_off_request).should == time_off_request
+    #end
+  #end
 
   describe "GET new" do
     it "should assign a new time_off_request" do

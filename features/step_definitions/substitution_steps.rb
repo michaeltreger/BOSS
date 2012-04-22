@@ -68,9 +68,10 @@ end
 
 
 Then /^"My Posted Substitutions" should contain "([^"]*)" for the user with initials "([^"]*)"$/ do |entry, initials|
+
   a = 'My Posted Substitutions'
-  b = initials
-  c = entry
+  b = entry
+  c = initials
   d = 'Available Substitutions'
   assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*#{Regexp.quote(d)}.*/m
 end
@@ -98,8 +99,8 @@ end
 
 Then /^"Reserved Substitutions" should contain "([^"]*)" for the user with initials "([^"]*)"$/ do |entry, initials|
   a = 'Reserved Substitutions'
-  b = initials
-  c = entry
+  b = entry
+  c = initials
   d = 'Available Substitutions'
   assert page.html =~  /.*#{Regexp.quote(a)}.*#{Regexp.quote(b)}.*#{Regexp.quote(c)}.*#{Regexp.quote(d)}.*/m
 end

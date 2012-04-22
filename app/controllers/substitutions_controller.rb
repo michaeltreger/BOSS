@@ -9,8 +9,7 @@ class SubstitutionsController < ApplicationController
     else
       @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2 && s.users[1]==@current_user}
     end
-    @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (!(s.users.size==2) || !(s.users[1]==@current_user))}
-
+    @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (s.users.size!=2)}
     @mycalendars = @current_user.calendars
     @mycalendars = @mycalendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
 
@@ -38,7 +37,8 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions/new.json
   def new
     @entries = []
-    @current_user.calendars.each do |c|
+    shiftcalendars = @current_user.calendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
+    shiftcalendars.each do |c|
       c.entries.each do |e|
         @entries << e
       end
@@ -57,6 +57,39 @@ class SubstitutionsController < ApplicationController
     @substitution = Substitution.find(params[:id])
   end
 
+  def splitShift(sub_entry, params)
+    orig_start = sub_entry.start_time
+    orig_end = sub_entry.end_time
+    partial_start = DateTime.parse(params[:partial_shift]["start(5i)"])
+    partial_end = DateTime.parse(params[:partial_shift]["end(5i)"])
+    partial_start = partial_start.change({:year => orig_start.year, :month => orig_start.month, :day => orig_start.day}).in_time_zone
+    partial_end = partial_end.change({:year => orig_end.year, :month => orig_end.month}).in_time_zone
+    partial_start = partial_start + 7.hours
+    partial_end = partial_end + 7.hours
+    if partial_end.hour > orig_end.hour
+      partial_end = partial_end.change({:day => orig_start.day})
+    else
+      partial_end = partial_end.change({:day => orig_end.day})
+    end
+    if (orig_start > partial_start) || (partial_start >= partial_end) || (partial_end > orig_end)
+      return nil
+    end
+    if partial_start > orig_start
+      beforeEntry = sub_entry.dup
+      beforeEntry.end_time = partial_start
+      beforeEntry.save!
+    end
+    if partial_end < orig_end
+      afterEntry = sub_entry.dup
+      afterEntry.start_time = partial_end
+      afterEntry.save!
+    end
+    sub_entry.start_time = partial_start
+    sub_entry.end_time = partial_end
+    sub_entry.save!
+    return sub_entry
+  end
+
   # POST /substitutions
   # POST /substitutions.json
   def create
@@ -68,37 +101,14 @@ class SubstitutionsController < ApplicationController
     sub_entry = Entry.find(params[:substitution][:entry])
     # split shift into 3 pieces, sub the middle one
     if params[:partial_shift] && params[:partial_shift][:enabled] && params[:partial_shift][:enabled] == "1"
-      orig_start = sub_entry.start_time
-      orig_end = sub_entry.end_time
-      partial_start = DateTime.parse(params[:partial_shift]["start(5i)"])
-      partial_end = DateTime.parse(params[:partial_shift]["end(5i)"])
-      partial_start = partial_start.change({:year => orig_start.year, :month => orig_start.month, :day => orig_start.day}).in_time_zone
-      partial_end = partial_end.change({:year => orig_end.year, :month => orig_end.month}).in_time_zone
-      partial_start = partial_start + 7.hours
-      partial_end = partial_end + 7.hours
-      if partial_end.hour > orig_end.hour
-        partial_end = partial_end.change({:day => orig_start.day})
-      else
-        partial_end = partial_end.change({:day => orig_end.day})
-      end
-      if (orig_start > partial_start) || (partial_start >= partial_end) || (partial_end > orig_end)
+      s = splitShift(sub_entry, params)
+      if s == nil
         flash[:error] = "Invalid partial shift times"
         redirect_to new_substitution_path
         return
+      else
+        sub_entry = s
       end
-      if partial_start > orig_start
-        beforeEntry = sub_entry.dup
-        beforeEntry.end_time = partial_start
-        beforeEntry.save!
-      end
-      if partial_end < orig_end
-        afterEntry = sub_entry.dup
-        afterEntry.start_time = partial_end
-        afterEntry.save!
-      end
-      sub_entry.start_time = partial_start
-      sub_entry.end_time = partial_end
-      sub_entry.save!
     end
     new_sub_params = {:entry => sub_entry,
                       :description => params[:substitution][:description]}

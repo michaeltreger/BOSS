@@ -4,6 +4,7 @@ Feature: Substitute Shifts For Anyone
   so that any student can view and claim the shifts I can’t make.
 
 Background: A work entry has been added to my calendar
+
   Given the following users exist:
     | name         | user_type      | initials  |
     | Alice        | 1              |   AA      |

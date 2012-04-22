@@ -46,7 +46,7 @@ class TimeEditsController < ApplicationController
   # POST /time_edits.json
   def create
     params[:time_edit][:user_id] = @current_user.id
-    params[:time_edit][:calendar_id] = @current_user.id
+    params[:time_edit][:calendar_id] = @current_user.id #TODO which calndar does it go to?
     @time_edit = TimeEdit.new(params[:time_edit])
 
     respond_to do |format|

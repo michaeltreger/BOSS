@@ -41,8 +41,6 @@ class PeriodsController < ApplicationController
   # POST /periods.json
   def create
     @period = Period.new(params[:period])
-    #debugger
-    
     @period.create_calendars
 
     respond_to do |format|
