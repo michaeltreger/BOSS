@@ -21,13 +21,14 @@ require 'spec_helper'
 describe SubstitutionsController do
 
   before(:each) do
-      @me = User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
-      @other = User.create!(:user_type => 1, :name => 'Other', :approved => 'true', :initials => 'O')
-      @my_calendar = Calendar.create!(:calendar_type => 1, :name => 'my_calendar', :user_id => @me.id)
-      @other_calendar = Calendar.create!(:calendar_type => 1, :name => 'other_calendar', :user_id => @other.id)
-      session[:test_user_id] = @me.id
-      @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => '8:00am', :end_time => '12:00pm')
-      @other_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => '2:00pm', :end_time => '4:00pm')
+    @me = User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
+    @other = User.create!(:user_type => 1, :name => 'Other', :approved => 'true', :initials => 'O')
+    @my_calendar = Calendar.create!(:calendar_type => 1, :name => 'my_calendar', :user_id => @me.id)
+    @other_calendar = Calendar.create!(:calendar_type => 1, :name => 'other_calendar', :user_id => @other.id)
+    session[:test_user_id] = @me.id
+    @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => '8:00am', :end_time => '12:00pm')
+    @other_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => '2:00pm', :end_time => '4:00pm')
+    @too_long_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => '2012-04-06T00:00:00Z', :end_time => '2012-04-06T23:59:00Z')
   end
   def valid_attributes
     {
@@ -88,11 +89,11 @@ describe SubstitutionsController do
       end
     end
     describe "with valid params" do
-      describe "with invlid entry id" do
+      describe "with invlid entry or partial shift" do
         it "should redirect to the new substitution path" do
-          post :create, {:substitution => {:from_user => @me, :entry => nil, :entry_id => nil}}
+          post :create, {:substitution => {:from_user => @me, :entry => nil, :entry_id => nil}, :partial_shift => nil}
           response.should redirect_to new_substitution_path
-          flash[:notice].should == 'Please select a shift to substitute.'
+          flash[:error].should == 'Please select a shift to substitute.'
         end
       end
 
@@ -129,17 +130,31 @@ describe SubstitutionsController do
   end
 
   describe "Take or Assign Sub" do
-    before do
+    before (:each) do
       @substitution = Substitution.create!(:description => 'haha', :user_id => @other.id, :entry => @other_entry, :entry_id => @other_entry.id)
     end
     describe "for available time" do
-      it "would take sub successfully" do
-        put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@substitution.id => "1"}
-        changedEntry = Entry.find(@substitution.entry_id)
-        changedEntry.calendar_id.should == @my_calendar.id
-        #debugger
-        #An entry doesn't have to belong to me directly, so it doesn't matter
-        #changedEntry.user_id.should == @me.id
+      describe "while not exceeding hour limit" do
+        it "should take sub successfully" do
+          put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@substitution.id => "1"}
+          changedEntry = Entry.find(@substitution.entry_id)
+          changedEntry.calendar_id.should == @my_calendar.id
+          #debugger
+          #An entry doesn't have to belong to me directly, so it doesn't matter
+          #changedEntry.user_id.should == @me.id
+        end
+        describe "While exceeding hour limit" do
+          it "should not take sub" do
+            @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
+            put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@long_substitution.id => "1"}
+            flash[:error].should == 'Exceed hour limit!'
+          end
+          it "should redirect to index" do
+            @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
+            put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@long_substitution.id => "1"}
+            response.should redirect_to substitutions_url
+          end
+        end
       end
     end
     describe "for not-available time" do
@@ -159,7 +174,7 @@ describe SubstitutionsController do
       delete :destroy, {:id => '1'}
       Substitution.count.should == 0
     end
-    it "should redirect to the substitutions list" do
+    it "should redirect to the substitutions index" do
       delete :destroy, {:id => '1'}
       response.should redirect_to substitutions_url
     end
