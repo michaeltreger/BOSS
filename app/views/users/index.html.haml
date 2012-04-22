@@ -1,7 +1,10 @@
+-@page_title = "Users"
 %table
   %tr
     %th Type
     %th Name
+    %th Initials
+    %th Phone
     %th Email
     %th
     %th
@@ -10,6 +13,8 @@
     %tr
       %td= user.user_type
       %td= user.name
+      %td= user.initials
+      %td= user.phone
       %td= user.email
       %td= link_to 'View user page', user
       %td= link_to 'Edit user', edit_user_path(user)#"/admin/users/edit/#{user.id}"

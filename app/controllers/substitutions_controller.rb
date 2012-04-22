@@ -1,3 +1,5 @@
+include ActionView::Helpers::DateHelper
+
 class SubstitutionsController < ApplicationController
   # GET /substitutions
   # GET /substitutions.json
@@ -149,16 +151,35 @@ class SubstitutionsController < ApplicationController
     if (params[:calendar][:id]) && (params[:entries])
       targetCalendar = Calendar.find(params[:calendar][:id])
       taken_subs = params[:entries]
+#      times = 0;
+#      for entry in targetCalendar.entries
+#       if !entry.nil?
+#          times += entry.duration
+#        end
+#      end
+      new_hours = 0;
       taken_subs.each_pair do |k,v|
         if v == "1"
           currSub = Substitution.find(k)
           currEntry = currSub.entry
-          currEntry.user = targetCalendar.user
-          currEntry.substitution = nil
-          currEntry.calendar = targetCalendar
-          currEntry.save!
-          Substitution.delete(k)
+          new_hours += currEntry.duration
         end
+      end
+      if (targetCalendar.work_hours + new_hours) > 20
+        flash[:error] = 'Exceed hour limit!'
+      else
+        taken_subs.each_pair do |k,v|
+          if v == "1"
+            currSub = Substitution.find(k)
+            currEntry = currSub.entry
+            currEntry.user = targetCalendar.user
+            currEntry.substitution = nil
+            currEntry.calendar = targetCalendar
+            currEntry.save!
+            Substitution.delete(k)
+          end
+        end
+        flash[:notice] = 'Successfully took/assigned substitution(s)!'
       end
     end
     respond_to do |format|

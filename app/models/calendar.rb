@@ -48,4 +48,14 @@ class Calendar < ActiveRecord::Base
       Entry.delete(old_entry_ids)
     end
 
+    def work_hours
+      hours = 0
+      for entry in self.entries
+        if !entry.nil?
+          hours += entry.duration
+        end
+      end
+      return hours
+    end
+
 end
