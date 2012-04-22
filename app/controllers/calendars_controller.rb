@@ -118,7 +118,7 @@ class CalendarsController < ApplicationController
       if @calendar.update_attributes(params[:calendar])
         @calendar.updated_at = DateTime.now
         @calendar.save!
-        format.html { redirect_to @calendar, notice: 'Calendar was successfully updated.' }
+        format.html { redirect_to calendars_path, notice: 'Calendar was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }

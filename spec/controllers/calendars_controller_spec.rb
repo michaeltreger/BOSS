@@ -29,7 +29,7 @@ describe CalendarsController do
   # update the return value of this method accordingly.
   def valid_attributes
     {
-      :calendar_type => 1, :name => 'testing'
+      :calendar_type => 1, :name => 'testing', :user_id => @student.id
     }
   end
 
@@ -134,6 +134,8 @@ describe CalendarsController do
 
       it "update the calendar" do
         calendar = Calendar.create! valid_attributes
+        update = {}
+        update[:calendar_updates] = [{"description" => "", "end_time" => "2012-04-08T18:00:00Z","entry_type" => "prefer", "start_time" => "2012-04-08T17:30:00Z"}, {"description" => "", "end_time" => "2012-04-09T21:00:00Z","entry_type" => "prefer", "start_time" => "2012-04-09T20:00:00Z"}]
         put :update, {:id => calendar.to_param, :calendar => valid_attributes}, valid_session
         assigns(:calendar).should eq(calendar)
       end
@@ -175,7 +177,7 @@ describe CalendarsController do
     it "redirects to the calendars list" do
       calendar = Calendar.create! valid_attributes
       delete :destroy, {:id => calendar.to_param}, valid_session
-      response.should redirect_to(calendars_url)
+      response.should redirect_to("/admin/calendars")
     end
   end
 
