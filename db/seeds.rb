@@ -10,6 +10,10 @@ User.create(:user_type=>0, :name=>"Peter", :cas_user=>760437, :initials=>"PC")
 User.create(:user_type=>1, :name=>"Su Yan Fang", :cas_user =>967198)
 User.create(:user_type=>0, :name=>"Jingwei", :cas_user=> 974333, :initials=>"JQ", :email=>"seven.qi2011@gmail.com")
 
+Lab.create!(:name=>"Moffit", :initials=>"MMF", :max_employees=>4, :min_employees=>1)
+
 Period.create(:start_date=>DateTime.parse("Jan 20, 2012"), :end_date=>DateTime.parse("May 20, 2012"), :name=>"Spring 2012")
 Period.find(1).create_calendars
 Period.find(1).save!
+
+

@@ -1,23 +1,12 @@
 require 'spec_helper'
 
 describe "Preferences" do
-  before(:each) do
-      @user = User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
-      @calendar = Calendar.create!(:user_id => @user.id, :name => "#{@user.name}'s calendar",:calendar_type => 1)
-  end
-
-  # This should return the minimal set of attributes required to create a valid
-  # Preference. As you add validations to Preference, be sure to
-  # update the return value of this method accordingly.
-  def valid_attributes
-    {}
+  before (:each) do
+    @student = User.create!(:user_type => 1, :name => "John", :approved => true, :initials => "J")
   end
   
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # PreferencesController. Be sure to keep this updated too.
   def valid_session
-    {:test_user_id => @user.id}
+    {:test_user_id => @student.id}
   end
   
   describe "GET /preferences" do

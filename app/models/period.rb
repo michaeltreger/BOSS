@@ -20,6 +20,14 @@ class Period < ActiveRecord::Base
       calendars << shifts_calendar
       preferences << pref
     end
+    
+    Lab.all.each do |lab|
+      cal = Calendar.create!(:name=> "#{lab.initials} #{name}", 
+                             :calendar_type=>Calendar::LAB, :lab_id=>lab.id, :period_id=>id)
+      lab.calendar = cal
+      calendars << cal
+    end
+    
   end
 
 end
