@@ -1,16 +1,16 @@
 - @page_title = 'Time Off Requests'
 %h3 New Request
 
-= form_tag time_off_requests_path do
+= form_for @time_off_request do |f|
 
-  = label :time_off_request, :start_time, 'Start Time'
-  = datetime_select :time_off_request, :start_time , :start_year => Time.current.year, :use_short_month => true
+  = f.label 'Start Time'
+  = f.datetime_select :start_time , :start_year => Time.current.year, :use_short_month => true
 
-  = label :time_off_request, :end_time, 'End Time'
-  = datetime_select :time_off_request, :end_time, :start_year => Time.current.year, :use_short_month => true
+  = f.label 'End Time'
+  = f.datetime_select :end_time, :start_year => Time.current.year, :use_short_month => true
 
-  = label :time_off_request, 'Reason'
-  = text_area :time_off_request, :description
+  = f.label 'Reason'
+  = f.text_area :description
 
-  = submit_tag 'Save Changes'
+  = f.submit 'Save Changes'
   
