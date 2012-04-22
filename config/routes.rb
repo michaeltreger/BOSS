@@ -7,14 +7,13 @@ CS169CampusScheduler::Application.routes.draw do
 
   resources :substitutions
 
-  resources :labs
-
   resources :calendars
 
   match 'logout' => 'users#logout', :as => :logout
   scope '/admin' do
     resources :periods
     resources :users
+    resources :labs  
     match '/calendars' => 'calendars#admin'
   end
 

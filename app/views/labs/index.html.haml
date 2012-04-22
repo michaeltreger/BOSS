@@ -1,24 +1,22 @@
-%h1 Listing labs
+-@page_title = "Labs"
 
 %table
   %tr
-    %th Description
-    %th Name
     %th Initials
+    %th Name
     %th Max employees
     %th Min employees
-    %th
+    %th Description
     %th
     %th
 
   - @labs.each do |lab|
     %tr
-      %td= lab.description
-      %td= lab.name
       %td= lab.initials
+      %td= lab.name
       %td= lab.max_employees
       %td= lab.min_employees
-      %td= link_to 'Show', lab
+      %td= lab.description
       %td= link_to 'Edit', edit_lab_path(lab)
       %td= link_to 'Destroy', lab, :confirm => 'Are you sure?', :method => :delete
 
