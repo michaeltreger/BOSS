@@ -6,6 +6,8 @@ CS169CampusScheduler::Application.routes.draw do
 
   resources :substitutions
 
+  resources :entires
+
   resources :labs
 
   resources :calendars

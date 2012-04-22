@@ -67,7 +67,7 @@ class TimeEditsController < ApplicationController
 
     respond_to do |format|
       if @time_edit.update_attributes(params[:time_edit])
-        format.html { redirect_to @time_edit, notice: 'Time edit was successfully updated.' }
+        format.html { redirect_to time_edits_path, notice: 'Time edit was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }

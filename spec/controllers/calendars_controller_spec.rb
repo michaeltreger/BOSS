@@ -141,7 +141,7 @@ describe CalendarsController do
       it "redirects to the calendar" do
         calendar = Calendar.create! valid_attributes
         put :update, {:id => calendar.to_param, :calendar => valid_attributes}, valid_session
-        response.should redirect_to(calendar)
+        response.should redirect_to(calendars_path)
       end
     end
 

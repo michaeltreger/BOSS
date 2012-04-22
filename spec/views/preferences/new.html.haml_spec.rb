@@ -21,8 +21,6 @@ describe "preferences/new" do
 
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "form", :action => preferences_path, :method => "post" do
-      assert_select "input#preference_user_id", :name => "preference[user_id]"
-      assert_select "input#preference_period_id", :name => "preference[period_id]"
       assert_select "input#preference_hours_min", :name => "preference[hours_min]"
       assert_select "input#preference_hours_max", :name => "preference[hours_max]"
       assert_select "input#preference_hours_pref", :name => "preference[hours_pref]"
