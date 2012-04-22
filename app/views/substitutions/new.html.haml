@@ -1,38 +1,35 @@
 - @page_title = 'Post a Substitution'
-
 - user_id = @current_user.id
 
 - if @entries.size == 0
   %h3 You have no shifts to substitute
 - else
-  %h3 Select a Shift
   = form_for @substitution do |f|
-    %table
-      %tr
+    .col-2
+      %h3 Select a Shift
+      %table
         %tr
-          %th Select
-          %th Day
-          %th Time
-          %th Location
-      - @entries.each do |entry|
-        %tr
-          %td= f.radio_button :entry, entry.id, :id => "entry_" + entry.id.to_s
-          %td= entry.start_time.strftime('%a, %m/%d')
-          %td= entry.start_time.strftime('%I:%M%p') + ' -  ' + entry.end_time.strftime('%I:%M%p')
-          %td= 'Lab ' + entry.lab_id.to_s
-    %h3 Substitute Partial Shift?
-    = check_box "partial_shift", "enabled", {:id => "partial_shift"}
-    = time_select "partial_shift", "start", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_start" , :class => "timeselect"}
-    = '---'
-    = time_select "partial_shift", "end", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_end", :class => "timeselect" }
-    %h3 Select a user to offer this substitution to (Optional)
-    = collection_select(:user, :id, @users, :id, :initials, {:include_blank => true}, {:class => :initialsselect})
-
-
-
-    = f.hidden_field :from_user, :value => @current_user.id
-    %h3 Notes about this Substitution
-    
-    = f.text_area :description, :id => 'Description', :cols => 80, :rows => 10
-    <br>
-    = f.submit 'Make Substitution'
+          %tr
+            %th Select
+            %th Day
+            %th Time
+            %th Location
+        - @entries.each do |entry|
+          %tr
+            %td= f.radio_button :entry, entry.id, :id => "entry_" + entry.id.to_s
+            %td= entry.start_time.strftime('%a, %m/%d')
+            %td= entry.start_time.strftime('%I:%M%p') + ' -  ' + entry.end_time.strftime('%I:%M%p')
+            %td= 'Lab ' + entry.lab_id.to_s
+    .col-2
+      %h3 Substitute Partial Shift?
+      = time_select "partial_shift", "start", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_start" , :class => "timeselect"}
+      = '---'
+      = time_select "partial_shift", "end", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_end", :class => "timeselect" }
+      = check_box "partial_shift", "enabled", {:id => "partial_shift"}
+      %h3 Select a user to offer this substitution to (Optional)
+      = collection_select(:user, :id, @users, :id, :initials, {:include_blank => true}, {:class => :initialsselect})  
+      = f.hidden_field :from_user, :value => @current_user.id
+      %h3 Notes about this Substitution
+      = f.text_area :description, {:id => 'Description'}
+      <br><br>
+      = f.submit 'Make Substitution'
