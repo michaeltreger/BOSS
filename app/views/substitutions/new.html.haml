@@ -22,11 +22,11 @@
           %td= 'Lab ' + entry.lab_id.to_s
     %h3 Substitute Partial Shift?
     = check_box "partial_shift", "enabled", {:id => "partial_shift"}
-    = time_select "partial_shift", "start", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_start" }
+    = time_select "partial_shift", "start", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_start" , :class => "timeselect"}
     = '---'
-    = time_select "partial_shift", "end", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_end" }
+    = time_select "partial_shift", "end", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_end", :class => "timeselect" }
     %h3 Select a user to offer this substitution to (Optional)
-    = collection_select(:user, :id, @users, :id, :initials, :include_blank => true)
+    = collection_select(:user, :id, @users, :id, :initials, {:include_blank => true}, {:class => :initialsselect})
 
 
 
