@@ -5,6 +5,8 @@ class Calendar < ActiveRecord::Base
     belongs_to :period
     validates_presence_of :calendar_type, :name
 
+    #validate_with :check_constraints
+
     AVAILABILITY = 0
     SHIFTS = 1
 
@@ -56,6 +58,37 @@ class Calendar < ActiveRecord::Base
         end
       end
       return hours
+    end
+
+
+    def check_constraints
+      debugger
+      if calendar_type == AVAILABILITY
+        total_unavail = 0
+        weekday_unavail = 0
+
+        entries.each do |e|
+          if e.entry_type == 'class' or e.entry_type == 'obligation'
+            if e.start_time.wday != 0 and e.start_time.wday != 6
+              weekday_unavail += e.duration
+            end
+            total_unavail += e.duration
+          end
+        end
+
+        total_avail = 126 - total_unavail
+        weekday_avail = 90 - weekday_unavail
+        if total_avail > 45 and weekday_avail > 15
+          return true
+        elsif total_avail > 30
+          return true
+        elsif weekday_avail > 15
+          return true
+        else
+          return false
+        end
+
+      end
     end
 
 end

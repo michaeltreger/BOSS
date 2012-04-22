@@ -19,6 +19,10 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe PeriodsController do
+  before(:each) do
+      @user = User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
+      @calendar = Calendar.create!(:user_id => @user.id, :name => "#{@user.name}'s calendar",:calendar_type => 1)
+  end
 
   # This should return the minimal set of attributes required to create a valid
   # Period. As you add validations to Period, be sure to
@@ -31,7 +35,7 @@ describe PeriodsController do
   # in order to pass any filters (e.g. authentication) defined in
   # PeriodsController. Be sure to keep this updated too.
   def valid_session
-    {}
+    {:test_user_id => @user.id}
   end
 
   describe "GET index" do
