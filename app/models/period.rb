@@ -5,9 +5,9 @@ class Period < ActiveRecord::Base
   def create_calendars
     # TODO transactions?
     User.all.each do |user|
-      availability_calendar = Calendar.create!(:name=> "#{user.name} #{name} Availabilities", 
+      availability_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Availabilities", 
                                   :calendar_type=>Calendar::AVAILABILITY, :user_id=>user.id, :period_id=>id)
-      shifts_calendar = Calendar.create!(:name=> "#{user.name} #{name} Shifts", 
+      shifts_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Shifts", 
                                   :calendar_type=>Calendar::SHIFTS, :user_id=>user.id, :period_id=>id)
 
       pref = Preference.create!(:user_id=>user.id, :period_id=>id)
