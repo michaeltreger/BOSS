@@ -1,0 +1,36 @@
+%p#notice= notice
+
+%p
+  %b User:
+  = @preference.user_id
+%p
+  %b Period:
+  = @preference.period_id
+%p
+  %b Hours min:
+  = @preference.hours_min
+%p
+  %b Hours max:
+  = @preference.hours_max
+%p
+  %b Hours pref:
+  = @preference.hours_pref
+%p
+  %b Hours day:
+  = @preference.hours_day
+%p
+  %b Dispersal:
+  = @preference.dispersal
+%p
+  %b Timeof week:
+  = @preference.timeof_week
+%p
+  %b Timeof day:
+  = @preference.timeof_day
+%p
+  %b Other:
+  = @preference.other
+
+= link_to 'Edit', edit_preference_path(@preference)
+\|
+= link_to 'Back', preferences_path

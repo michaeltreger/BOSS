@@ -17,9 +17,8 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    flash[:notice] = "You are logged in as #{ldapparams[0][:givenname][0]} #{ldapparams[0][:sn][0]}."
+    #flash[:notice] = "You are logged in as #{ldapparams[0][:givenname][0]} #{ldapparams[0][:sn][0]}."
     @user = User.find(params[:id])
-    @calendar = Calendar.find_by_user_id(@user.id)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -110,19 +109,6 @@ class UsersController < ApplicationController
       format.html { redirect_to users_url }
       format.json { head :ok }
     end
-  end
-
-  def approveindex
-    @nonApprovedUsers = User.find_all_by_approved(false)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @users }
-    end
-  end
-
-  def approve
-    @user = User.find(params[:id])
   end
 
   def logout

@@ -4,7 +4,11 @@ class TimeOffRequestsController < ApplicationController
   # GET /time_off_requests
   # GET /time_off_requests.json
   def index
-    @time_off_requests = TimeOffRequest.all
+    if @current_user.isAdmin?
+      @time_off_requests = TimeOffRequest.all
+    else
+      @time_off_requests = TimeOffRequest.find_all_by_user_id(@current_user.id)
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -15,14 +19,14 @@ class TimeOffRequestsController < ApplicationController
   # GET /time_off_requests/1
   # GET /time_off_requests/1.json
   #useless
-  #def show
-  #@time_off_request = TimeOffRequest.find(params[:id])
+  def show
+    @time_off_request = TimeOffRequest.find(params[:id])
 
-  #respond_to do |format|
-  # format.html # show.html.erb
-  #format.json { render json: @time_off_request }
-  #end
-  #end
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @time_off_request }
+    end
+  end
 
   # GET /time_off_requests/new
   # GET /time_off_requests/new.json
@@ -43,6 +47,7 @@ class TimeOffRequestsController < ApplicationController
   # POST /time_off_requests.json
   def create
     @time_off_request = TimeOffRequest.new(params[:time_off_request])
+    @time_off_request.user_id = @current_user.id
 
     respond_to do |format|
       if @time_off_request.isNotTimeValid?
@@ -52,8 +57,8 @@ class TimeOffRequestsController < ApplicationController
       else
         @time_off_request.day_notice = @time_off_request.distance_of_time
         if @time_off_request.save
-        format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully created.' }
-        format.json { render json: @time_off_request, status: :created, location: @time_off_request }
+          format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully created.' }
+          format.json { render json: @time_off_request, status: :created, location: @time_off_request }
         else
           format.html { render action: "new" }
           format.json { render json: @time_off_request.errors, status: :unprocessable_entity }

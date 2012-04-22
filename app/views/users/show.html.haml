@@ -1,26 +1,17 @@
-%p#notice= notice
-
+%p
+  %b Type:
+  = @user.user_type
 %p
   %b Name:
   = @user.name
 %p
   %b Email:
   = @user.email
+%p
+  %b Phone:
+  = @user.phone
+%p
+  %b Initials:
+  = @user.initials
 
-- if @user.approved?
-  %p
-    %b Type:
-    = @user.user_type
-  - if not @calendar.nil?
-    %p
-      = link_to "View Calendar", calendar_path(Calendar.find_by_user_id(@user.id))
-
-  = link_to 'Edit', edit_user_path(@user)
-- else
-  %p
-    This user is pending approval.
-  = link_to 'Approve', "/admin/approve/#{@user.id}"
-  - if not @calendar.nil?
-    %p
-      = link_to "View Calendar", calendar_path(Calendar.find_by_user_id(@user.id))
-
+= link_to 'Edit', edit_user_path(@user)

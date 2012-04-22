@@ -1,27 +1,47 @@
 - @page_title = 'Time Off Requests'
-
-%h3 My Current Requests
-
-%table
-  %tr
-    %th Start time
-    %th End time
-    %th Submission time
-    %th Day notice
-    %th Description
-    %th
-    %th
-
-  - @time_off_requests.each do |time_off_request|
+- if @current_user.isAdmin?
+  %h3 All Current Requests
+  
+  %table
     %tr
-      %td= time_off_request.start_time.strftime('%a, %m/%d/%Y %I:%M%p')
-      %td= time_off_request.end_time.strftime('%a, %m/%d/%Y %I:%M%p')
-      %td= time_off_request.submission.strftime('%a, %m/%d/%Y %I:%M%p')
-      %td= time_off_request.day_notice
-      %td= time_off_request.description
-      %td= link_to 'Edit', edit_time_off_request_path(time_off_request)
-      %td= link_to 'Delete', time_off_request, :confirm => 'Are you sure?', :method => :delete
+      %th Employee Name
+      %th Start time
+      %th End time
+      %th Submission time
+      %th Day notice
+      %th
+      %th
 
-%br
+    - @time_off_requests.each do |time_off_request|
+      %tr
+        %td= User.find_by_id(time_off_request.user_id).name
+        %td= time_off_request.start_time.strftime('%a, %m/%d/%Y %I:%M%p')
+        %td= time_off_request.end_time.strftime('%a, %m/%d/%Y %I:%M%p')
+        %td= time_off_request.submission.strftime('%a, %m/%d/%Y %I:%M%p')
+        %td= time_off_request.day_notice
+        %td= link_to 'Description', time_off_request
+        %td= link_to 'Delete', time_off_request, :confirm => 'Are you sure?', :method => :delete
+- else
+  %h3 My Current Requests
 
-= link_to 'New Request', new_time_off_request_path
+  %table
+    %tr
+      %th Start time
+      %th End time
+      %th Submission time
+      %th Day notice
+      %th
+      %th
+
+    - @time_off_requests.each do |time_off_request|
+      %tr
+        %td= time_off_request.start_time.strftime('%a, %m/%d/%Y %I:%M%p')
+        %td= time_off_request.end_time.strftime('%a, %m/%d/%Y %I:%M%p')
+        %td= time_off_request.submission.strftime('%a, %m/%d/%Y %I:%M%p')
+        %td= time_off_request.day_notice
+        %td= link_to 'Description', time_off_request
+        %td= link_to 'Delete', time_off_request, :confirm => 'Are you sure?', :method => :delete
+
+  %br
+
+  = link_to 'New Request', new_time_off_request_path

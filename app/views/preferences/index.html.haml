@@ -1,0 +1,37 @@
+%h1 Listing preferences
+
+%table
+  %tr
+    %th User
+    %th Period
+    %th Hours min
+    %th Hours max
+    %th Hours pref
+    %th Hours day
+    %th Dispersal
+    %th Timeof week
+    %th Timeof day
+    %th Other
+    %th
+    %th
+    %th
+
+  - @preferences.each do |preference|
+    %tr
+      %td= User.find(preference.user_id).initials
+      %td= Period.find(preference.period_id).name
+      %td= preference.hours_min
+      %td= preference.hours_max
+      %td= preference.hours_pref
+      %td= preference.hours_day
+      %td= preference.dispersal
+      %td= preference.timeof_week
+      %td= preference.timeof_day
+      %td= preference.other
+      %td= link_to 'Show', preference
+      %td= link_to 'Edit', edit_preference_path(preference)
+      %td= link_to 'Destroy', preference, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Preference', new_preference_path

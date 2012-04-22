@@ -1,4 +1,6 @@
 CS169CampusScheduler::Application.routes.draw do
+  resources :preferences
+
   resources :time_off_requests
   resources :time_edits
 
@@ -16,11 +18,8 @@ CS169CampusScheduler::Application.routes.draw do
   scope '/admin' do
     resources :periods
     resources :users
-    match '/approve' => 'users#approveindex'
-    match '/approve/:id' => 'users#approve'
     match '/calendars' => 'calendars#admin'
   end
-  match '/join' => 'users#new'
 
   match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'
   match "/changeAdmin" => "users#changeAdmin"
