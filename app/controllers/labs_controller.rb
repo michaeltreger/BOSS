@@ -41,7 +41,6 @@ class LabsController < ApplicationController
   # POST /labs.json
   def create
     @lab = Lab.new(params[:lab])
-    @lab.calendar = Calendar.create!(:name=>"{initials}'s Schedule", :calendar_type=>Calendar::LAB)
 
     respond_to do |format|
       if @lab.save

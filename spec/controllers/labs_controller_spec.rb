@@ -19,69 +19,88 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe LabsController do
+  before (:each) do
+    @student = User.create!(:user_type => 1, :name => "John", :approved => true, :initials => "J")
+  end
 
   # This should return the minimal set of attributes required to create a valid
   # Lab. As you add validations to Lab, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {}
+    {:name=>"Moffit", :initials=>"MMF", :max_employees=>4, :min_employees=>1}
   end
-
+  
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # LabsController. Be sure to keep this updated too.
   def valid_session
-    {}
+    {:test_user_id => @student.id}
   end
 
   describe "GET index" do
     it "assigns all labs as @labs" do
-      pending ""
+      lab = Lab.create! valid_attributes
+      get :index, {}, valid_session
+      assigns(:labs).should eq([lab])
     end
   end
 
   describe "GET show" do
     it "assigns the requested lab as @lab" do
-      pending ""
+      lab = Lab.create! valid_attributes
+      get :show, {:id => lab.to_param}, valid_session
+      assigns(:lab).should eq(lab)
     end
   end
 
   describe "GET new" do
     it "assigns a new lab as @lab" do
-      pending ""
+      get :new, {}, valid_session
+      assigns(:lab).should be_a_new(Lab)
     end
   end
 
   describe "GET edit" do
     it "assigns the requested lab as @lab" do
-      pending ""
+      lab = Lab.create! valid_attributes
+      get :edit, {:id => lab.to_param}, valid_session
+      assigns(:lab).should eq(lab)
     end
   end
 
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Lab" do
-        pending ""
+        expect {
+          post :create, {:lab => valid_attributes}, valid_session
+        }.to change(Lab, :count).by(1)
       end
 
       it "assigns a newly created lab as @lab" do
-        pending ""
+        post :create, {:lab => valid_attributes}, valid_session
+        assigns(:lab).should be_a(Lab)
+        assigns(:lab).should be_persisted
       end
 
       it "redirects to the created lab" do
-        pending ""
+        post :create, {:lab => valid_attributes}, valid_session
+        response.should redirect_to(labs_path)
       end
     end
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved lab as @lab" do
         # Trigger the behavior that occurs when invalid params are submitted
-        pending ""
+        Lab.any_instance.stub(:save).and_return(false)
+        post :create, {:lab => {}}, valid_session
+        assigns(:lab).should be_a_new(Lab)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        pending ""
+        Lab.any_instance.stub(:save).and_return(false)
+        post :create, {:lab => {}}, valid_session
+        response.should render_template("new")
       end
     end
   end
@@ -89,40 +108,59 @@ describe LabsController do
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested lab" do
+        lab = Lab.create! valid_attributes
         # Assuming there are no other labs in the database, this
         # specifies that the Lab created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        pending ""
+        Lab.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
+        put :update, {:id => lab.to_param, :lab => {'these' => 'params'}}, valid_session
       end
 
       it "assigns the requested lab as @lab" do
-        pending ""
+        lab = Lab.create! valid_attributes
+        put :update, {:id => lab.to_param, :lab => valid_attributes}, valid_session
+        assigns(:lab).should eq(lab)
       end
 
       it "redirects to the lab" do
-        pending ""
+        lab = Lab.create! valid_attributes
+        put :update, {:id => lab.to_param, :lab => valid_attributes}, valid_session
+        response.should redirect_to(labs_path)
       end
     end
 
     describe "with invalid params" do
       it "assigns the lab as @lab" do
-        pending ""
+        lab = Lab.create! valid_attributes
+        # Trigger the behavior that occurs when invalid params are submitted
+        Lab.any_instance.stub(:save).and_return(false)
+        put :update, {:id => lab.to_param, :lab => {}}, valid_session
+        assigns(:lab).should eq(lab)
       end
 
       it "re-renders the 'edit' template" do
-        pending ""
+        lab = Lab.create! valid_attributes
+        # Trigger the behavior that occurs when invalid params are submitted
+        Lab.any_instance.stub(:save).and_return(false)
+        put :update, {:id => lab.to_param, :lab => {}}, valid_session
+        response.should render_template("edit")
       end
     end
   end
 
   describe "DELETE destroy" do
     it "destroys the requested lab" do
-      pending ""
+      lab = Lab.create! valid_attributes
+      expect {
+        delete :destroy, {:id => lab.to_param}, valid_session
+      }.to change(Lab, :count).by(-1)
     end
 
     it "redirects to the labs list" do
-      pending ""
+      lab = Lab.create! valid_attributes
+      delete :destroy, {:id => lab.to_param}, valid_session
+      response.should redirect_to(labs_url)
     end
   end
 
