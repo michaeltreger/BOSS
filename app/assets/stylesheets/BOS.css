@@ -1,0 +1,14 @@
+select.calendarselect {
+  font-size: 90%;
+  width: 400px;
+}
+
+select.initialsselect {
+  font-size: 90%;
+  width: 70px;
+}
+
+select.timeselect {
+  font-size: 90%;
+  width: 100px;
+}  

@@ -71,12 +71,12 @@
   <br>
   - if @current_user.isAdmin?
     %h3 Assign Substitution To:
-    = collection_select(:calendar, :id, @admin_allCalendars, :id, :full_name)
+    = collection_select(:calendar, :id, @admin_allCalendars, :id, :full_name, {}, {:class => :calendarselect})
     <br><br>
     = submit_tag 'Submit'
   - else
     %h3 Choose a destination calendar
-    = collection_select(:calendar, :id, @mycalendars, :id, :name)
+    = collection_select(:calendar, :id, @mycalendars, :id, :name, {}, {:class => :calendarselect})
     <br><br>
     = submit_tag 'Take Selected Substitutions'
 
