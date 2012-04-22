@@ -18,8 +18,8 @@
 
   - @preferences.each do |preference|
     %tr
-      %td= preference.user_id
-      %td= preference.period_id
+      %td= User.find(preference.user_id).initials
+      %td= Period.find(preference.period_id).name
       %td= preference.hours_min
       %td= preference.hours_max
       %td= preference.hours_pref
