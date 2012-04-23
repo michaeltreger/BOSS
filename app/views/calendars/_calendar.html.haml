@@ -1,7 +1,7 @@
 = javascript_include_tag "jquery.weekcalendar.js"
 = javascript_include_tag "date.js"
 
--if @calendar.availability?
+-if @calendar.availability? and @current_user.id == @calendar.owner
   %table{:border=>0}
     %tr
       %td#radioGroup
@@ -9,8 +9,7 @@
         <input type='radio' name='entry_type_select' value='rather_not'>R/N</input>
         <input type='radio' name='entry_type_select' value='class'>Class</input>
         <input type='radio' name='entry_type_select' value='obligation'>Obligation</input>
-        -if @current_user.id == @calendar.owner
-          = button_tag :submit, :id=>:submit_calendar
+        = button_tag :submit, :id=>:submit_calendar
 
 #calendar
 #event_edit_container

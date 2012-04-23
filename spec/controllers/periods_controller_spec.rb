@@ -85,7 +85,7 @@ describe PeriodsController do
 
       it "redirects to the created period" do
         post :create, {:period => valid_attributes}, valid_session
-        response.should redirect_to(Period.last)
+        response.should redirect_to(periods_path)
       end
     end
 
@@ -127,7 +127,7 @@ describe PeriodsController do
       it "redirects to the period" do
         period = Period.create! valid_attributes
         put :update, {:id => period.to_param, :period => valid_attributes}, valid_session
-        response.should redirect_to(period)
+        response.should redirect_to(periods_path)
       end
     end
 

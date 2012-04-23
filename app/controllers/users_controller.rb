@@ -64,6 +64,23 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(params[:user])
+    Period.find_all_by_visible(true).each do |p|
+      avail_calendar = Calendar.create!(:name=> "#{@user.name}'s #{p.name} Availabilities", 
+                                        :calendar_type=>Calendar::AVAILABILITY)
+      shift_calendar = Calendar.create!(:name=> "#{@user.name}'s #{p.name} Shifts", 
+                                        :calendar_type=>Calendar::SHIFTS)
+
+      pref = Preference.create!()
+
+      @user.calendars << avail_calendar
+      @user.calendars << shift_calendar
+      @user.preference << pref
+
+      p.calendars << avail_calendar
+      p.calendars << shift_calendar
+      p.preferences << pref
+      p.save!
+    end
 
     respond_to do |format|
       if @user.save

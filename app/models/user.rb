@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
-  has_many :calendars
+  has_many :calendars, :dependent=>:destroy
   has_and_belongs_to_many :substitutions
-  has_many :preference
-  has_many :time_off_requests
+  has_many :preference, :dependent=>:destroy
+  has_many :time_off_requests, :dependent=>:destroy
   belongs_to :entry
   belongs_to :lab
   has_many :group_users

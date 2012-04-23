@@ -5,25 +5,25 @@ class Period < ActiveRecord::Base
   def create_calendars
     # TODO transactions?
     User.all.each do |user|
-      availability_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Availabilities", 
-                                  :calendar_type=>Calendar::AVAILABILITY, :user_id=>user.id, :period_id=>id)
-      shifts_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Shifts", 
-                                  :calendar_type=>Calendar::SHIFTS, :user_id=>user.id, :period_id=>id)
+      avail_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Availabilities",
+                                        :calendar_type=>Calendar::AVAILABILITY)
+      shift_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Shifts",
+                                        :calendar_type=>Calendar::SHIFTS)
 
-      pref = Preference.create!(:user_id=>user.id, :period_id=>id)
+      pref = Preference.create!()
 
-      user.calendars << availability_calendar
-      user.calendars << shifts_calendar
+      user.calendars << avail_calendar
+      user.calendars << shift_calendar
       user.preference << pref
       user.save!
-      calendars << availability_calendar
-      calendars << shifts_calendar
+      calendars << avail_calendar
+      calendars << shift_calendar
       preferences << pref
     end
     
     Lab.all.each do |lab|
-      cal = Calendar.create!(:name=> "#{lab.initials} #{name}", 
-                             :calendar_type=>Calendar::LAB, :lab_id=>lab.id, :period_id=>id)
+      cal = Calendar.create!(:name=> "#{lab.initials} #{name}",
+                             :calendar_type=>Calendar::LAB)
       lab.calendar = cal
       calendars << cal
       lab.save!
