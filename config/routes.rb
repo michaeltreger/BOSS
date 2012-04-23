@@ -15,11 +15,8 @@ CS169CampusScheduler::Application.routes.draw do
   scope '/admin' do
     resources :periods
     resources :users
-<<<<<<< HEAD
     resources :groups
-=======
     resources :labs  
->>>>>>> 005117369ecb9edb4faf4f65320558c8fc6d45ed
     match '/calendars' => 'calendars#admin'
   end
 
