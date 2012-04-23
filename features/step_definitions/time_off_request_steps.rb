@@ -47,6 +47,3 @@ Then /^I should see "([^"]*)" on my requests page$/ do |arg1|
   end
 end
 
-When /^I select "([^"]*)" as "([^"]*)"$/ do |arg1, arg2|
-  @time_off_request = TimeOffRequest.new(:start_time => "2012-4-30 15:00", :end_time => "2012-4-30 16:30")
-end
