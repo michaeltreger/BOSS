@@ -1,0 +1,143 @@
+select.calendarselect {
+  font-size: 90%;
+  width: 400px;
+}
+
+select.initialsselect {
+  font-size: 90%;
+  width: 70px;
+}
+
+select.timeselect {
+  font-size: 90%;
+  width: 100px;
+}  
+
+
+
+
+/* COLUMN
+------------------------------------------------------*/
+.col-1{
+	width:900px;
+	margin:0px 15px 15px 15px;
+	float:left;
+}
+.col-2{
+	width:435px;
+	margin:0px 15px 15px 15px;
+	float:left;
+}
+.col-2-2{
+	width:590px;
+	margin:0px 15px 15px 15px;
+	float:left;
+}
+.col-2-3{
+	width:528px;
+	margin:0px 15px 15px 15px;
+	float:left;
+}
+.col-2-faq{
+	width:281px;
+	margin-right:20px;
+	float:left;
+}
+.col-2-faq-last{
+	width:281px;
+	margin-right:0px;
+	float:left;
+}
+.col-3{
+	width:280px;
+	margin:0px 15px 15px 15px;
+	float:left;
+}
+.col-4{
+	width:202px;
+	margin:0px 15px 15px 15px;
+	float:left;
+}
+.col-5{
+	width:156px;
+	margin:0px 15px 15px 15px;
+	float:left;
+}
+
+/* used for 4 column */
+.col-214 { 
+	display:inline-block;
+	width:214px !important;
+	vertical-align:top;
+	padding:0px 0px 0px 0px !important;
+	margin-right:30px;
+}
+.col-214-last { 
+	display:inline-block;
+	width:214px !important;
+	vertical-align:top;
+	padding:0px 0px 0px 0px !important;
+	margin-right:0px;
+}
+
+/* used for 3 column */
+.col-297 { 
+	display:inline-block;
+	width:297px !important;
+	vertical-align:top;
+	padding:0px 0px 0px 0px !important;
+	margin-right:30px;
+}
+.col-297-last { 
+	display:inline-block;
+	width:297px !important;
+	vertical-align:top;
+	padding:0px 0px 0px 0px !important;
+	margin-right:0px;
+}
+
+/* used for 2 column */
+.col-461 { 
+	display:inline-block;
+	width:461px !important;
+	vertical-align:top;
+	padding:0px 0px 0px 0px !important;
+	margin-right:30px;
+}
+.col-461-last { 
+	display:inline-block;
+	width:461px !important;
+	vertical-align:top;
+	padding:0px 0px 0px 0px !important;
+	margin-right:0px;
+}
+.col-629 { 
+	display:inline-block;
+	width:629px !important;
+	vertical-align:top;
+	padding:0px 0px 0px 0px !important;
+	margin-right:30px;
+}
+.col-629-last { 
+	display:inline-block;
+	width:629px !important;
+	vertical-align:top;
+	padding:0px 0px 0px 0px !important;
+	margin-right:0px;
+}
+
+/* column for faq */
+.col-310 { 
+	display:inline-block;
+	width:310px !important;
+	vertical-align:top;
+	padding:0px 0px 0px 0px !important;
+	margin-right:20px;
+}
+.col-310-last { 
+	display:inline-block;
+	width:310px !important;
+	vertical-align:top;
+	padding:0px 0px 0px 0px !important;
+	margin-right:0px;
+}
