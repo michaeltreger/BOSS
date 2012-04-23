@@ -60,9 +60,17 @@ class CalendarsController < ApplicationController
         results = {}
         results[:start_date] = @calendar.period.start_date
         results[:end_date] = @calendar.period.end_date
-        results[:read_only] = true
-        @events = Entry.find_all_by_calendar_id(params[:id], :select=>[:id, :start_time, :end_time, :description, :entry_type] )
-        results[:events] = @events
+        events = @calendar.entries(:select=>[:id, :start_time, :end_time, :description, :entry_type])
+        if @calendar.availability?
+          this_week = Time.now.beginning_of_week
+          events.each do |e|
+            e.start_time = e.start_time + (this_week-e.start_time.beginning_of_week)
+            e.end_time = e.end_time + (this_week-e.end_time.beginning_of_week)
+          end
+          results[:start_date] = this_week
+          results[:end_date] = this_week + 6.days
+        end
+        results[:events] = events
         if @current_user.id != @calendar.owner or @calendar.shift?
           results[:read_only] = "true"
         end
