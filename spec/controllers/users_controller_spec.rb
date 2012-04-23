@@ -30,7 +30,7 @@ describe UsersController do
   def valid_attributes
     {:name=>"Tim", :user_type=>1}
   end
-  
+
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # UsersController. Be sure to keep this updated too.
@@ -47,13 +47,13 @@ describe UsersController do
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested User as @user" do
-      user = User.create! valid_attributes
-      get :show, {:id => user.to_param}, valid_session
-      assigns(:user).should eq(user)
-    end
-  end
+#  describe "GET show" do
+#    it "assigns the requested User as @user" do
+#      user = User.create! valid_attributes
+#      get :show, {:id => user.to_param}, valid_session
+#      assigns(:user).should eq(user)
+#    end
+#  end
 
   describe "GET new" do
     it "assigns a new User as @user" do

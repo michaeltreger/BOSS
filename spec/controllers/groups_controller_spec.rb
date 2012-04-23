@@ -34,7 +34,7 @@ describe GroupsController do
   # update the return value of this method accordingly.
   def valid_attributes
     {
-      :name => 'cs169', :group_type => 1, :hour_limit => 20, :description => 'cs169', :created_at => '2012-04-22T00:00:00Z'
+      #:name => 'cs169', :group_type => 1, :hour_limit => 20, :description => 'cs169', :created_at => '2012-04-22T00:00:00Z'
     }
   end
 
@@ -43,7 +43,7 @@ describe GroupsController do
   # GroupsController. Be sure to keep this updated too.
   def valid_session
     {
-      :test_user_id => @admin.id
+      #:test_user_id => @admin.id
     }
   end
 
