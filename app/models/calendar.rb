@@ -21,6 +21,10 @@ class Calendar < ActiveRecord::Base
       calendar_type == SHIFTS
     end
 
+    def availability?
+      calendar_type == AVAILABILITY
+    end
+
 
     def full_name
       start = ''
