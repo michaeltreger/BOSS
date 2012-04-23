@@ -10,6 +10,7 @@ describe "users/show" do
       :phone => "Phone",
       :initials => "Initials"
     ))
+    @groups = []
   end
 
   it "renders attributes in <p>" do
