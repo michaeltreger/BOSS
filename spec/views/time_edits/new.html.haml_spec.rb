@@ -15,7 +15,6 @@ describe "time_edits/new" do
 
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "form", :action => time_edits_path, :method => "post" do
-      assert_select "input#time_edit_user_id", :name => "time_edit[user_id]"
       assert_select "input#time_edit_duration", :name => "time_edit[duration]"
       assert_select "input#time_edit_lab_id", :name => "time_edit[lab_id]"
       assert_select "input#time_edit_comment", :name => "time_edit[comment]"

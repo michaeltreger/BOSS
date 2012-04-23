@@ -2,30 +2,33 @@ require 'spec_helper'
 
 describe "preferences/index" do
   before(:each) do
+    @student1 = User.create!(:user_type => 1, :name => "John", :approved => true, :initials => "J")
+    @student2 = User.create!(:user_type => 1, :name => "John", :approved => true, :initials => "J")
+    @period = Period.create!()
     assign(:preferences, [
       stub_model(Preference,
-        :user_id => 1,
-        :period_id => 1,
-        :hours_min => 1,
-        :hours_max => 1,
-        :hours_pref => 1,
-        :hours_day => 1,
+        :user_id => @student1.id,
+        :period_id => @period.id,
+        :hours_min => 20,
+        :hours_max => 30,
+        :hours_pref => 40,
+        :hours_day => 50,
         :dispersal => "Dispersal",
         :timeof_week => "Timeof Week",
         :timeof_day => "Timeof Day",
-        :other => ""
+        :other => "a"
       ),
       stub_model(Preference,
-        :user_id => 1,
-        :period_id => 1,
-        :hours_min => 1,
-        :hours_max => 1,
-        :hours_pref => 1,
-        :hours_day => 1,
+        :user_id => @student1.id,
+        :period_id => @period.id,
+        :hours_min => 20,
+        :hours_max => 30,
+        :hours_pref => 40,
+        :hours_day => 50,
         :dispersal => "Dispersal",
         :timeof_week => "Timeof Week",
         :timeof_day => "Timeof Day",
-        :other => ""
+        :other => "a"
       )
     ])
   end
@@ -33,17 +36,13 @@ describe "preferences/index" do
   it "renders a list of preferences" do
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "tr>td", :text => 1.to_s, :count => 2
+    assert_select "tr>td", :text => 20.to_s, :count => 2
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "tr>td", :text => 1.to_s, :count => 2
+    assert_select "tr>td", :text => 30.to_s, :count => 2
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "tr>td", :text => 1.to_s, :count => 2
+    assert_select "tr>td", :text => 40.to_s, :count => 2
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "tr>td", :text => 1.to_s, :count => 2
-    # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "tr>td", :text => 1.to_s, :count => 2
-    # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "tr>td", :text => 1.to_s, :count => 2
+    assert_select "tr>td", :text => 50.to_s, :count => 2
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "tr>td", :text => "Dispersal".to_s, :count => 2
     # Run the generator again with the --webrat flag if you want to use webrat matchers
@@ -51,6 +50,6 @@ describe "preferences/index" do
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "tr>td", :text => "Timeof Day".to_s, :count => 2
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "tr>td", :text => "".to_s, :count => 2
+    assert_select "tr>td", :text => "a".to_s, :count => 2
   end
 end

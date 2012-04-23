@@ -86,7 +86,7 @@ describe TimeEditsController do
 
       it "redirects to the created time_edit" do
         post :create, {:time_edit => valid_attributes_post}, valid_session
-        response.should redirect_to(TimeEdit.last)
+        response.should redirect_to(time_edits_path)
       end
     end
 
@@ -128,7 +128,7 @@ describe TimeEditsController do
       it "redirects to the time_edit" do
         time_edit = TimeEdit.create! valid_attributes
         put :update, {:id => time_edit.to_param, :time_edit => valid_attributes_post}, valid_session
-        response.should redirect_to(time_edit)
+        response.should redirect_to(time_edits_path)
       end
     end
 

@@ -4,23 +4,22 @@ CS169CampusScheduler::Application.routes.draw do
   resources :preferences
 
   resources :time_off_requests
+
   resources :time_edits
 
   resources :substitutions
 
-  resources :entries, :except => :show
-
-  resources :labs
-
   resources :calendars
-
-  #resources :users
 
   match 'logout' => 'users#logout', :as => :logout
   scope '/admin' do
     resources :periods
     resources :users
+<<<<<<< HEAD
     resources :groups
+=======
+    resources :labs  
+>>>>>>> 005117369ecb9edb4faf4f65320558c8fc6d45ed
     match '/calendars' => 'calendars#admin'
   end
 
