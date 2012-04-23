@@ -14,4 +14,17 @@
   %b Initials:
   = @user.initials
 
+%p
+  %b Groups user is in:
+  %br
+  - @groups.each do |group|
+    = link_to "#{group.name}", group
+    = " ["
+    = link_to "remove", :controller => "users", :action => "removeGroup", :user_id => @user.id, :group_id => group.id
+    ]
+    %br
+
+
 = link_to 'Edit', edit_user_path(@user)
+\|
+= link_to "Add to group", "/admin/users/#{@user.id}/add"

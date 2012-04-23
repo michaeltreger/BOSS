@@ -1,4 +1,6 @@
 CS169CampusScheduler::Application.routes.draw do
+  resources :groups
+
   resources :preferences
 
   resources :time_off_requests
@@ -18,12 +20,18 @@ CS169CampusScheduler::Application.routes.draw do
   scope '/admin' do
     resources :periods
     resources :users
+    resources :groups
     match '/calendars' => 'calendars#admin'
   end
 
   match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'
   match "/changeAdmin" => "users#changeAdmin"
   match "/test_setuser/:id" => "users#test_setuser"
+  match "/admin/groups/:id/add" => "groups#addUsers"
+  put "/admin/groups/:id/add" => "groups#updateUsers"
+  match "/admin/users/:user_id/Groups/:group_id/remove" => "users#removeGroup"
+  match "/admin/users/:id/add" => "users#addGroup"
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -1,0 +1,23 @@
+%h1 Listing groups
+
+%table
+  %tr
+    %th Name
+    %th Type
+    %th Hour limit
+    %th
+    %th
+    %th
+
+  - @groups.each do |group|
+    %tr
+      %td= group.name
+      %td= group.group_type
+      %td= group.hour_limit
+      %td= link_to 'Show', group
+      %td= link_to 'Edit', edit_group_path(group)
+      %td= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Group', new_group_path

@@ -14,3 +14,6 @@ Given /^the following users exist:$/ do |users_table|
   end
 end
 
+When /^I select "([^"]*)" from the users page$/ do |arg1|
+    visit "/admin/users/#{User.find_by_name(arg1).id}"
+end

@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @group.name
+%p
+  %b Type:
+  = @group.group_type
+%p
+  %b Hour limit:
+  = @group.hour_limit
+
+%p
+  %b Users in group:
+  %br
+  - @users.each do |user|
+    = "#{user.name} (#{user.initials})"
+    %br
+
+= link_to 'Edit', edit_group_path(@group)
+\|
+= link_to 'Add Users', "/admin/groups/#{@group.id}/add"
+\|
+= link_to 'Back', groups_path

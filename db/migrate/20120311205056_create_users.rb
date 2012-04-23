@@ -14,7 +14,6 @@ class CreateUsers < ActiveRecord::Migration
       t.references :preference
       t.references :entry
       t.references :lab
-      t.references :group
       t.references :lab_users
 
       t.timestamps

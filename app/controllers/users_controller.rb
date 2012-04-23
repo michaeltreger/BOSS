@@ -19,6 +19,7 @@ class UsersController < ApplicationController
   def show
     #flash[:notice] = "You are logged in as #{ldapparams[0][:givenname][0]} #{ldapparams[0][:sn][0]}."
     @user = User.find(params[:id])
+    @groups = @user.groups
 
     respond_to do |format|
       format.html # show.html.erb
@@ -81,6 +82,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
+      if not params[:user][:groups].nil?
+        @user.groups << Group.find(params[:user][:groups])
+        params[:user].delete :groups
+      end
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :ok }
@@ -105,6 +110,25 @@ class UsersController < ApplicationController
 
   def logout
     CASClient::Frameworks::Rails::Filter.logout(self)
+  end
+
+  def removeGroup
+    @user = User.find(params[:user_id])
+    @group = Group.find(params[:group_id])
+    
+    @user.groups.delete(@group)
+    @group.users.delete(@user)
+
+    @user.save!
+    @group.save!
+
+    redirect_to @user
+  end
+  
+  def addGroup
+    @user = User.find(params[:id])
+    @groups = Group.all()
+
   end
 
 end

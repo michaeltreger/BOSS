@@ -44,6 +44,8 @@
                             = link_to "Admin Calendars", '/admin/calendars'
                           %li
                             = link_to "View Users", users_path
+                          %li
+                            = link_to "View Groups", groups_path
 
                   %li
                     = link_to "My Calendars", calendars_path
@@ -61,17 +63,18 @@
                         = link_to "New Time Edit", new_time_edit_path
                       %li
                         = link_to "View Time Edits", time_edits_path
-                  - if @current_user.isAdmin?
-                    %li
-                      = link_to "Time Off Requests", time_off_requests_path
-                  - else
-                    %li
-                      = link_to "Time Off Requests", time_off_requests_path
-                      %ul
-                        %li
-                          = link_to "New Request", new_time_off_request_path
-                        %li
-                          = link_to "View Current Requests", time_off_requests_path
+                  - if not @current_user.nil?
+                    - if @current_user.isAdmin?
+                      %li
+                        = link_to "Time Off Requests", time_off_requests_path
+                    - else
+                      %li
+                        = link_to "Time Off Requests", time_off_requests_path
+                        %ul
+                          %li
+                            = link_to "New Request", new_time_off_request_path
+                          %li
+                            = link_to "View Current Requests", time_off_requests_path
                 #addon
               
               #contentcol
@@ -90,12 +93,13 @@
                   = yield
 
 %h4 DEBUG THINGS
-- if @current_user.user_type
-  = "Current User Type is " + @current_user.user_type.to_s
-- else
-  = "Current User Type is nil"
-= form_tag ('/changeAdmin') do
-  = number_field_tag(:user_type)
-  = submit_tag("Change User Type")                    
-= session[:cas_user]                    
+- if not @current_user.nil?
+  - if @current_user.user_type
+    = "Current User Type is " + @current_user.user_type.to_s
+  - else
+    = "Current User Type is nil"
+  = form_tag ('/changeAdmin') do
+    = number_field_tag(:user_type)
+    = submit_tag("Change User Type")                    
+  = session[:cas_user]                    
                     

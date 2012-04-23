@@ -4,10 +4,11 @@ class User < ActiveRecord::Base
   has_many :preference
   belongs_to :entry
   belongs_to :lab
-  belongs_to :group
+  has_many :group_users
+  has_many :groups, :through => :group_users
   validates_presence_of :name
-  validates_presence_of :user_type, :if => :approved?
-  validates_presence_of :initials, :if => :approved?
+  #validates_presence_of :user_type
+  #validates_presence_of :initials
 
   ADMIN = 0
   EMPLOYEE = 1

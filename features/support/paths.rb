@@ -32,6 +32,11 @@ module NavigationHelpers
     #
     #   when /^(.*)'s profile page$/i
     #     user_profile_path(User.find_by_login($1))
+    
+    when /^the "Users" page$/
+        '/admin/users/'
+    when /^the "Groups" page$/
+        '/admin/groups/'
 
     else
       begin
