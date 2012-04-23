@@ -21,6 +21,7 @@ require 'spec_helper'
 describe SubstitutionsController do
 
   before(:each) do
+    @my_group = Group.create!(:group_type => 1, :hour_limit => 20, :description => 'cs169', :created at => '2012-01-01T00:00:00Z')
     @me = User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
     @other = User.create!(:user_type => 1, :name => 'Other', :approved => 'true', :initials => 'O')
     @my_calendar = Calendar.create!(:calendar_type => 1, :name => 'my_calendar', :user_id => @me.id)

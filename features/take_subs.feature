@@ -1,4 +1,4 @@
-Feature: Take Shifts
+Feature: Take Substitutions
   As a student
   I want to take substitutions from other students
   So that I can add shifts to my schedule
