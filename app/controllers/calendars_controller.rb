@@ -60,7 +60,8 @@ class CalendarsController < ApplicationController
         results = {}
         results[:start_date] = @calendar.period.start_date
         results[:end_date] = @calendar.period.end_date
-        events = @calendar.entries(:select=>[:id, :start_time, :end_time, :description, :entry_type])
+
+        events = @calendar.entries.select([:id, :start_time, :end_time, :description, :entry_type])
         if @calendar.availability?
           this_week = Time.now.beginning_of_week
           events.each do |e|
@@ -71,10 +72,12 @@ class CalendarsController < ApplicationController
           results[:end_date] = this_week + 6.days
         end
         results[:events] = events
+
         if @current_user.id != @calendar.owner or @calendar.shift?
           results[:read_only] = "true"
         end
-       render json: results
+
+        render json: results
       end
     end
   end
