@@ -18,4 +18,12 @@ class User < ActiveRecord::Base
     user_type == ADMIN
   end
   
+  def availability_calendar(period_id)
+    calendars.where(:calendar_type=>Calendar::AVAILABILITY, :period_id=>period_id).first
+  end
+  
+  def shift_calendar(period_id)
+    calendars.where(:calendar_type=>Calendar::SHIFTS, :period_id=>period_id).first
+  end
+
 end

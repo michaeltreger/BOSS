@@ -2,6 +2,11 @@ class Period < ActiveRecord::Base
   has_many :calendars, :dependent => :destroy
   has_many :preferences, :dependent => :destroy
 
+  def self.current
+    now = Time.now
+    where(:visible=>true).where("start_date <= '#{now}'").where("end_date >= '#{now}'").first
+  end
+
   def create_calendars
     # TODO transactions?
     User.all.each do |user|
