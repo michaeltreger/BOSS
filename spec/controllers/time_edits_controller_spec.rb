@@ -21,7 +21,8 @@ require 'spec_helper'
 describe TimeEditsController do
   before(:each) do
       @user = User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
-      @calendar = Calendar.create!(:user_id => @user.id, :name => "#{@user.name}'s calendar",:calendar_type => 1)
+      @period = Period.create(:start_date=>DateTime.parse("Jan 20, 2012"), :end_date=>DateTime.parse("May 20, 2012"), :name=>"Spring 2012", :visible=>true)
+      @calendar = Calendar.create!(:user_id => @user.id, :name => "#{@user.name}'s calendar",:calendar_type => 1, :period_id=>@period.id)
   end
 
   # This should return the minimal set of attributes required to create a valid
@@ -32,7 +33,7 @@ describe TimeEditsController do
   end
   
   def valid_attributes_post
-    {:calendar_id => @calendar.id, :start_time => Time.now - 2.hours, :duration => 1}
+    {:start_time => Time.now - 2.hours, :duration => 1}
   end
   
   def valid_session
