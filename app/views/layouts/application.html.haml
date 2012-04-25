@@ -87,8 +87,9 @@
                           %li
                             = link_to "View Current Requests", time_off_requests_path
                 #addon
-                  <b>Current Period</b> <BR>
-                  = @current_period.name
+                  - if @current_period
+                    <b>Current Period</b> <BR>
+                    = @current_period.name
               #contentcol
                 #section
                   #section-txt
