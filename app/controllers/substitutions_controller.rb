@@ -157,14 +157,24 @@ class SubstitutionsController < ApplicationController
 #          times += entry.duration
 #        end
 #      end
-      new_hours = 0;
+      new_hours = 0
+      untaken_subs = {}
+      error_message = "The following subs could not be taken due to schedule conflicts:"
       taken_subs.each_pair do |k,v|
         if v == "1"
           currSub = Substitution.find(k)
           currEntry = currSub.entry
-          new_hours += currEntry.duration
+          if @current_user.isAdmin? || (targetCalendar.canAdd(currEntry))
+            new_hours += currEntry.duration
+          else
+            untaken_subs[k] = v
+            taken_subs.delete(k)
+            error message << "\n"
+            error_message << (Substitution.find(k)).description
+          end
         end
       end
+
       if (targetCalendar.work_hours + new_hours) > 20
         flash[:error] = 'Exceed hour limit!'
       else
@@ -179,7 +189,11 @@ class SubstitutionsController < ApplicationController
             Substitution.delete(k)
           end
         end
-        flash[:notice] = 'Successfully took/assigned substitution(s)!'
+        if untaken_subs.size == 0
+          flash[:notice] = 'Successfully took/assigned substitution(s)!'
+        else
+          flash[:error] = error_message
+        end
       end
     end
     respond_to do |format|
