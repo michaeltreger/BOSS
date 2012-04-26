@@ -59,14 +59,14 @@ $(document).ready(function() {
       timezone_offset = new Date().getTimezoneOffset();
       timezone_offset = 0;
       //alert(event.start_time);
-      event.start_time = Date.parse(event.start_time).add(-timezone_offset).minutes().add(-2).hours();
-      event.end_time = Date.parse(event.end_time).add(-timezone_offset).minutes().add(-2).hours();
+      //event.start_time = Date.parse(event.start_time).add(-timezone_offset).minutes().add(-2).hours();
+      //event.end_time = Date.parse(event.end_time).add(-timezone_offset).minutes().add(-2).hours();
       //alert(event.start_time);
    }
    
    function convertTimesOut(event) {
-      event.start_time = event.start_time.add(2).hours();
-      event.end_time = event.end_time.add(2).hours();
+      //event.start_time = event.start_time.add(2).hours();
+      //event.end_time = event.end_time.add(2).hours();
       //alert(event.start_time);
    }
    
@@ -80,13 +80,13 @@ $(document).ready(function() {
         allowCalEventOverlap : false,
         overlapEventsSeparate: true,
         firstDayOfWeek : 1,
-        businessHours :{start_time: 6, end_time: 24, limitDisplay: true },
+        businessHours :{start_time: 0, end_time: 24, limitDisplay: true },
         daysToShow : 7,
         title: function(daysToShow) {
            return daysToShow == 1 ? '%date%' : '%start% - %end%';
         },
         height : function($calendar) {
-           return 760;//$(window).height() - $("h1").outerHeight() - 1;
+           return 1100;//$(window).height() - $("h1").outerHeight() - 1;
         },
         eventRender : function(calEvent, $event) {
            if (calEvent.entry_type=== "rather_not") {

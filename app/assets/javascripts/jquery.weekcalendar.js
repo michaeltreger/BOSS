@@ -1902,7 +1902,6 @@
         * find the hour (12 hour day) for a given hour index
         */
       _hourForIndex: function(index) {
-          index = (index+2) % 24;
           if (index === 0) { //midnight
             return 12;
           } else if (index < 13) { //am
@@ -1913,7 +1912,6 @@
       },
 
       _24HourForIndex: function(index) {
-          index = (index+2) % 24;
           if (index === 0) { //midnight
             return '00:00';
           } else if (index < 10) {
@@ -1924,7 +1922,6 @@
       },
 
       _amOrPm: function(hourOfDay) {
-          hourOfDay = (hourOfDay+2) %24;
           return hourOfDay < 12 ? 'AM' : 'PM';
       },
 
@@ -2138,7 +2135,6 @@
         * http://jacwright.com/projects/javascript/date_format
         */
       _formatDate: function(date, format) {
-        date = new Date(date.getTime() + MILLIS_IN_2_HOURS);
         var returnStr = '';
         for (var i = 0; i < format.length; i++) {
           var curChar = format.charAt(i);
@@ -2611,7 +2607,6 @@
       }
     });
 
-    var MILLIS_IN_2_HOURS = 7200000;
     var MILLIS_IN_DAY = 86400000;
     var MILLIS_IN_WEEK = MILLIS_IN_DAY * 7;
 
