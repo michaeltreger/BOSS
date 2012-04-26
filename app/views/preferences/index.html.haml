@@ -1,4 +1,4 @@
-%h1 Listing preferences
+-@page_title = "Preferences"
 
 %table
   %tr
@@ -9,10 +9,9 @@
     %th Hours pref
     %th Hours day
     %th Dispersal
-    %th Timeof week
-    %th Timeof day
+    %th Time of week
+    %th Time of day
     %th Other
-    %th
     %th
     %th
 
@@ -29,7 +28,6 @@
       %td= preference.timeof_day
       %td= preference.other
       %td= link_to 'Show', preference
-      %td= link_to 'Edit', edit_preference_path(preference)
       %td= link_to 'Destroy', preference, :confirm => 'Are you sure?', :method => :delete
 
 %br

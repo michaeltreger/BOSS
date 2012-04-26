@@ -26,4 +26,8 @@ class User < ActiveRecord::Base
     calendars.where(:calendar_type=>Calendar::SHIFTS, :period_id=>period.id).first
   end
 
+  def current_preference(period)
+    preference.where(:period_id=>period.id).first
+  end
+
 end
