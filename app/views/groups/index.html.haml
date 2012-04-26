@@ -1,4 +1,7 @@
-%h1 Listing groups
+- if @current_user.isAdmin?
+  %h1 Listing groups
+- else
+  %h1 Listing my groups
 
 %table
   %tr
@@ -6,18 +9,21 @@
     %th Type
     %th Hour limit
     %th
-    %th
-    %th
+    - if @current_user.isAdmin?
+      %th
+      %th
 
   - @groups.each do |group|
     %tr
       %td= group.name
       %td= group.group_type
       %td= group.hour_limit
-      %td= link_to 'Show', group
-      %td= link_to 'Edit', edit_group_path(group)
-      %td= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete
+      %td= link_to 'Show', "/groups/#{group.id}"
+      - if @current_user.isAdmin?
+        %td= link_to 'Show', group
+        %td= link_to 'Edit', edit_group_path(group)
+        %td= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete
 
 %br
-
-= link_to 'New Group', new_group_path
+- if @current_user.isAdmin?
+  = link_to 'New Group', new_group_path

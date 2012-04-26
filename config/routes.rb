@@ -17,6 +17,7 @@ CS169CampusScheduler::Application.routes.draw do
     resources :groups
     resources :labs  
     match '/calendars' => 'calendars#admin'
+    match '/init'  => "users#initAdmin"
   end
 
   match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'
@@ -26,7 +27,9 @@ CS169CampusScheduler::Application.routes.draw do
   put "/admin/groups/:id/add" => "groups#updateUsers"
   match "/admin/users/:user_id/Groups/:group_id/remove" => "users#removeGroup"
   match "/admin/users/:id/add" => "users#addGroup"
-  match "/group/:id" => "groups#show"
+  match "/groups/:id" => "groups#show"
+  match "/users/:id" => "users#show"
+  match "/groups" => "groups#index"
 
 
   # The priority is based upon order of creation:

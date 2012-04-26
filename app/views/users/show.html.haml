@@ -19,10 +19,13 @@
   %b Groups user is in:
   %br
   - @groups.each do |group|
-    = link_to "#{group.name}", group
-    = " ["
-    = link_to "remove", :controller => "users", :action => "removeGroup", :user_id => @user.id, :group_id => group.id
-    ]
+    - if @current_user.isAdmin?
+      = link_to "#{group.name}", group
+      = " ["
+      = link_to "remove", :controller => "users", :action => "removeGroup", :user_id => @user.id, :group_id => group.id
+      ]
+    - else
+      = link_to "#{group.name}", "/groups/#{group.id}"
     %br
 
 = link_to 'Availability Calendar', @user.availability_calendar(@current_period)
@@ -30,7 +33,8 @@
 = link_to 'Shift Calendar', @user.shift_calendar(@current_period)
 \|
 = link_to 'Preferences', @user.current_preference(@current_period)
-\|
-= link_to 'Edit', edit_user_path(@user)
-\|
-= link_to "Add to group", "/admin/users/#{@user.id}/add"
+- if @current_user.isAdmin?
+  \|
+  = link_to 'Edit', edit_user_path(@user)
+  \|
+  = link_to "Add to group", "/admin/users/#{@user.id}/add"

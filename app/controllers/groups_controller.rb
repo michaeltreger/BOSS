@@ -2,7 +2,11 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    @groups = Group.all
+    if @current_user.isAdmin?
+        @groups = Group.all
+    else
+        @groups = @current_user.groups
+    end
 
     respond_to do |format|
       format.html # index.html.erb

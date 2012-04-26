@@ -3,6 +3,14 @@ require 'net/ldap'
 
 class UsersController < ApplicationController
 
+  skip_before_filter :set_current_user, :only => 'initAdmin'
+  skip_before_filter :set_period, :only => 'initAdmin'
+  skip_before_filter :check_login, :only => 'initAdmin'
+  skip_before_filter :check_admin, :only => 'initAdmin'
+  skip_before_filter CASClient::Frameworks::Rails::Filter, :only => 'initAdmin'
+  skip_before_filter :check_init, :only => 'create'
+
+
   # GET /users
   # GET /users.json
   def index
@@ -155,4 +163,12 @@ class UsersController < ApplicationController
 
   end
 
+  def initAdmin
+    @user = User.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @user }
+    end
+  end
 end

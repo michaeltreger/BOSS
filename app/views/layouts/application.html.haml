@@ -34,7 +34,7 @@
               #navcol
                 %ul#menu-flyout
                   - if not @current_user.nil?
-                    - if @current_user.user_type == 0
+                    - if @current_user.isAdmin?
                       %li
                         = link_to "Admin", users_path
                         %ul
@@ -86,6 +86,8 @@
                             = link_to "New Request", new_time_off_request_path
                           %li
                             = link_to "View Current Requests", time_off_requests_path
+                      %li
+                        = link_to "My Groups", '/groups'
                 #addon
                   - if @current_period
                     <b>Current Period</b> <BR>

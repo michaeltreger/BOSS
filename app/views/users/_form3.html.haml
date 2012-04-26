@@ -5,12 +5,16 @@
       %ul
         - @user.errors.full_messages.each do |msg|
           %li= msg
+
+  %p
+    %li Before you begin using this website, you must create an initial administrator account.
+    %li This page will help you set up your initial administrator account.
+    %li Enter the berkeley UID associated with the site administrator, and modify the name, and initials as you see fit.
   .field
-    = f.label :user_type
-    = f.number_field :user_type
+    = f.hidden_field 'user_type', :value => '-1'
   .field
     = f.label :name
-    = f.text_field :name
+    = f.text_field :name, :value => "Root Admin"
   .field
     = f.label :email
     = f.text_field :email
@@ -19,9 +23,10 @@
     = f.text_field :phone
   .field
     = f.label :initials
-    = f.text_field :initials
+    = f.text_field :initials, :value => "ROOT"
   .field
-    = f.label :calid
+    = f.label "Berkeley UID"
     = f.text_field :cas_user
   .actions
     = f.submit 'Save'
+

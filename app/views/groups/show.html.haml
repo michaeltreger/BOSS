@@ -14,11 +14,16 @@
   %b Users in group:
   %br
   - @users.each do |user|
-    = "#{user.name} (#{user.initials})"
+    - if @current_user.isAdmin?
+      = link_to "#{user.name} (#{user.initials})", user
+    -else
+      = link_to "#{user.name} (#{user.initials})", "/users/#{user.id}"
     %br
-
-= link_to 'Edit', edit_group_path(@group)
-\|
-= link_to 'Add Users', "/admin/groups/#{@group.id}/add"
-\|
-= link_to 'Back', groups_path
+- if @current_user.isAdmin?
+  = link_to 'Edit', edit_group_path(@group)
+  \|
+  = link_to 'Add Users', "/admin/groups/#{@group.id}/add"
+  \|
+  = link_to 'Back', groups_path
+- else
+  = link_to 'Back', '/'

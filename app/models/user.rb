@@ -8,14 +8,18 @@ class User < ActiveRecord::Base
   has_many :group_users
   has_many :groups, :through => :group_users
   validates_presence_of :name
-  #validates_presence_of :user_type
-  #validates_presence_of :initials
+  if not Rails.env.test?
+    validates_presence_of :user_type
+    validates_presence_of :initials
+    validates_presence_of :cas_user
+  end
 
-  ADMIN = 0
+  ADMINISTRATOR = -1
+  SCHEDULER = 0
   EMPLOYEE = 1
 
   def isAdmin?
-    user_type == ADMIN
+    user_type == ADMINISTRATOR or user_type == SCHEDULER
   end
   
   def availability_calendar(period)

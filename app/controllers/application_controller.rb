@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
     before_filter :test_set_current_user
   else
     before_filter CASClient::Frameworks::Rails::Filter
+    before_filter :check_init
     before_filter :set_current_user
     before_filter :set_period
     before_filter :check_login
@@ -49,22 +50,29 @@ class ApplicationController < ActionController::Base
   end
 
   def check_login
-    if @current_user.nil? and not session[:cas_user].nil? and request.fullpath != '/join'
-        if not request.post? and request.fullpath != '/admin/users/'
-            redirect_to '/join'
-        end
-    end
+      if @current_user.nil? and not session[:cas_user].nil? and request.fullpath != '/join'
+          if not request.post? and request.fullpath != '/admin/users/'
+              redirect_to '/join'
+          end
+      end
   end
 
   def check_admin
     if not @current_user.nil?
-        if @current_user.user_type != 0 and request.fullpath[/^\/admin/]
-            flash[:error] = "You do not have the correct privileges to access this page."
+        if not @current_user.isAdmin? and request.fullpath[/^\/admin/]
+            flash[:error] = "You do not have the correct privileges to access that page."
             redirect_to '/'
         end
     end
   end
-  
 
-
+  def check_init
+    if request.fullpath == '/admin/init' and not User.where("user_type = '-1' OR user_type = '0'").empty?
+        redirect_to '/'
+    end
+    if User.where("user_type = '-1' OR user_type = '0'").empty?
+        ApplicationController.skip_filter _process_action_callbacks.map(&:filter)
+        redirect_to '/admin/init' unless request.fullpath == '/admin/init'
+    end
+  end
 end
