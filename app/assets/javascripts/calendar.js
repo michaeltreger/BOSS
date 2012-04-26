@@ -7,24 +7,33 @@ $(document).ready(function() {
    $('#submit_calendar').bind('click', submit);
    
    function submit() {
-      finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
-      finalizedEvents.map(convertTimesOut);
-      
-      json = JSON.stringify(finalizedEvents);
-      //alert(json);
-      $.ajax({
-        type: "PUT",
-        url: window.location.pathname+".json",
-        data: {"calendar_updates": json},
-        dataType: "json",
-        success: function(data, textStatus, XMLHttpRequest){
-           //alert("Succeeded");
-        },
-        error: function(data, textStatus, XMLHttpRequest){
-           //eval('('+responseText+')');
-           //alert(data);
-        }
-      });
+      if (validate()) {
+        finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
+        finalizedEvents.map(convertTimesOut);
+        
+        json = JSON.stringify(finalizedEvents);
+        //alert(json);
+        $.ajax({
+          type: "PUT",
+          url: window.location.pathname+".json",
+          data: {"calendar_updates": json},
+          dataType: "json",
+          success: function(data, textStatus, XMLHttpRequest){
+             //alert("Succeeded");
+          },
+          error: function(data, textStatus, XMLHttpRequest){
+             //eval('('+responseText+')');
+             //alert(data);
+          }
+        });
+      }
+   }
+   
+   function validate() {
+     finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
+     $.each(finalizedEvents, function (i, event) {
+        
+     });
    }
    
    getEventData();
@@ -205,9 +214,13 @@ $(document).ready(function() {
                     calEvent.end_time = new Date(endField.val());
                     calEvent.entry_type= entry_typeField.val();
                     calEvent.description = descriptionField.val();
-
-                    $calendar.weekCalendar("updateEvent", calEvent);
-                    $dialogContent.dialog("close");
+                    
+                    if (calEvent.entry_type === "obligation" && calEvent.description === "") {
+                      descriptionField.css("backgroundColor", "#c12")
+                    } else {
+                      $calendar.weekCalendar("updateEvent", calEvent);
+                      $dialogContent.dialog("close");               
+                    }
                  },
                  "delete" : function() {
                     $calendar.weekCalendar("removeEvent", calEvent.id);
@@ -241,6 +254,7 @@ $(document).ready(function() {
    function resetForm($dialogContent) {
       $dialogContent.find("input").val("");
       $dialogContent.find("textarea").val("");
+      $dialogContent.find("textarea").css("");
    }
 
    /*

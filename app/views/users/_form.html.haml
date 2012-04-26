@@ -7,7 +7,7 @@
           %li= msg
   .field
     = f.label :user_type
-    = f.select(:user_type, [[:Admin, 0], [:Sched, 1], [:Employeed, 2]])
+    = f.select(:user_type, User.types)
   .field
     = f.label :name
     = f.text_field :name
