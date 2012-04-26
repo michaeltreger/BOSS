@@ -8,9 +8,9 @@ class ApplicationController < ActionController::Base
   if Rails.env.test?
     before_filter :test_set_current_user
   else
-    #before_filter CASClient::Frameworks::Rails::Filter
+    before_filter CASClient::Frameworks::Rails::Filter
     before_filter :set_current_user
-    #before_filter :set_period_and_calendars
+    before_filter :set_period_and_calendars
     before_filter :check_login
     before_filter :check_admin
   end
