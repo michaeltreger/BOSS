@@ -159,6 +159,13 @@ $(document).ready(function() {
                        calEvent.end_time = new Date(endField.val());
                        calEvent.entry_type = entry_typeField.val();
                        calEvent.description = descriptionField.val();
+                       if (calEvent.entry_type === "obligation" && calEvent.description === "") {
+                         document.getElementById("description_label").innerHTML = "Description (Required)";
+                         document.getElementById("description_label").css("backgroundColor", "#f23");
+                       } else {
+                         $calendar.weekCalendar("updateEvent", calEvent);
+                         $dialogContent.dialog("close");
+                       }
 
                        $calendar.weekCalendar("removeUnsavedEvents");
                        $calendar.weekCalendar("updateEvent", calEvent);
@@ -216,10 +223,10 @@ $(document).ready(function() {
                     calEvent.description = descriptionField.val();
                     
                     if (calEvent.entry_type === "obligation" && calEvent.description === "") {
-                      descriptionField.css("backgroundColor", "#c12")
+                      document.getElementById("description_label").innerHTML = "Description (Required)";
                     } else {
                       $calendar.weekCalendar("updateEvent", calEvent);
-                      $dialogContent.dialog("close");               
+                      $dialogContent.dialog("close");
                     }
                  },
                  "delete" : function() {
@@ -254,7 +261,7 @@ $(document).ready(function() {
    function resetForm($dialogContent) {
       $dialogContent.find("input").val("");
       $dialogContent.find("textarea").val("");
-      $dialogContent.find("textarea").css("");
+      document.getElementById("description_label").innerHTML = "Description";
    }
 
    /*
