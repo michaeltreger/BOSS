@@ -19,4 +19,12 @@ Period.create(:start_date=>DateTime.parse("Jan 20, 2012"), :end_date=>DateTime.p
 Period.find(1).create_calendars
 Period.find(1).save!
 
-
+monday = Time.now.beginning_of_week
+Calendar.find_all_by_calendar_type(Calendar::SHIFTS).each do |c|
+  c.entries << Entry.create(:entry_type=>:shift, :description=>"MMF", :start_time=>monday+10.hours, :end_time=>monday+15.hours)
+  c.entries << Entry.create(:entry_type=>:shift, :description=>"MMF", :start_time=>monday+1.day+10.hours, :end_time=>monday+1.day+15.hours)
+  c.entries << Entry.create(:entry_type=>:shift, :description=>"MMF", :start_time=>monday+2.days+14.hours, :end_time=>monday+2.days+20.hours)
+  c.entries << Entry.create(:entry_type=>:shift, :description=>"MMF", :start_time=>monday+3.days+9.hours, :end_time=>monday+3.days+15.hours)
+  c.entries << Entry.create(:entry_type=>:shift, :description=>"MMF", :start_time=>monday+4.days+17.hours, :end_time=>monday+4.days+22.hours)
+  c.save!
+end

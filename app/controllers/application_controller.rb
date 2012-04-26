@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   else
     before_filter CASClient::Frameworks::Rails::Filter
     before_filter :set_current_user
-    before_filter :set_period_and_calendars
+    before_filter :set_period
     before_filter :check_login
     before_filter :check_admin
   end
@@ -20,10 +20,8 @@ class ApplicationController < ActionController::Base
     @current_user = User.find_by_id(session[:test_user_id])
   end
 
-  def set_period_and_calendars
+  def set_period
     @current_period = Period.current
-    @current_availability = @current_user.availability_calendar(@current_period)
-    @current_workschedule = @current_user.shift_calendar(@current_period)
   end
 
   def set_current_user
@@ -67,5 +65,6 @@ class ApplicationController < ActionController::Base
     end
   end
   
+
 
 end

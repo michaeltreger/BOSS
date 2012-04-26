@@ -24,7 +24,7 @@ class CalendarsController < ApplicationController
   # GET /calendars
   # GET /calendars.json
   def index
-    @user_calendars = Calendar.find_all_by_user_id(@current_user.id)
+    @user_calendars = @current_user.calendars #Calendar.find_all_by_user_id(@current_user.id)
     @acalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::AVAILABILITY}
     @wcalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
     respond_to do |format|
@@ -70,7 +70,12 @@ class CalendarsController < ApplicationController
           end
           results[:start_date] = this_week
           results[:end_date] = this_week + 6.days
+        else
+          events.each do |e|
+            e[:readOnly] = true
+          end
         end
+
         results[:events] = events
 
         if @current_user.id != @calendar.owner or @calendar.shift?
