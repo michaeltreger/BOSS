@@ -70,7 +70,12 @@ class CalendarsController < ApplicationController
           end
           results[:start_date] = this_week
           results[:end_date] = this_week + 6.days
+        else
+          events.each do |e|
+            e[:readOnly] = true
+          end
         end
+
         results[:events] = events
 
         if @current_user.id != @calendar.owner or @calendar.shift?
