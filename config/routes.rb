@@ -1,5 +1,4 @@
 CS169CampusScheduler::Application.routes.draw do
-  resources :groups
 
   resources :preferences
 

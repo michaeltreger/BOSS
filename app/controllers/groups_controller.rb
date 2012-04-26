@@ -62,7 +62,7 @@ class GroupsController < ApplicationController
     respond_to do |format|
       if not params[:group][:users].nil?
         @user =  User.find(params[:group][:users])
-        @group.users << @user unless group.users.include?(@user)
+        @group.users << @user unless @group.users.include?(@user)
         params[:group].delete :users
       end
       if @group.update_attributes(params[:group])
