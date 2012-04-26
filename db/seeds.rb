@@ -5,6 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+group1 = Group.create(:name=>"Test Group", :hour_limit=>100, :description=>"Created for testing")
 User.create(:user_type=>0, :name=>"Michael", :cas_user=>720656, :initials=>"MT", :email=>"michael.treger@gmail.com", :activated => true)
 User.create(:user_type=>0, :name=>"Peter", :cas_user=>760437, :initials=>"PC", :email=>"petercheng00@berkeley.edu", :activated => true)
 User.create(:user_type=>0, :name=>"Su Yan Fang", :cas_user =>967198, :initials=>"SYF", :email=>"sohunew4000@gmail.com", :activated => true)
@@ -13,6 +14,11 @@ User.create(:user_type=>0, :name=>"Rohan", :cas_user=> 883140, :initials=>"RC", 
 User.create(:user_type=>0, :name=>"Richard", :cas_user=> 307909, :initials=>"RX", :email=>"richard@richard.richard", :activated => true)
 User.create(:user_type=>0, :name=>"Chris", :cas_user=>18453, :initials=>"CW", :email=>"chrisw@cafe.berkeley.edu", :activated => true)
 User.create(:user_type=>0, :name=>"Willa", :cas_user=>196233, :initials=>"NC", :email=>"nchan@cafe.berkeley.edu", :activated => true)
+
+User.find(:all).each do |u|
+  group1.users << u
+end
+group1.save!
 
 Lab.create!(:name=>"Moffit", :initials=>"MMF", :max_employees=>4, :min_employees=>1)
 Lab.create!(:name=>"Wheeler", :initials=>"WCF", :max_employees=>3, :min_employees=>1)
