@@ -62,8 +62,14 @@ class GroupsController < ApplicationController
     respond_to do |format|
       if not params[:group][:users].nil?
         @user =  User.find(params[:group][:users])
-        @group.users << @user unless @group.users.include?(@user)
         params[:group].delete :users
+        if @group.users.include?(@user)
+            flash[:error] = "A user may not be added to the same group multiple times."
+            redirect_to @group
+            return
+        else
+            @group.users << @user
+        end
       end
       if @group.update_attributes(params[:group])
         format.html { redirect_to @group, notice: 'Group was successfully updated.' }

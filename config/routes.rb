@@ -26,6 +26,7 @@ CS169CampusScheduler::Application.routes.draw do
   put "/admin/groups/:id/add" => "groups#updateUsers"
   match "/admin/users/:user_id/Groups/:group_id/remove" => "users#removeGroup"
   match "/admin/users/:id/add" => "users#addGroup"
+  match "/group/:id" => "groups#show"
 
 
   # The priority is based upon order of creation:
