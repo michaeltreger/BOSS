@@ -28,10 +28,26 @@
       = link_to "#{group.name}", "/groups/#{group.id}"
     %br
 
-= link_to 'Availability Calendar', @user.availability_calendar(@current_period)
-\|
-= link_to 'Shift Calendar', @user.shift_calendar(@current_period)
-\|
+%p
+  %b Availability Calendars
+  %br
+  - @acalendars.each do |c|
+    - if c.period_id == @current_period.id
+      %b= link_to c.name, calendar_path(c)
+    -else
+      = link_to c.name, calendar_path(c)
+    %br
+%p
+  %b Shift Calendars
+  %br
+  - @wcalendars.each do |c|
+    - if c.period_id == @current_period.id
+      %b= link_to c.name, calendar_path(c)
+    -else
+      = link_to c.name, calendar_path(c)
+    %br
+
+%br
 = link_to 'Preferences', @user.current_preference(@current_period)
 - if @current_user.isAdmin?
   \|

@@ -28,6 +28,8 @@ class UsersController < ApplicationController
     #flash[:notice] = "You are logged in as #{ldapparams[0][:givenname][0]} #{ldapparams[0][:sn][0]}."
     @user = User.find(params[:id])
     @groups = @user.groups
+    @acalendars = @user.calendars.find_all {|c| c.availability?}
+    @wcalendars = @user.calendars.find_all {|c| c.shift?}
 
     respond_to do |format|
       format.html # show.html.erb
