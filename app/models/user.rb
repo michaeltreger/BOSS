@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   end
   validates_uniqueness_of :cas_user
   validates_uniqueness_of :email
+  validates_uniqueness_of :initials
 
   ADMINISTRATOR = -1
   SCHEDULER = 0
