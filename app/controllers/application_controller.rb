@@ -1,10 +1,10 @@
 class ApplicationController < ActionController::Base
+  has_mobile_fu
   protect_from_forgery
 
   helper_method :page_title
   helper_method :current_user
-
-
+  
   if Rails.env.test?
     before_filter :test_set_current_user
   else
@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
     before_filter :check_login
     before_filter :check_admin
   end
+  
 
   def test_set_current_user
     @current_user = User.find_by_id(session[:test_user_id])
@@ -65,5 +66,6 @@ class ApplicationController < ActionController::Base
         end
     end
   end
+  
 
 end
