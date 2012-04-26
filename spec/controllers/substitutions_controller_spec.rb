@@ -21,11 +21,12 @@ require 'spec_helper'
 describe SubstitutionsController do
 
   before(:each) do
-    #@my_group = Group.create!(:group_type => 1, :hour_limit => 20, :description => 'cs169', :created_at => '2012-01-01T00:00:00Z')
+    @my_group = Group.create!(:group_type => 1, :name => 'undergrad', :hour_limit => 20, :description => 'cs169', :created_at => '2012-01-01T00:00:00Z')
+    #@my_group_user = Group_user.create!(:group_id => @my_group.id, :user_id => @me.id, :created_at => '2012-01-01T00:00:00Z')
     @me = User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
     @other = User.create!(:user_type => 1, :name => 'Other', :approved => 'true', :initials => 'O')
-    @my_calendar = Calendar.create!(:calendar_type => 1, :name => 'my_calendar', :user_id => @me.id)
-    @other_calendar = Calendar.create!(:calendar_type => 1, :name => 'other_calendar', :user_id => @other.id)
+    @my_calendar = Calendar.create!(:calendar_type => 0, :name => 'my_calendar', :user_id => @me.id)
+    @other_calendar = Calendar.create!(:calendar_type => 0, :name => 'other_calendar', :user_id => @other.id)
     session[:test_user_id] = @me.id
     @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => '8:00am', :end_time => '12:00pm')
     @other_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => '2:00pm', :end_time => '4:00pm')

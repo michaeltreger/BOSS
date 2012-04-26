@@ -175,7 +175,18 @@ class SubstitutionsController < ApplicationController
         end
       end
 
-      if (targetCalendar.work_hours + new_hours) > 20
+      group_users = GroupUser.where(:user_id => targetCalendar.user.id)
+      groups = Array.new(0,Group.new)
+      group_users.each do |group_user|
+        groups << Group.find(group_user.group_id)
+      end
+      hour_limit = groups[0].hour_limit
+      groups.each do |group|
+        if group.hour_limit > hour_limit
+          hour_limit = group.hour_limit
+        end
+      end
+      if (targetCalendar.work_hours + new_hours) > hour_limit
         flash[:error] = 'Exceed hour limit!'
       else
         taken_subs.each_pair do |k,v|
