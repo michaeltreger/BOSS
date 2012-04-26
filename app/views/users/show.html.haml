@@ -23,7 +23,7 @@
       = link_to "#{group.name}", group
       = " ["
       = link_to "remove", :controller => "users", :action => "removeGroup", :user_id => @user.id, :group_id => group.id
-      ]
+      = "]"
     - else
       = link_to "#{group.name}", "/groups/#{group.id}"
     %br
