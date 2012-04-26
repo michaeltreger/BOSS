@@ -1,4 +1,5 @@
 -@page_title = "Users"
+Active Users
 %table
   %tr
     %th Type
@@ -16,9 +17,33 @@
       %td= user.initials
       %td= user.phone
       %td= user.email
-      %td= link_to 'View user page', user
-      %td= link_to 'Edit user', edit_user_path(user)#"/admin/users/edit/#{user.id}"
-      %td= link_to 'Delete user', user, :confirm => 'Are you sure?', :method => :delete
+      %td= link_to 'View user\'s page', user
+      %td= link_to 'Modify user', edit_user_path(user)#"/admin/users/edit/#{user.id}"
+      %td= link_to 'Deactivate user', { :action => "deactivate", :id => user.id }, :confirm => 'Are you sure?'
+
+%br
+
+Deactivated Users
+%table
+  %tr
+    %th Type
+    %th Name
+    %th Initials
+    %th Phone
+    %th Email
+    %th
+    %th
+    %th
+  - @deactivatedUsers.each do |user|
+    %tr
+      %td= user.user_type
+      %td= user.name
+      %td= user.initials
+      %td= user.phone
+      %td= user.email
+      %td= link_to 'View user\'s page', user
+      %td= link_to 'Modify user', edit_user_path(user)#"/admin/users/edit/#{user.id}"
+      %td= link_to 'Activate user', { :action => "activateUser", :id => user.id }
 
 %br
 

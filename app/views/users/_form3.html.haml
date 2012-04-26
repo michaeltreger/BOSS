@@ -13,6 +13,8 @@
   .field
     = f.hidden_field 'user_type', :value => '-1'
   .field
+    = f.hidden_field 'activated', :value => 'true'
+  .field
     = f.label :name
     = f.text_field :name, :value => "Root Admin"
   .field

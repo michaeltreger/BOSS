@@ -9,10 +9,11 @@ class User < ActiveRecord::Base
   has_many :groups, :through => :group_users
   validates_presence_of :name
   if not Rails.env.test?
-    validates_presence_of :user_type
-    validates_presence_of :initials
-    validates_presence_of :cas_user
+    validates_presence_of :user_type, :email, :cas_user
+    validates_presence_of :initials, :if => Proc.new { |user| user.activated? }
   end
+  validates_uniqueness_of :cas_user
+  validates_uniqueness_of :email
 
   ADMINISTRATOR = -1
   SCHEDULER = 0

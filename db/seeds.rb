@@ -5,12 +5,12 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-User.create(:user_type=>0, :name=>"Michael", :cas_user=>720656, :initials=>"MT", :email=>"michael.treger@gmail.com")
-User.create(:user_type=>0, :name=>"Peter", :cas_user=>760437, :initials=>"PC")
-User.create(:user_type=>0, :name=>"Su Yan Fang", :cas_user =>967198, :initials=>"SYF")
-User.create(:user_type=>0, :name=>"Jingwei", :cas_user=> 974333, :initials=>"JQ", :email=>"seven.qi2011@gmail.com")
-User.create(:user_type=>0, :name=>"Rohan", :cas_user=> 883140, :initials=>"RC")
-User.create(:user_type=>0, :name=>"Richard", :cas_user=> 307909, :initials=>"RX")
+User.create(:user_type=>0, :name=>"Michael", :cas_user=>720656, :initials=>"MT", :email=>"michael.treger@gmail.com", :activated => true)
+User.create(:user_type=>0, :name=>"Peter", :cas_user=>760437, :initials=>"PC", :activated => true)
+User.create(:user_type=>0, :name=>"Su Yan Fang", :cas_user =>967198, :initials=>"SYF", :activated => true)
+User.create(:user_type=>0, :name=>"Jingwei", :cas_user=> 974333, :initials=>"JQ", :email=>"seven.qi2011@gmail.com", :activated => true)
+User.create(:user_type=>0, :name=>"Rohan", :cas_user=> 883140, :initials=>"RC", :activated => true)
+User.create(:user_type=>0, :name=>"Richard", :cas_user=> 307909, :initials=>"RX", :activated => true)
 
 Lab.create!(:name=>"Moffit", :initials=>"MMF", :max_employees=>4, :min_employees=>1)
 Lab.create!(:name=>"Wheeler", :initials=>"WCF", :max_employees=>3, :min_employees=>1)
