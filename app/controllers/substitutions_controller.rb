@@ -180,7 +180,7 @@ class SubstitutionsController < ApplicationController
       group_users.each do |group_user|
         groups << Group.find(group_user.group_id)
       end
-      hour_limit = groups[0].hour_limit
+      hour_limit = 20
       groups.each do |group|
         if group.hour_limit > hour_limit
           hour_limit = group.hour_limit
