@@ -13,7 +13,7 @@ class Period < ActiveRecord::Base
 
   def create_calendars
     # TODO transactions?
-    User.all.each do |user|
+    User.find_all_by_user_type(User::EMPLOYEE).each do |user|
       avail_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Availabilities",
                                         :calendar_type=>Calendar::AVAILABILITY)
       shift_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Shifts",
