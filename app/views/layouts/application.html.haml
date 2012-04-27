@@ -53,7 +53,7 @@
                     %ul
                       - if @current_availability
                         %li
-                          = link_to "Availability Calendar", calendar_path(@current_availability)
+                          = link_to "Current Availability Calendar", calendar_path(@current_availability)
                       - if @current_workschedule
                         %li
                           = link_to "Current Work Calendar", calendar_path(@current_workschedule)
@@ -106,15 +106,4 @@
                       %h2= flash[:notice]
                 
                   = yield
-
-%h4 DEBUG THINGS
-- if not @current_user.nil?
-  - if @current_user.user_type
-    = "Current User Type is " + @current_user.user_type.to_s
-  - else
-    = "Current User Type is nil"
-  = form_tag ('/changeAdmin') do
-    = number_field_tag(:user_type)
-    = submit_tag("Change User Type")                    
-  = session[:cas_user]                    
                     

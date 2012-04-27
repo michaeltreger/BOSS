@@ -23,34 +23,44 @@
       = link_to "#{group.name}", group
       = " ["
       = link_to "remove", :controller => "users", :action => "removeGroup", :user_id => @user.id, :group_id => group.id
-      ]
+      = "]"
     - else
       = link_to "#{group.name}", "/groups/#{group.id}"
     %br
 
-%p
-  %b Availability Calendars
-  %br
-  - @acalendars.each do |c|
-    - if c.period_id == @current_period.id
-      %b= link_to c.name, calendar_path(c)
-    -else
-      = link_to c.name, calendar_path(c)
+- if not @current_period.nil?
+  %p
+    %b Availability Calendars
     %br
-%p
-  %b Shift Calendars
-  %br
-  - @wcalendars.each do |c|
-    - if c.period_id == @current_period.id
-      %b= link_to c.name, calendar_path(c)
-    -else
-      = link_to c.name, calendar_path(c)
+    - @acalendars.each do |c|
+      - if c.period_id == @current_period.id
+        %b= link_to c.name, calendar_path(c)
+      -else
+        = link_to c.name, calendar_path(c)
+      %br
+  %p
+    %b Shift Calendars
     %br
+    - @wcalendars.each do |c|
+      - if c.period_id == @current_period.id
+        %b= link_to c.name, calendar_path(c)
+      -else
+        = link_to c.name, calendar_path(c)
+      %br
+  %p
+    %b Preferences
+    %br
+    - @preferences.each do |p|
+      - if p.period_id == @current_period.id
+        %b= link_to Period.find(p.period_id).name, preference_path(p)
+      -else
+        = link_to Period.find(p.period_id).name, preference_path(p)
+      %br
 
-%br
-= link_to 'Preferences', @user.current_preference(@current_period)
 - if @current_user.isAdmin?
-  \|
   = link_to 'Edit', edit_user_path(@user)
   \|
   = link_to "Add to group", "/admin/users/#{@user.id}/add"
+  \|
+  = link_to "Delete user", @user, :confirm => 'Are you sure?', :method => :delete
+

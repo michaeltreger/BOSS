@@ -14,7 +14,8 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.find_all_by_activated(true)
+    @deactivatedUsers = User.find_all_by_activated(false)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -30,6 +31,7 @@ class UsersController < ApplicationController
     @groups = @user.groups
     @acalendars = @user.calendars.find_all {|c| c.availability?}
     @wcalendars = @user.calendars.find_all {|c| c.shift?}
+    @preferences = @user.preference
 
     respond_to do |format|
       format.html # show.html.erb
@@ -167,6 +169,24 @@ class UsersController < ApplicationController
 
   def initAdmin
     @user = User.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @user }
+    end
+  end
+
+  def deactivate
+    @user = User.find(params[:id])
+    
+    @user.activated = false
+    @user.initials = nil
+    @user.save
+    redirect_to users_path
+  end
+
+  def activateUser
+    @user = User.find(params[:id])
 
     respond_to do |format|
       format.html # new.html.erb

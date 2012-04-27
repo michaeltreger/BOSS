@@ -18,6 +18,8 @@ CS169CampusScheduler::Application.routes.draw do
     resources :labs  
     match '/calendars' => 'calendars#admin'
     match '/init'  => "users#initAdmin"
+    match '/users/:id/deactivate' => "users#deactivate"
+    match '/users/:id/activate' => "users#activateUser"
   end
 
   match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'

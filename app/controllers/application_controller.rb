@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :page_title
   helper_method :current_user
-  
+
   if Rails.env.test?
     before_filter :test_set_current_user
   else
@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     before_filter :check_login
     before_filter :check_admin
   end
-  
+
 
   def test_set_current_user
     @current_user = User.find_by_id(session[:test_user_id])
@@ -23,6 +23,8 @@ class ApplicationController < ActionController::Base
 
   def set_period
     @current_period = Period.current
+    @current_availability = @current_user.availability_calendar(@current_period)
+    @current_workschedule = @current_user.shift_calendar(@current_period)
   end
 
   def set_current_user
