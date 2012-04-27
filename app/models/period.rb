@@ -13,11 +13,17 @@ class Period < ActiveRecord::Base
 
   def self.current
     now = Time.now
-    where(:visible=>true).where("start_date <= '#{now}'").where("end_date >= '#{now}'").first
+    periods = where(:visible=>true).where("start_date <= '#{now}'").where("end_date >= '#{now}'")
+    if periods.length > 1
+      periods = periods.where(:exception=>true)
+    end
+    periods.first
   end
 
   def create_calendars
     # TODO transactions?
+#    User.find_all_by_user_type(User::EMPLOYEE).each do |user|
+    
     User.all.each do |user|
       avail_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Availabilities",
                                         :calendar_type=>Calendar::AVAILABILITY)

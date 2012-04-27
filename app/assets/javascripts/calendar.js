@@ -7,24 +7,49 @@ $(document).ready(function() {
    $('#submit_calendar').bind('click', submit);
    
    function submit() {
-      finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
-      finalizedEvents.map(convertTimesOut);
-      
-      json = JSON.stringify(finalizedEvents);
-      //alert(json);
-      $.ajax({
-        type: "PUT",
-        url: window.location.pathname+".json",
-        data: {"calendar_updates": json},
-        dataType: "json",
-        success: function(data, textStatus, XMLHttpRequest){
-           //alert("Succeeded");
-        },
-        error: function(data, textStatus, XMLHttpRequest){
-           //eval('('+responseText+')');
-           //alert(data);
-        }
-      });
+      if (validate()) {
+        finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
+        finalizedEvents.map(convertTimesOut);
+        
+        json = JSON.stringify(finalizedEvents);
+        //alert(json);
+        $.ajax({
+          type: "PUT",
+          url: window.location.pathname+".json",
+          data: {"calendar_updates": json},
+          dataType: "json",
+          success: function(data, textStatus, XMLHttpRequest){
+             //alert("Succeeded");
+          },
+          error: function(data, textStatus, XMLHttpRequest){
+             //eval('('+responseText+')');
+             //alert(data);
+          }
+        });
+      }
+   }
+   
+   function validate() {
+     finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
+     $.each(finalizedEvents, function (i, event) {
+        
+     });
+     if (false) {
+       validateDialog = $("#validate_container");
+       validateDialog.dialog({
+         modal: true,
+         title: "Validate",
+         close: function() {
+            validateDialog.dialog("destroy");
+            validateDialog.hide();
+         },
+         buttons: {
+            ok : function() {
+               validateDialog.dialog("close");
+            }
+         }
+      }).show();
+     }
    }
    
    getEventData();
@@ -150,6 +175,13 @@ $(document).ready(function() {
                        calEvent.end_time = new Date(endField.val());
                        calEvent.entry_type = entry_typeField.val();
                        calEvent.description = descriptionField.val();
+                       if (calEvent.entry_type === "obligation" && calEvent.description === "") {
+                         document.getElementById("description_label").innerHTML = "Description (Required)";
+                         document.getElementById("description_label").css("backgroundColor", "#f23");
+                       } else {
+                         $calendar.weekCalendar("updateEvent", calEvent);
+                         $dialogContent.dialog("close");
+                       }
 
                        $calendar.weekCalendar("removeUnsavedEvents");
                        $calendar.weekCalendar("updateEvent", calEvent);
@@ -205,9 +237,13 @@ $(document).ready(function() {
                     calEvent.end_time = new Date(endField.val());
                     calEvent.entry_type= entry_typeField.val();
                     calEvent.description = descriptionField.val();
-
-                    $calendar.weekCalendar("updateEvent", calEvent);
-                    $dialogContent.dialog("close");
+                    
+                    if (calEvent.entry_type === "obligation" && calEvent.description === "") {
+                      document.getElementById("description_label").innerHTML = "Description (Required)";
+                    } else {
+                      $calendar.weekCalendar("updateEvent", calEvent);
+                      $dialogContent.dialog("close");
+                    }
                  },
                  "delete" : function() {
                     $calendar.weekCalendar("removeEvent", calEvent.id);
@@ -241,6 +277,7 @@ $(document).ready(function() {
    function resetForm($dialogContent) {
       $dialogContent.find("input").val("");
       $dialogContent.find("textarea").val("");
+      document.getElementById("description_label").innerHTML = "Description";
    }
 
    /*

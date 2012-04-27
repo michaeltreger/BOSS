@@ -35,5 +35,9 @@ class User < ActiveRecord::Base
   def current_preference(period)
     preference.where(:period_id=>period.id).first
   end
+  
+  def self.types
+    [["Admin", ADMINISTRATOR], ["Sched", SCHEDULER], ["Employee", EMPLOYEE]]
+  end
 
 end
