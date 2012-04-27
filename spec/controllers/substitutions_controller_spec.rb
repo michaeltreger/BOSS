@@ -21,10 +21,10 @@ require 'spec_helper'
 describe SubstitutionsController do
 
   before(:each) do
-    @my_group = Group.create!(:group_type => 1, :name => 'undergrad', :hour_limit => 20, :description => 'cs169', :created_at => '2012-01-01T00:00:00Z')
+    @my_group = Group.create!(:group_type => 1, :name => 'undergrad', :hour_limit => 22, :description => 'cs169', :created_at => '2012-01-01T00:00:00Z')
     #@my_group_user = Group_user.create!(:group_id => @my_group.id, :user_id => @me.id, :created_at => '2012-01-01T00:00:00Z')
-    @me = User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
-    @other = User.create!(:user_type => 1, :name => 'Other', :approved => 'true', :initials => 'O')
+    @me = User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T', :cas_user => 123)
+    @other = User.create!(:user_type => 1, :name => 'Other', :approved => 'true', :initials => 'O', :cas_user => 456)
     @my_calendar = Calendar.create!(:calendar_type => 0, :name => 'my_calendar', :user_id => @me.id)
     @other_calendar = Calendar.create!(:calendar_type => 0, :name => 'other_calendar', :user_id => @other.id)
     session[:test_user_id] = @me.id
@@ -73,11 +73,11 @@ describe SubstitutionsController do
     it "should assign a new substitution as @substitution" do
       substitution = mock('Substitution')
       Substitution.stub(:new).and_return(substitution)
-      get :new, {:current_user => User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')}
+      get :new
       assigns(:substitution).should == substitution
     end
     it "should assign current user's calendars' entries to @entries" do
-      get :new, {:current_user => User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')}
+      get :new
       assigns(:entries).should_not be nil
     end
   end

@@ -175,13 +175,9 @@ class SubstitutionsController < ApplicationController
         end
       end
 
-#      group_users = GroupUser.where(:user_id => targetCalendar.user.id)
-#      groups = Array.new(0,Group.new)
-#      group_users.each do |group_user|
-#        groups << Group.find(group_user.group_id)
-#      end
       hour_limit = 20
-      @current_user.groups.each do |group|
+      groups = targetCalendar.user.groups
+      groups.each do |group|
         if group.hour_limit > hour_limit
           hour_limit = group.hour_limit
         end
