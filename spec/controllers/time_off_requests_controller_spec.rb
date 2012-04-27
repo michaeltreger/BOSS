@@ -21,7 +21,7 @@ require 'spec_helper'
 describe TimeOffRequestsController do
 
   before(:each) do
-    @me = User.create!(:user_type => 1, :name => 'Seven', :approved => 'true', :initials => 'S')
+    @me = User.create!(:user_type => 1, :name => 'Seven', :activated => 'true', :initials => 'S')
     @my_calendar = Calendar.create!(:calendar_type => 1, :name => 'my_calendar', :user_id => @me.id)
     @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => '10:00am', :end_time => '11:00am')
     @now = Time.current()

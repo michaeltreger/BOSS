@@ -21,12 +21,13 @@ require 'spec_helper'
 describe SubstitutionsController do
 
   before(:each) do
+    @period = Period.create!(:name=>"Spring 2012", :start_date => "2012-1-20", :end_date => "2012-5-20")
     @my_group = Group.create!(:group_type => 1, :name => 'undergrad', :hour_limit => 22, :description => 'cs169', :created_at => '2012-01-01T00:00:00Z')
     #@my_group_user = Group_user.create!(:group_id => @my_group.id, :user_id => @me.id, :created_at => '2012-01-01T00:00:00Z')
-    @me = User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T', :cas_user => 123)
-    @other = User.create!(:user_type => 1, :name => 'Other', :approved => 'true', :initials => 'O', :cas_user => 456)
-    @my_calendar = Calendar.create!(:calendar_type => 0, :name => 'my_calendar', :user_id => @me.id)
-    @other_calendar = Calendar.create!(:calendar_type => 0, :name => 'other_calendar', :user_id => @other.id)
+    @me = User.create!(:user_type => 1, :name => 'Tom', :activated => 'true', :initials => 'T', :cas_user => 123)
+    @other = User.create!(:user_type => 1, :name => 'Other', :activated => 'true', :initials => 'O', :cas_user => 456)
+    @my_calendar = Calendar.create!(:calendar_type => 1, :name => 'my_calendar', :user_id => @me.id, :period_id => @period.id)
+    @other_calendar = Calendar.create!(:calendar_type => 1, :name => 'other_calendar', :user_id => @other.id, :period_id => @period.id)
     session[:test_user_id] = @me.id
     @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => '8:00am', :end_time => '12:00pm')
     @other_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => '2:00pm', :end_time => '4:00pm')
@@ -92,7 +93,7 @@ describe SubstitutionsController do
     end
     describe "with valid params" do
       describe "with invlid entry or partial shift" do
-        it "should redirect to the new substitution path" do
+        it "should redirect to new substitution path" do
           post :create, {:substitution => {:from_user => @me, :entry => nil, :entry_id => nil}, :partial_shift => nil}
           response.should redirect_to new_substitution_path
           flash[:error].should == 'Please select a shift to substitute.'
@@ -113,9 +114,9 @@ describe SubstitutionsController do
         end
       end
 
-      it "should redirect to the new substitution path" do
+      it "should redirect to the substitution path" do
         post :create, {:substitution => valid_attributes}
-        response.should redirect_to new_substitution_path
+        response.should redirect_to substitutions_path
         flash[:notice].should == 'Substitution was successfully created.'
       end
     end
@@ -138,7 +139,7 @@ describe SubstitutionsController do
     describe "for available time" do
       describe "while not exceeding hour limit" do
         it "should take sub successfully" do
-          put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@substitution.id => "1"}
+          put :take_or_assign_subs, :target_user => @me.id, :entries => {@substitution.id => "1"}
           changedEntry = Entry.find(@substitution.entry_id)
           changedEntry.calendar_id.should == @my_calendar.id
           #debugger
@@ -149,12 +150,12 @@ describe SubstitutionsController do
       describe "While exceeding hour limit" do
         it "should not take sub" do
           @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
-          put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@long_substitution.id => "1"}
+          put :take_or_assign_subs, :target_user => @me.id, :entries => {@long_substitution.id => "1"}
           flash[:error].should == 'Exceed hour limit!'
         end
         it "should redirect to index" do
           @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
-          put :take_or_assign_subs, :calendar => {:id => @my_calendar.id}, :entries => {@long_substitution.id => "1"}
+          put :take_or_assign_subs, :target_user => @me.id, :entries => {@long_substitution.id => "1"}
           response.should redirect_to substitutions_url
         end
       end

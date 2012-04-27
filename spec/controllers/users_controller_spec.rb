@@ -21,7 +21,7 @@ require 'spec_helper'
 describe UsersController do
 
   before (:each) do
-    @admin = User.create!(:user_type => 0, :name => "John", :approved => true, :initials => "J")
+    @admin = User.create!(:user_type => 0, :name => "John", :activated => true, :initials => "J")
   end
 
   # This should return the minimal set of attributes required to create a valid

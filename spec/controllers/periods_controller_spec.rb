@@ -20,7 +20,7 @@ require 'spec_helper'
 
 describe PeriodsController do
   before(:each) do
-      @user = User.create!(:user_type => 1, :name => 'Tom', :approved => 'true', :initials => 'T')
+      @user = User.create!(:user_type => 1, :name => 'Tom', :activated => 'true', :initials => 'T')
       @calendar = Calendar.create!(:user_id => @user.id, :name => "#{@user.name}'s calendar",:calendar_type => 1)
   end
 
@@ -30,7 +30,7 @@ describe PeriodsController do
   def valid_attributes
     {}
   end
-  
+
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # PeriodsController. Be sure to keep this updated too.

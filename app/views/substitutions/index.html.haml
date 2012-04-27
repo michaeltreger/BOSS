@@ -33,6 +33,8 @@
         %th Time
         %th Location
         %th Posted By
+        - if @current_user.isAdmin?
+          %th Reserved For
         %th Notes
       - @reserved_subs.each do |substitution|
         %tr
@@ -44,6 +46,11 @@
             %td= substitution.users[0].initials
           - else
             %td
+          - if @current_user.isAdmin?
+            - if substitution.users.size > 1
+              %td = substitution.users[1].initials
+            -else
+              %td
           %td= substitution.description
   
   %h3 Available Substitutions
@@ -66,14 +73,6 @@
         - else
           %td
         %td= substitution.description
+  = hidden_field_tag :target_user, @current_user.id
   <br>
-  - if @current_user.isAdmin?
-    %h3 Assign Substitution To:
-    = collection_select(:calendar, :id, @admin_allCalendars, :id, :full_name, {}, {:class => :calendarselect})
-    <br><br>
-    = submit_tag 'Submit'
-  - else
-    %h3 Choose a destination calendar
-    = collection_select(:calendar, :id, @mycalendars, :id, :name, {}, {:class => :calendarselect})
-    <br><br>
-    = submit_tag 'Take Selected Substitutions'
+  = submit_tag 'Take Selected Substitutions'

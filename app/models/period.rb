@@ -2,6 +2,15 @@ class Period < ActiveRecord::Base
   has_many :calendars, :dependent => :destroy
   has_many :preferences, :dependent => :destroy
 
+  def get_shift_calendar(user_id)
+    i = calendars.index{|c| (c.user.id == user_id) && (c.calendar_type == Calendar::SHIFTS)}
+    if i
+      calendars[i]
+    else
+      i
+    end
+  end
+
   def self.current
     now = Time.now
     where(:visible=>true).where("start_date <= '#{now}'").where("end_date >= '#{now}'").first
@@ -25,7 +34,7 @@ class Period < ActiveRecord::Base
       calendars << shift_calendar
       preferences << pref
     end
-    
+
     Lab.all.each do |lab|
       cal = Calendar.create!(:name=> "#{lab.initials} #{name}",
                              :calendar_type=>Calendar::LAB)
@@ -33,7 +42,7 @@ class Period < ActiveRecord::Base
       calendars << cal
       lab.save!
     end
-    
+
   end
 
 end

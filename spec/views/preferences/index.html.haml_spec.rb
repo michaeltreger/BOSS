@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe "preferences/index" do
   before(:each) do
-    @student1 = User.create!(:user_type => 1, :name => "John", :approved => true, :initials => "J")
-    @student2 = User.create!(:user_type => 1, :name => "John", :approved => true, :initials => "J")
+    @student1 = User.create!(:user_type => 1, :name => "John", :activated => true, :initials => "J")
+    @student2 = User.create!(:user_type => 1, :name => "John", :activated => true, :initials => "J")
     @period = Period.create!()
     assign(:preferences, [
       stub_model(Preference,
