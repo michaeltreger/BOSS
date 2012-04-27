@@ -34,6 +34,22 @@ $(document).ready(function() {
      $.each(finalizedEvents, function (i, event) {
         
      });
+     if (false) {
+       validateDialog = $("#validate_container");
+       validateDialog.dialog({
+         modal: true,
+         title: "Validate",
+         close: function() {
+            validateDialog.dialog("destroy");
+            validateDialog.hide();
+         },
+         buttons: {
+            ok : function() {
+               validateDialog.dialog("close");
+            }
+         }
+      }).show();
+     }
    }
    
    getEventData();
