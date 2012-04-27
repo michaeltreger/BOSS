@@ -31,10 +31,26 @@ $(document).ready(function() {
    
    function validate() {
      finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
+     total_unavail = 0;
+     weekday_unavail = 0;
+     invalid = false;
      $.each(finalizedEvents, function (i, event) {
-        
+      if (event.entry_type === "class" || event.entry_type === "obligation") {
+         d = duration(event);
+         if(event.start_time.getDay() == 0 || event.start_time.getDay() == 6) {
+            weekday_unavail += d;
+         }
+         total_unavail += d
+      }
      });
-     if (false) {
+ 
+     total_avail = 126 - total_unavail;
+     weekday_avail = 90 - weekday_unavail;
+     if (total_avail < 30) {
+       invalid = true;
+     }
+ 
+     if (invalid) {
        validateDialog = $("#validate_container");
        validateDialog.dialog({
          modal: true,
@@ -49,7 +65,13 @@ $(document).ready(function() {
             }
          }
       }).show();
+     } else {
+        return true
      }
+   }
+   
+   function duration(event) {
+      return (event.end_time - event.start_time)/3600000
    }
    
    getEventData();

@@ -21,7 +21,7 @@ p {
 	font-size: 1em;	
 }
 
-#event_edit_container, #about {
+#event_edit_container, #about, #validate_container {
 	display: none;
 }
 
