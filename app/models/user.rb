@@ -11,8 +11,9 @@ class User < ActiveRecord::Base
   if not Rails.env.test?
     validates_presence_of :user_type, :email, :cas_user
     validates_presence_of :initials, :if => Proc.new { |user| user.activated? }
+    validates_uniqueness_of :cas_user
   end
-  validates_uniqueness_of :cas_user
+
   validates_uniqueness_of :email
   validates_uniqueness_of :initials
 
@@ -23,11 +24,11 @@ class User < ActiveRecord::Base
   def isAdmin?
     user_type == ADMINISTRATOR or user_type == SCHEDULER
   end
-  
+
   def availability_calendar(period)
     calendars.where(:calendar_type=>Calendar::AVAILABILITY, :period_id=>period.id).first
   end
-  
+
   def shift_calendar(period)
     calendars.where(:calendar_type=>Calendar::SHIFTS, :period_id=>period.id).first
   end
@@ -35,7 +36,7 @@ class User < ActiveRecord::Base
   def current_preference(period)
     preference.where(:period_id=>period.id).first
   end
-  
+
   def self.types
     [["Admin", ADMINISTRATOR], ["Sched", SCHEDULER], ["Employee", EMPLOYEE]]
   end

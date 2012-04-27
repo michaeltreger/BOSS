@@ -6,9 +6,9 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "sel
 
 Given /^the following substitutions exist:$/ do |substitutions_table|
   substitutions_table.hashes.each do |s|
-    substitution = {:entry => Entry.find_by_id(s[:entry_id]),
+    substitution = {:entry => Entry.find(s[:entry_id]),
                     :description => s[:description]}
-    new_sub = Substitution.create!(substitution)
+    new_sub = Substitution.create(substitution)
     owner = User.find_by_id(s[:from_user_id])
     new_sub.users << owner
     if (s[:to_user_id] != "nil")

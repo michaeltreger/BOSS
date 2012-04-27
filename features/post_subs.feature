@@ -53,6 +53,7 @@ Background: A work entry has been added to my calendar
     When I select the entry with id 1 for substitution
     And I fill in "Description" with "Urgent - fix printer"
     And I press "Make Substitution"
+    And I am on the "Post a Substitution" page
     Then I should see "You have no shifts to substitute"
     And I should not see "Select a Shift to Substitute"
 
