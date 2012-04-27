@@ -204,7 +204,7 @@ class SubstitutionsController < ApplicationController
           currSub = Substitution.find(k)
           currEntry = currSub.entry
           targetPeriod = currEntry.calendar.period
-          targetCalendar = targetPeriod.get_shift_calendar(targetUser.id)
+          targetCalendar = targetUser.shift_calendar
           if !(targetCalendar == nil) && (@current_user.isAdmin? || (targetCalendar.canAdd(currEntry)))
             taken_subs[k] = v
           else
@@ -220,7 +220,7 @@ class SubstitutionsController < ApplicationController
           currSub = Substitution.find(k)
           currEntry = currSub.entry
           targetPeriod = currEntry.calendar.period
-          targetCalendar = targetPeriod.get_shift_calendar(targetUser.id)
+          targetCalendar = targetUser.shift_calendar
           currEntry.user = targetUser
           currEntry.substitution = nil
           currEntry.calendar = targetCalendar

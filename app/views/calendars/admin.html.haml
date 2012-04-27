@@ -27,8 +27,6 @@
     %th Owner
     %th Name
     %th Description
-    %th Start
-    %th End
     %th Last Modified
     %th
     %th
@@ -37,8 +35,6 @@
       %td= link_to c.user.initials, user_path(c.user)
       %td= link_to c.name, calendar_path(c)
       %td= c.description
-      %td= c.period.start_date
-      %td= c.period.end_date
       %td= c.updated_at.strftime('%a, %m/%d -- %I:%M%p')
       %td= link_to 'Edit', edit_calendar_path(c)
       %td= link_to 'Delete', c, :confirm => 'Are you sure?', :method => :delete

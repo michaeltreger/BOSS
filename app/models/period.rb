@@ -30,17 +30,13 @@ class Period < ActiveRecord::Base
     User.all.each do |user|
       avail_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Availabilities",
                                         :calendar_type=>Calendar::AVAILABILITY)
-      shift_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Shifts",
-                                        :calendar_type=>Calendar::SHIFTS)
 
       pref = Preference.create!()
 
       user.calendars << avail_calendar
-      user.calendars << shift_calendar
       user.preference << pref
       user.save!
       calendars << avail_calendar
-      calendars << shift_calendar
       preferences << pref
     end
 

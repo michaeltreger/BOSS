@@ -3,7 +3,7 @@ class Calendar < ActiveRecord::Base
     has_many :entries
     belongs_to :user
     belongs_to :period
-    validates_presence_of :calendar_type, :name, :period
+    validates_presence_of :calendar_type, :name#, :period
 
     #validate_with :check_constraints
 

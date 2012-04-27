@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   def set_period
     @current_period = Period.current
     @current_availability = @current_user.availability_calendar(@current_period)
-    @current_workschedule = @current_user.shift_calendar(@current_period)
+    @current_workschedule = @current_user.shift_calendar
   end
 
   def set_current_user

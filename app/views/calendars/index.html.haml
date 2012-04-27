@@ -21,13 +21,9 @@
     %tr
       %th Name
       %th Description
-      %th Start
-      %th End
       %th Last Modified
     - @wcalendars.each do |c|
       %tr
         %td= link_to c.name, calendar_path(c)
         %td= c.description
-        %td= c.period.start_date.strftime('%a, %m/%d')
-        %td= c.period.end_date.strftime('%a, %m/%d')
         %td= c.updated_at.strftime('%a, %m/%d')

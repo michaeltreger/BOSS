@@ -20,15 +20,16 @@ require 'spec_helper'
 
 describe PeriodsController do
   before(:each) do
+      @period = Period.create valid_attributes
       @user = User.create!(:user_type => 1, :name => 'Tom', :activated => 'true', :initials => 'T')
-      @calendar = Calendar.create!(:user_id => @user.id, :name => "#{@user.name}'s calendar",:calendar_type => 1)
+      @calendar = Calendar.create!(:user_id => @user.id, :name => "#{@user.name}'s calendar",:calendar_type => 1, :period_id=>@period.id)
   end
 
   # This should return the minimal set of attributes required to create a valid
   # Period. As you add validations to Period, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {}
+    {:start_date=>DateTime.parse("Jan 20, 2012"), :end_date=>DateTime.parse("May 20, 2012"), :name=>"Spring 2012", :visible=>true}
   end
 
   # This should return the minimal set of values that should be in the session
@@ -42,7 +43,7 @@ describe PeriodsController do
     it "assigns all periods as @periods" do
       period = Period.create! valid_attributes
       get :index, {}, valid_session
-      assigns(:periods).should eq([period])
+      assigns(:periods).should == [@period, period]
     end
   end
 
