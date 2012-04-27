@@ -17,9 +17,30 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email
   validates_uniqueness_of :initials
 
+  after_create :make_calendars
+
   ADMINISTRATOR = -1
   SCHEDULER = 0
   EMPLOYEE = 1
+
+  def make_calendars
+    Period.all.each do |p|
+      avail_calendar = Calendar.create!(:name=> "#{@user.name}'s #{p.name} Availabilities",
+                                        :calendar_type=>Calendar::AVAILABILITY)
+      shift_calendar = Calendar.create!(:name=> "#{@user.name}'s #{p.name} Shifts",
+                                        :calendar_type=>Calendar::SHIFTS)
+      pref = Preference.create!()
+
+      @user.calendars << avail_calendar
+      @user.calendars << shift_calendar
+      @user.preference << pref
+
+      p.calendars << avail_calendar
+      p.calendars << shift_calendar
+      p.preferences << pref
+      p.save!
+    end
+  end
 
   def isAdmin?
     user_type == ADMINISTRATOR or user_type == SCHEDULER

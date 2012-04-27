@@ -24,8 +24,6 @@ Lab.create!(:name=>"Moffit", :initials=>"MMF", :max_employees=>4, :min_employees
 Lab.create!(:name=>"Wheeler", :initials=>"WCF", :max_employees=>3, :min_employees=>1)
 
 Period.create(:start_date=>DateTime.parse("Jan 20, 2012"), :end_date=>DateTime.parse("May 20, 2012"), :name=>"Spring 2012", :visible=>true)
-Period.find(1).create_calendars
-Period.find(1).save!
 
 monday = Time.now.beginning_of_week
 Calendar.find_all_by_calendar_type(Calendar::SHIFTS).each do |c|

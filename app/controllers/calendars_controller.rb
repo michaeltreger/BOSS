@@ -1,5 +1,5 @@
 class CalendarsController < ApplicationController
-  before_filter :check_login, :only => [:show, :edit, :update, :destroy]
+  #before_filter :check_login, :only => [:show, :edit, :update, :destroy]
   before_filter :check_admin, :only => [:admin]
 
   def check_admin

@@ -1,6 +1,9 @@
 class Period < ActiveRecord::Base
   has_many :calendars, :dependent => :destroy
   has_many :preferences, :dependent => :destroy
+  validates_presence_of :start_date, :end_date, :name
+
+  after_save :create_availability_calendars_and_preferences
 
   def get_shift_calendar(user_id)
     i = calendars.index{|c| (c.user.id == user_id) && (c.calendar_type == Calendar::SHIFTS)}
@@ -20,9 +23,9 @@ class Period < ActiveRecord::Base
     periods.first
   end
 
-  def create_calendars
+  def create_availability_calendars_and_preferences
     # TODO transactions?
-#    User.find_all_by_user_type(User::EMPLOYEE).each do |user|
+    #User.find_all_by_user_type(User::EMPLOYEE).each do |user|
     
     User.all.each do |user|
       avail_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Availabilities",
