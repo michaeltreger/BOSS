@@ -1,0 +1,28 @@
+= form_for @substitution do |f|
+  .col-2
+    %h3 Select a Shift
+    %table
+      %tr
+        %tr
+          %th Select
+          %th Day
+          %th Time
+          %th Location
+      - @entries.each do |entry|
+        %tr
+          %td= f.radio_button :entry, entry.id, :id => "entry_" + entry.id.to_s
+          %td= entry.start_time.strftime('%a, %m/%d')
+          %td= entry.start_time.strftime('%I:%M%p') + ' -  ' + entry.end_time.strftime('%I:%M%p')
+          %td= 'Lab ' + entry.lab_id.to_s
+  .col-2
+    %h3 Substitute Partial Shift?
+    = time_select "partial_shift", "start", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_start" , :class => "timeselect"}
+    = '---'
+    = time_select "partial_shift", "end", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_end", :class => "timeselect" }
+    = check_box "partial_shift", "enabled", {:id => "partial_shift"}
+    %h3 Select a user to offer this substitution to (Optional)
+    = collection_select(:user, :id, @users, :id, :initials, {:include_blank => true}, {:class => :initialsselect})  
+    %h3 Notes about this Substitution
+    = f.text_area :description, {:id => 'Description'}
+    <br><br>
+    = f.submit 'Make Substitution'
