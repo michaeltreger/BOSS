@@ -44,6 +44,15 @@ class User < ActiveRecord::Base
     user_type == ADMINISTRATOR or user_type == SCHEDULER
   end
 
+  def hour_limit
+    if groups.size > 0
+      all_hour_limits = groups.map{|g| g.hour_limit}
+      hour_limit = all_hour_limits.max
+    else
+      hour_limit = 20
+    end
+  end
+
   def availability_calendar(period)
     calendars.where(:calendar_type=>Calendar::AVAILABILITY, :period_id=>period.id).first
   end

@@ -12,23 +12,18 @@ Background: Substitutions created
 
   And I am logged in as "Alice"
 
-  And the following calendars exist:
-    | name             | calendar_type  | user_id |
-    | Alice's Calendar |   1            |   1     |
-    | Bob's Calendar   |   1            |   2     |
-
   And the following labs exist:
     | name     |  initials  |  max_employees  | min_employees |
     | Wheeler  |    WH      |   10            |    1          |
     | Moffit   |    MO      |   25            |    0          |
 
-  And the calendar "Alice's Calendar" has the following entries:
+  And the calendar "Alice's Shifts" has the following entries:
     | description         |  lab       | start_time        | end_time         |
     | Work at Wheeler     |  Wheeler   | 12:00, 1/1/2012   | 14:00 1/1/2012   |
     | Software Training   |  Wheeler   | 14:00, 1/1/2012   | 16:00 1/1/2012   |
 
 
-  And the calendar "Bob's Calendar" has the following entries:
+  And the calendar "Bob's Shifts" has the following entries:
     | description              |  lab       | start_time        | end_time         |
     | Work at Moffit           |  Moffit    | 17:00, 1/1/2012   | 18:00 1/1/2012   |
     | Presentation             |  Moffit    | 8:00, 1/1/2012    | 11:00 1/1/2012   |
@@ -56,7 +51,7 @@ Background: Substitutions created
     When I check the substitution "Work at Moffit"
     And I check the substitution "Presentation"
     And I press "Take Selected Substitutions"
-    And I am on Alice's Calendar page
+    And I am on Alice's Shifts page
     And I view the calendar
     Then I should see "Work at Moffit"
     And I should see "Presentation"
@@ -89,14 +84,14 @@ Background: Substitutions created
   Scenario: When I cannot take a sub, the sub does not go on my calendar
     When I check the substitution "I conflict with Alice 1"
     And I press "Take Selected Substitutions"
-    And I am on Alice's Calendar page
+    And I am on Alice's Shifts page
     And I view the calendar
     Then I should not see "I conflict with Alice 1"
 
   Scenario: I can take a sub back to back if it is in the same location
     When I check the substitution "BacktoBackSameLocation"
     And I press "Take Selected Substitutions"
-    And I am on Alice's Calendar page
+    And I am on Alice's Shifts page
     And I view the calendar
     Then I should see "BacktoBackSameLocation"
  
