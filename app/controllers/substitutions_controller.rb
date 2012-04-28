@@ -192,7 +192,7 @@ class SubstitutionsController < ApplicationController
             taken_subs[k] = v
           else
             untaken_subs[k] = v
-            error message << "\n"
+            error_message << "\n"
             error_message << (Substitution.find(k)).description
           end
         end
@@ -210,11 +210,11 @@ class SubstitutionsController < ApplicationController
           currEntry.save!
           Substitution.delete(k)
         end
-        if untaken_subs.size == 0
-          flash[:notice] = 'Substitutions were taken successfully'
-        else
-          flash[:error] = error_message
-        end
+      end
+      if untaken_subs.size == 0
+        flash[:notice] = 'Substitutions were taken successfully'
+      else
+        flash[:error] = error_message
       end
     end
     respond_to do |format|

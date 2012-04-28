@@ -36,6 +36,26 @@ class Calendar < ActiveRecord::Base
       return start + ': ' + name
     end
 
+    # in future maybe should be split up
+    def canAdd(candidate_entry)
+      # first do hour limit check
+      if user.groups.size > 0
+        all_hour_limits = user.groups.map{|g| g.hour_limit}
+        hour_limit = all_hour_limits.max
+        if (work_hours + candidate_entry.duration) > hour_limit
+          return false
+        end
+      end
+
+      # now check overlap
+      entries.each do |e|
+        if e.overlaps_with_or_back_to_back(candidate_entry)
+          return false
+        end
+      end
+      return true
+    end
+
     def update_calendar(entries)
       old_entry_ids = self.entries.map{ |e| e.id}
       self.entries.clear

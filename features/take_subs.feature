@@ -30,8 +30,8 @@ Background: Substitutions created
 
   And the calendar "Bob's Calendar" has the following entries:
     | description              |  lab       | start_time        | end_time         |
-    | Work at Moffit           |  Moffit    | 15:00, 1/1/2012   | 18:00 1/1/2012   |
-    | Presentation             |  Moffit    | 8:00, 1/1/2012    | 12:00 1/1/2012   |
+    | Work at Moffit           |  Moffit    | 17:00, 1/1/2012   | 18:00 1/1/2012   |
+    | Presentation             |  Moffit    | 8:00, 1/1/2012    | 11:00 1/1/2012   |
     | I conflict with Alice 1  |  Wheeler   | 11:00, 1/1/2012   | 13:00 1/1/2012   |
     | I conflict with Alice 2  |  Wheeler   | 12:30, 1/1/2012   | 13:00 1/1/2012   |
     | I conflict with Alice 3  |  Wheeler   | 12:30, 1/1/2012   | 15:00 1/1/2012   |
@@ -64,7 +64,7 @@ Background: Substitutions created
   Scenario: Taken substitutions are no longer available
     When I check the substitution "Presentation"
     And I press "Take Selected Substitutions"
-    And I go to the "View Substitutions" page
+    And I am on the "View Substitutions" page
     Then I should not see "Presentation"
     And I should see "Work at Moffit"
 
@@ -74,7 +74,7 @@ Background: Substitutions created
     And I check the substitution "I conflict with Alice 3"
     And I check the substitution "I conflict with Alice 4"
     And I press "Take Selected Substitutions"
-    Then I should see "The following subs could not be taken due to schedule conflicts"
+    Then I should see "The following subs could not be taken"
     And I should see "I conflict with Alice 1"
     And I should see "I conflict with Alice 2"
     And I should see "I conflict with Alice 3"
@@ -83,7 +83,7 @@ Background: Substitutions created
   Scenario: When I cannot take a sub, the sub stays available
     When I check the substitution "I conflict with Alice 1"
     And I press "Take Selected Substitutions"
-    And I go the "View Substitutions" page
+    And I am on the "View Substitutions" page
     Then I should see "I conflict with Alice 1"
   
   Scenario: When I cannot take a sub, the sub does not go on my calendar
@@ -103,5 +103,5 @@ Background: Substitutions created
  Scenario: I can not take a sub back to back if it is in a different location
     When I check the substitution "BacktoBackDiffLocation"
     And I press "Take Selected Substitutions"
-    Then I should see "You cannot take the following subs"
+    Then I should see "The following subs could not be taken"
     And I should see "BacktoBackDiffLocation"
