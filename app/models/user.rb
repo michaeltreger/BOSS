@@ -24,19 +24,17 @@ class User < ActiveRecord::Base
   EMPLOYEE = 1
 
   def make_calendars
+    calendars << Calendar.create!(:name=> "#{name}'s Shifts",
+                                  :calendar_type=>Calendar::SHIFTS)
     Period.all.each do |p|
-      avail_calendar = Calendar.create!(:name=> "#{@user.name}'s #{p.name} Availabilities",
+      avail_calendar = Calendar.create!(:name=> "#{name}'s #{p.name} Availabilities",
                                         :calendar_type=>Calendar::AVAILABILITY)
-      shift_calendar = Calendar.create!(:name=> "#{@user.name}'s #{p.name} Shifts",
-                                        :calendar_type=>Calendar::SHIFTS)
       pref = Preference.create!()
 
-      @user.calendars << avail_calendar
-      @user.calendars << shift_calendar
-      @user.preference << pref
+      calendars << avail_calendar
+      preference << pref
 
       p.calendars << avail_calendar
-      p.calendars << shift_calendar
       p.preferences << pref
       p.save!
     end
@@ -50,8 +48,8 @@ class User < ActiveRecord::Base
     calendars.where(:calendar_type=>Calendar::AVAILABILITY, :period_id=>period.id).first
   end
 
-  def shift_calendar(period)
-    calendars.where(:calendar_type=>Calendar::SHIFTS, :period_id=>period.id).first
+  def shift_calendar
+    calendars.where(:calendar_type=>Calendar::SHIFTS).first
   end
 
   def current_preference(period)

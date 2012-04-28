@@ -41,13 +41,6 @@ class LabsController < ApplicationController
   # POST /labs.json
   def create
     @lab = Lab.new(params[:lab])
-    Period.find_all_by_visible(true).each do |p|
-      cal = Calendar.create!(:name=> "#{@lab.initials} #{p.name}",
-                             :calendar_type=>Calendar::LAB)
-      @lab.calendar = cal
-      p.calendars << cal
-      p.save!
-    end
 
     respond_to do |format|
       if @lab.save

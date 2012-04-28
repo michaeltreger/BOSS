@@ -1,6 +1,6 @@
 class CalendarsController < ApplicationController
-  #before_filter :check_login, :only => [:show, :edit, :update, :destroy]
-  before_filter :check_admin, :only => [:admin]
+  before_filter :check_login, :only => [:update]
+  before_filter :check_admin, :only => [:admin, :destroy]
 
   def check_admin
     if !@current_user.isAdmin?
@@ -24,7 +24,7 @@ class CalendarsController < ApplicationController
   # GET /calendars
   # GET /calendars.json
   def index
-    @user_calendars = @current_user.calendars #Calendar.find_all_by_user_id(@current_user.id)
+    @user_calendars = @current_user.calendars
     @acalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::AVAILABILITY}
     @wcalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
     respond_to do |format|
@@ -58,10 +58,13 @@ class CalendarsController < ApplicationController
       format.html # show.html.erb
       format.json do
         results = {}
-        results[:start_date] = @calendar.period.start_date
-        results[:end_date] = @calendar.period.end_date
 
-        events = @calendar.entries.select([:id, :start_time, :end_time, :description, :entry_type])
+        if @calendar.lab?
+          events = Entry.find_all_by_lab_id(@calendar.lab_id)
+        else
+          events = @calendar.entries.select([:id, :start_time, :end_time, :description, :entry_type])
+        end
+
         if @calendar.availability?
           this_week = Time.now.beginning_of_week
           events.each do |e|
@@ -154,4 +157,33 @@ class CalendarsController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  def snapshot
+    cal = {}
+    User.find_all_by_activated(true).each do |u|
+      u.availability_calendar(@current_period).entries.each do |e|
+        time = e.start_time
+        while time < e.end_time
+          if cal[time]
+            cal[time] += " #{u.initials}"
+          else 
+            cal[time] = "#{u.initials}"
+          end
+          time += 30.minutes
+        end
+      end 
+    end
+
+    c = Calendar.create(:name=>"Availability Snapshot taken #{Time.now.strftime('%m/%d/%Y %I:%M%p')}", :calendar_type=>1)
+    cal.each_pair do |time ,users|
+      c.entries << Entry.create(:start_time=>time, :end_time=>time+30.minutes, :entry_type=>"", :description=>users)
+    end
+    c.save!
+    redirect_to c
+  end
+  
+  def mrclean
+    
+  end
+
 end

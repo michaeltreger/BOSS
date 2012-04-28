@@ -3,7 +3,7 @@ class Calendar < ActiveRecord::Base
     has_many :entries
     belongs_to :user
     belongs_to :period
-    validates_presence_of :calendar_type, :name, :period
+    validates_presence_of :calendar_type, :name#, :period
 
     #validate_with :check_constraints
 
@@ -15,6 +15,10 @@ class Calendar < ActiveRecord::Base
     #instead of calendar.user which is ambiguious.
     def owner
       user_id
+    end
+
+    def lab?
+      calendar_type == LAB
     end
 
     def shift?
