@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @unit.name
+
+%p
+  %b Labs in unit:
+  %br
+  - @labs.each do |lab|
+    - if @current_user.isAdmin?
+      = link_to "#{lab.name} (#{lab.initials})", lab
+    %br
+- if @current_user.isAdmin?
+  = link_to 'Edit', edit_unit_path(@unit)
+  \|
+  = link_to 'Add Labs', "/admin/units/#{@unit.id}/labs/add"
+  \|
+  = link_to 'Back', units_path
+- else
+  = link_to 'Back', '/'
