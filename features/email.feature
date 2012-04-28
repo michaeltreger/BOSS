@@ -64,7 +64,6 @@ Background: A work entry has been added to my calendar
     Given I am on the "View Substitutions" page
     When I check the substitution "Work at Moffit"
     And I check the substitution "Presentation"
-    And I put the substitution in "Alice's Calendar"
     And I press "Take Selected Substitutions"
     Then I should recieve an email
     

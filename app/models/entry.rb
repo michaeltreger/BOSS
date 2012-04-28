@@ -11,4 +11,27 @@ class Entry < ActiveRecord::Base
       ((end_time - start_time) / 3600).round
     end
 
+    def overlaps_with_or_back_to_back(other_entry)
+      if overlaps_with(other_entry)
+        return true
+      end
+      if ((start_time == other_entry.end_time) || (end_time == other_entry.start_time)) && (lab.id != other_entry.lab.id)
+        return true
+      end
+      return false
+    end
+
+    def overlaps_with(other_entry)
+      if (start_time > other_entry.start_time) && (start_time < other_entry.end_time)
+        return true
+      elsif (end_time > other_entry.start_time) && (end_time < other_entry.end_time)
+        return true
+      elsif (other_entry.start_time > start_time) && (other_entry.start_time < end_time)
+        return true
+      elsif (other_entry.end_time > start_time) && (other_entry.end_time < end_time)
+        return true
+      else
+        return false
+      end
+    end
 end

@@ -35,37 +35,37 @@ Background: Substitutions created
     |   3        | Work at Moffit        |    2            |    3       |
     |   4        | Presentation          |    2            |    nil     |
 
-  Given I am on the "View Substitutions" page
+  Given I am on the "Manage Substitutions" page
 
   Scenario: Admins can assign substitutions
-    Then I should see "Assign Substitution To:"
+    Then I should see "Manage Substitutions"
 
   Scenario: Non-admins cannot assign substitutions
     When I am logged in as "Alice"
-    And I am on the "View Substitutions" page
-    Then I should not see "Assign Substitution To:"
+    And I am on the "Manage Substitutions" page
+    Then I should not see "Manage Substitutions"
   
 
   Scenario: Assign a reserved substitution to somebody
     When I check the substitution "Work at Moffit"
-    And I assign the substitution to "Alice's Calendar"
-    And I press "Submit"
+    And I assign the substitution to "Alice"
+    And I press "Make Assignments"
     And I am on Alice's Calendar page
     And I view the calendar
     Then I should see "Work at Moffit"
 
   Scenario: Assign an open substitution to somebody
     When I check the substitution "Presentation"
-    And I assign the substitution to "Alice's Calendar"
-    And I press "Submit"
+    And I assign the substitution to "Alice"
+    And I press "Make Assignments"
     And I am on Alice's Calendar page
     And I view the calendar
     Then I should see "Presentation"
 
   Scenario: Assigned substitutions are no longer available
     When I check the substitution "Work at Moffit"
-    And I assign the substitution to "Alice's Calendar"
-    And I press "Submit"
-    And I go to the "View Substitutions" page
+    And I assign the substitution to "Alice"
+    And I press "Make Assignments"
+    And I go to the "Manage Substitutions" page
     Then I should see "Presentation"
     And I should not see "Work at Moffit"
