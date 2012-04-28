@@ -45,6 +45,25 @@ Calendar.find_all_by_calendar_type(Calendar::SHIFTS).each do |c|
   c.save!
 end
 
+Calendar.find_all_by_calendar_type(Calendar::AVAILABILITY).each do |c|
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:entry_type=>:class, :start_time=>monday+randStart.hours, :end_time=>monday+randEnd.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:entry_type=>:rather_not, :start_time=>monday+1.day+randStart.hours, :end_time=>monday+1.day+randEnd.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:entry_type=>:prefer, :start_time=>monday+2.days+randStart.hours, :end_time=>monday+2.days+randEnd.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:entry_type=>:prefer, :start_time=>monday+3.days+randStart.hours, :end_time=>monday+3.days+randEnd.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:entry_type=>:obligation, :description=>"Soccer Practice", :start_time=>monday+4.days+randStart.hours, :end_time=>monday+4.days+randEnd.hours)
+  c.save!
+end
+
 
 s = Substitution.create(:user_id => 1, :entry_id => 1, :description => "test_sub 1")
 s.entry = Entry.find(1)

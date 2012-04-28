@@ -1,6 +1,6 @@
 class CalendarsController < ApplicationController
-  before_filter :check_login, :only => [:update, :destroy]
-  before_filter :check_admin, :only => [:admin]
+  before_filter :check_login, :only => [:update]
+  before_filter :check_admin, :only => [:admin, :destroy]
 
   def check_admin
     if !@current_user.isAdmin?
@@ -157,4 +157,29 @@ class CalendarsController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  def snapshot
+    cal = {}
+    User.find_all_by_activated(true).each do |u|
+      u.availability_calendar(@current_period).entries.each do |e|
+        time = e.start_time
+        while time < e.end_time
+          if cal[time]
+            cal[time] += " #{u.initials}"
+          else 
+            cal[time] = "#{u.initials}"
+          end
+          time += 30.minutes
+        end
+      end 
+    end
+
+    c = Calendar.create(:name=>"Avail snapshot", :calendar_type=>1)
+    cal.each_pair do |time ,users|
+      c.entries << Entry.create(:start_time=>time, :end_time=>time+30.minutes, :entry_type=>"", :description=>users)
+    end
+    c.save!
+    redirect_to c
+  end
+
 end

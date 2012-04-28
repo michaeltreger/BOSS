@@ -3,7 +3,7 @@ class Period < ActiveRecord::Base
   has_many :preferences, :dependent => :destroy
   validates_presence_of :start_date, :end_date, :name
 
-  after_save :create_availability_calendars_and_preferences
+  after_create :create_availability_calendars_and_preferences
 
   def self.current
     now = Time.now
