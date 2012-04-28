@@ -9,9 +9,9 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions.json
   def index
     @substitutions = Substitution.all
-    @my_subs = @substitutions.find_all{|s| s.users.size >= 1 && s.users[0] == @current_user}
-    @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2 && s.users[1]==@current_user}
-    @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (s.users.size!=2)}
+    @my_subs = @substitutions.find_all{|s| s.from_user && s.from_user == @current_user}
+    @reserved_subs = @substitutions.find_all{|s| !(s.from_user == @current_user) && s.to_user && s.to_user==@current_user}
+    @available_subs = @substitutions.find_all{|s| !(s.from_user == @current_user) && (s.to_user == nil)}
     @mycalendars = @current_user.calendars
     @mycalendars = @mycalendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
     respond_to do |format|
@@ -138,6 +138,7 @@ class SubstitutionsController < ApplicationController
     end
     respond_to do |format|
       if @substitution.save
+        SubstitutionMailer.posted_sub(@substitution).deliver
         if request && request.referer && request.referer.include?('admin')
           format.html { redirect_to manage_substitutions_path, notice: 'Substitution was successfully created.' }
         else
@@ -181,19 +182,19 @@ class SubstitutionsController < ApplicationController
       targetUser = User.find(params[:target_user][:id])
       taken_subs = {}
       untaken_subs = {}
-      error_message = "The following subs could not be taken due to schedule conflicts or hour limits:"
+      error_message = ["The following subs could not be taken due to schedule conflicts or hour limits:"]
       selected_subs.each_pair do |k,v|
         if v == "1"
           currSub = Substitution.find(k)
           currEntry = currSub.entry
-          targetPeriod = currEntry.calendar.period
           targetCalendar = targetUser.shift_calendar
           if !(targetCalendar == nil) && (@current_user.isAdmin? || (targetCalendar.canAdd(currEntry)))
             taken_subs[k] = v
           else
             untaken_subs[k] = v
-            error_message << "\n"
-            error_message << (Substitution.find(k)).description
+            e = Substitution.find(k).entry
+            error_message << e.start_time.strftime('%a, %m/%d  ') + e.start_time.strftime('%I:%M%p') + ' -  ' + e.end_time.strftime('%I:%M%p')
+
           end
         end
       end
@@ -202,19 +203,19 @@ class SubstitutionsController < ApplicationController
         if v == "1"
           currSub = Substitution.find(k)
           currEntry = currSub.entry
-          targetPeriod = currEntry.calendar.period
           targetCalendar = targetUser.shift_calendar
           currEntry.user = targetUser
           currEntry.substitution = nil
           currEntry.calendar = targetCalendar
           currEntry.save!
+          SubstitutionMailer.taken_sub(currSub, targetUser).deliver
           Substitution.delete(k)
         end
       end
       if untaken_subs.size == 0
         flash[:notice] = 'Substitutions were taken successfully'
       else
-        flash[:error] = error_message
+        flash[:error] = error_message.join("<br/>").html_safe
       end
     end
     respond_to do |format|

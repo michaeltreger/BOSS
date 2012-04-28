@@ -13,11 +13,7 @@ Background: A work entry has been added to my calendar
 
   And I am logged in as "Alice"
 
-  And the following calendars exist:
-    | name             | calendar_type  | user_id |
-    | Alice's Calendar |   1            |   1     |
-
-  And the calendar "Alice's Calendar" has the following entries:
+  And the calendar "Alice's Shifts" has the following entries:
     | description         | start_time                             | end_time                              |
     | Work at Wheeler     | Wed, 18 Apr 2012 9:00:00 PDT -07:00    | Wed, 18 Apr 2012 12:00:00 PDT -07:00  |
     | Software Training   | Thu, 19 Apr 2012 10:00:00 PDT -07:00   | Thu, 19 Apr 2012 11:00:00 PDT -07:00  |
