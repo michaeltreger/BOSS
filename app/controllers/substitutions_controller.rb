@@ -3,7 +3,7 @@ include ActionView::Helpers::DateHelper
 
 
 class SubstitutionsController < ApplicationController
-
+  before_filter :check_admin, :only => [:manage]
 
   # GET /substitutions
   # GET /substitutions.json
@@ -23,10 +23,10 @@ class SubstitutionsController < ApplicationController
   def manage
     @substitutions = Substitution.all
     @admin_allCalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)
+    @users = User.find(:all)
     if params[:entries]
       @entries = params[:entries].map { |e| Entry.find(e) }
       @substitution = Substitution.new
-      @users = User.find(:all)
     end
     respond_to do |format|
       format.html
@@ -166,23 +166,6 @@ class SubstitutionsController < ApplicationController
     end
   end
 
-  def get_entries_for_sub
-    if !params[:calendars]
-      redirect_to manage_substitutions_path
-    else
-      entries = []
-      selected_calendars = params[:calendars]
-      selected_calendars.each_pair do |k,v|
-        if v == "1"
-          c = Calendar.find(k)
-          entries |= (c.entries).find_all{|e| e.substitution == nil}
-        end
-      end
-      redirect_to manage_substitutions_path(:entries => entries)
-    end
-  end
-
-
   def take_or_assign_subs
     if (params[:submit_type] && params[:submit_type][:delete])
       subs = params[:entries]
@@ -195,7 +178,7 @@ class SubstitutionsController < ApplicationController
       flash[:notice] = 'Substitutions were deleted successfully'
     elsif (params[:entries])
       selected_subs = params[:entries]
-      targetUser = User.find(params[:target_user])
+      targetUser = User.find(params[:target_user][:id])
       taken_subs = {}
       untaken_subs = {}
       error_message = "The following subs could not be taken due to schedule conflicts or hour limits:"

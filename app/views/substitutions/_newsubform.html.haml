@@ -4,16 +4,19 @@
     %table
       %tr
         %tr
-          %th Select
-          %th Day
-          %th Time
+          %th.initials Select
+          %th.date Day
+          %th.time Time
           %th Location
       - @entries.each do |entry|
         %tr
           %td= f.radio_button :entry, entry.id, :id => "entry_" + entry.id.to_s
           %td= entry.start_time.strftime('%a, %m/%d')
           %td= entry.start_time.strftime('%I:%M%p') + ' -  ' + entry.end_time.strftime('%I:%M%p')
-          %td= 'Lab ' + entry.lab_id.to_s
+          - if entry.lab
+            %td= entry.lab.initials
+          - else
+            %td
   .col-2
     %h3 Substitute Partial Shift?
     = time_select "partial_shift", "start", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_start" , :class => "timeselect"}
