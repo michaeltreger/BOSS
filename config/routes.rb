@@ -35,6 +35,7 @@ CS169CampusScheduler::Application.routes.draw do
   match "/users/:id" => "users#show"
   match "/groups" => "groups#index"
   match "/admin/snapshot" => "calendars#snapshot", :as => :snapshot
+  match "/admin/mrclean" => "calendars#mrclean", :as => :mrclean
 
 
   # The priority is based upon order of creation:

@@ -119,6 +119,8 @@ $(document).ready(function() {
    
    function startCalendar() {
      $calendar.weekCalendar({
+        timeslotHeight: 15,
+        switchDisplay: {'1 day': 1, '3 next days': 3, 'work week': 5, 'full week': 7},
         minDate: $start_date,
         maxDate: $end_date,
         allowEventCreation: !$readOnly,
@@ -133,7 +135,7 @@ $(document).ready(function() {
            return daysToShow == 1 ? '%date%' : '%start% - %end%';
         },
         height : function($calendar) {
-           return 12*24*2+100;//$(window).height() - $("h1").outerHeight() - 1;
+           return 15*24*2+100;//$(window).height() - $("h1").outerHeight() - 1;
         },
         eventRender : function(calEvent, $event) {
            if (calEvent.entry_type=== "rather_not") {

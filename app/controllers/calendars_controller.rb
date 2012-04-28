@@ -174,12 +174,16 @@ class CalendarsController < ApplicationController
       end 
     end
 
-    c = Calendar.create(:name=>"Avail snapshot", :calendar_type=>1)
+    c = Calendar.create(:name=>"Availability Snapshot taken #{Time.now.strftime('%m/%d/%Y %I:%M%p')}", :calendar_type=>1)
     cal.each_pair do |time ,users|
       c.entries << Entry.create(:start_time=>time, :end_time=>time+30.minutes, :entry_type=>"", :description=>users)
     end
     c.save!
     redirect_to c
+  end
+  
+  def mrclean
+    
   end
 
 end

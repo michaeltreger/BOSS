@@ -14,4 +14,12 @@ class Lab < ActiveRecord::Base
       self.calendar = Calendar.create!(:name=> "#{initials} Schedule",
                                        :calendar_type=>Calendar::LAB)
     end
+    
+    def opening_shift
+      calendar.entries[0].user
+    end
+    
+    def closing_shift
+      calendar.entries[0].user
+    end
 end
