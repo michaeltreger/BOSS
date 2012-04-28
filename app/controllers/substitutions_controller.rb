@@ -9,9 +9,9 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions.json
   def index
     @substitutions = Substitution.all
-    @my_subs = @substitutions.find_all{|s| s.users.size >= 1 && s.users[0] == @current_user}
-    @reserved_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && s.users.size==2 && s.users[1]==@current_user}
-    @available_subs = @substitutions.find_all{|s| !(s.users[0] == @current_user) && (s.users.size!=2)}
+    @my_subs = @substitutions.find_all{|s| s.from_user && s.from_user == @current_user}
+    @reserved_subs = @substitutions.find_all{|s| !(s.from_user == @current_user) && s.to_user && s.to_user==@current_user}
+    @available_subs = @substitutions.find_all{|s| !(s.from_user == @current_user) && (s.to_user == nil)}
     @mycalendars = @current_user.calendars
     @mycalendars = @mycalendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
     respond_to do |format|

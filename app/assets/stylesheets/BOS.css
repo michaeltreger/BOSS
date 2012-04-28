@@ -48,11 +48,17 @@ select.timeselect {
 	margin-right:0px;
 	float:left;
 }
-.col-3{
-	width:280px;
+.col-3-1{
+	width: 30%;
 	margin:0px 15px 15px 15px;
 	float:left;
 }
+.col-3-2{
+	width: 60%;
+	margin:0px 15px 15px 15px;
+	float:left;
+}
+
 .col-4{
 	width:202px;
 	margin:0px 15px 15px 15px;

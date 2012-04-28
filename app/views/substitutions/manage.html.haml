@@ -2,7 +2,7 @@
 - if params[:entries]
   = render "newsubform"
 - else
-  .col-2
+  .col-3-1
     %h2 Post a Substitution
     %h4 Select a Calendar to Substitute From
     %table
@@ -15,11 +15,11 @@
             %td= c.user.initials
             %td= link_to c.name, manage_substitutions_path(:entries => c.entries)
     <br>
-  .col-2
+  .col-3-2
     = form_tag :controller => "substitutions", :action => "take_or_assign_subs" do  
       %h2 Assign Substitutions
       %h4 Available Substitutions
-      %table#all_subs
+      %table.full#all_subs
         %tr
           %th.initials Select
           %th.date Day
