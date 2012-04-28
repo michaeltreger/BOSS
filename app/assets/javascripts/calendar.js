@@ -133,7 +133,7 @@ $(document).ready(function() {
            return daysToShow == 1 ? '%date%' : '%start% - %end%';
         },
         height : function($calendar) {
-           return 1100;//$(window).height() - $("h1").outerHeight() - 1;
+           return 12*24+400;//$(window).height() - $("h1").outerHeight() - 1;
         },
         eventRender : function(calEvent, $event) {
            if (calEvent.entry_type=== "rather_not") {

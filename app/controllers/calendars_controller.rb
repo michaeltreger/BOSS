@@ -59,7 +59,12 @@ class CalendarsController < ApplicationController
       format.json do
         results = {}
 
-        events = @calendar.entries.select([:id, :start_time, :end_time, :description, :entry_type])
+        if @calendar.lab?
+          events = Entry.find_all_by_lab_id(@calendar.lab_id)
+        else
+          events = @calendar.entries.select([:id, :start_time, :end_time, :description, :entry_type])
+        end
+
         if @calendar.availability?
           this_week = Time.now.beginning_of_week
           events.each do |e|

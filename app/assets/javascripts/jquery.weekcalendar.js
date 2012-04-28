@@ -50,7 +50,7 @@
         endParam: 'end',
         businessHours: {start: 8, end: 18, limitDisplay: false},
         newEventText: 'New Event',
-        timeslotHeight: 20,
+        timeslotHeight: 12,
         defaultEventLength: 2,
         timeslotsPerHour: 4,
         minDate: null,

@@ -17,6 +17,10 @@ class Calendar < ActiveRecord::Base
       user_id
     end
 
+    def lab?
+      calendar_type == LAB
+    end
+
     def shift?
       calendar_type == SHIFTS
     end

@@ -11,12 +11,7 @@ class Lab < ActiveRecord::Base
     end
 
     def make_calendar
-      Period.find_all_by_visible(true).each do |p|
-        cal = Calendar.create!(:name=> "#{@lab.initials} #{p.name}",
-                               :calendar_type=>Calendar::LAB)
-        @lab.calendar = cal
-        p.calendars << cal
-        p.save!
-      end
+      self.calendar = Calendar.create!(:name=> "#{initials} Schedule",
+                                       :calendar_type=>Calendar::LAB)
     end
 end
