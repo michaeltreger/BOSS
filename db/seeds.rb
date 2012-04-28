@@ -20,19 +20,52 @@ User.find(:all).each do |u|
 end
 group1.save!
 
-Lab.create!(:name=>"Moffit", :initials=>"MMF", :max_employees=>4, :min_employees=>1)
+moffit = Lab.create!(:name=>"Moffit", :initials=>"MMF", :max_employees=>4, :min_employees=>1)
 Lab.create!(:name=>"Wheeler", :initials=>"WCF", :max_employees=>3, :min_employees=>1)
 
 Period.create(:start_date=>DateTime.parse("Jan 20, 2012"), :end_date=>DateTime.parse("May 20, 2012"), :name=>"Spring 2012", :visible=>true)
-Period.find(1).create_calendars
-Period.find(1).save!
 
 monday = Time.now.beginning_of_week
 Calendar.find_all_by_calendar_type(Calendar::SHIFTS).each do |c|
-  c.entries << Entry.create(:entry_type=>:shift, :description=>"MMF", :start_time=>monday+10.hours, :end_time=>monday+15.hours)
-  c.entries << Entry.create(:entry_type=>:shift, :description=>"MMF", :start_time=>monday+1.day+10.hours, :end_time=>monday+1.day+15.hours)
-  c.entries << Entry.create(:entry_type=>:shift, :description=>"MMF", :start_time=>monday+2.days+14.hours, :end_time=>monday+2.days+20.hours)
-  c.entries << Entry.create(:entry_type=>:shift, :description=>"MMF", :start_time=>monday+3.days+9.hours, :end_time=>monday+3.days+15.hours)
-  c.entries << Entry.create(:entry_type=>:shift, :description=>"MMF", :start_time=>monday+4.days+17.hours, :end_time=>monday+4.days+22.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>monday+randStart.hours, :end_time=>monday+randEnd.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>monday+1.day+randStart.hours, :end_time=>monday+1.day+randEnd.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>monday+2.days+randStart.hours, :end_time=>monday+2.days+randEnd.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>monday+3.days+randStart.hours, :end_time=>monday+3.days+randEnd.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>monday+4.days+randStart.hours, :end_time=>monday+4.days+randEnd.hours)
   c.save!
 end
+
+Calendar.find_all_by_calendar_type(Calendar::AVAILABILITY).each do |c|
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:entry_type=>:class, :start_time=>monday+randStart.hours, :end_time=>monday+randEnd.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:entry_type=>:rather_not, :start_time=>monday+1.day+randStart.hours, :end_time=>monday+1.day+randEnd.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:entry_type=>:prefer, :start_time=>monday+2.days+randStart.hours, :end_time=>monday+2.days+randEnd.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:entry_type=>:prefer, :start_time=>monday+3.days+randStart.hours, :end_time=>monday+3.days+randEnd.hours)
+  randStart = rand(20)
+  randEnd = randStart + rand(24-randStart)
+  c.entries << Entry.create(:entry_type=>:obligation, :description=>"Soccer Practice", :start_time=>monday+4.days+randStart.hours, :end_time=>monday+4.days+randEnd.hours)
+  c.save!
+end
+
+
+s = Substitution.create(:user_id => 1, :entry_id => 1, :description => "test_sub 1")
+s.entry = Entry.find(1)
+s.users << User.find(1)
+s.save!

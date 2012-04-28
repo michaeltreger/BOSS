@@ -15,8 +15,9 @@ CS169CampusScheduler::Application.routes.draw do
     resources :periods
     resources :users
     resources :groups
-    resources :labs  
-    match '/calendars' => 'calendars#admin'
+    resources :labs
+    match '/calendars' => 'calendars#admin', :as => 'admin_calendars'
+    match '/substitutions' => 'substitutions#manage', :as => 'manage_substitutions'
     match '/init'  => "users#initAdmin"
     match '/users/:id/deactivate' => "users#deactivate"
     match '/users/:id/activate' => "users#activateUser"
@@ -28,12 +29,15 @@ CS169CampusScheduler::Application.routes.draw do
 
   end
 
+  match '/get_entries_for_sub' => 'substitutions#get_entries_for_sub'
   match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'
   match "/changeAdmin" => "users#changeAdmin"
   match "/test_setuser/:id" => "users#test_setuser"
   match "/groups/:id" => "groups#show"
   match "/users/:id" => "users#show"
   match "/groups" => "groups#index"
+  match "/admin/snapshot" => "calendars#snapshot", :as => :snapshot
+  match "/admin/mrclean" => "calendars#mrclean", :as => :mrclean
 
 
   # The priority is based upon order of creation:

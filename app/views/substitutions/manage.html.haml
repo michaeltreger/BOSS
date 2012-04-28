@@ -1,0 +1,55 @@
+- @page_title = 'Manage Substitutions'
+- if params[:entries]
+  = render "newsubform"
+- else
+  .col-2
+    %h2 Post a Substitution
+    %h4 Select a Calendar to Substitute From
+    %table
+      %tr
+        %tr
+          %th.short Owner
+          %th Calendar Name
+        - @admin_allCalendars.each do |c|
+          %tr
+            %td= c.user.initials
+            %td= link_to c.name, manage_substitutions_path(:entries => c.entries)
+    <br>
+  .col-2
+    = form_tag :controller => "substitutions", :action => "take_or_assign_subs" do  
+      %h2 Assign Substitutions
+      %h4 Available Substitutions
+      %table#all_subs
+        %tr
+          %th.initials Select
+          %th.date Day
+          %th.time Time
+          %th.initials Location
+          %th.initials Posted By
+          %th.initials Reserved For
+          %th Notes
+        - @substitutions.each do |substitution|
+          %tr
+            %td= check_box_tag "entries[#{substitution.id.to_s}]"
+            %td= substitution.entry.start_time.strftime('%a, %m/%d')
+            %td= substitution.entry.start_time.strftime('%I:%M%p') + ' -  ' + substitution.entry.end_time.strftime('%I:%M%p')
+            - if substitution.entry.lab
+              %td= substitution.entry.lab.initials
+            - else
+              %td
+            - if substitution.users.size > 0
+              %td= substitution.users[0].initials
+            - else
+              %td
+            - if substitution.users.size > 1
+              %td= substitution.users[1].initials
+            - else
+              %td
+            %td= substitution.description
+      <br>
+      %h4 Assign Selected Substitutions To:
+      = collection_select(:target_user, :id, @users, :id, :initials, {}, {:class => :initialsselect})
+      <br><br>
+      = submit_tag 'Assign Selected Substitutions', {:name => 'submit_type[assign]', :value => 'Make Assignments'}
+      <br><br>
+      = submit_tag 'Delete Selected Substitutions', {:confirm => 'Are you sure you want to delete these substitutions?', :name => 'submit_type[delete]', :value => 'Delete Selected'}

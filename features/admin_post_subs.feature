@@ -27,21 +27,21 @@ Background: A work entry has been added to my calendar
     | entry_id   | description                | from_user_id    | to_user_id |
     |   2        | Software Training          |    1            |    2       |
 
-  And I am on the "Post a Substitution" page
+  And I am on the "Manage Substitutions" page
 
   Scenario: Put someone else's shift up for substitution
-    When I select the calendar "Alice's Calendar" to substitute from
+    When I follow "Alice's Calendar"
     And I select the entry with id 1 for substitution
     And I fill in "Description" with "Urgent - fix printer"
     And I press "Make Substitution"
     And I go to the "View Substitutions" page
     Then "My Posted Substitutions" should have 0 entries
-    And "Available Substitutions" should have 2 entries
+    And "Available Substitutions" should have 1 entries
     And "Available Substitutions" should contain "Urgent - fix printer"
-    And "Available Substitutions" should contain "Software Training"
+    And "Reserved Substitutions" should have 0 entries
   
   Scenario: Posted subs are still on original owner's calendar
-    When I select the calendar "Alice's Calendar" to substitute from
+    When I follow "Alice's Calendar"
     When I select the entry with id 1 for substitution
     And I fill in "Description" with "Wheeler Work"
     And I press "Make Substitution"

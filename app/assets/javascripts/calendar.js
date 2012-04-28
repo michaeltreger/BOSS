@@ -7,24 +7,71 @@ $(document).ready(function() {
    $('#submit_calendar').bind('click', submit);
    
    function submit() {
-      finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
-      finalizedEvents.map(convertTimesOut);
-      
-      json = JSON.stringify(finalizedEvents);
-      //alert(json);
-      $.ajax({
-        type: "PUT",
-        url: window.location.pathname+".json",
-        data: {"calendar_updates": json},
-        dataType: "json",
-        success: function(data, textStatus, XMLHttpRequest){
-           //alert("Succeeded");
-        },
-        error: function(data, textStatus, XMLHttpRequest){
-           //eval('('+responseText+')');
-           //alert(data);
-        }
-      });
+      if (validate()) {
+        finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
+        finalizedEvents.map(convertTimesOut);
+        
+        json = JSON.stringify(finalizedEvents);
+        //alert(json);
+        $.ajax({
+          type: "PUT",
+          url: window.location.pathname+".json",
+          data: {"calendar_updates": json},
+          dataType: "json",
+          success: function(data, textStatus, XMLHttpRequest){
+             //alert("Succeeded");
+          },
+          error: function(data, textStatus, XMLHttpRequest){
+             //eval('('+responseText+')');
+             //alert(data);
+          }
+        });
+      }
+   }
+   
+   function validate() {
+     finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
+     total_unavail = 0;
+     weekday_unavail = 0;
+     invalid = false;
+     $.each(finalizedEvents, function (i, event) {
+      if (event.entry_type === "class" || event.entry_type === "obligation") {
+         d = duration(event);
+         if(event.start_time.getDay() == 0 || event.start_time.getDay() == 6) {
+            weekday_unavail += d;
+         }
+         total_unavail += d
+      }
+     });
+ 
+     total_avail = 126 - total_unavail;
+     weekday_avail = 90 - weekday_unavail;
+     if (total_avail < 30) {
+       invalid = true;
+     }
+ 
+     if (invalid) {
+       validateDialog = $("#validate_container");
+       validateDialog.dialog({
+         modal: true,
+         title: "Validate",
+         close: function() {
+            validateDialog.dialog("destroy");
+            validateDialog.hide();
+         },
+         buttons: {
+            ok : function() {
+               validateDialog.dialog("close");
+            }
+         }
+      }).show();
+     } else {
+        return true
+     }
+   }
+   
+   function duration(event) {
+      return (event.end_time - event.start_time)/3600000
    }
    
    getEventData();
@@ -72,6 +119,8 @@ $(document).ready(function() {
    
    function startCalendar() {
      $calendar.weekCalendar({
+        timeslotHeight: 15,
+        switchDisplay: {'1 day': 1, '3 next days': 3, 'work week': 5, 'full week': 7},
         minDate: $start_date,
         maxDate: $end_date,
         allowEventCreation: !$readOnly,
@@ -86,7 +135,7 @@ $(document).ready(function() {
            return daysToShow == 1 ? '%date%' : '%start% - %end%';
         },
         height : function($calendar) {
-           return 1100;//$(window).height() - $("h1").outerHeight() - 1;
+           return 15*24*2+100;//$(window).height() - $("h1").outerHeight() - 1;
         },
         eventRender : function(calEvent, $event) {
            if (calEvent.entry_type=== "rather_not") {
@@ -150,6 +199,13 @@ $(document).ready(function() {
                        calEvent.end_time = new Date(endField.val());
                        calEvent.entry_type = entry_typeField.val();
                        calEvent.description = descriptionField.val();
+                       if (calEvent.entry_type === "obligation" && calEvent.description === "") {
+                         document.getElementById("description_label").innerHTML = "Description (Required)";
+                         document.getElementById("description_label").css("backgroundColor", "#f23");
+                       } else {
+                         $calendar.weekCalendar("updateEvent", calEvent);
+                         $dialogContent.dialog("close");
+                       }
 
                        $calendar.weekCalendar("removeUnsavedEvents");
                        $calendar.weekCalendar("updateEvent", calEvent);
@@ -205,9 +261,13 @@ $(document).ready(function() {
                     calEvent.end_time = new Date(endField.val());
                     calEvent.entry_type= entry_typeField.val();
                     calEvent.description = descriptionField.val();
-
-                    $calendar.weekCalendar("updateEvent", calEvent);
-                    $dialogContent.dialog("close");
+                    
+                    if (calEvent.entry_type === "obligation" && calEvent.description === "") {
+                      document.getElementById("description_label").innerHTML = "Description (Required)";
+                    } else {
+                      $calendar.weekCalendar("updateEvent", calEvent);
+                      $dialogContent.dialog("close");
+                    }
                  },
                  "delete" : function() {
                     $calendar.weekCalendar("removeEvent", calEvent.id);
@@ -241,6 +301,7 @@ $(document).ready(function() {
    function resetForm($dialogContent) {
       $dialogContent.find("input").val("");
       $dialogContent.find("textarea").val("");
+      document.getElementById("description_label").innerHTML = "Description";
    }
 
    /*

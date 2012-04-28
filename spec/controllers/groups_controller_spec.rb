@@ -20,12 +20,12 @@ require 'spec_helper'
 
 describe GroupsController do
   before (:each) do
-    @admin = User.create!(:user_type => 0, :name => 'Chris', :approved => 'true', :initials => 'C')
-    @user1 = User.create!(:user_type => 1, :name => 'Seven', :approved => 'true', :initials => 'JQ')
-    @user1 = User.create!(:user_type => 1, :name => 'Michael', :approved => 'true', :initials => 'MT')
-    @user1 = User.create!(:user_type => 1, :name => 'Peter', :approved => 'true', :initials => 'PC')
-    @user1 = User.create!(:user_type => 1, :name => 'Suyan', :approved => 'true', :initials => 'SYF')
-    @user1 = User.create!(:user_type => 1, :name => 'Rohan', :approved => 'true', :initials => 'RC')
+    @admin = User.create!(:user_type => 0, :name => 'Chris', :activated => 'true', :initials => 'C')
+    @user1 = User.create!(:user_type => 1, :name => 'Seven', :activated => 'true', :initials => 'JQ')
+    @user1 = User.create!(:user_type => 1, :name => 'Michael', :activated => 'true', :initials => 'MT')
+    @user1 = User.create!(:user_type => 1, :name => 'Peter', :activated => 'true', :initials => 'PC')
+    @user1 = User.create!(:user_type => 1, :name => 'Suyan', :activated => 'true', :initials => 'SYF')
+    @user1 = User.create!(:user_type => 1, :name => 'Rohan', :activated => 'true', :initials => 'RC')
     session[:test_user_id] = @admin.id
   end
 

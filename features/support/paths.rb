@@ -19,6 +19,8 @@ module NavigationHelpers
       '/substitutions/new'
     when /^the "View Substitutions" page$/
       '/substitutions'
+    when /^the "Manage Substitutions" page$/
+      '/admin/substitutions'
     when /^(.*'s) Calendar page$/
       calendar_id = (Calendar.find_by_name($1+" Calendar")).id
       '/calendars/'+calendar_id.to_s
@@ -38,7 +40,7 @@ module NavigationHelpers
     #
     #   when /^(.*)'s profile page$/i
     #     user_profile_path(User.find_by_login($1))
-    
+
     when /^the "Users" page$/
         '/admin/users/'
     when /^the "Groups" page$/

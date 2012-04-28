@@ -21,7 +21,7 @@ require 'spec_helper'
 describe CalendarsController do
 
   before (:each) do
-    @student = User.create!(:user_type => 1, :name => "John", :approved => true, :initials => "J")
+    @student = User.create!(:user_type => 1, :name => "John", :activated => true, :initials => "J")
     #session[:test_user_id] = @student.id
   end
   # This should return the minimal set of attributes required to create a valid

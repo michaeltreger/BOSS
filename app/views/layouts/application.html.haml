@@ -41,11 +41,13 @@
                           %li
                             = link_to "Periods", periods_path
                           %li
-                            = link_to "Admin Calendars", '/admin/calendars'
+                            = link_to "Calendars", admin_calendars_path
                           %li
-                            = link_to "View Users", users_path
+                            = link_to "Substitutions", manage_substitutions_path
                           %li
-                            = link_to "View Groups", groups_path
+                            = link_to "Users", users_path
+                          %li
+                            = link_to "Groups", groups_path
                           %li
                             = link_to "Labs", labs_path
                   %li
@@ -106,4 +108,14 @@
                       %h2= flash[:notice]
                 
                   = yield
-                    
+- if Rails.env.development?
+  %h4 DEBUG THINGS
+  - if not @current_user.nil?
+    - if @current_user.user_type
+      = "Current User Type is " + @current_user.user_type.to_s
+    - else
+      = "Current User Type is nil"
+    = form_tag ('/changeAdmin') do
+      = number_field_tag(:user_type)
+      = submit_tag("Change User Type")                    
+    = session[:cas_user]          

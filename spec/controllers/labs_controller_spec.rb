@@ -20,7 +20,7 @@ require 'spec_helper'
 
 describe LabsController do
   before (:each) do
-    @student = User.create!(:user_type => 1, :name => "John", :approved => true, :initials => "J")
+    @student = User.create!(:user_type => 1, :name => "John", :activated => true, :initials => "J")
   end
 
   # This should return the minimal set of attributes required to create a valid
@@ -29,7 +29,7 @@ describe LabsController do
   def valid_attributes
     {:name=>"Moffit", :initials=>"MMF", :max_employees=>4, :min_employees=>1}
   end
-  
+
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # LabsController. Be sure to keep this updated too.

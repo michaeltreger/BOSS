@@ -6,9 +6,9 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "sel
 
 Given /^the following substitutions exist:$/ do |substitutions_table|
   substitutions_table.hashes.each do |s|
-    substitution = {:entry => Entry.find_by_id(s[:entry_id]),
+    substitution = {:entry => Entry.find(s[:entry_id]),
                     :description => s[:description]}
-    new_sub = Substitution.create!(substitution)
+    new_sub = Substitution.create(substitution)
     owner = User.find_by_id(s[:from_user_id])
     new_sub.users << owner
     if (s[:to_user_id] != "nil")
@@ -37,9 +37,9 @@ When /^I choose to substitute a partial shift$/ do
   check('partial_shift')
 end
 
-When /^I assign the substitution to "([^"]*)"$/ do |calendar|
-  targetCalendar = Calendar.find_by_name(calendar)
-  select(targetCalendar.full_name)
+When /^I assign the substitution to "([^"]*)"$/ do |user|
+  targetUser = User.find_by_name(user)
+  select(targetUser.initials)
 end
 
 When /^I put the substitution in "([^"]*)"$/ do |calendar|
@@ -55,7 +55,11 @@ Then /^I should not see the entry with id (\d+) for substitution$/ do |entry_id|
 end
 
 Then /^"My Posted Substitutions" should have (\d+) entries$/ do |num|
-  ((page.all('table#my_subs tr').count) -1 ).should == Integer(num)
+  numRows = ((page.all('table#my_subs tr').count) -1 )
+  if numRows < 0
+    numRows = 0
+  end
+  numRows.should == Integer(num)
 end
 
 
@@ -85,7 +89,7 @@ Then /^"My Posted Substitutions" should not contain "([^"]*)"$/ do |entry|
 end
 
 Then /^"Reserved Substitutions" should have (\d+) entries$/ do |num|
-  page.all('table#my_subs tr').count.should == Integer(num) + 1
+  [(page.all('table#my_subs tr').count-1),0].max.should == Integer(num)
 end
 
 
@@ -114,7 +118,7 @@ Then /^"Reserved Substitutions" should not contain "([^"]*)"$/ do |entry|
 end
 
 Then /^"Available Substitutions" should have (\d+) entries$/ do |num|
-  page.all('table#my_subs tr').count.should == Integer(num) + 1
+  (page.all('table#available_subs tr').count-1).should == Integer(num)
 end
 
 
