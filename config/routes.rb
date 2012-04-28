@@ -23,16 +23,17 @@ CS169CampusScheduler::Application.routes.draw do
     match '/users/:id/activate' => "users#activateUser"
     match "/snapshot" => "calendars#snapshot", :as => :snapshot
     match "/mrclean" => "calendars#mrclean", :as => :mrclean
+    match "/groups/:id/users/add" => "groups#addUsers"
+    put "/groups/:id/add" => "groups#updateUsers"
+    match "/users/:user_id/Groups/:group_id/remove" => "users#removeGroup"
+    match "/users/:id/add" => "users#addGroup"
+    match "/groups/:id/labs/add" => "groups#addLabs"
   end
 
   match '/get_entries_for_sub' => 'substitutions#get_entries_for_sub'
   match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'
   match "/changeAdmin" => "users#changeAdmin"
   match "/test_setuser/:id" => "users#test_setuser"
-  match "/admin/groups/:id/add" => "groups#addUsers"
-  put "/admin/groups/:id/add" => "groups#updateUsers"
-  match "/admin/users/:user_id/Groups/:group_id/remove" => "users#removeGroup"
-  match "/admin/users/:id/add" => "users#addGroup"
   match "/groups/:id" => "groups#show"
   match "/users/:id" => "users#show"
   match "/groups" => "groups#index"

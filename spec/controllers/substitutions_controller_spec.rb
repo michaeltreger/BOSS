@@ -26,8 +26,8 @@ describe SubstitutionsController do
     #@my_group_user = Group_user.create!(:group_id => @my_group.id, :user_id => @me.id, :created_at => '2012-01-01T00:00:00Z')
     @me = User.create!(:user_type => 1, :name => 'Tom', :activated => 'true', :initials => 'T', :cas_user => 123)
     @other = User.create!(:user_type => 1, :name => 'Other', :activated => 'true', :initials => 'O', :cas_user => 456)
-    @my_calendar = Calendar.create!(:calendar_type => 1, :name => 'my_calendar', :user_id => @me.id, :period_id => @period.id)
-    @other_calendar = Calendar.create!(:calendar_type => 1, :name => 'other_calendar', :user_id => @other.id, :period_id => @period.id)
+    @my_calendar = @me.shift_calendar
+    @other_calendar = @other.shift_calendar
     session[:test_user_id] = @me.id
     @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => '8:00am', :end_time => '12:00pm')
     @other_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => '2:00pm', :end_time => '4:00pm')
@@ -139,7 +139,8 @@ describe SubstitutionsController do
     describe "for available time" do
       describe "while not exceeding hour limit" do
         it "should take sub successfully" do
-          put :take_or_assign_subs, :target_user => @me.id, :entries => {@substitution.id => "1"}
+          request.env["HTTP_REFERER"] = substitutions_url
+          put :take_or_assign_subs, :target_user => {:id => @me.id}, :entries => {@substitution.id => "1"}
           changedEntry = Entry.find(@substitution.entry_id)
           changedEntry.calendar_id.should == @my_calendar.id
           #debugger
@@ -149,13 +150,15 @@ describe SubstitutionsController do
       end
       describe "While exceeding hour limit" do
         it "should not take sub" do
+          request.env["HTTP_REFERER"] = substitutions_url
           @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
-          put :take_or_assign_subs, :target_user => @me.id, :entries => {@long_substitution.id => "1"}
-          flash[:error].should == 'Exceed hour limit!'
+          put :take_or_assign_subs, :target_user => {:id => @me.id}, :entries => {@long_substitution.id => "1"}
+          flash[:error].should include('The following subs could not be taken')
         end
         it "should redirect to index" do
+          request.env["HTTP_REFERER"] = substitutions_url
           @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
-          put :take_or_assign_subs, :target_user => @me.id, :entries => {@long_substitution.id => "1"}
+          put :take_or_assign_subs, :target_user => {:id => @me.id}, :entries => {@long_substitution.id => "1"}
           response.should redirect_to substitutions_url
         end
       end
@@ -171,14 +174,14 @@ describe SubstitutionsController do
     it "should perform destroy substitution action" do
       Substitution.should_receive(:find).with('1').and_return @substitution
       @substitution.should_receive(:destroy)
-      delete :destroy, {:id => '1'}
+      delete :destroy, {:id => 1}
     end
     it "should destroy substitution sucessfully" do
-      delete :destroy, {:id => '1'}
+      delete :destroy, {:id => 1}
       Substitution.count.should == 0
     end
     it "should redirect to the substitutions index" do
-      delete :destroy, {:id => '1'}
+      delete :destroy, {:id => 1}
       response.should redirect_to substitutions_url
     end
   end

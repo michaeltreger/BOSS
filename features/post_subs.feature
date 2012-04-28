@@ -14,11 +14,7 @@ Background: A work entry has been added to my calendar
     
   And I am logged in as "Alice"
 
-  And the following calendars exist:
-    | name             | calendar_type  | user_id |
-    | Alice's Calendar |   1            |   1     |
-
-  And the calendar "Alice's Calendar" has the following entries:
+  And the calendar "Alice's Shifts" has the following entries:
     | description         | start_time        | end_time         |
     | Work at Wheeler     | 12:00, 1/1/2012   | 14:00 1/1/2012   |
     | Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   |
@@ -42,7 +38,7 @@ Background: A work entry has been added to my calendar
     When I select the entry with id 1 for substitution
     And I fill in "Description" with "Wheeler Work"
     And I press "Make Substitution"
-    And I am on Alice's Calendar page
+    And I am on Alice's Shifts page
     And I view the calendar
     Then I should see "Work at Wheeler"
 

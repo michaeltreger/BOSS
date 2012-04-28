@@ -11,11 +11,7 @@ Background: A Calendar has been created
 
   And I am logged in as "Alice"
 
-  And the following calendars exist:
-    | name             | calendar_type  | user_id |
-    | Alice's Calendar | 1              | 1       |
-
-  And the calendar "Alice's Calendar" has the following entries:
+  And the calendar "Alice's Shifts" has the following entries:
     | description         | start_time        | end_time         | type       |
     | Work at Wheeler     | 12:00, 1/1/2012   | 14:00 1/1/2012   | prefer     |
     | Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   | rather_not |
@@ -26,5 +22,5 @@ Background: A Calendar has been created
     When I choose a flat file
     And I press "upload"
     Then I should see "upload successfully"
-    And I go to Alice's Calendar page
+    And I go to Alice's Shifts page
     And I should see Alice's new working calendar

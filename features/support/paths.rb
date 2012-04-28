@@ -24,6 +24,9 @@ module NavigationHelpers
     when /^(.*'s) Calendar page$/
       calendar_id = (Calendar.find_by_name($1+" Calendar")).id
       '/calendars/'+calendar_id.to_s
+    when /^(.*)'s Shifts page$/
+      calendar_id = (User.find_by_name($1).shift_calendar).id
+      '/calendars/'+calendar_id.to_s
     when /^the "Time Edit" page$/
       '/time_edits'
     when /^the "New Time Edit" page$/

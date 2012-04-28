@@ -8,8 +8,8 @@
     %th Name
     %th Type
     %th Hour limit
-    %th
     - if @current_user.isAdmin?
+      %th
       %th
       %th
 
@@ -17,12 +17,13 @@
     %tr
       %td= group.name
       %td= group.group_type
-      %td= group.hour_limit
-      %td= link_to 'Show', "/groups/#{group.id}"
+      %td= group.hour_limit     
       - if @current_user.isAdmin?
         %td= link_to 'Show', group
         %td= link_to 'Edit', edit_group_path(group)
         %td= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete
+      - else
+        %td= link_to 'Show', "/groups/#{group.id}"
 
 %br
 - if @current_user.isAdmin?

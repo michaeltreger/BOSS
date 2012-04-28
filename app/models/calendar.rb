@@ -40,15 +40,11 @@ class Calendar < ActiveRecord::Base
       return start + ': ' + name
     end
 
-    # in future maybe should be split up
+
     def canAdd(candidate_entry)
       # first do hour limit check
-      if user.groups.size > 0
-        all_hour_limits = user.groups.map{|g| g.hour_limit}
-        hour_limit = all_hour_limits.max
-        if (work_hours + candidate_entry.duration) > hour_limit
-          return false
-        end
+      if (work_hours + candidate_entry.duration) > user.hour_limit
+        return false
       end
 
       # now check overlap

@@ -13,18 +13,13 @@ Background: Substitutions created
 
   And I am logged in as "David"
 
-  And the following calendars exist:
-    | name             | calendar_type  | user_id |
-    | Alice's Calendar |   1            |   1     |
-    | Bob's Calendar   |   1            |   2     |
-
-  And the calendar "Alice's Calendar" has the following entries:
+  And the calendar "Alice's Shifts" has the following entries:
     | description         | start_time        | end_time         |
     | Work at Wheeler     | 12:00, 1/1/2012   | 14:00 1/1/2012   |
     | Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   |
 
 
-  And the calendar "Bob's Calendar" has the following entries:
+  And the calendar "Bob's Shifts" has the following entries:
     | description         | start_time        | end_time         |
     | Work at Moffit      | 15:00, 1/1/2012   | 18:00 1/1/2012   |
     | Presentation        | 8:00, 1/1/2012    | 12:00 1/1/2012   |
@@ -50,7 +45,7 @@ Background: Substitutions created
     When I check the substitution "Work at Moffit"
     And I assign the substitution to "Alice"
     And I press "Make Assignments"
-    And I am on Alice's Calendar page
+    And I am on Alice's Shifts page
     And I view the calendar
     Then I should see "Work at Moffit"
 
@@ -58,7 +53,7 @@ Background: Substitutions created
     When I check the substitution "Presentation"
     And I assign the substitution to "Alice"
     And I press "Make Assignments"
-    And I am on Alice's Calendar page
+    And I am on Alice's Shifts page
     And I view the calendar
     Then I should see "Presentation"
 

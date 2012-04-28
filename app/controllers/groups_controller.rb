@@ -98,7 +98,12 @@ class GroupsController < ApplicationController
   end
 
   def addUsers
-    @users = User.all()
+    @users = User.find_by_deactivated(false)
+    @group = Group.find(params[:id])
+  end
+  
+  def addLabs
+    @labs = Lab.all()
     @group = Group.find(params[:id])
   end
 end
