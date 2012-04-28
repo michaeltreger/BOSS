@@ -29,27 +29,43 @@
     %br
 
 - if not @current_period.nil?
-  %p
-    %b Availability Calendars
-    %br
-    - @acalendars.each do |c|
-      - if c.period_id == @current_period.id
-        %b= link_to c.name, calendar_path(c)
-      -else
-        = link_to c.name, calendar_path(c)
-      %br
-  %p
-    %b Shift Calendars
-    %br
+  %h3 My Work Calendars
+  %table
+    %tr
+      %th Name
+      %th Description
+      %th Last Modified
     - @wcalendars.each do |c|
-      - if c.period_id == @current_period.id
-        %b= link_to c.name, calendar_path(c)
-      -else
-        = link_to c.name, calendar_path(c)
-      %br
+      %tr
+        - if c.period_id == @current_period.id
+          %td %b= link_to c.name, calendar_path(c)
+        -else
+          %td= link_to c.name, calendar_path(c)
+        %td= c.description
+        %td= c.updated_at.strftime('%a, %m/%d')
+
+  %h3 My Availability Calendars
+  %table
+    %tr
+      %th Name
+      %th Description
+      %th Start
+      %th End
+      %th Last Modified
+    - @acalendars.each do |c|
+      %tr
+        - if c.period_id == @current_period.id
+          %td 
+            %b= link_to c.name, calendar_path(c)
+        -else
+          %td= link_to c.name, calendar_path(c)
+        %td= c.description
+        %td= c.period.start_date.strftime('%a, %m/%d')
+        %td= c.period.end_date.strftime('%a, %m/%d')
+        %td= c.updated_at.strftime('%a, %m/%d')
+  
   %p
-    %b Preferences
-    %br
+    %h3 Preferences
     - @preferences.each do |p|
       - if p.period_id == @current_period.id
         %b= link_to Period.find(p.period_id).name, preference_path(p)
