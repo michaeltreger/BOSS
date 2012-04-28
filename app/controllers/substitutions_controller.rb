@@ -138,6 +138,7 @@ class SubstitutionsController < ApplicationController
     end
     respond_to do |format|
       if @substitution.save
+        SubstitutionMailer.posted_sub(@substitution).deliver
         if request && request.referer && request.referer.include?('admin')
           format.html { redirect_to manage_substitutions_path, notice: 'Substitution was successfully created.' }
         else
@@ -208,6 +209,7 @@ class SubstitutionsController < ApplicationController
           currEntry.substitution = nil
           currEntry.calendar = targetCalendar
           currEntry.save!
+          SubstitutionMailer.taken_sub(currSub, targetUser).deliver
           Substitution.delete(k)
         end
       end
