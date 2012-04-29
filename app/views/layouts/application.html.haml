@@ -34,9 +34,12 @@
               #navcol
                 %ul#menu-flyout
                   - if not @current_user.nil?
-                    - if @current_user.isAdmin?
+                    - if @current_user.isAdminorScheduler?
                       %li
-                        = link_to "Admin", users_path
+                        - if @current_user.isAdmin?
+                          = link_to "Admin", admin_calendars_path
+                        - if @current_user.isScheduler?
+                          = link_to "Scheduler", admin_calendars_path
                         %ul
                           %li
                             = link_to "Periods", periods_path
@@ -52,11 +55,11 @@
                             = link_to "Labs", labs_path
                           %li
                             = link_to "Units", units_path
-
+                          %li
                             = link_to "Mr Clean", mrclean_url
                           %li
                             = link_to "Snapshot", snapshot_path
-
+  
                   %li
                     = link_to "My Calendars", calendars_path
                     %ul
@@ -101,6 +104,18 @@
                   - if @current_period
                     <b>Current Period</b> <BR>
                     = @current_period.name
+                    - if Rails.env.development?
+                      <BR><B><BR><BR><BR><BR>
+                      %h4 DEBUG THINGS
+                      - if not @current_user.nil?
+                        - if @current_user.user_type
+                          = "Current User Type is " + @current_user.user_type.to_s
+                      - else
+                        = "Current User Type is nil"
+                      = form_tag ('/changeAdmin') do
+                        = number_field_tag(:user_type)
+                        = submit_tag("Change User Type")                    
+                      = session[:cas_user]                              
               #contentcol
                 #section
                   #section-txt
@@ -115,14 +130,3 @@
                       %h2= flash[:notice]
                 
                   = yield
-- if Rails.env.development?
-  %h4 DEBUG THINGS
-  - if not @current_user.nil?
-    - if @current_user.user_type
-      = "Current User Type is " + @current_user.user_type.to_s
-    - else
-      = "Current User Type is nil"
-    = form_tag ('/changeAdmin') do
-      = number_field_tag(:user_type)
-      = submit_tag("Change User Type")                    
-    = session[:cas_user]          

@@ -9,7 +9,9 @@ caption,th {text-align:left;}
 .clear {clear:both; height:0; overflow:hidden; line-height:1px; font-size:1px;}
 
 /* ********** basics - main typography *********** */
+
 html {
+overflow: hidden;
 height: 100%;
 }
 body {
