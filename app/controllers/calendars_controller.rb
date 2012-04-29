@@ -53,8 +53,10 @@ class CalendarsController < ApplicationController
 
   def show
     @calendar = Calendar.find(params[:id])
-    @start_date = [Time.now.beginning_of_week + 7.days, @calendar.period.start_date.to_time.beginning_of_week].max
-    @end_date = @start_date + 6.days
+    if @calendar.availability? and @calendar.period
+      @start_date = [Time.now.beginning_of_week + 14.days, @calendar.period.start_date.to_time.beginning_of_week].max
+      @end_date = @start_date + 6.days
+    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -69,6 +71,9 @@ class CalendarsController < ApplicationController
 
         if @calendar.availability?
           events.each do |e|
+            if e.entry_type == "closed"
+              e[:readOnly] = true
+            end
             e.start_time = e.start_time + (@start_date-e.start_time.beginning_of_week)
             e.end_time = e.end_time + (@start_date-e.end_time.beginning_of_week)
           end
@@ -83,7 +88,7 @@ class CalendarsController < ApplicationController
         results[:events] = events
 
         if @current_user.id != @calendar.owner or @calendar.shift?
-          results[:read_only] = "true"
+          results[:reaOnly] = true
         end
 
         render json: results
@@ -161,10 +166,12 @@ class CalendarsController < ApplicationController
 
   def snapshot
     cal = {}
+    start = Time.now.beginning_of_week + 7.days
     User.find_all_by_activated(true).each do |u|
       u.availability_calendar(@current_period).entries.each do |e|
-        time = e.start_time
-        while time < e.end_time
+        time = e.start_time + (start - e.start_time.beginning_of_week)
+        endTime = e.end_time + (start - e.end_time.beginning_of_week)
+        while time < endTime
           if cal[time]
             cal[time] += " #{u.initials}"
           else 
@@ -175,7 +182,7 @@ class CalendarsController < ApplicationController
       end 
     end
 
-    c = Calendar.create(:name=>"Availability Snapshot taken #{Time.now.strftime('%m/%d/%Y %I:%M%p')}", :calendar_type=>Calendar::AVAILABILITY)
+    c = Calendar.create(:name=>"Availability Snapshot taken #{Time.now.strftime('%m/%d/%Y %I:%M%p')}", :calendar_type=>Calendar::SNAPSHOT, :period_id=>@current_period.id)
     cal.each_pair do |time ,users|
       c.entries << Entry.create(:start_time=>time, :end_time=>time+30.minutes, :entry_type=>"", :description=>users)
     end

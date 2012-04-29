@@ -8,6 +8,7 @@
   <input type='radio' name='entry_type_select' value='obligation'>Obligation</input> | 
 
   = button_tag :submit, :id=>:submit_calendar
+  = button_tag :validate, :id=>:validate_calendar
   <br>
   = "Changes for #{@start_date.strftime('%b %d, %Y')} - #{@end_date.strftime('%b %d, %Y')} due by #{(@start_date-7.days+17.hours).strftime('%b %d, %Y %I:%M%p')}. Changes made after the deadline will affect the next week."
   
@@ -37,8 +38,30 @@
 
 
 #validate_container
-  %p Option 1
-  %p Option 2
-  %p Option 3
+  %p 
+    Option 1 
+    %div#option1_status
+    %ul
+      %li
+        Total hours available (45) :
+        .validate_total
+      %li 
+        Week day hours available (15):
+        .validate_weekday
+      
+  %p 
+    Option 2 
+    %div#option2_status
+    %ul
+      %li 
+        Total hours available (30) :
+        .validate_total
 
+  %p 
+    Option 3 
+    %div#option3_status
+    %ul
+      %li 
+        Week day hours available (25):
+        .validate_weekday
 

@@ -27,17 +27,25 @@ class User < ActiveRecord::Base
     calendars << Calendar.create!(:name=> "#{name}'s Shifts",
                                   :calendar_type=>Calendar::SHIFTS)
     Period.all.each do |p|
-      avail_calendar = Calendar.create!(:name=> "#{name}'s #{p.name} Availabilities",
-                                        :calendar_type=>Calendar::AVAILABILITY)
-      pref = Preference.create!()
-
-      calendars << avail_calendar
-      preference << pref
-
-      p.calendars << avail_calendar
-      p.preferences << pref
+      make_perod_specific_calendars(p)
       p.save!
     end
+  end
+  
+  def make_period_specific_calendars(p)
+    avail_calendar = Calendar.create!(:name=> "#{name}'s #{p.name} Availabilities",
+                                      :calendar_type=>Calendar::AVAILABILITY)
+    monday = Time.now.beginning_of_week
+    #0..6 do |day|
+    #  avail_calendar.entries << Entry.create(:start_time=>monday + day.days + 2.hours, :end_time=>monday + day.days + 8.hours, :entry_type=>"closed")
+    #end
+    pref = Preference.create!()
+
+    calendars << avail_calendar
+    preference << pref
+
+    p.calendars << avail_calendar
+    p.preferences << pref
   end
 
   def isAdmin?
