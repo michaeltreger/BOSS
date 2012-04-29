@@ -30,7 +30,6 @@ class Calendar < ActiveRecord::Base
       calendar_type == AVAILABILITY
     end
 
-
     def full_name
       start = ''
       if user && user.initials
@@ -64,6 +63,7 @@ class Calendar < ActiveRecord::Base
       entries.each do |ent|
         e = Entry.find_by_id(ent["id"].to_i)
         ent.delete("id")
+        ent.delete("readOnly")
         if e.blank?
           e = Entry.create(ent)
         else

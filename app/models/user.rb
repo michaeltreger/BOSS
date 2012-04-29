@@ -35,10 +35,15 @@ class User < ActiveRecord::Base
   def make_period_specific_calendars(p)
     avail_calendar = Calendar.create!(:name=> "#{name}'s #{p.name} Availabilities",
                                       :calendar_type=>Calendar::AVAILABILITY)
-    monday = Time.now.beginning_of_week
-    #0..6 do |day|
-    #  avail_calendar.entries << Entry.create(:start_time=>monday + day.days + 2.hours, :end_time=>monday + day.days + 8.hours, :entry_type=>"closed")
-    #end
+    if !p.exception
+      monday = Time.now.beginning_of_week
+      5.times do |day|
+        avail_calendar.entries << Entry.create(:start_time=>monday + day.days + 2.hours, :end_time=>monday + day.days + 8.hours, :entry_type=>"closed")
+      end
+      avail_calendar.entries << Entry.create(:start_time=>monday + 4.days + 22.hours, :end_time=>monday + 5.days + 9.hours, :entry_type=>"closed")
+      avail_calendar.entries << Entry.create(:start_time=>monday + 5.days + 22.hours, :end_time=>monday + 6.days + 13.hours, :entry_type=>"closed")
+    end
+
     pref = Preference.create!()
 
     calendars << avail_calendar

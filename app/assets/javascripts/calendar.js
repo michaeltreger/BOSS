@@ -35,7 +35,7 @@ $(document).ready(function() {
      total_unavail = 0;
      weekday_unavail = 0;
      $.each(finalizedEvents, function (i, event) {
-      if (event.entry_type === "class" || event.entry_type === "obligation") {
+      if (event.entry_type === "class" || event.entry_type === "obligation"|| event.entry_type === "closed") {
          d = duration(event);
          if(event.start_time.getDay() != 0 && event.start_time.getDay() != 6) {
             weekday_unavail += d;
