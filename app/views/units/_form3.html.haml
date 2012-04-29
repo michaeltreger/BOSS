@@ -1,0 +1,14 @@
+= form_for @unit do |f|
+  -if @unit.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@unit.errors.count, "error")} prohibited this unit from being saved:"
+      %ul
+        - @unit.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :name
+    = f.select('labs', @labs.collect {|lab| [ lab.name, lab.id ] })
+
+  .actions
+    = f.submit 'Save'

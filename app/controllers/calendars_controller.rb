@@ -53,6 +53,8 @@ class CalendarsController < ApplicationController
 
   def show
     @calendar = Calendar.find(params[:id])
+    @start_date = [Time.now.beginning_of_week + 7.days, @calendar.period.start_date.to_time.beginning_of_week].max
+    @end_date = @start_date + 6.days
 
     respond_to do |format|
       format.html # show.html.erb
@@ -66,13 +68,12 @@ class CalendarsController < ApplicationController
         end
 
         if @calendar.availability?
-          this_week = Time.now.beginning_of_week
           events.each do |e|
-            e.start_time = e.start_time + (this_week-e.start_time.beginning_of_week)
-            e.end_time = e.end_time + (this_week-e.end_time.beginning_of_week)
+            e.start_time = e.start_time + (@start_date-e.start_time.beginning_of_week)
+            e.end_time = e.end_time + (@start_date-e.end_time.beginning_of_week)
           end
-          results[:start_date] = this_week
-          results[:end_date] = this_week + 6.days
+          results[:start_date] = @start_date
+          results[:end_date] = @start_date + 6.days
         else
           events.each do |e|
             e[:readOnly] = true
@@ -174,7 +175,7 @@ class CalendarsController < ApplicationController
       end 
     end
 
-    c = Calendar.create(:name=>"Availability Snapshot taken #{Time.now.strftime('%m/%d/%Y %I:%M%p')}", :calendar_type=>1)
+    c = Calendar.create(:name=>"Availability Snapshot taken #{Time.now.strftime('%m/%d/%Y %I:%M%p')}", :calendar_type=>Calendar::AVAILABILITY)
     cal.each_pair do |time ,users|
       c.entries << Entry.create(:start_time=>time, :end_time=>time+30.minutes, :entry_type=>"", :description=>users)
     end

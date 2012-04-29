@@ -25,6 +25,7 @@ class SubstitutionsController < ApplicationController
   end
 
   def index
+    recycle
     mysubs_sort = params[:mysubs_sort] || session[:mysubs_sort]
     subs_sort = params[:subs_sort] || session[:subs_sort]
     @filters = params[:filters] || {}
@@ -81,6 +82,14 @@ class SubstitutionsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @substitutions }
+    end
+  end
+
+  def recycle
+    Substitution.all.each do |sub|
+      if sub.entry.start_time < Time.current
+        sub.destroy
+      end
     end
   end
 
@@ -225,6 +234,7 @@ class SubstitutionsController < ApplicationController
     end
     respond_to do |format|
       if @substitution.save
+        SubstitutionMailer.posted_sub(@substitution).deliver
         if request && request.referer && request.referer.include?('admin')
           format.html { redirect_to manage_substitutions_path, notice: 'Substitution was successfully created.' }
         else
@@ -294,6 +304,7 @@ class SubstitutionsController < ApplicationController
           currEntry.substitution = nil
           currEntry.calendar = targetCalendar
           currEntry.save!
+          SubstitutionMailer.taken_sub(currSub, targetUser).deliver
           Substitution.delete(k)
         end
       end
