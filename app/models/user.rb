@@ -27,17 +27,30 @@ class User < ActiveRecord::Base
     calendars << Calendar.create!(:name=> "#{name}'s Shifts",
                                   :calendar_type=>Calendar::SHIFTS)
     Period.all.each do |p|
-      avail_calendar = Calendar.create!(:name=> "#{name}'s #{p.name} Availabilities",
-                                        :calendar_type=>Calendar::AVAILABILITY)
-      pref = Preference.create!()
-
-      calendars << avail_calendar
-      preference << pref
-
-      p.calendars << avail_calendar
-      p.preferences << pref
+      make_perod_specific_calendars(p)
       p.save!
     end
+  end
+  
+  def make_period_specific_calendars(p)
+    avail_calendar = Calendar.create!(:name=> "#{name}'s #{p.name} Availabilities",
+                                      :calendar_type=>Calendar::AVAILABILITY)
+    if !p.exception
+      monday = Time.now.beginning_of_week
+      5.times do |day|
+        avail_calendar.entries << Entry.create(:start_time=>monday + day.days + 2.hours, :end_time=>monday + day.days + 8.hours, :entry_type=>"closed")
+      end
+      avail_calendar.entries << Entry.create(:start_time=>monday + 4.days + 22.hours, :end_time=>monday + 5.days + 9.hours, :entry_type=>"closed")
+      avail_calendar.entries << Entry.create(:start_time=>monday + 5.days + 22.hours, :end_time=>monday + 6.days + 13.hours, :entry_type=>"closed")
+    end
+
+    pref = Preference.create!()
+
+    calendars << avail_calendar
+    preference << pref
+
+    p.calendars << avail_calendar
+    p.preferences << pref
   end
 
   def isAdmin?
@@ -48,7 +61,7 @@ class User < ActiveRecord::Base
     user_type == SCHEDULER
   end
 
-  def isAdminorScheduler?
+  def isAdminOrScheduler?
     isAdmin? or isScheduler?
   end
 

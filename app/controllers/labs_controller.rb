@@ -1,4 +1,5 @@
 class LabsController < ApplicationController
+  before_filter :check_admin, :only => ['new', 'destroy', 'edit', 'create']
   # GET /labs
   # GET /labs.json
   def index

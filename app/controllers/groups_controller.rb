@@ -1,4 +1,5 @@
 class GroupsController < ApplicationController
+  before_filter :check_admin, :only => ['new', 'update', 'addusers', 'destroy', 'edit', 'create']
   # GET /groups
   # GET /groups.json
   def index
@@ -62,7 +63,7 @@ class GroupsController < ApplicationController
   # PUT /groups/1.json
   def update
     @group = Group.find(params[:id])
-    
+
     respond_to do |format|
       if not params[:group][:labs].nil?
         @lab =  Lab.find(params[:group][:labs])

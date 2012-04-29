@@ -2,14 +2,13 @@ require 'rubygems'
 require 'net/ldap'
 
 class UsersController < ApplicationController
-
+  before_filter :check_admin, :only => ['new', 'destroy', 'edit', 'create', 'deactivate', 'activate']
   skip_before_filter :set_current_user, :only => 'initAdmin'
   skip_before_filter :set_period, :only => 'initAdmin'
   skip_before_filter :check_login, :only => 'initAdmin'
-  skip_before_filter :check_admin, :only => 'initAdmin'
+  skip_before_filter :check_admin_or_sched, :only => 'initAdmin'
   skip_before_filter CASClient::Frameworks::Rails::Filter, :only => 'initAdmin'
   skip_before_filter :check_init, :only => 'create'
-
 
   # GET /users
   # GET /users.json
@@ -134,7 +133,7 @@ class UsersController < ApplicationController
   def removegroup
     @user = User.find(params[:user_id])
     @group = Group.find(params[:group_id])
-    
+
     @user.groups.delete(@group)
     @group.users.delete(@user)
 
@@ -143,7 +142,7 @@ class UsersController < ApplicationController
 
     redirect_to @user
   end
-  
+
   def addgroup
     @user = User.find(params[:id])
     @groups = Group.all().delete_if { |group| @user.groups.include? group }
@@ -161,7 +160,7 @@ class UsersController < ApplicationController
 
   def deactivate
     @user = User.find(params[:id])
-    
+
     @user.activated = false
     @user.initials = nil
     @user.save

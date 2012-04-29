@@ -18,15 +18,8 @@ class Period < ActiveRecord::Base
     # TODO transactions?
     #User.find_all_by_user_type(User::EMPLOYEE).each do |user|
     User.all.each do |user|
-      avail_calendar = Calendar.create!(:name=> "#{user.name}'s #{name} Availabilities",
-                                        :calendar_type=>Calendar::AVAILABILITY)
-      pref = Preference.create!()
-
-      user.calendars << avail_calendar
-      user.preference << pref
+      user.make_period_specific_calendars(self)
       user.save!
-      calendars << avail_calendar
-      preferences << pref
     end
   end
 

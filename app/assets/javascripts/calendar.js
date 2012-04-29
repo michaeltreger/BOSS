@@ -5,6 +5,7 @@ $(document).ready(function() {
    var $events;
    
    $('#submit_calendar').bind('click', submit);
+   $('#validate_calendar').bind('click', showValidateDialog);
    
    function submit() {
       if (validate()) {
@@ -22,52 +23,79 @@ $(document).ready(function() {
              //alert("Succeeded");
           },
           error: function(data, textStatus, XMLHttpRequest){
-             //eval('('+responseText+')');
-             //alert(data);
+             //alert(data.responseText);
           }
         });
       }
    }
    
    function validate() {
+     //return true;
      finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
      total_unavail = 0;
      weekday_unavail = 0;
-     invalid = false;
      $.each(finalizedEvents, function (i, event) {
-      if (event.entry_type === "class" || event.entry_type === "obligation") {
+      if (event.entry_type === "class" || event.entry_type === "obligation"|| event.entry_type === "closed") {
          d = duration(event);
-         if(event.start_time.getDay() == 0 || event.start_time.getDay() == 6) {
+         if(event.start_time.getDay() != 0 && event.start_time.getDay() != 6) {
             weekday_unavail += d;
          }
          total_unavail += d
       }
      });
  
-     total_avail = 126 - total_unavail;
-     weekday_avail = 90 - weekday_unavail;
-     if (total_avail < 30) {
-       invalid = true;
+     total_avail = 24*7 - total_unavail;
+     weekday_avail = 24*5 - weekday_unavail;
+
+     numberSatisfied = 0;
+     option1 = "Failed";
+     if (total_avail > 45 && weekday_avail > 15) {
+       option1 = "Satisfied";
+       numberSatisfied += 1;
      }
- 
-     if (invalid) {
-       validateDialog = $("#validate_container");
-       validateDialog.dialog({
-         modal: true,
-         title: "Validate",
-         close: function() {
-            validateDialog.dialog("destroy");
-            validateDialog.hide();
-         },
-         buttons: {
-            ok : function() {
-               validateDialog.dialog("close");
-            }
-         }
-      }).show();
+     option2 = "Failed";
+     if (total_avail > 30) {
+       option2 = "Satisfied";
+       numberSatisfied += 1;
+     }
+     option3 = "Failed";
+     if (weekday_avail > 25) {
+       option3 = "Satisfied";
+       numberSatisfied += 1;
+     }
+
+     $('.validate_total').html(total_avail);
+     $('.validate_weekday').html(weekday_avail);
+     $('#option1_status').html(option1);
+     $('#option2_status').html(option2);
+     $('#option3_status').html(option3);
+
+     if (numberSatisfied < 2) {
+       return false;
      } else {
         return true
      }
+   }
+   
+   function showValidateDialog() {
+     status = "Failed Validation";
+     if (validate()) {
+        status = "Passed";
+     }
+     validateDialog = $("#validate_container");
+     validateDialog.dialog({
+       modal: true,
+       title: status,
+       close: function() {
+          validateDialog.dialog("destroy");
+          validateDialog.hide();
+       },
+       buttons: {
+          ok : function() {
+             validateDialog.dialog("close");
+          }
+       }
+     }).show();
    }
    
    function duration(event) {

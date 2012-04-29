@@ -3,7 +3,7 @@ include ActionView::Helpers::DateHelper
 
 
 class SubstitutionsController < ApplicationController
-  before_filter :check_admin, :only => [:manage]
+  before_filter :check_admin_or_sched, :only => [:manage]
 
   # GET /substitutions
   # GET /substitutions.json

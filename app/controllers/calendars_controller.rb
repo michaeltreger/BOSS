@@ -2,14 +2,16 @@ class CalendarsController < ApplicationController
   before_filter :check_login, :only => [:update]
   before_filter :check_admin, :only => [:admin, :destroy]
 
-  def check_admin
-    if !@current_user.isAdmin?
-      respond_to do |format|
-        format.html { redirect_to calendars_path, error: "You must be an admin to view this page" }
-        format.json { render json: "You must be an admin to view this page" }
-      end
-    end
-  end
+#  def check_admin
+#    if !@current_user.isAdmin?
+#      respond_to do |format|
+#        format.html { redirect_to calendars_path, error: "You must be an admin to view this page" }
+#        format.json { render json: "You must be an admin to view this page" }
+#      end
+#    end
+#  end
+
+#  def check_admin_or_s
 
   def check_login
     @calendar = Calendar.find(params[:id])
@@ -36,7 +38,7 @@ class CalendarsController < ApplicationController
   # GET /calendars/1
   # GET /calendars/1.json
 
-  def admin
+  def manage
     @acalendars = Calendar.find_all_by_calendar_type(Calendar::AVAILABILITY)
     @wcalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)
     if !@acalendars
@@ -53,11 +55,10 @@ class CalendarsController < ApplicationController
 
   def show
     @calendar = Calendar.find(params[:id])
-    @start_date = Time.now.beginning_of_week + 7.days
-    if @calendar.period
-      @start_date = [@start_date, @calendar.period.start_date.to_time.beginning_of_week].max
+    if @calendar.availability? and @calendar.period
+      @start_date = [Time.now.beginning_of_week + 14.days, @calendar.period.start_date.to_time.beginning_of_week].max
+      @end_date = @start_date + 6.days
     end
-    @end_date = @start_date + 6.days
 
     respond_to do |format|
       format.html # show.html.erb
@@ -72,22 +73,23 @@ class CalendarsController < ApplicationController
 
         if @calendar.availability?
           events.each do |e|
+            if e.entry_type == "closed"
+              e[:readOnly] = true
+            end
             e.start_time = e.start_time + (@start_date-e.start_time.beginning_of_week)
             e.end_time = e.end_time + (@start_date-e.end_time.beginning_of_week)
           end
           results[:start_date] = @start_date
           results[:end_date] = @start_date + 6.days
-        else
+        end
+        
+        if @current_user.id != @calendar.owner
           events.each do |e|
             e[:readOnly] = true
           end
         end
 
         results[:events] = events
-
-        if @current_user.id != @calendar.owner or @calendar.shift?
-          results[:read_only] = "true"
-        end
 
         render json: results
       end
@@ -133,20 +135,29 @@ class CalendarsController < ApplicationController
   def update
     @calendar = Calendar.find(params[:id])
     if @calendar.owner == @current_user.id and params[:calendar_updates]
-      parsed_json = ActiveSupport::JSON.decode(params[:calendar_updates])
-      @calendar.update_calendar(parsed_json)
+      update_entries(params[:calendar_updates])
     end
 
     respond_to do |format|
       if @calendar.update_attributes(params[:calendar])
-        @calendar.updated_at = DateTime.now
-        @calendar.save!
         format.html { redirect_to calendars_path, notice: 'Calendar was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
         format.json { render json: @calendar.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def update_entries(json)
+    parsed_json = ActiveSupport::JSON.decode(json)
+    @calendar.update_calendar(parsed_json)
+    @calendar.updated_at = DateTime.now
+    
+      if @calendar.save
+        render :json => "success"
+      else
+        render :json => @calendar.errors
     end
   end
 
@@ -164,10 +175,12 @@ class CalendarsController < ApplicationController
 
   def snapshot
     cal = {}
+    start = Time.now.beginning_of_week + 7.days
     User.find_all_by_activated(true).each do |u|
       u.availability_calendar(@current_period).entries.each do |e|
-        time = e.start_time
-        while time < e.end_time
+        time = e.start_time + (start - e.start_time.beginning_of_week)
+        endTime = e.end_time + (start - e.end_time.beginning_of_week)
+        while time < endTime
           if cal[time]
             cal[time] += " #{u.initials}"
           else
@@ -178,7 +191,7 @@ class CalendarsController < ApplicationController
       end
     end
 
-    c = Calendar.create(:name=>"Availability Snapshot taken #{Time.now.strftime('%m/%d/%Y %I:%M%p')}", :calendar_type=>Calendar::AVAILABILITY)
+    c = Calendar.create(:name=>"Availability Snapshot taken #{Time.now.strftime('%m/%d/%Y %I:%M%p')}", :calendar_type=>Calendar::SNAPSHOT, :period_id=>@current_period.id)
     cal.each_pair do |time ,users|
       c.entries << Entry.create(:start_time=>time, :end_time=>time+30.minutes, :entry_type=>"", :description=>users)
     end

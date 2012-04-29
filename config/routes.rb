@@ -17,7 +17,7 @@ CS169CampusScheduler::Application.routes.draw do
     resources :groups
     resources :labs
     resources :units
-    match '/calendars' => 'calendars#admin', :as => 'admin_calendars'
+    match '/calendars' => 'calendars#manage', :as => 'manage_calendars'
     match '/substitutions' => 'substitutions#manage', :as => 'manage_substitutions'
     match '/init'  => "users#initadmin"
     match '/users/:id/deactivate' => "users#deactivate"
@@ -38,7 +38,7 @@ CS169CampusScheduler::Application.routes.draw do
   match "/groups/:id" => "groups#show"
   match "/users/:id" => "users#show"
   match "/groups" => "groups#index"
-  
+
 
 
   # The priority is based upon order of creation:
