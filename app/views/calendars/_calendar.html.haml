@@ -8,6 +8,9 @@
   <input type='radio' name='entry_type_select' value='obligation'>Obligation</input> | 
 
   = button_tag :submit, :id=>:submit_calendar
+  <br>
+  = "Changes for #{@start_date.strftime('%b %d, %Y')} - #{@end_date.strftime('%b %d, %Y')} due by #{(@start_date-7.days+17.hours).strftime('%b %d, %Y %I:%M%p')}. Changes made after the deadline will affect the next week."
+  
 
 #calendar
 #event_edit_container

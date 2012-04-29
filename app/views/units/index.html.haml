@@ -1,0 +1,22 @@
+%h1 Listing units
+%table
+  %tr
+    %th Name
+    - if @current_user.isAdmin?
+      %th
+      %th
+      %th
+
+  - @units.each do |unit|
+    %tr
+      %td= unit.name
+      - if @current_user.isAdmin?
+        %td= link_to 'Show', "/admin/units/#{unit.id}"
+        %td= link_to 'Edit', edit_unit_path(unit)
+        %td= link_to 'Destroy', unit, :confirm => 'Are you sure?', :method => :delete
+      - else
+        %td= link_to 'Show', "/units/#{unit.id}"
+
+%br
+- if @current_user.isAdmin?
+  = link_to 'New unit', new_unit_path

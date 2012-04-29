@@ -62,17 +62,17 @@ class GroupsController < ApplicationController
   # PUT /groups/1.json
   def update
     @group = Group.find(params[:id])
-
+    
     respond_to do |format|
-      if not params[:group][:users].nil?
-        @user =  User.find(params[:group][:users])
-        params[:group].delete :users
-        if @group.users.include?(@user)
+      if not params[:group][:labs].nil?
+        @lab =  Lab.find(params[:group][:labs])
+        params[:group].delete :labs
+        if @group.labs.include?(@lab)
             flash[:error] = "A user may not be added to the same group multiple times."
             redirect_to @group
             return
         else
-            @group.users << @user
+            @group.labs << @lab
         end
       end
       if @group.update_attributes(params[:group])
@@ -97,13 +97,8 @@ class GroupsController < ApplicationController
     end
   end
 
-  def addUsers
-    @users = User.find_by_deactivated(false)
+  def addusers
     @group = Group.find(params[:id])
-  end
-  
-  def addLabs
-    @labs = Lab.all()
-    @group = Group.find(params[:id])
+    @users = User.find_all_by_activated(true).delete_if { |user| @group.users.include? user }
   end
 end

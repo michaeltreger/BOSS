@@ -131,7 +131,7 @@ class UsersController < ApplicationController
     CASClient::Frameworks::Rails::Filter.logout(self)
   end
 
-  def removeGroup
+  def removegroup
     @user = User.find(params[:user_id])
     @group = Group.find(params[:group_id])
     
@@ -144,13 +144,13 @@ class UsersController < ApplicationController
     redirect_to @user
   end
   
-  def addGroup
+  def addgroup
     @user = User.find(params[:id])
-    @groups = Group.all()
+    @groups = Group.all().delete_if { |group| @user.groups.include? group }
 
   end
 
-  def initAdmin
+  def initadmin
     @user = User.new
 
     respond_to do |format|
@@ -168,7 +168,7 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
-  def activateUser
+  def activateuser
     @user = User.find(params[:id])
 
     respond_to do |format|
