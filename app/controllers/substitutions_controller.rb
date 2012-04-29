@@ -236,7 +236,11 @@ class SubstitutionsController < ApplicationController
       end
     end
     respond_to do |format|
-      if @substitution.save
+      if @substitution.is_expired?
+        flash[:error] = "Expired Shift"
+        format.html { redirect_to new_substitution_path}
+        format.json { render json: @substitution.errors, status: :unprocessable_entity }
+      elsif @substitution.save
         SubstitutionMailer.posted_sub(@substitution).deliver
         if request && request.referer && request.referer.include?('admin')
           format.html { redirect_to manage_substitutions_path, notice: 'Substitution was successfully created.' }
