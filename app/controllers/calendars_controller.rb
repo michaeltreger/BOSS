@@ -53,7 +53,10 @@ class CalendarsController < ApplicationController
 
   def show
     @calendar = Calendar.find(params[:id])
-    @start_date = [Time.now.beginning_of_week + 7.days, @calendar.period.start_date.to_time.beginning_of_week].max
+    @start_date = Time.now.beginning_of_week + 7.days
+    if @calendar.period
+      @start_date = [@start_date, @calendar.period.start_date.to_time.beginning_of_week].max
+    end
     @end_date = @start_date + 6.days
 
     respond_to do |format|
@@ -167,12 +170,12 @@ class CalendarsController < ApplicationController
         while time < e.end_time
           if cal[time]
             cal[time] += " #{u.initials}"
-          else 
+          else
             cal[time] = "#{u.initials}"
           end
           time += 30.minutes
         end
-      end 
+      end
     end
 
     c = Calendar.create(:name=>"Availability Snapshot taken #{Time.now.strftime('%m/%d/%Y %I:%M%p')}", :calendar_type=>Calendar::AVAILABILITY)
@@ -182,9 +185,9 @@ class CalendarsController < ApplicationController
     c.save!
     redirect_to c
   end
-  
+
   def mrclean
-    
+
   end
 
 end

@@ -25,42 +25,42 @@ Lab.create!(:name=>"Wheeler", :initials=>"WCF", :max_employees=>3, :min_employee
 
 Period.create(:start_date=>DateTime.parse("Jan 20, 2012"), :end_date=>DateTime.parse("May 20, 2012"), :name=>"Spring 2012", :visible=>true)
 
-monday = Time.now.beginning_of_week
+startTime = Time.now
 Calendar.find_all_by_calendar_type(Calendar::SHIFTS).each do |c|
   randStart = rand(20)
   randEnd = randStart + rand(24-randStart)
-  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>monday+randStart.hours, :end_time=>monday+randEnd.hours)
+  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>startTime+randStart.hours, :end_time=>startTime+randEnd.hours)
   randStart = rand(20)
   randEnd = randStart + rand(24-randStart)
-  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>monday+1.day+randStart.hours, :end_time=>monday+1.day+randEnd.hours)
+  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>startTime+1.day+randStart.hours, :end_time=>startTime+1.day+randEnd.hours)
   randStart = rand(20)
   randEnd = randStart + rand(24-randStart)
-  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>monday+2.days+randStart.hours, :end_time=>monday+2.days+randEnd.hours)
+  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>startTime+2.days+randStart.hours, :end_time=>startTime+2.days+randEnd.hours)
   randStart = rand(20)
   randEnd = randStart + rand(24-randStart)
-  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>monday+3.days+randStart.hours, :end_time=>monday+3.days+randEnd.hours)
+  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>startTime+3.days+randStart.hours, :end_time=>startTime+3.days+randEnd.hours)
   randStart = rand(20)
   randEnd = randStart + rand(24-randStart)
-  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>monday+4.days+randStart.hours, :end_time=>monday+4.days+randEnd.hours)
+  c.entries << Entry.create(:lab_id=>moffit.id, :entry_type=>:shift, :description=>"MMF", :start_time=>startTime+4.days+randStart.hours, :end_time=>startTime+4.days+randEnd.hours)
   c.save!
 end
 
 Calendar.find_all_by_calendar_type(Calendar::AVAILABILITY).each do |c|
   randStart = rand(20)
   randEnd = randStart + rand(24-randStart)
-  c.entries << Entry.create(:entry_type=>:class, :start_time=>monday+randStart.hours, :end_time=>monday+randEnd.hours)
+  c.entries << Entry.create(:entry_type=>:class, :start_time=>startTime+randStart.hours, :end_time=>startTime+randEnd.hours)
   randStart = rand(20)
   randEnd = randStart + rand(24-randStart)
-  c.entries << Entry.create(:entry_type=>:rather_not, :start_time=>monday+1.day+randStart.hours, :end_time=>monday+1.day+randEnd.hours)
+  c.entries << Entry.create(:entry_type=>:rather_not, :start_time=>startTime+1.day+randStart.hours, :end_time=>startTime+1.day+randEnd.hours)
   randStart = rand(20)
   randEnd = randStart + rand(24-randStart)
-  c.entries << Entry.create(:entry_type=>:prefer, :start_time=>monday+2.days+randStart.hours, :end_time=>monday+2.days+randEnd.hours)
+  c.entries << Entry.create(:entry_type=>:prefer, :start_time=>startTime+2.days+randStart.hours, :end_time=>startTime+2.days+randEnd.hours)
   randStart = rand(20)
   randEnd = randStart + rand(24-randStart)
-  c.entries << Entry.create(:entry_type=>:prefer, :start_time=>monday+3.days+randStart.hours, :end_time=>monday+3.days+randEnd.hours)
+  c.entries << Entry.create(:entry_type=>:prefer, :start_time=>startTime+3.days+randStart.hours, :end_time=>startTime+3.days+randEnd.hours)
   randStart = rand(20)
   randEnd = randStart + rand(24-randStart)
-  c.entries << Entry.create(:entry_type=>:obligation, :description=>"Soccer Practice", :start_time=>monday+4.days+randStart.hours, :end_time=>monday+4.days+randEnd.hours)
+  c.entries << Entry.create(:entry_type=>:obligation, :description=>"Soccer Practice", :start_time=>startTime+4.days+randStart.hours, :end_time=>startTime+4.days+randEnd.hours)
   c.save!
 end
 
