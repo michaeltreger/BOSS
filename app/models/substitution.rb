@@ -30,4 +30,7 @@ class Substitution < ActiveRecord::Base
       start >= 22 and start < 8
     end
 
+    def is_expired?
+      self.entry.start_time < Time.current
+    end
 end
