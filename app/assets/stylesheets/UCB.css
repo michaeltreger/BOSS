@@ -9,12 +9,17 @@ caption,th {text-align:left;}
 .clear {clear:both; height:0; overflow:hidden; line-height:1px; font-size:1px;}
 
 /* ********** basics - main typography *********** */
+html {
+height: 100%;
+}
 body {
+height: 100%;
 background-color: #fff;
 color: #000;
 font: normal 1em Verdana, Arial, Helvetica, sans-serif;
 position: relative;
 }
+
 h1, h2, h3, h4, h5, h6 {
 font-family: Arial, Helvetica, sans-serif;
 margin-top: .6em;
@@ -172,7 +177,18 @@ color: #c19e36;
 /* ******** container divs *********** */
 /* Page width fixed at 770px, floated in center of viewport; adjust width: value as desired */
 /* 200px left column for main navigation menu uses "faux column" background-image to fill */
+#sizer {
+height: 100%;
+}
+#expander {
+height: 100%;
+}
+#innerwrapper {
+height: 100%;
+}
 #outside {
+
+height: 100%;
 text-align:center;
 margin: 0 auto;
 border:solid 1px #ccc;
@@ -184,6 +200,7 @@ overflow:auto;
 #navcol {
 float:left;
 width:200px;
+height: 100%;
 }
 #contentcol {
 padding-left:201px;

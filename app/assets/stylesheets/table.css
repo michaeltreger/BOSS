@@ -11,7 +11,6 @@ table.full {
         width: 100%;
 }
 table th {
-        height: 25px;
         text-align: center;
         font-size: 15px;
         font-weight: bold;
@@ -33,6 +32,7 @@ table.subs tr.reserved td {
 }
 
 table td {
+        font-weight: normal;
 	border-width: 1px;
 	padding: 8px;
 	border-style: solid;
