@@ -5,7 +5,7 @@ class Calendar < ActiveRecord::Base
     belongs_to :period
     validates_presence_of :calendar_type, :name#, :period
 
-    #validate_with :check_constraints
+    validate :check_constraints
 
     AVAILABILITY = 0
     SHIFTS = 1
@@ -88,32 +88,33 @@ class Calendar < ActiveRecord::Base
 
 
     def check_constraints
-#      if calendar_type == AVAILABILITY
-#        total_unavail = 0
-#        weekday_unavail = 0
+      if calendar_type == AVAILABILITY
+        total_unavail = 0
+        weekday_unavail = 0
 
-#        entries.each do |e|
-#          if e.entry_type == 'class' or e.entry_type == 'obligation'
-#            if e.start_time.wday != 0 and e.start_time.wday != 6
-#              weekday_unavail += e.duration
-#            end
-#            total_unavail += e.duration
-#          end
-#        end
+        entries.each do |e|
+          if e.entry_type == 'class' or e.entry_type == 'obligation' or e.entry_type == 'closed'
+            if e.start_time.wday != 0 and e.start_time.wday != 6
+              weekday_unavail += e.duration
+            end
+            total_unavail += e.duration
+          end
+        end
 
-#        total_avail = 126 - total_unavail
-#        weekday_avail = 90 - weekday_unavail
-#        if total_avail > 45 and weekday_avail > 15
-#          return true
-#        elsif total_avail > 30
-#          return true
-#        elsif weekday_avail > 15
-#          return true
-#        else
-#          return false
-#        end
+        total_avail = 24*7 - total_unavail
+        weekday_avail = 14*5 - weekday_unavail
+        debugger
+        if total_avail > 45 and weekday_avail > 15
+          return true
+        elsif total_avail > 30
+          return true
+        elsif weekday_avail > 15
+          return true
+        else
+          errors.add_to_base("not a valid calendar")
+        end
 
-#      end
+      end
     end
 
 end

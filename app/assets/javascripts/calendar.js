@@ -31,6 +31,7 @@ $(document).ready(function() {
    }
    
    function validate() {
+     return true;
      finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
      total_unavail = 0;
      weekday_unavail = 0;

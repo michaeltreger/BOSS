@@ -8,7 +8,7 @@ class Entry < ActiveRecord::Base
 
     #This might be useful down the line.
     def duration
-      ((end_time - start_time) / 3600).round
+      (end_time - start_time) / 1.hour
     end
 
     def overlaps_with_or_back_to_back(other_entry)
