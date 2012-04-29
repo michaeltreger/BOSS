@@ -45,7 +45,6 @@ class CalendarsController < ApplicationController
     if !@wcalendars
       @wcalendars = []
     end
-    debugger
     respond_to do |format|
       format.html
       format.json { render json: @acalendars }
