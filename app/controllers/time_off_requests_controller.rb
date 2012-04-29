@@ -4,18 +4,28 @@ class TimeOffRequestsController < ApplicationController
   # GET /time_off_requests
   # GET /time_off_requests.json
   def index
+    recycle
     if @current_user.isAdmin?
       @time_off_requests = TimeOffRequest.all
     else
       @time_off_requests = TimeOffRequest.find_all_by_user_id(@current_user.id)
     end
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @time_off_requests }
     end
   end
 
+  def recycle
+    TimeOffRequest.all.each do |request|
+      if request.start_time < Time.current
+        request.destroy
+      end
+    end
+  end
+
+ 
   # GET /time_off_requests/1
   # GET /time_off_requests/1.json
   #useless
