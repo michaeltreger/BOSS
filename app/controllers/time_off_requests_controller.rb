@@ -4,8 +4,10 @@ class TimeOffRequestsController < ApplicationController
   # GET /time_off_requests
   # GET /time_off_requests.json
   def index
-    recycle
-    if @current_user.isAdmin?
+    if !Rails.env.test?
+      recycle
+    end
+    if @current_user.isAdminOrScheduler?
       @time_off_requests = TimeOffRequest.all
     else
       @time_off_requests = TimeOffRequest.find_all_by_user_id(@current_user.id)
@@ -61,7 +63,11 @@ class TimeOffRequestsController < ApplicationController
 
     respond_to do |format|
       if @time_off_request.isNotTimeValid?
-        flash.now[:error] = "Invalid end time"
+        flash.now[:error] = "Invalid Time"
+        format.html { render action: "new" }
+        format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
+      elsif @time_off_request.is_expired?
+        flash.now[:error] = "The time is expired"
         format.html { render action: "new" }
         format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
       else
