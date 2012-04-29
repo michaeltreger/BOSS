@@ -12,13 +12,13 @@ class SubstitutionsController < ApplicationController
     if filters[type + '_conflict'] && !@current_user.shift_calendar.canAdd(s.entry)
       return false
     end
-    if filters[type + '_morning'] && s.ismorning?
+    if filters[type + '_morning'] && s.is_morning?
       return false
     end
-    if filters[type + '_evening'] && s.isevening?
+    if filters[type + '_evening'] && s.is_evening?
       return false
     end
-    if filters[type + '_late_night'] && s.isnight?
+    if filters[type + '_late_night'] && s.is_night?
       return false
     end
     return true
@@ -26,7 +26,7 @@ class SubstitutionsController < ApplicationController
 
   def index
     if !Rails.env.test?
-      recycle
+     # recycle
     end
     mysubs_sort = params[:mysubs_sort] || session[:mysubs_sort]
     subs_sort = params[:subs_sort] || session[:subs_sort]
