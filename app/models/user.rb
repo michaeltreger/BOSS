@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
     user_type == SCHEDULER
   end
 
-  def isAdminorScheduler?
+  def isAdminOrScheduler?
     isAdmin? or isScheduler?
   end
 

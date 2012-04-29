@@ -2,14 +2,16 @@ class CalendarsController < ApplicationController
   before_filter :check_login, :only => [:update]
   before_filter :check_admin, :only => [:admin, :destroy]
 
-  def check_admin
-    if !@current_user.isAdmin?
-      respond_to do |format|
-        format.html { redirect_to calendars_path, error: "You must be an admin to view this page" }
-        format.json { render json: "You must be an admin to view this page" }
-      end
-    end
-  end
+#  def check_admin
+#    if !@current_user.isAdmin?
+#      respond_to do |format|
+#        format.html { redirect_to calendars_path, error: "You must be an admin to view this page" }
+#        format.json { render json: "You must be an admin to view this page" }
+#      end
+#    end
+#  end
+
+#  def check_admin_or_s
 
   def check_login
     @calendar = Calendar.find(params[:id])
@@ -36,7 +38,7 @@ class CalendarsController < ApplicationController
   # GET /calendars/1
   # GET /calendars/1.json
 
-  def admin
+  def manage
     @acalendars = Calendar.find_all_by_calendar_type(Calendar::AVAILABILITY)
     @wcalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)
     if !@acalendars

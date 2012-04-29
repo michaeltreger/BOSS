@@ -34,17 +34,17 @@
               #navcol
                 %ul#menu-flyout
                   - if not @current_user.nil?
-                    - if @current_user.isAdminorScheduler?
+                    - if @current_user.isAdminOrScheduler?
                       %li
                         - if @current_user.isAdmin?
-                          = link_to "Admin", admin_calendars_path
+                          = link_to "Admin", manage_calendars_path
                         - if @current_user.isScheduler?
-                          = link_to "Scheduler", admin_calendars_path
+                          = link_to "Scheduler", manage_calendars_path
                         %ul
                           %li
                             = link_to "Periods", periods_path
                           %li
-                            = link_to "Calendars", admin_calendars_path
+                            = link_to "Calendars", manage_calendars_path
                           %li
                             = link_to "Substitutions", manage_substitutions_path
                           %li
