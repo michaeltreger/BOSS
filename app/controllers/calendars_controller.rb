@@ -45,6 +45,7 @@ class CalendarsController < ApplicationController
     if !@wcalendars
       @wcalendars = []
     end
+    debugger
     respond_to do |format|
       format.html
       format.json { render json: @acalendars }
@@ -174,12 +175,12 @@ class CalendarsController < ApplicationController
         while time < endTime
           if cal[time]
             cal[time] += " #{u.initials}"
-          else 
+          else
             cal[time] = "#{u.initials}"
           end
           time += 30.minutes
         end
-      end 
+      end
     end
 
     c = Calendar.create(:name=>"Availability Snapshot taken #{Time.now.strftime('%m/%d/%Y %I:%M%p')}", :calendar_type=>Calendar::SNAPSHOT, :period_id=>@current_period.id)
@@ -189,9 +190,9 @@ class CalendarsController < ApplicationController
     c.save!
     redirect_to c
   end
-  
+
   def mrclean
-    
+
   end
 
 end

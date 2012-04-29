@@ -19,14 +19,13 @@
     = form_tag :controller => "substitutions", :action => "take_or_assign_subs" do  
       %h2 Assign Substitutions
       %h4 Available Substitutions
-      %table.full#all_subs
+      %table.subs#all_subs
         %tr
           %th.initials Select
-          %th.date Day
-          %th.time Time
-          %th.initials Location
-          %th.initials Posted By
-          %th.initials Reserved For
+          %th.time{:class => @msubs_time_header, :colspan => 2}= link_to 'Shift Time', manage_substitutions_path(:msubs_sort => 'time')
+          %th.initials{:class => @msubs_location_header}= link_to 'Location', manage_substitutions_path(:msubs_sort => 'location')
+          %th.initials{:class => @msubs_posted_by_header}= link_to 'Posted By', manage_substitutions_path(:msubs_sort => 'posted_by')
+          %th.initials{:class => @msubs_reserved_for_header}= link_to 'Reserved For', manage_substitutions_path(:msubs_sort => 'reserved_for')
           %th Notes
         - @substitutions.each do |substitution|
           %tr

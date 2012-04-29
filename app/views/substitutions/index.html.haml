@@ -1,15 +1,12 @@
 - @page_title = 'Substitutions'
-
 - if @my_subs && @my_subs.size != 0
   %h3 My Posted Substitutions
-
-  %table#my_subs
+  %table.subs#my_subs
     %tr
       %th.delete
-      %th.date Day
-      %th.time Time
-      %th.initials Location
-      %th.initials Reserved For
+      %th.time{:class => @mysubs_time_header, :colspan => 2}= link_to 'Shift Time', substitutions_path(:mysubs_sort => 'time', :filters => @filters)
+      %th.initials{:class => @mysubs_location_header}= link_to 'Location', substitutions_path(:mysubs_sort => 'location', :filters => @filters)
+      %th.initials{:class => @mysubs_reserved_for_header}= link_to 'Reserved For', substitutions_path(:mysubs_sort => 'reserved_for', :filters => @filters)
       %th Notes
     - @my_subs.each do |substitution|
       %tr
@@ -26,19 +23,36 @@
           %td
         %td= substitution.description
 
+%h3 Available Substitutions
+= form_tag substitutions_path, :method => :get, :id => 'subs_filters' do
+  = hidden_field_tag "subs_time_sort", true if @subs_time_header
+  = hidden_field_tag "subs_location_sort", true if @subs_date_header
+  = hidden_field_tag "subs_reserved_for_sort", true if @subs_date_header
+  <b>Hide:</b>
+  Subs I cannot take
+  = check_box_tag "filters[subs_conflict]", 1, @filters.include?('subs_conflict')
+  Morning Shifts
+  = check_box_tag "filters[subs_morning]", 1, @filters.include?('subs_morning')
+  Evening Shifts
+  = check_box_tag "filters[subs_evening]", 1, @filters.include?('subs_evening')
+  Late Night Shifts
+  = check_box_tag "filters[subs_late_night]", 1, @filters.include?('subs_late_night')
+  <br>
+  = submit_tag 'Update', :id => 'subs_filters_submit'
+
 = form_tag :controller => "substitutions", :action => "take_or_assign_subs" do
-  - if @reserved_subs && @reserved_subs.size != 0
-    %h3 Reserved Substitutions
-    %table#reserved_subs
-      %tr
-        %th.delete Select
-        %th.date Day
-        %th.time Time
-        %th.initials Location
-        %th.initials Posted By
-        %th Notes
+  %table.subs
+    %tr
+      %th.delete Select
+      %th.time{:class => @subs_time_header, :colspan => 2}= link_to 'Shift Time', substitutions_path(:subs_sort => 'time', :filters => @filters)
+      %th.initials{:class => @subs_location_header}= link_to 'Location', substitutions_path(:subs_sort => 'location', :filters => @filters)
+      %th.initials{:class => @subs_posted_by_header}= link_to 'Posted By', substitutions_path(:subs_sort => 'posted_by', :filters => @filters)
+      %th Notes
+    - if @reserved_subs && @reserved_subs.size != 0
       - @reserved_subs.each do |substitution|
-        %tr
+        %tr.reserved
+          %td{:colspan => 6}= 'Reserved For Me:'
+        %tr.reservedsub
           %td= check_box_tag "entries[#{substitution.id.to_s}]"
           %td= substitution.entry.start_time.strftime('%a, %m/%d')
           %td= substitution.entry.start_time.strftime('%I:%M%p') + ' -  ' + substitution.entry.end_time.strftime('%I:%M%p')
@@ -51,18 +65,10 @@
           - else
             %td
           %td= substitution.description
-  
-  %h3 Available Substitutions
-  %table#available_subs
-    %tr
-      %th.delete Select
-      %th.date Day
-      %th.time Time
-      %th.initials Location
-      %th.initials Posted By
-      %th Notes
-    - @available_subs.each do |substitution|
-      %tr
+    %tr.reserved
+      %td{:colspan => 6}= 'Available for Anyone:'
+    - @a_subs.each do |substitution|
+      %tr.available_subs
         %td= check_box_tag "entries[#{substitution.id.to_s}]"
         %td= substitution.entry.start_time.strftime('%a, %m/%d')
         %td= substitution.entry.start_time.strftime('%I:%M%p') + ' -  ' + substitution.entry.end_time.strftime('%I:%M%p')

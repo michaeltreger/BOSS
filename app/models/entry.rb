@@ -15,7 +15,7 @@ class Entry < ActiveRecord::Base
       if overlaps_with(other_entry)
         return true
       end
-      if ((start_time == other_entry.end_time) || (end_time == other_entry.start_time)) && (lab.id != other_entry.lab.id)
+      if lab && other_entry.lab && ((start_time == other_entry.end_time) || (end_time == other_entry.start_time)) && (lab.id != other_entry.lab.id)
         return true
       end
       return false

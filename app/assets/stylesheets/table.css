@@ -11,7 +11,9 @@ table.full {
         width: 100%;
 }
 table th {
-        height: 25px;
+        text-align: center;
+        font-size: 15px;
+        font-weight: bold;
 	border-width: 1px;
 	padding: 8px;
 	border-style: solid;
@@ -20,9 +22,17 @@ table th {
 }
 
 
+table.subs th.hilite {
+  background-color: #bfbfbf;
+}
 
+table.subs tr.reserved td {
+  height: 15px;
+  background-color: #bebedd;
+}
 
 table td {
+        font-weight: normal;
 	border-width: 1px;
 	padding: 8px;
 	border-style: solid;

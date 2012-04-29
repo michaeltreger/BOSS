@@ -20,3 +20,4 @@ def distance_of_time
 end
 
 end
+

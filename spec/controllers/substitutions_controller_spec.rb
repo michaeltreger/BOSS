@@ -62,7 +62,7 @@ describe SubstitutionsController do
       assigns(:substitutions).count.should == 3
       assigns(:my_subs).count.should == 1
       assigns(:reserved_subs).count.should == 1
-      assigns(:available_subs).count.should == 1
+      assigns(:a_subs).count.should == 1
     end
     it "should render to index page" do
       get :index

@@ -54,7 +54,15 @@ class User < ActiveRecord::Base
   end
 
   def isAdmin?
-    user_type == ADMINISTRATOR or user_type == SCHEDULER
+    user_type == ADMINISTRATOR
+  end
+
+  def isScheduler?
+    user_type == SCHEDULER
+  end
+
+  def isAdminorScheduler?
+    isAdmin? or isScheduler?
   end
 
   def hour_limit
