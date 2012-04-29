@@ -26,7 +26,7 @@ class SubstitutionsController < ApplicationController
 
   def index
     if !Rails.env.test?
-     # recycle
+      recycle
     end
     mysubs_sort = params[:mysubs_sort] || session[:mysubs_sort]
     subs_sort = params[:subs_sort] || session[:subs_sort]
