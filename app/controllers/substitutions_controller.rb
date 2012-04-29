@@ -7,13 +7,77 @@ class SubstitutionsController < ApplicationController
 
   # GET /substitutions
   # GET /substitutions.json
+
+  def pass_filter?(s, filters, type)
+    if filters[type + '_conflict'] && !@current_user.shift_calendar.canAdd(s.entry)
+      return false
+    end
+    if filters[type + '_morning'] && s.ismorning?
+      return false
+    end
+    if filters[type + '_evening'] && s.isevening?
+      return false
+    end
+    if filters[type + '_late_night'] && s.isnight?
+      return false
+    end
+    return true
+  end
+
   def index
+    mysubs_sort = params[:mysubs_sort] || session[:mysubs_sort]
+    subs_sort = params[:subs_sort] || session[:subs_sort]
+    @filters = params[:filters] || {}
+
+    if params[:filters] != session[:filters] && @filters != {}
+      session[:filters] = @filters
+      flash.keep
+      redirect_to :filters => @filters, :mysubs_sort => mysubs_sort, :subs_sort => subs_sort and return
+    end
+    if params[:mysubs_sort] != session[:mysubs_sort]
+      session[:filters] = @filters
+      session[:mysubs_sort] = mysubs_sort
+      flash.keep
+      redirect_to :filters => @filters, :mysubs_sort => mysubs_sort, :subs_sort => subs_sort and return
+    end
+    if params[:subs_sort] != session[:subs_sort]
+      session[:filters] = @filters
+      session[:subs_sort] = subs_sort
+      flash.keep
+      redirect_to :filters => @filters, :mysubs_sort => mysubs_sort, :subs_sort => subs_sort and return
+    end
+
     @substitutions = Substitution.all
     @my_subs = @substitutions.find_all{|s| s.from_user && s.from_user == @current_user}
-    @reserved_subs = @substitutions.find_all{|s| !(s.from_user == @current_user) && s.to_user && s.to_user==@current_user}
-    @available_subs = @substitutions.find_all{|s| !(s.from_user == @current_user) && (s.to_user == nil)}
-    @mycalendars = @current_user.calendars
-    @mycalendars = @mycalendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
+    case mysubs_sort
+    when 'time'
+      @mysubs_time_header = 'hilite'
+      @my_subs = @my_subs.sort_by{|s| s.entry.start_time}
+    when 'location'
+      @mysubs_location_header = 'hilite'
+      @my_subs = @my_subs.sort_by{|s| (s.entry.lab ? s.entry.lab.initials : '')}
+    when 'reserved_for'
+      @mysubs_reserved_for_header = 'hilite'
+      @my_subs = @my_subs.sort_by{|s| s.to_user ? s.to_user.initials : ''}
+    end
+
+    @reserved_subs = @substitutions.find_all{|s| pass_filter?(s, @filters, 'subs') && !(s.from_user == @current_user) && s.to_user && s.to_user==@current_user}
+    @a_subs = @substitutions.find_all{|s| pass_filter?(s, @filters, 'subs') && !(s.from_user == @current_user) && (s.to_user == nil)}
+
+    case subs_sort
+    when 'time'
+      @subs_time_header = 'hilite'
+      @reserved_subs = @reserved_subs.sort_by{|s| s.entry.start_time}
+      @a_subs = @a_subs.sort_by{|s| s.entry.start_time}
+    when 'location'
+      @subs_location_header = 'hilite'
+      @reserved_subs = @reserved_subs.sort_by{|s| (s.entry.lab ? s.entry.lab.initials : '')}
+      @a_subs = @a_subs.sort_by{|s| (s.entry.lab ? s.entry.lab.initials : '')}
+    when 'posted_by'
+      @subs_posted_by_header = 'hilite'
+      @reserved_subs = @reserved_subs.sort_by{|s| (s.entry.lab ? s.entry.lab.initials : '')}
+      @a_subs = @a_subs.sort_by{|s| s.from_user ? s.from_user.initials : ''}
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @substitutions }
@@ -21,8 +85,31 @@ class SubstitutionsController < ApplicationController
   end
 
   def manage
+    msubs_sort = params[:msubs_sort] || session[:msubs_sort]
+    if params[:msubs_sort] != session[:msubs_sort]
+      session[:msubs_sort] = msubs_sort
+      flash.keep
+      redirect_to :msubs_sort => msubs_sort and return
+    end
+
     @substitutions = Substitution.all
+    case msubs_sort
+    when 'time'
+      @msubs_time_header = 'hilite'
+      @substitutions = @substitutions.sort_by{|s| s.entry.start_time}
+    when 'location'
+      @msubs_location_header = 'hilite'
+      @substitutions = @substitutions.sort_by{|s| (s.entry.lab ? s.entry.lab.initials : '')}
+    when 'posted_by'
+      @msubs_posted_by_header = 'hilite'
+      @substitutions = @substitutions.sort_by{|s| (s.from_user ? s.from_user.initials : '')}
+    when 'reserved_for'
+      @msubs_reserved_for_header = 'hilite'
+      @substitutions = @substitutions.sort_by{|s| (s.to_user ? s.to_user.initials : '')}
+    end
+
     @admin_allCalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)
+    @admin_allCalendars = @admin_allCalendars.sort_by{|c| c.user.initials}
     @users = User.find(:all)
     if params[:entries]
       @entries = params[:entries].map { |e| Entry.find(e) }
