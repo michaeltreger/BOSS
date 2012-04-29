@@ -8,6 +8,7 @@ class SubstitutionsController < ApplicationController
   # GET /substitutions
   # GET /substitutions.json
   def index
+    recycle
     @substitutions = Substitution.all
     @my_subs = @substitutions.find_all{|s| s.from_user && s.from_user == @current_user}
     @reserved_subs = @substitutions.find_all{|s| !(s.from_user == @current_user) && s.to_user && s.to_user==@current_user}
@@ -17,6 +18,14 @@ class SubstitutionsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @substitutions }
+    end
+  end
+
+  def recycle
+    Substitution.all.each do |sub|
+      if sub.entry.start_time < Time.current
+        sub.destroy
+      end
     end
   end
 
