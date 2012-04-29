@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     before_filter :set_current_user
     before_filter :set_period
     before_filter :check_login
-    before_filter :check_admin
+    before_filter :check_admin_or_sched
   end
 
 
@@ -62,8 +62,17 @@ class ApplicationController < ActionController::Base
   def check_admin
     if not @current_user.nil?
         if not @current_user.isAdmin? and request.fullpath[/^\/admin/]
+            flash[:error] = "You must be an administrator to perform that action."
+            redirect_to :back
+        end
+    end
+  end
+
+  def check_admin_or_sched
+    if not @current_user.nil?
+        if not @current_user.isAdminOrScheduler? and request.fullpath[/^\/admin/]
             flash[:error] = "You do not have the correct privileges to access that page."
-            redirect_to '/'
+            redirect_to :back
         end
     end
   end

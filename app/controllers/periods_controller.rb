@@ -1,4 +1,5 @@
 class PeriodsController < ApplicationController
+  before_filter :check_admin, :only => ['new', 'destroy', 'edit', 'create']
   # GET /periods
   # GET /periods.json
   def index
