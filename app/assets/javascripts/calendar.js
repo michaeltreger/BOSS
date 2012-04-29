@@ -19,7 +19,6 @@ $(document).ready(function() {
           url: window.location.pathname+".json",
           data: {"calendar_updates": json},
           dataType: "json",
-          contentType: "json",
           success: function(data, textStatus, XMLHttpRequest){
              //alert("Succeeded");
           },

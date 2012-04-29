@@ -25,7 +25,7 @@ Lab.create!(:name=>"Wheeler", :initials=>"WCF", :max_employees=>3, :min_employee
 
 Period.create(:start_date=>DateTime.parse("Jan 20, 2012"), :end_date=>DateTime.parse("May 20, 2012"), :name=>"Spring 2012", :visible=>true)
 
-startTime = Time.now
+startTime = Time.now.beginning_of_week
 Calendar.find_all_by_calendar_type(Calendar::SHIFTS).each do |c|
   randStart = rand(20)
   randEnd = randStart + rand(24-randStart)
