@@ -45,7 +45,6 @@ class CalendarsController < ApplicationController
     if !@wcalendars
       @wcalendars = []
     end
-    debugger
     respond_to do |format|
       format.html
       format.json { render json: @acalendars }
@@ -80,17 +79,15 @@ class CalendarsController < ApplicationController
           end
           results[:start_date] = @start_date
           results[:end_date] = @start_date + 6.days
-        else
+        end
+        
+        if @current_user.id != @calendar.owner
           events.each do |e|
             e[:readOnly] = true
           end
         end
 
         results[:events] = events
-
-        if @current_user.id != @calendar.owner or @calendar.shift?
-          results[:reaOnly] = true
-        end
 
         render json: results
       end
@@ -136,20 +133,29 @@ class CalendarsController < ApplicationController
   def update
     @calendar = Calendar.find(params[:id])
     if @calendar.owner == @current_user.id and params[:calendar_updates]
-      parsed_json = ActiveSupport::JSON.decode(params[:calendar_updates])
-      @calendar.update_calendar(parsed_json)
+      update_entries(params[:calendar_updates])
     end
 
     respond_to do |format|
       if @calendar.update_attributes(params[:calendar])
-        @calendar.updated_at = DateTime.now
-        @calendar.save!
         format.html { redirect_to calendars_path, notice: 'Calendar was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
         format.json { render json: @calendar.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def update_entries(json)
+    parsed_json = ActiveSupport::JSON.decode(json)
+    @calendar.update_calendar(parsed_json)
+    @calendar.updated_at = DateTime.now
+    
+      if @calendar.save
+        render :json => "success"
+      else
+        render :json => @calendar.errors
     end
   end
 

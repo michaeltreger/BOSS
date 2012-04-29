@@ -94,16 +94,17 @@ class Calendar < ActiveRecord::Base
 
         entries.each do |e|
           if e.entry_type == 'class' or e.entry_type == 'obligation' or e.entry_type == 'closed'
-            if e.start_time.wday != 0 and e.start_time.wday != 6
-              weekday_unavail += e.duration
+            if e.duration > 0
+              if e.start_time.wday != 0 and e.start_time.wday != 6
+                weekday_unavail += e.duration
+              end
+              total_unavail += e.duration
             end
-            total_unavail += e.duration
           end
         end
 
         total_avail = 24*7 - total_unavail
         weekday_avail = 14*5 - weekday_unavail
-        debugger
         if total_avail > 45 and weekday_avail > 15
           return true
         elsif total_avail > 30
@@ -111,7 +112,7 @@ class Calendar < ActiveRecord::Base
         elsif weekday_avail > 15
           return true
         else
-          errors.add_to_base("not a valid calendar")
+          errors[:base] = "not a valid calendar"
         end
 
       end

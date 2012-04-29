@@ -19,19 +19,19 @@ $(document).ready(function() {
           url: window.location.pathname+".json",
           data: {"calendar_updates": json},
           dataType: "json",
+          contentType: "json",
           success: function(data, textStatus, XMLHttpRequest){
              //alert("Succeeded");
           },
           error: function(data, textStatus, XMLHttpRequest){
-             //eval('('+responseText+')');
-             //alert(data);
+             //alert(data.responseText);
           }
         });
       }
    }
    
    function validate() {
-     return true;
+     //return true;
      finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
      total_unavail = 0;
      weekday_unavail = 0;
