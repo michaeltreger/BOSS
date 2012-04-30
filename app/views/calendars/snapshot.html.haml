@@ -1,0 +1,18 @@
+- time = @start_time
+%table 
+  %tr
+    %th
+    %th Monday
+    %th Tuesday
+    %th Wednesday
+    %th Thursday
+    %th Friday
+    %th Saturday
+    %th Sunday
+  - 24.times do |h|
+    %tr
+      %td=(time+h.hours).strftime('%I:%M%p')
+      - 7.times do |d|
+        %td= @cal[time+d.days+h.hours]
+    
+    
