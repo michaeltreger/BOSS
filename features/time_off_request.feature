@@ -30,12 +30,12 @@ Background: Users created
     And I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00"
     When I follow "New Request"
     Then I should be on the Create New Request page
-    When I select "2012" from "time_off_request_start_time_1i"
+    When I select "2013" from "time_off_request_start_time_1i"
     And I select "Apr" from "time_off_request_start_time_2i"
     And I select "29" from "time_off_request_start_time_3i"
     And I select "15" from "time_off_request_start_time_4i"
     And I select "30" from "time_off_request_start_time_5i"
-    And I select "2012" from "time_off_request_end_time_1i"
+    And I select "2013" from "time_off_request_end_time_1i"
     And I select "Apr" from "time_off_request_end_time_2i"
     And I select "29" from "time_off_request_end_time_3i"
     And I select "16" from "time_off_request_end_time_4i"
@@ -43,7 +43,7 @@ Background: Users created
     And I fill in "time_off_request_description" with "go gank"
     And I press "Save Changes"
     Then I should be on my time-off requests page
-    And I should see a request starts at "2012-4-29 15:30" and ends at "2012-4-29 16:00"
+    And I should see a request starts at "2013-4-29 15:30" and ends at "2013-4-29 16:00"
 
   
   Scenario: Delete a time-off request
