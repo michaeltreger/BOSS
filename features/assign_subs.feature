@@ -21,7 +21,7 @@ Background: Substitutions created
 
   And the calendar "Bob's Shifts" has the following entries:
     | description         | start_time        | end_time         |
-    | Work at Moffit      | 15:00, 1/1/2012   | 18:00 1/1/2012   |
+    | Work at Moffit      | 15:00, 1/1/2013   | 18:00 1/1/2013   |
     | Presentation        | 8:00, 1/1/2012    | 12:00 1/1/2012   |
 
 
