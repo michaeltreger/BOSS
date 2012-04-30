@@ -15,7 +15,7 @@ Background: A work entry has been added to my calendar
 
   And the calendar "Alice's Shifts" has the following entries:
     | description         | start_time                             | end_time                              |
-    | Work at Wheeler     | Wed, 18 Apr 2012 9:00:00 PDT -07:00    | Wed, 18 Apr 2012 12:00:00 PDT -07:00  |
+    | Work at Wheeler     | Wed, 18 Apr 2013 9:00:00 PDT -07:00    | Wed, 18 Apr 2013 12:00:00 PDT -07:00  |
     | Software Training   | Thu, 19 Apr 2012 10:00:00 PDT -07:00   | Thu, 19 Apr 2012 11:00:00 PDT -07:00  |
 
   And the following substitutions exist:
