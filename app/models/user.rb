@@ -27,11 +27,11 @@ class User < ActiveRecord::Base
     calendars << Calendar.create!(:name=> "#{name}'s Shifts",
                                   :calendar_type=>Calendar::SHIFTS)
     Period.all.each do |p|
-      make_perod_specific_calendars(p)
+      make_period_specific_calendars(p)
       p.save!
     end
   end
-  
+
   def make_period_specific_calendars(p)
     avail_calendar = Calendar.create!(:name=> "#{name}'s #{p.name} Availabilities",
                                       :calendar_type=>Calendar::AVAILABILITY)

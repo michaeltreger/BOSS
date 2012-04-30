@@ -39,10 +39,10 @@ class CalendarsController < ApplicationController
   # GET /calendars/1.json
 
   def manage
-    @acalendars = Calendar.find_all_by_calendar_type(Calendar::AVAILABILITY)
+    @sscalendars = Calendar.find_all_by_calendar_type(Calendar::SNAPSHOT)
     @wcalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)
-    if !@acalendars
-      @acalendars = []
+    if !@sscalendars
+      @sscalendars = []
     end
     if !@wcalendars
       @wcalendars = []
@@ -82,7 +82,7 @@ class CalendarsController < ApplicationController
           results[:start_date] = @start_date
           results[:end_date] = @start_date + 6.days
         end
-        
+
         if @current_user.id != @calendar.owner
           events.each do |e|
             e[:readOnly] = true
@@ -153,7 +153,7 @@ class CalendarsController < ApplicationController
     parsed_json = ActiveSupport::JSON.decode(json)
     @calendar.update_calendar(parsed_json)
     @calendar.updated_at = DateTime.now
-    
+
     if @calendar.save
       render json: "success"
     else
@@ -188,7 +188,7 @@ class CalendarsController < ApplicationController
       @cal[time] = Array.new(users)
       time += 30.minutes
     end
-    
+
     start = Time.now.beginning_of_week + 7.days
     User.find_all_by_activated(true).each do |u|
       u.availability_calendar(@current_period).entries.each do |e|

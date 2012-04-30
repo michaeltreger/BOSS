@@ -33,13 +33,13 @@ describe TimeOffRequestsController do
 
   def valid_attributes
     {
-     :user_id => @me.id, :start_time => '2012-04-08T17:30:00Z', :end_time => '2012-04-09T16:30:00Z', :created_at => '2012-04-06T10:30:00Z', :description => 'creating'
+     :user_id => @me.id, :start_time => '2020-04-08T17:30:00Z', :end_time => '2020-04-09T16:30:00Z', :created_at => '2020-04-06T10:30:00Z', :description => 'creating'
     }
   end
 
    def invalid_attributes
     {
-     :user_id => @me.id, :start_time => '2012-04-08T17:30:00Z', :end_time => '2012-04-08T16:30:00Z', :created_at => '2012-04-06T10:30:00Z'
+     :user_id => @me.id, :start_time => '2020-04-08T17:30:00Z', :end_time => '2020-04-08T16:30:00Z', :created_at => '2020-04-06T10:30:00Z'
      }
   end
 
@@ -113,7 +113,7 @@ describe TimeOffRequestsController do
         post :create, {:time_off_request => invalid_attributes}, valid_session
         #assigns(:time_off_request).should_not be_a_new(TimeOffRequest)
         #assert_response :unprocessable_entry
-        flash[:error].should == 'Invalid end time'
+        flash[:error].should == 'Invalid Time'
       end
 
       it "shoud re-render the 'new' template" do

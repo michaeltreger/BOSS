@@ -13,9 +13,8 @@ class ApplicationController < ActionController::Base
     before_filter :set_current_user
     before_filter :set_period
     before_filter :check_login
-    before_filter :check_admin_or_sched
   end
-
+  before_filter :check_admin_or_sched
 
   def test_set_current_user
     @current_user = User.find_by_id(session[:test_user_id])
@@ -52,11 +51,11 @@ class ApplicationController < ActionController::Base
   end
 
   def check_login
-      if @current_user.nil? and not session[:cas_user].nil? and request.fullpath != '/join'
-          if not request.post? and request.fullpath != '/admin/users/'
-              redirect_to '/join'
-          end
+    if @current_user.nil? and not session[:cas_user].nil? and request.fullpath != '/join'
+      if not request.post? and request.fullpath != '/admin/users/'
+          redirect_to '/join'
       end
+    end
   end
 
   def check_admin

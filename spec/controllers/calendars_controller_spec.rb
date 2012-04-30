@@ -183,13 +183,13 @@ describe CalendarsController do
 
   describe "admin/nonadmin viewing calendars" do
     before (:each) do
-      @student1 = User.create!(:type => 1, :name => "Micky", :cas_user => 123123)
-      @student2 = User.create!(:type => 1, :name => "Minnie", :cas_user => 456456)
-      @calendar11  = Calendar.create!(:calendar_type => 1, :name => "testing11", :description => "student1 clendar1", :user_id => @student1.id)
-      @calendar12  = Calendar.create!(:calendar_type => 1, :name => "testing12", :description => "student1 caldendar2", :user_id => @student1.id)
-      @calendar21  = Calendar.create!(:calendar_type => 1, :name => "testing21", :description => "student2 caldendar1", :user_id => @student2.id)
-      @calendar22  = Calendar.create!(:calendar_type => 1, :name => "testing22", :description => "student2 caldendar2", :user_id => @student2.id)
-      @admin = User.create!(:type => 0, :name => "AF", :cas_user => 000000)
+      @student1 = User.create!(:user_type => 1, :name => "Micky", :cas_user => 123123)
+      @student2 = User.create!(:user_type => 1, :name => "Minnie", :cas_user => 456456)
+      @calendar11  = Calendar.create!(:calendar_type => Calendar::SNAPSHOT, :name => "testing11", :description => "student1 clendar1", :user_id => @student1.id)
+      @calendar12  = Calendar.create!(:calendar_type => Calendar::SNAPSHOT, :name => "testing12", :description => "student1 caldendar2", :user_id => @student1.id)
+      @calendar21  = Calendar.create!(:calendar_type => Calendar::SNAPSHOT, :name => "testing21", :description => "student2 caldendar1", :user_id => @student2.id)
+      @calendar22  = Calendar.create!(:calendar_type => Calendar::SNAPSHOT, :name => "testing22", :description => "student2 caldendar2", :user_id => @student2.id)
+      @admin = User.create!(:user_type => -1, :name => "AF", :cas_user => 000000)
     end
     describe "admin logged in" do
       before (:each) do
@@ -197,22 +197,18 @@ describe CalendarsController do
       end
 
       it "admin can view all students' calendars" do
-        calendars = Calendar.all
-        calendars[0].id.should == @calendar11.id
-        calendars[1].should == @calendar12
-        calendars[2].should == @calendar21
-        calendars[3].should == @calendar22
+        get :manage
+        assigns(:sscalendars).count.should == 4
       end
     end
     describe "nonadmin logged in" do
       before (:each) do
         session[:test_user_id] = @student1.id
       end
-      it "can't view other students' calendar" do
-        calendars = Calendar.where(:user_id => @student1.id)
-        calendars.each do |calendar|
-          calendar.id.should_not == @calendar21.id && calendar.should_not == @calendar22
-        end
+      it "can't view other students' availability calendars" do
+        request.env["HTTP_REFERER"] = calendars_url
+        get :manage
+        response.should redirect_to calendars_url
       end
     end
 

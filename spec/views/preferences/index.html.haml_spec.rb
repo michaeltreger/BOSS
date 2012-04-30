@@ -3,8 +3,10 @@ require 'spec_helper'
 describe "preferences/index" do
   before(:each) do
     @student1 = User.create!(:user_type => 1, :name => "John", :activated => true, :initials => "J")
-    @student2 = User.create!(:user_type => 1, :name => "John", :activated => true, :initials => "J")
-    @period = Period.create!()
+    @student2 = User.create!(:user_type => 1, :name => "Kohn", :activated => true, :initials => "K")
+    @period = assign(:user, stub_model(Period,
+                                      :id => 1))
+    Period.stub(:find).and_return(@period)
     assign(:preferences, [
       stub_model(Preference,
         :user_id => @student1.id,
@@ -19,7 +21,7 @@ describe "preferences/index" do
         :other => "a"
       ),
       stub_model(Preference,
-        :user_id => @student1.id,
+        :user_id => @student2.id,
         :period_id => @period.id,
         :hours_min => 20,
         :hours_max => 30,

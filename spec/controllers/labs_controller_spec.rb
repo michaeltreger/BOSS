@@ -20,7 +20,7 @@ require 'spec_helper'
 
 describe LabsController do
   before (:each) do
-    @student = User.create!(:user_type => 1, :name => "John", :activated => true, :initials => "J")
+    @admin = User.create!(:user_type => -1, :name => "John", :activated => true, :initials => "J")
   end
 
   # This should return the minimal set of attributes required to create a valid
@@ -34,7 +34,7 @@ describe LabsController do
   # in order to pass any filters (e.g. authentication) defined in
   # LabsController. Be sure to keep this updated too.
   def valid_session
-    {:test_user_id => @student.id}
+    {:test_user_id => @admin.id}
   end
 
   describe "GET index" do
