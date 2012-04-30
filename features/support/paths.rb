@@ -33,6 +33,8 @@ module NavigationHelpers
       '/time_edits/new'
     when /^my time-off requests page$/
       '/time_off_requests'
+    when /^all time-off requests page$/
+      '/time_off_requests?view=view_all'
     when /^New Request$/
       '/time_off_requests/new'
     when /^the Create New Request page$/
