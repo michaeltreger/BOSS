@@ -154,10 +154,10 @@ class CalendarsController < ApplicationController
     @calendar.update_calendar(parsed_json)
     @calendar.updated_at = DateTime.now
     
-      if @calendar.save
-        render :json => "success"
-      else
-        render :json => @calendar.errors
+    if @calendar.save
+      render json: "success"
+    else
+      render json: @calendar.errors
     end
   end
 
@@ -175,18 +175,29 @@ class CalendarsController < ApplicationController
 
   def snapshot
     cal = {}
+    time = Time.now.beginning_of_week + 7.days
+    endTime = time + 7.days
+
+    users = []
+    User.where(:activated=>true).each do |u|
+      users << u.id
+    end
+    debugger
+    while time < endTime
+      cal[time] = Array.new(users)
+      time += 30.minutes
+    end
+    
     start = Time.now.beginning_of_week + 7.days
     User.find_all_by_activated(true).each do |u|
       u.availability_calendar(@current_period).entries.each do |e|
-        time = e.start_time + (start - e.start_time.beginning_of_week)
-        endTime = e.end_time + (start - e.end_time.beginning_of_week)
-        while time < endTime
-          if cal[time]
-            cal[time] += " #{u.initials}"
-          else
-            cal[time] = "#{u.initials}"
+        if e.unavailable?
+          time = e.start_time + (start - e.start_time.beginning_of_week)
+          endTime = e.end_time + (start - e.end_time.beginning_of_week)
+          while time < endTime
+            cal[time.to_time].delete(e.calendar.user_id)
+            time += 30.minutes
           end
-          time += 30.minutes
         end
       end
     end

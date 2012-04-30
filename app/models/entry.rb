@@ -34,4 +34,8 @@ class Entry < ActiveRecord::Base
         return false
       end
     end
+    
+    def unavailable?
+      entry_type == "closed" or entry_type == "obligtion" or entry_type == "class"
+    end
 end
