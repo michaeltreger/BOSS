@@ -1,0 +1,10 @@
+- @page_title = 'Time Off Requests'
+%p#notice= notice
+
+%p
+ %b
+  %h3 Description:
+  %div{:style=>"width:350px; word-wrap: break-word;"}= @time_off_request.description
+  
+= link_to 'Edit', edit_admin_time_off_request_path(@time_off_request)
+= link_to 'Back', admin_time_off_requests_path
