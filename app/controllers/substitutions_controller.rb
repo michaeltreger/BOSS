@@ -12,13 +12,13 @@ class SubstitutionsController < ApplicationController
     if filters[type + '_conflict'] && !@current_user.shift_calendar.canAdd(s.entry)
       return false
     end
-    if filters[type + '_morning'] && s.ismorning?
+    if filters[type + '_morning'] && s.is_morning?
       return false
     end
-    if filters[type + '_evening'] && s.isevening?
+    if filters[type + '_evening'] && s.is_evening?
       return false
     end
-    if filters[type + '_late_night'] && s.isnight?
+    if filters[type + '_late_night'] && s.is_night?
       return false
     end
     return true
@@ -236,7 +236,11 @@ class SubstitutionsController < ApplicationController
       end
     end
     respond_to do |format|
-      if @substitution.save
+      if @substitution.is_expired?
+        flash[:error] = "Expired Shift"
+        format.html { redirect_to new_substitution_path}
+        format.json { render json: @substitution.errors, status: :unprocessable_entity }
+      elsif @substitution.save
         SubstitutionMailer.posted_sub(@substitution).deliver
         if request && request.referer && request.referer.include?('admin')
           format.html { redirect_to manage_substitutions_path, notice: 'Substitution was successfully created.' }

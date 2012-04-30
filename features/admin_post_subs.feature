@@ -16,7 +16,7 @@ Background: A work entry has been added to my calendar
 
   And the calendar "Alice's Shifts" has the following entries:
     | description         | start_time        | end_time         |
-    | Work at Wheeler     | 12:00, 1/1/2012   | 14:00 1/1/2012   |
+    | Work at Wheeler     | 12:00, 1/1/2013   | 14:00 1/1/2013   |
     | Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   |
 
   And the following substitutions exist:

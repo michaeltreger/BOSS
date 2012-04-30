@@ -4,6 +4,10 @@ include ActionView::Helpers::DateHelper
 class TimeOffRequest < ActiveRecord::Base
   belongs_to :user
 
+def is_expired?
+  self.start_time < Time.current
+end
+
 def isNotTimeValid?
   self.start_time > self.end_time
 end
