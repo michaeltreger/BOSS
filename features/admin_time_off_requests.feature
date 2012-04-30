@@ -39,4 +39,5 @@ Scenario: view a request's description
    When I follow "Back"
    Then I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00" with name "Chris"
    Then I should see a request starts at "2012-4-30 9:00" and ends at "2012-4-30 10:00" with name "Bob"
+   And I am on all time-off requests page
   
