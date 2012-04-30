@@ -9,15 +9,6 @@ class Admin::TimeOffRequestsController < ApplicationController
     end
     @time_off_requests = TimeOffRequest.all
   end
-
-  def recycle
-    TimeOffRequest.all.each do |request|
-      if request.start_time < Time.current
-        request.destroy
-      end
-    end
-  end
-
  
   # GET admin/time_off_requests/1
   # GET admin/time_off_requests/1.json
