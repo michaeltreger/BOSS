@@ -7,13 +7,7 @@ class TimeOffRequestsController < ApplicationController
     if !Rails.env.test?
       recycle
     end
-
-    if params[:view] == "view_all"
-       @time_off_requests = TimeOffRequest.all
-       @view_all = true
-    else
-       @time_off_requests = TimeOffRequest.find_all_by_user_id(@current_user.id)
-    end 
+    @time_off_requests = TimeOffRequest.find_all_by_user_id(@current_user.id) 
   
     respond_to do |format|
       format.html # index.html.erb
@@ -35,9 +29,6 @@ class TimeOffRequestsController < ApplicationController
   # GET /time_off_requests/1.json
   #useless
   def show
-    if params[:view] == "view_all"
-       @view_all = true
-    end
     @time_off_request = TimeOffRequest.find(params[:id])
     respond_to do |format|
       format.html # show.html.erb
@@ -57,9 +48,6 @@ class TimeOffRequestsController < ApplicationController
 
   # GET /time_off_requests/1/edit
   def edit
-    if params[:view] == "view_all"
-       @view_all = true
-    end
     @time_off_request = TimeOffRequest.find(params[:id])
   end
 
@@ -97,13 +85,8 @@ class TimeOffRequestsController < ApplicationController
     @time_off_request = TimeOffRequest.find(params[:id])
     respond_to do |format|
       if @time_off_request.update_attributes(params[:time_off_request])
-        if params[:view] == "view_all"
-          format.html { redirect_to time_off_requests_url(:view => "view_all"), notice: 'Time off request was successfully updated.' }
-          format.json { head :ok }
-        else
           format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully updated.' }
           format.json { head :ok }
-        end
       else
         format.html { render action: "edit" }
         format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
@@ -118,13 +101,8 @@ class TimeOffRequestsController < ApplicationController
     @time_off_request.destroy
     
     respond_to do |format|
-      if params[:view] == "view_all"
-        format.html { redirect_to time_off_requests_url(:view => "view_all")}
-        format.json { head :ok }
-      else
-        format.html { redirect_to time_off_requests_url}
-        format.json { head :ok }
-      end
+      format.html { redirect_to time_off_requests_url}
+      format.json { head :ok }
     end
   end
 end
