@@ -86,13 +86,25 @@
                       %li
                         = link_to "View Time Edits", time_edits_path
                   - if not @current_user.nil?
-                    %li
-                      = link_to "Time Off Requests", time_off_requests_path
-                      %ul
-                        %li
-                          = link_to "New Request", new_time_off_request_path
-                        %li
-                          = link_to "View Current Requests", time_off_requests_path
+                    - if @current_user.isAdminOrScheduler?
+                      %li
+                        = link_to "Time Off Requests", time_off_requests_path(:all => "view_all")
+                        %ul
+                          %li
+                            = link_to "New Request", new_time_off_request_path
+                          %li
+                            = link_to "View My Requests", time_off_requests_path
+                          %li
+                            = link_to "View Current Requests", time_off_requests_path(:all => "view_all")
+                    - else
+                      %li
+                        = link_to "Time Off Requests", time_off_requests_path
+                        %ul
+                          %li
+                            = link_to "New Request", new_time_off_request_path
+                          %li
+                            = link_to "View My Requests", time_off_requests_path
+                      
                   %li
                     = link_to "My Groups", '/groups'
                 #addon

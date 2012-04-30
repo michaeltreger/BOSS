@@ -7,12 +7,14 @@ class TimeOffRequestsController < ApplicationController
     if !Rails.env.test?
       recycle
     end
-    if @current_user.isAdminOrScheduler?
-      @time_off_requests = TimeOffRequest.all
+
+    if params[:all] == "view_all"
+       @time_off_requests = TimeOffRequest.all
+       @view_all = true
     else
-      @time_off_requests = TimeOffRequest.find_all_by_user_id(@current_user.id)
-    end
-    
+       @time_off_requests = TimeOffRequest.find_all_by_user_id(@current_user.id)
+    end 
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @time_off_requests }
