@@ -1,6 +1,7 @@
-
+include TimeOffRequestsHelper
 
 class TimeOffRequestsController < ApplicationController
+
   # GET /time_off_requests
   # GET /time_off_requests.json
   def index
@@ -16,15 +17,6 @@ class TimeOffRequestsController < ApplicationController
 
   end
 
-  def recycle
-    TimeOffRequest.all.each do |request|
-      if request.start_time < Time.current
-        request.destroy
-      end
-    end
-  end
-
- 
   # GET /time_off_requests/1
   # GET /time_off_requests/1.json
   #useless

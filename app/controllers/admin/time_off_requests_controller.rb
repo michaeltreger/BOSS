@@ -1,3 +1,5 @@
+include TimeOffRequestsHelper
+
 class Admin::TimeOffRequestsController < ApplicationController
   # GET admin/time_off_requests
   # GET admin/time_off_requests.json
