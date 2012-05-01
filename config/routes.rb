@@ -28,7 +28,6 @@ CS169CampusScheduler::Application.routes.draw do
     match "/users/:user_id/Groups/:group_id/remove" => "users#removegroup"
     match "/users/:id/add" => "users#addgroup"
     match "/units/:id/labs/add" => "units#addlabs"
-    match "/snapshot" => "calendars#snapshot", :as => :snapshot
     match "/mrclean" => "calendars#mrclean", :as => :mrclean
   end
 

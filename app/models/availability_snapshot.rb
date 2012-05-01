@@ -1,3 +1,3 @@
 class AvailabilitySnapshot < ActiveRecord::Base
-  serialize :availabilites, Hash
+  serialize :availabilities, Hash
 end
