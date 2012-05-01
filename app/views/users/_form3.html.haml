@@ -27,7 +27,7 @@
     = f.label :initials
     = f.text_field :initials, :value => "ROOT"
   .field
-    = f.label "Berkeley UID"
+    = f.label "Berkeley uid".to_sym
     = f.text_field :cas_user
   .actions
     = f.submit 'Save'

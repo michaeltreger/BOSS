@@ -17,3 +17,9 @@ end
 When /^I select "([^"]*)" from the users page$/ do |arg1|
     visit "/admin/users/#{User.find_by_name(arg1).id}"
 end
+
+Given /^I log in as "([^"]*)"$/ do |n|
+  user_id = (User.find_by_name(n)).id
+  visit '/test_setuser/' + user_id.to_s
+end
+

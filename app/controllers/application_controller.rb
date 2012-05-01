@@ -5,11 +5,11 @@ class ApplicationController < ActionController::Base
   helper_method :page_title
   helper_method :current_user
 
+  before_filter :check_init
   if Rails.env.test?
     before_filter :test_set_current_user
   else
     before_filter CASClient::Frameworks::Rails::Filter, :unless => :skip_calnet?
-    before_filter :check_init
     before_filter :set_current_user
     before_filter :check_login
     before_filter :set_period
@@ -23,6 +23,11 @@ class ApplicationController < ActionController::Base
 
   def test_set_current_user
     @current_user = User.find_by_id(session[:test_user_id])
+    if @current_user.nil?
+        def @current_user.isAdmin?
+            false
+        end
+    end
   end
 
   def set_period
@@ -36,6 +41,11 @@ class ApplicationController < ActionController::Base
   def set_current_user
     if !session[:cas_user]
       @current_user = nil
+      if @current_user.nil?
+        def @current_user.isAdmin?
+            false
+        end
+      end
     else
       @current_user = User.find_by_cas_user(session[:cas_user])
     end
@@ -58,7 +68,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_login
-    if @current_user.nil? and request.fullpath != '/' and request.fullpath != '/admin/init'
+    if @current_user.nil? and request.fullpath != '/' and not User.where("user_type = '-1' OR user_type = '0'").empty?
       redirect_to '/'
     end
   end
