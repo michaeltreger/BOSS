@@ -41,7 +41,8 @@ class AvailabilitySnapshotsController < ApplicationController
   # POST /availability_snapshots.json
   def create
     @availability_snapshot = AvailabilitySnapshot.new(params[:availability_snapshot])
-    @cal = {}
+    @avail = {}
+    @rather_not = {}
     @start_time = Time.now.beginning_of_week + 7.days
     time = @start_time
     endTime = time + 7.days
@@ -52,7 +53,7 @@ class AvailabilitySnapshotsController < ApplicationController
     end
 
     while time < endTime
-      @cal[time] = Array.new(users)
+      @avail[time] = Array.new(users)
       time += 30.minutes
     end
     
@@ -63,13 +64,27 @@ class AvailabilitySnapshotsController < ApplicationController
           time = e.start_time + (start - e.start_time.beginning_of_week)
           endTime = e.end_time + (start - e.end_time.beginning_of_week)
           while time < endTime
-            @cal[time.to_time].delete(User.find(e.calendar.user_id).initials)
+            @avail[time.to_time].delete(User.find(e.calendar.user_id).initials)
+            time += 30.minutes
+          end
+        elsif e.entry_type == "rather_not"
+          time = e.start_time + (start - e.start_time.beginning_of_week)
+          endTime = e.end_time + (start - e.end_time.beginning_of_week)
+          while time < endTime
+            if @rather_not[time.to_time].nil?
+              @rather_not[time.to_time] = [User.find(e.calendar.user_id).initials]
+            else
+              @rather_not[time.to_time] << User.find(e.calendar.user_id).initials
+            end
             time += 30.minutes
           end
         end
       end
     end
-
+    @cal = {}
+    @cal[:avail] = @avail
+    @cal[:rather_not] = @rather_not
+    
     @availability_snapshot.start_date = @start_time
     @availability_snapshot.end_date = endTime
     @availability_snapshot.availabilities = @cal
