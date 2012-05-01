@@ -67,6 +67,10 @@ class CalendarsController < ApplicationController
 
         if @calendar.lab?
           events = Entry.find_all_by_lab_id(@calendar.lab_id)
+          results[:isLabCalendar] = true
+          events.each do |e|
+            e.description = User.find(e.calendar.user_id).initials
+          end
         else
           events = @calendar.entries.select([:id, :start_time, :end_time, :description, :entry_type])
         end

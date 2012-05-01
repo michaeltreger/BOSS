@@ -1,5 +1,16 @@
 $(document).ready(function() {
 
+   String.prototype.hashCode = function(){
+    var hash = 0;
+    if (this.length == 0) return hash;
+    for (i = 0; i < this.length; i++) {
+        char = this.charCodeAt(i);
+        hash = ((hash<<5)-hash)+char;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash;
+  }
+
    var $calendar = $('#calendar');
    var id = 999999999;
    var $events;
@@ -123,6 +134,7 @@ $(document).ready(function() {
             $readOnly = string2boolean(data.read_only);
             $start_date = Date.parse(data.start_date);
             $end_date = Date.parse(data.end_date);
+            $isLabCalendar = data.isLabCalendar;
             startCalendar();
          }
       });
@@ -152,6 +164,16 @@ $(document).ready(function() {
       //alert(event.start_time);
    }
    
+   function randomColor(initials) {
+      letters = '0123456789ABCDEF'.split('');
+      color = '#';
+      seed = initials.hashCode();
+      for (i = 0; i < 6; i++ ) {
+          color += letters[(seed*1391*i)%15]
+      }
+      return color;
+   }
+   
    function startCalendar() {
      $calendar.weekCalendar({
         timeslotHeight: 15,
@@ -161,7 +183,7 @@ $(document).ready(function() {
         allowEventCreation: !$readOnly,
         displayOddEven:true,
         timeslotsPerHour : 2,
-        allowCalEventOverlap : false,
+        allowCalEventOverlap : $isLabCalendar,
         overlapEventsSeparate: true,
         firstDayOfWeek : 1,
         businessHours :{start_time: 0, end_time: 24, limitDisplay: true },
@@ -196,6 +218,13 @@ $(document).ready(function() {
               $event.find(".wc-time").css({
                  "backgroundColor" : "#999",
                  "border" : "1px solid #888"
+              });
+           } else if (calEvent.entry_type=== "shift") {
+              color = randomColor(calEvent.description);
+              calEvent.entry_type = "";
+              $event.css("backgroundColor", color);
+              $event.find(".wc-time").css({
+                 "backgroundColor" : color,
               });
            }
         },
