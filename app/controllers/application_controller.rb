@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_login
-    if @current_user.nil? and request.fullpath != '/'
+    if @current_user.nil? and request.fullpath != '/' and request.fullpath != '/admin/init'
       redirect_to '/'
     end
   end

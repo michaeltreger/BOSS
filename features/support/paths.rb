@@ -50,6 +50,8 @@ module NavigationHelpers
         '/admin/users/'
     when /^the "Groups" page$/
         '/admin/groups/'
+    when /^the BOS homepage$/
+        '/'
 
     else
       begin
