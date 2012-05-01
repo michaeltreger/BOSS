@@ -8,13 +8,18 @@ class ApplicationController < ActionController::Base
   if Rails.env.test?
     before_filter :test_set_current_user
   else
-    before_filter CASClient::Frameworks::Rails::Filter
+    before_filter CASClient::Frameworks::Rails::Filter, :unless => :skip_calnet?
     before_filter :check_init
     before_filter :set_current_user
-    before_filter :set_period
     before_filter :check_login
+    before_filter :set_period
   end
   before_filter :check_admin_or_sched
+
+
+  def skip_calnet?
+    return false
+  end
 
   def test_set_current_user
     @current_user = User.find_by_id(session[:test_user_id])
@@ -22,8 +27,10 @@ class ApplicationController < ActionController::Base
 
   def set_period
     @current_period = Period.current
-    @current_availability = @current_user.availability_calendar(@current_period)
-    @current_workschedule = @current_user.shift_calendar
+    if @current_user
+      @current_availability = @current_user.availability_calendar(@current_period)
+      @current_workschedule = @current_user.shift_calendar
+    end
   end
 
   def set_current_user
@@ -51,10 +58,8 @@ class ApplicationController < ActionController::Base
   end
 
   def check_login
-    if @current_user.nil? and not session[:cas_user].nil? and request.fullpath != '/join'
-      if not request.post? and request.fullpath != '/admin/users/'
-          redirect_to '/join'
-      end
+    if @current_user.nil? and request.fullpath != '/'
+      redirect_to '/'
     end
   end
 

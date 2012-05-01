@@ -1,5 +1,7 @@
 CS169CampusScheduler::Application.routes.draw do
 
+  get "home/index"
+
   resources :preferences
 
   resources :time_off_requests
@@ -30,7 +32,6 @@ CS169CampusScheduler::Application.routes.draw do
     match "/units/:id/labs/add" => "units#addlabs"
     match "/mrclean" => "calendars#mrclean", :as => :mrclean
   end
-
   match '/get_entries_for_sub' => 'substitutions#get_entries_for_sub'
   match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'
   match "/changeAdmin" => "users#changeAdmin"
@@ -38,12 +39,12 @@ CS169CampusScheduler::Application.routes.draw do
   match "/groups/:id" => "groups#show"
   match "/users/:id" => "users#show"
   match "/groups" => "groups#index"
-  
+
   namespace :admin do
     resources :time_off_requests
   end
- 
-  
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -93,7 +94,7 @@ CS169CampusScheduler::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'calendars#index'
+  root :to => 'home#index'
 
   # See how all your routes lay out with "rake routes"
 

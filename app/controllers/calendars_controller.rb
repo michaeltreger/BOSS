@@ -1,5 +1,5 @@
 class CalendarsController < ApplicationController
-  before_filter :check_login, :only => [:update]
+  before_filter :check_user, :only => [:update]
   before_filter :check_admin, :only => [:admin, :destroy]
 
 #  def check_admin
@@ -13,7 +13,7 @@ class CalendarsController < ApplicationController
 
 #  def check_admin_or_s
 
-  def check_login
+  def check_user
     @calendar = Calendar.find(params[:id])
     if @calendar.owner != @current_user.id and !@current_user.isAdmin?
       respond_to do |format|
