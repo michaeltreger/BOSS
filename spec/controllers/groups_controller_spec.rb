@@ -20,12 +20,12 @@ require 'spec_helper'
 
 describe GroupsController do
   before (:each) do
-    @admin = User.create!(:user_type => 0, :name => 'Chris', :activated => 'true', :initials => 'C')
-    @user1 = User.create!(:user_type => 1, :name => 'Seven', :activated => 'true', :initials => 'JQ')
-    @user1 = User.create!(:user_type => 1, :name => 'Michael', :activated => 'true', :initials => 'MT')
-    @user1 = User.create!(:user_type => 1, :name => 'Peter', :activated => 'true', :initials => 'PC')
-    @user1 = User.create!(:user_type => 1, :name => 'Suyan', :activated => 'true', :initials => 'SYF')
-    @user1 = User.create!(:user_type => 1, :name => 'Rohan', :activated => 'true', :initials => 'RC')
+    @admin = User.create!(:user_type => -1, :name => 'Chris', :activated => 'true', :initials => 'C', :cas_user => 1)
+    @user1 = User.create!(:user_type => 1, :name => 'Seven', :activated => 'true', :initials => 'JQ', :cas_user => 13213)
+    @user1 = User.create!(:user_type => 1, :name => 'Michael', :activated => 'true', :initials => 'MT', :cas_user => 122)
+    @user1 = User.create!(:user_type => 1, :name => 'Peter', :activated => 'true', :initials => 'PC', :cas_user => 22)
+    @user1 = User.create!(:user_type => 1, :name => 'Suyan', :activated => 'true', :initials => 'SYF', :cas_user => 111)
+    @user1 = User.create!(:user_type => 1, :name => 'Rohan', :activated => 'true', :initials => 'RC', :cas_user => 2131)
     session[:test_user_id] = @admin.id
   end
 
@@ -34,7 +34,7 @@ describe GroupsController do
   # update the return value of this method accordingly.
   def valid_attributes
     {
-      #:name => 'cs169', :group_type => 1, :hour_limit => 20, :description => 'cs169', :created_at => '2012-04-22T00:00:00Z'
+      :name => 'cs169', :group_type => 1, :hour_limit => 20, :description => 'cs169', :created_at => '2012-04-22T00:00:00Z'
     }
   end
 
@@ -43,7 +43,7 @@ describe GroupsController do
   # GroupsController. Be sure to keep this updated too.
   def valid_session
     {
-      #:test_user_id => @admin.id
+      :test_user_id => @admin.id
     }
   end
 

@@ -21,7 +21,7 @@ require 'spec_helper'
 describe PeriodsController do
   before(:each) do
       @period = Period.create valid_attributes
-      @user = User.create!(:user_type => 1, :name => 'Tom', :activated => 'true', :initials => 'T')
+      @user = User.create!(:user_type => -1, :name => 'Tom', :activated => 'true', :initials => 'T')
       @calendar = Calendar.create!(:user_id => @user.id, :name => "#{@user.name}'s calendar",:calendar_type => 1, :period_id=>@period.id)
   end
 

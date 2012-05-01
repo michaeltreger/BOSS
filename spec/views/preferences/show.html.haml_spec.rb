@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe "preferences/show" do
   before(:each) do
+    @user = assign(:user, stub_model(User,
+                                    :initials => "hi"))
     @preference = assign(:preference, stub_model(Preference,
       :user_id => 1,
       :period_id => 1,
@@ -14,6 +16,7 @@ describe "preferences/show" do
       :timeof_day => "Timeof Day",
       :other => ""
     ))
+    User.stub(:find).and_return(@user)
   end
 
   it "renders attributes in <p>" do

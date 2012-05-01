@@ -1,39 +1,27 @@
-
+include TimeOffRequestsHelper
 
 class TimeOffRequestsController < ApplicationController
+
   # GET /time_off_requests
   # GET /time_off_requests.json
   def index
     if !Rails.env.test?
       recycle
     end
-    if @current_user.isAdminOrScheduler?
-      @time_off_requests = TimeOffRequest.all
-    else
-      @time_off_requests = TimeOffRequest.find_all_by_user_id(@current_user.id)
-    end
-    
+    @time_off_requests = TimeOffRequest.find_all_by_user_id(@current_user.id) 
+  
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @time_off_requests }
     end
+
   end
 
-  def recycle
-    TimeOffRequest.all.each do |request|
-      if request.start_time < Time.current
-        request.destroy
-      end
-    end
-  end
-
- 
   # GET /time_off_requests/1
   # GET /time_off_requests/1.json
   #useless
   def show
     @time_off_request = TimeOffRequest.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @time_off_request }
@@ -89,8 +77,8 @@ class TimeOffRequestsController < ApplicationController
     @time_off_request = TimeOffRequest.find(params[:id])
     respond_to do |format|
       if @time_off_request.update_attributes(params[:time_off_request])
-        format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully updated.' }
-        format.json { head :ok }
+          format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully updated.' }
+          format.json { head :ok }
       else
         format.html { render action: "edit" }
         format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
@@ -103,9 +91,9 @@ class TimeOffRequestsController < ApplicationController
   def destroy
     @time_off_request = TimeOffRequest.find(params[:id])
     @time_off_request.destroy
-
+    
     respond_to do |format|
-      format.html { redirect_to time_off_requests_url }
+      format.html { redirect_to time_off_requests_url}
       format.json { head :ok }
     end
   end

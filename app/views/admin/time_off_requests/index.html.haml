@@ -1,9 +1,9 @@
 - @page_title = 'Time Off Requests'
-
-%h3 My Current Requests
-
+%h3 All Current Requests
+  
 %table
   %tr
+    %th Employee Name
     %th Start time
     %th End time
     %th Submission time
@@ -13,13 +13,10 @@
 
   - @time_off_requests.each do |time_off_request|
     %tr
+      %td= time_off_request.user.name
       %td= time_off_request.start_time.strftime('%a, %m/%d/%Y %I:%M%p')
       %td= time_off_request.end_time.strftime('%a, %m/%d/%Y %I:%M%p')
       %td= time_off_request.submission.strftime('%a, %m/%d/%Y %I:%M%p')
       %td= time_off_request.day_notice
-      %td= link_to 'Details', time_off_request
-      %td= link_to 'Delete', time_off_request, :confirm => 'Are you sure?', :method => :delete
-
-%br
-
-= link_to 'New Request', new_time_off_request_path
+      %td= link_to 'Details', admin_time_off_request_path(time_off_request)
+      %td= link_to 'Delete', admin_time_off_request_path(time_off_request), :confirm => 'Are you sure?', :method => :delete

@@ -39,9 +39,12 @@ CS169CampusScheduler::Application.routes.draw do
   match "/groups/:id" => "groups#show"
   match "/users/:id" => "users#show"
   match "/groups" => "groups#index"
-
-
-
+  
+  namespace :admin do
+    resources :time_off_requests
+  end
+ 
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

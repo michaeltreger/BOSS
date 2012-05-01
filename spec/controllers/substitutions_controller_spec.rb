@@ -21,7 +21,7 @@ require 'spec_helper'
 describe SubstitutionsController do
 
   before(:each) do
-    @period = Period.create!(:name=>"Spring 2012", :start_date => "2012-1-20", :end_date => "2012-5-20")
+    @period = Period.create!(:name=>"Spring 2020", :start_date => "2020-1-20", :end_date => "2020-5-20")
     @my_group = Group.create!(:group_type => 1, :name => 'undergrad', :hour_limit => 22, :description => 'cs169', :created_at => '2012-01-01T00:00:00Z')
     #@my_group_user = Group_user.create!(:group_id => @my_group.id, :user_id => @me.id, :created_at => '2012-01-01T00:00:00Z')
     @me = User.create!(:user_type => 1, :name => 'Tom', :activated => 'true', :initials => 'T', :cas_user => 123)
@@ -29,9 +29,9 @@ describe SubstitutionsController do
     @my_calendar = @me.shift_calendar
     @other_calendar = @other.shift_calendar
     session[:test_user_id] = @me.id
-    @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => '8:00am', :end_time => '12:00pm')
-    @other_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => '2:00pm', :end_time => '4:00pm')
-    @too_long_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => '2012-04-06T00:00:00Z', :end_time => '2012-04-06T23:59:00Z')
+    @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => '2020-01-20T08:00:00Z', :end_time => '2020-01-20T12:00:00Z')
+    @other_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => '2020-01-20T14:00:00Z', :end_time => '2020-01-20T16:00:00Z')
+    @too_long_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => '2020-01-21T01:00:00Z', :end_time => '2020-01-21T23:00:00Z')
   end
   def valid_attributes
     {
