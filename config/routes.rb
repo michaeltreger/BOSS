@@ -17,6 +17,7 @@ CS169CampusScheduler::Application.routes.draw do
     resources :groups
     resources :labs
     resources :units
+    resources :availability_snapshots
     match '/calendars' => 'calendars#manage', :as => 'manage_calendars'
     match '/substitutions' => 'substitutions#manage', :as => 'manage_substitutions'
     match '/init'  => "users#initadmin"

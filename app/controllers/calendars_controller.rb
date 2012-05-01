@@ -173,43 +173,6 @@ class CalendarsController < ApplicationController
     end
   end
 
-  def snapshot
-    @cal = {}
-    @start_time = Time.now.beginning_of_week + 7.days
-    time = @start_time
-    endTime = time + 7.days
-
-    users = []
-    User.where(:activated=>true).each do |u|
-      users << u.initials
-    end
-
-    while time < endTime
-      @cal[time] = Array.new(users)
-      time += 30.minutes
-    end
-    
-    start = Time.now.beginning_of_week + 7.days
-    User.find_all_by_activated(true).each do |u|
-      u.availability_calendar(@current_period).entries.each do |e|
-        if e.unavailable?
-          time = e.start_time + (start - e.start_time.beginning_of_week)
-          endTime = e.end_time + (start - e.end_time.beginning_of_week)
-          while time < endTime
-            @cal[time.to_time].delete(User.find(e.calendar.user_id).initials)
-            time += 30.minutes
-          end
-        end
-      end
-    end
-
-    #c = Calendar.create(:name=>"Availability Snapshot taken #{Time.now.strftime('%m/%d/%Y %I:%M%p')}", :calendar_type=>Calendar::SNAPSHOT, :period_id=>@current_period.id)
-    #cal.each_pair do |time ,users|
-    #  c.entries << Entry.create(:start_time=>time, :end_time=>time+30.minutes, :entry_type=>"", :description=>users)
-    #end
-    #c.save!
-    #redirect_to c
-  end
 
   def mrclean
 

@@ -1,0 +1,19 @@
+= form_for @availability_snapshot do |f|
+  -if @availability_snapshot.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@availability_snapshot.errors.count, "error")} prohibited this availability_snapshot from being saved:"
+      %ul
+        - @availability_snapshot.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :start_date
+    = f.date_select :start_date
+  .field
+    = f.label :end_date
+    = f.date_select :end_date
+  .field
+    = f.label :availabilites
+    = f.text_area :availabilites
+  .actions
+    = f.submit 'Save'

@@ -1,0 +1,17 @@
+- @page_title = "Availability Snapshots"
+
+%table
+  %tr
+    %th Dates For
+    %th Created On
+    %th
+
+  - @availability_snapshots.each do |availability_snapshot|
+    %tr
+      %td= link_to "#{availability_snapshot.start_date} - #{availability_snapshot.end_date}", availability_snapshot
+      %td= availability_snapshot.created_at
+      %td= link_to 'Destroy', availability_snapshot, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Availability snapshot', new_availability_snapshot_path

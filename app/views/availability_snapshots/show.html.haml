@@ -1,0 +1,18 @@
+-@page_title = "Snapshot taken on #{@availability_snapshot.created_at.strftime('%m/%d/%Y %I:%M%p')}"
+- time = @availability_snapshot.start_date.to_time
+- cal = @availability_snapshot.availabilities
+%table 
+  %tr
+    %th
+    %th Monday
+    %th Tuesday
+    %th Wednesday
+    %th Thursday
+    %th Friday
+    %th Saturday
+    %th Sunday
+  - 24.times do |h|
+    %tr
+      %th=(time+h.hours).strftime('%I%p')
+      - 7.times do |d|
+        %td= cal[time+d.days+h.hours]

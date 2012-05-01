@@ -1,3 +1,4 @@
+-@page_title = "Snapshot taken on #{Time.now.strftime('%m/%d/%Y %I:%M%p')}"
 - time = @start_time
 %table 
   %tr
@@ -11,7 +12,7 @@
     %th Sunday
   - 24.times do |h|
     %tr
-      %td=(time+h.hours).strftime('%I:%M%p')
+      %th=(time+h.hours).strftime('%I%p')
       - 7.times do |d|
         %td= @cal[time+d.days+h.hours]
     
