@@ -241,7 +241,7 @@ class SubstitutionsController < ApplicationController
         format.html { redirect_to new_substitution_path}
         format.json { render json: @substitution.errors, status: :unprocessable_entity }
       elsif @substitution.save
-        SubstitutionMailer.posted_sub(@substitution).deliver
+        SubstitutionMailer.posted_sub(@substitution)
         if request && request.referer && request.referer.include?('admin')
           format.html { redirect_to manage_substitutions_path, notice: 'Substitution was successfully created.' }
         else
@@ -311,7 +311,7 @@ class SubstitutionsController < ApplicationController
           currEntry.substitution = nil
           currEntry.calendar = targetCalendar
           currEntry.save!
-          SubstitutionMailer.taken_sub(currSub, targetUser).deliver
+          SubstitutionMailer.taken_sub(currSub, targetUser)
           Substitution.delete(k)
         end
       end

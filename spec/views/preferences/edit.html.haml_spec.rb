@@ -21,14 +21,14 @@ describe "preferences/edit" do
 
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "form", :action => preferences_path(@preference), :method => "post" do
-      assert_select "input#preference_hours_min", :name => "preference[hours_min]"
-      assert_select "input#preference_hours_max", :name => "preference[hours_max]"
-      assert_select "input#preference_hours_pref", :name => "preference[hours_pref]"
-      assert_select "input#preference_hours_day", :name => "preference[hours_day]"
-      assert_select "input#preference_dispersal", :name => "preference[dispersal]"
-      assert_select "input#preference_timeof_week", :name => "preference[timeof_week]"
-      assert_select "input#preference_timeof_day", :name => "preference[timeof_day]"
-      assert_select "input#preference_other", :name => "preference[other]"
+      assert_select "select#preference_hours_min", :name => "preference[hours_min]"
+      assert_select "select#preference_hours_max", :name => "preference[hours_max]"
+      assert_select "select#preference_hours_pref", :name => "preference[hours_pref]"
+      assert_select "select#preference_hours_day", :name => "preference[hours_day]"
+      assert_select "select#preference_dispersal", :name => "preference[dispersal]"
+      assert_select "select#preference_timeof_week", :name => "preference[timeof_week]"
+      assert_select "select#preference_timeof_day", :name => "preference[timeof_day]"
+      assert_select "textarea#preference_other", :name => "preference[other]"
     end
   end
 end

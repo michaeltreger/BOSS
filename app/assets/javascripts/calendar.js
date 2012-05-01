@@ -18,29 +18,36 @@ $(document).ready(function() {
           type: "PUT",
           url: window.location.pathname+".json",
           data: {"calendar_updates": json},
-          dataType: "json",
+          dataType: "jsonp",
           success: function(data, textStatus, XMLHttpRequest){
-             //alert("Succeeded");
+             alert("Succeeded");
           },
           error: function(data, textStatus, XMLHttpRequest){
-             //alert(data.responseText);
+             if (data.status == 200) {
+               alert("Saved");
+             } else {
+               alert("Invalid");
+             }
           }
         });
+      } else {
+        showValidateDialog();
       }
    }
    
    function validate() {
-     //return true;
      finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
      total_unavail = 0;
      weekday_unavail = 0;
      $.each(finalizedEvents, function (i, event) {
       if (event.entry_type === "class" || event.entry_type === "obligation"|| event.entry_type === "closed") {
          d = duration(event);
-         if(event.start_time.getDay() != 0 && event.start_time.getDay() != 6) {
-            weekday_unavail += d;
+         if (d>0){
+           if(event.start_time.getDay() != 0 && event.start_time.getDay() != 6) {
+              weekday_unavail += d;
+           }
+           total_unavail += d
          }
-         total_unavail += d
       }
      });
  

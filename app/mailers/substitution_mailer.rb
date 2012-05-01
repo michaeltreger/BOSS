@@ -3,15 +3,24 @@ class SubstitutionMailer < ActionMailer::Base
   
   def posted_sub(sub)
     @sub = sub
-    #mail(:to => sub.users[0].email, :subject => "Posted Sub")
-    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "Posted Sub")
+    if @sub.to_user
+      #mail(:to => sub.to_user.email, :subject => "Posted Sub").deliver
+      #mail(:to => admins, :subject => "Posted Sub").deliver
+      #mail(:to => scheds, :subject => "Posted Sub").deliver
+    else
+      #mail(:to => everyone, :subject => "Posted Sub").deliver
+    end
+    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "Posted Sub").deliver
   end
   
   def taken_sub(sub, targetUser)
     @sub = sub
     @targetUser = targetUser
-    #mail(:to => targetUser.email, :subject => "Taken Sub")
-    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "Taken Sub")
+    #mail(:to => targetUser.email, :subject => "Taken Sub").deliver
+    #mail(:to => sub.from_user.email, :subject => "Taken Sub").deliver
+    #mail(:to => admins, :subject => "Taken Sub").deliver
+    #mail(:to => scheds, :subject => "Taken Sub").deliver
+    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "Taken Sub").deliver
   end
 
 end
