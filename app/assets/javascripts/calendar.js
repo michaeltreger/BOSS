@@ -219,9 +219,8 @@ $(document).ready(function() {
                  "backgroundColor" : "#999",
                  "border" : "1px solid #888"
               });
-           } else if (calEvent.entry_type=== "shift") {
+           } else if (calEvent.entry_type=== "") {
               color = randomColor(calEvent.description);
-              calEvent.entry_type = "";
               $event.css("backgroundColor", color);
               $event.find(".wc-time").css({
                  "backgroundColor" : color,
