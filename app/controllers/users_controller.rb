@@ -74,7 +74,15 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+    @group = nil
+    if params[:user][:user_type] != -1
+        @group = Group.find(params[:user][:user_type])
+    end
+    params[:user].delete :user_type
     @user = User.new(params[:user])
+    if not @group.nil?
+        @user.groups << @group
+    end
 
     respond_to do |format|
       if @user.save
