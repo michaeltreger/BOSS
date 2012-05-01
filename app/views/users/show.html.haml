@@ -1,4 +1,6 @@
 -@page_title = "#{@user.name}'s Profile"
+- if @user.activated == false
+  %h2 Note: This user is currently deactivated.
 %p
   %b Type:
   = @user.user_type

@@ -41,13 +41,19 @@ class ApplicationController < ActionController::Base
   def set_current_user
     if !session[:cas_user]
       @current_user = nil
-      if @current_user.nil?
+    else
+      @current_user = User.find_by_cas_user(session[:cas_user])
+    end
+    if @current_user.nil?
         def @current_user.isAdmin?
             false
         end
-      end
-    else
-      @current_user = User.find_by_cas_user(session[:cas_user])
+        def @current_user.isAdminOrScheduler?
+            false
+        end
+        def @current_user.isScheduler?
+            false
+        end
     end
   end
 

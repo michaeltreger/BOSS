@@ -43,7 +43,7 @@ Deactivated Users
       %td= user.email
       %td= link_to 'View user\'s page', user
       %td= link_to 'Modify user', edit_user_path(user)#"/admin/users/edit/#{user.id}"
-      %td= link_to 'Activate user', { :action => "activateUser", :id => user.id }
+      %td= link_to 'Activate user', { :action => "activateuser", :id => user.id }
 
 %br
 
