@@ -21,7 +21,7 @@
       %h4 Available Substitutions
       %table.subs#all_subs
         %tr
-          %th.initials Select
+          %th.initials{:colspan=>3} Select
           %th.time{:class => @msubs_time_header, :colspan => 2}= link_to 'Shift Time', manage_substitutions_path(:msubs_sort => 'time')
           %th.initials{:class => @msubs_location_header}= link_to 'Location', manage_substitutions_path(:msubs_sort => 'location')
           %th.initials{:class => @msubs_posted_by_header}= link_to 'Posted By', manage_substitutions_path(:msubs_sort => 'posted_by')
@@ -30,6 +30,12 @@
         - @substitutions.each do |substitution|
           %tr
             %td= check_box_tag "entries[#{substitution.id.to_s}]"
+            - if substitution.is_morning?
+              %td{:colspan=> 2}= image_tag "/img/sun.jpg", :width => "30", :height => "30", :alt => "sun"
+            - elsif substitution.is_evening?
+              %td{:colspan=> 2}= image_tag "/img/sunset.jpg", :width => "30", :height => "30", :alt=> "sunset"
+            - else
+              %td{:colspan=> 2}= image_tag "/img/night.jpg", :width => "30", :height => "30", :alt => "moon"
             %td= substitution.entry.start_time.strftime('%a, %m/%d')
             %td= substitution.entry.start_time.strftime('%I:%M%p') + ' -  ' + substitution.entry.end_time.strftime('%I:%M%p')
             - if substitution.entry.lab

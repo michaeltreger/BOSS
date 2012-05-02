@@ -3,7 +3,7 @@
   %h3 My Posted Substitutions
   %table.subs#my_subs
     %tr
-      %th.delete
+      %th.delete{:colspan=> 3}
       %th.time{:class => @mysubs_time_header, :colspan => 2}= link_to 'Shift Time', substitutions_path(:mysubs_sort => 'time', :filters => @filters)
       %th.initials{:class => @mysubs_location_header}= link_to 'Location', substitutions_path(:mysubs_sort => 'location', :filters => @filters)
       %th.initials{:class => @mysubs_reserved_for_header}= link_to 'Reserved For', substitutions_path(:mysubs_sort => 'reserved_for', :filters => @filters)
@@ -11,6 +11,12 @@
     - @my_subs.each do |substitution|
       %tr
         %td= link_to 'Delete', substitution_path(substitution), :method => :delete, :confirm => 'Are you sure?', :id => 'delete_' + substitution.id.to_s
+        - if substitution.is_morning?
+          %td{:colspan=> 2}= image_tag "/img/sun.jpg", :width => "30", :height => "30", :alt => "sun"
+        - elsif substitution.is_evening?
+          %td{:colspan=> 2}= image_tag "/img/sunset.jpg", :width => "30", :height => "30", :alt=> "sunset"
+        - else
+          %td{:colspan=> 2}= image_tag "/img/night.jpg", :width => "30", :height => "30", :alt => "moon"
         %td= substitution.entry.start_time.strftime('%a, %m/%d')
         %td= substitution.entry.start_time.strftime('%I:%M%p') + ' -  ' + substitution.entry.end_time.strftime('%I:%M%p')
         - if substitution.entry.lab
@@ -30,6 +36,8 @@
   = hidden_field_tag "subs_reserved_for_sort", true if @subs_date_header
   <b>Hide:</b>
   Subs I cannot take
+  <br/>
+ 
   = check_box_tag "filters[subs_conflict]", 1, @filters.include?('subs_conflict')
   Morning Shifts
   = check_box_tag "filters[subs_morning]", 1, @filters.include?('subs_morning')
@@ -37,14 +45,12 @@
   = check_box_tag "filters[subs_evening]", 1, @filters.include?('subs_evening')
   Late Night Shifts
   = check_box_tag "filters[subs_late_night]", 1, @filters.include?('subs_late_night')
-  <br>
-  = submit_tag 'Update', :id => 'subs_filters_submit'
 
+  = submit_tag 'Update', :id => 'subs_filters_submit'
 = form_tag :controller => "substitutions", :action => "take_or_assign_subs" do
   %table.subs
     %tr
-      %th.delete Select
-      %th{:colspan => 2} Type
+      %th.delete{:colspan => 3} Select
       %th.time{:class => @subs_time_header, :colspan => 2}= link_to 'Shift Time', substitutions_path(:subs_sort => 'time', :filters => @filters)
       %th.initials{:class => @subs_location_header}= link_to 'Location', substitutions_path(:subs_sort => 'location', :filters => @filters)
       %th.initials{:class => @subs_posted_by_header}= link_to 'Posted By', substitutions_path(:subs_sort => 'posted_by', :filters => @filters)
@@ -72,11 +78,11 @@
       %tr.available_subs
         %td= check_box_tag "entries[#{substitution.id.to_s}]"
         - if substitution.is_morning?
-          %td{:colspan=> 2}= image_tag "/img/morning.png", :width => "28", :height => "28", :alt => "sun"
+          %td{:colspan=> 2}= image_tag "/img/sun.jpg", :width => "30", :height => "30", :alt => "sun"
         - elsif substitution.is_evening?
-          %td{:colspan=> 2}= image_tag "/img/evening.jpg", :width => "28", :height => "28", :alt=> "moon"
+          %td{:colspan=> 2}= image_tag "/img/sunset.jpg", :width => "30", :height => "30", :alt=> "sunset"
         - else
-          %td{:colspan=> 2}= image_tag "/img/night.jpg", :width => "28", :height => "28", :alt => "moon"
+          %td{:colspan=> 2}= image_tag "/img/night.jpg", :width => "30", :height => "30", :alt => "moon"
         %td= substitution.entry.start_time.strftime('%a, %m/%d')
         %td= substitution.entry.start_time.strftime('%I:%M%p') + ' -  ' + substitution.entry.end_time.strftime('%I:%M%p')
         - if substitution.entry.lab
