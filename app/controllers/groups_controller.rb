@@ -19,7 +19,7 @@ class GroupsController < ApplicationController
   # GET /groups/1.json
   def show
     @group = Group.find(params[:id])
-    @users = @group.users
+    @users = @group.users.delete_if { |user| not user.activated }
 
     respond_to do |format|
       format.html # show.html.erb

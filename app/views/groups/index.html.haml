@@ -8,6 +8,7 @@
     %th Name
     %th Type
     %th Hour limit
+    %th Email
     - if @current_user.isAdmin?
       %th
       %th
@@ -18,6 +19,7 @@
       %td= group.name
       %td= group.group_type
       %td= group.hour_limit     
+      %td= group.email
       - if @current_user.isAdmin?
         %td= link_to 'Show', group
         %td= link_to 'Edit', edit_group_path(group)

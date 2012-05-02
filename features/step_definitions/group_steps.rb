@@ -21,3 +21,6 @@ When /^I press destroy on "([^"]*)"$/ do |arg1|
     find(:xpath, "//a[contains(@href,'/groups/#{Group.find_by_name(arg1).id}') and @data-method='delete']").click
 end
 
+When /^I edit the group "([^"]*)"$/ do |arg1|
+    visit "/admin/groups/#{Group.find_by_name(arg1).id}/edit"
+end
