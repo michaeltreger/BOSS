@@ -85,6 +85,12 @@ class LabsController < ApplicationController
 
   def upload_shifts  
     @lab = Lab.find(params[:id])
+    
+    respond_to do |format|
+      format.html
+      format.json { head :ok }
+    end
+    
   end
 
   def commit_shifts
@@ -134,18 +140,18 @@ class LabsController < ApplicationController
                   timeTable[i][j].each do |k, v|
                     if k =='XX' or k == 'xx'
                       #sub must have entry attributes. entry must have start&end time. Associate all xx shifts with Chris
-                      xxEntry = Entry.create!(:entry_type => 'xx', :user_id => 7, :start_time => startTime, :end_time => endTime, :lab_id => @lab.id)
+                      xxEntry = Entry.create!(:entry_type => 'xx', :user_id => 7, :start_time => startTime, :end_time => endTime, :lab_id => @lab.id, :description => "")
                       Substitution.create!(:entry => xxEntry, :entry_id => xxEntry.id, :description => 'This is an xx shifts.')
                     else
                       if v == 0
                         employee = User.find_by_initials(k)
-                        newEntry = Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id, :calendar_id => @lab.calendar.id)
+                        employee.shift_calendar.entries << Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id)
                       elsif v == 1
                         endTime = startTime + 30.minute
-                        Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id, :calendar_id => @lab.calendar.id)
+                        employee.shift_calendar.entries << Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id)
                       elsif v == 2
                         startTime = startTime + 30.minute
-                        Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id, :calendar_id => @lab.calendar.id)
+                        employee.shift_calendar.entries << Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id)
                       end
                     end
                   end
