@@ -21,8 +21,6 @@ $(document).ready(function() {
    function submit() {
       if (validate()) {
         finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
-        finalizedEvents.map(convertTimesOut);
-        
         json = JSON.stringify(finalizedEvents);
         //alert(json);
         $.ajax({
@@ -129,7 +127,6 @@ $(document).ready(function() {
          dataType: "json",
          success: function(data) {
             events = data.events;
-            events.map(convertTimesIn);
             $events = events;
             $readOnly = data.readOnly;
             $start_date = Date.parse(data.start_date);
@@ -138,22 +135,6 @@ $(document).ready(function() {
             startCalendar();
          }
       });
-   }
-   
-   function convertTimesIn(event) {
-      //alert(event.start_time);
-      timezone_offset = new Date().getTimezoneOffset();
-      timezone_offset = 0;
-      //alert(event.start_time);
-      //event.start_time = Date.parse(event.start_time).add(-timezone_offset).minutes().add(-2).hours();
-      //event.end_time = Date.parse(event.end_time).add(-timezone_offset).minutes().add(-2).hours();
-      //alert(event.start_time);
-   }
-   
-   function convertTimesOut(event) {
-      //event.start_time = event.start_time.add(2).hours();
-      //event.end_time = event.end_time.add(2).hours();
-      //alert(event.start_time);
    }
    
    function randomColor(initials) {

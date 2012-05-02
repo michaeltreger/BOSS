@@ -12,10 +12,9 @@ class ApplicationController < ActionController::Base
     before_filter CASClient::Frameworks::Rails::Filter, :unless => :skip_calnet?
     before_filter :set_current_user
     before_filter :check_login
-    before_filter :set_period
   end
   before_filter :check_admin_or_sched
-
+  before_filter :set_period
 
   def skip_calnet?
     return false

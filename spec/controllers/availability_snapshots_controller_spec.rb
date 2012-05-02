@@ -21,6 +21,7 @@ require 'spec_helper'
 describe AvailabilitySnapshotsController do
 
   before (:each) do
+    Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
     @admin = User.create!(:name => "John", :activated => true, :initials => "J")
     group = Group.find_by_name("Administrators")
     group.users << @admin
@@ -31,14 +32,15 @@ describe AvailabilitySnapshotsController do
   # AvailabilitySnapshot. As you add validations to AvailabilitySnapshot, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {}
+    time = Time.now
+    {:start_date =>time-2.days, :end_date =>time+2.days, :availabilities=>{:avail=>{time=>["J"]},:rather_not=>{time=>["J"]},:prefer=>{time=>["J"]}}}
   end
   
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # AvailabilitySnapshotsController. Be sure to keep this updated too.
   def valid_session
-    {}
+    {:test_user_id => @admin.id}
   end
 
   describe "GET index" do
