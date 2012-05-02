@@ -31,6 +31,8 @@ CS169CampusScheduler::Application.routes.draw do
     match "/users/:id/add" => "users#addgroup"
     match "/units/:id/labs/add" => "units#addlabs"
     match "/mrclean" => "calendars#mrclean", :as => :mrclean
+    match "/upload_shifts/:id" => "labs#upload_shifts", :as => 'upload_shifts'
+    match "/commit_shifts/:id" =>"labs#commit_shifts", :as => 'commit_shifts'
   end
   match '/get_entries_for_sub' => 'substitutions#get_entries_for_sub'
   match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'

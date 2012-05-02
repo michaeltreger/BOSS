@@ -1,0 +1,3 @@
+= form_for :file, :url => commit_shifts_path(@lab), :html => {:multipart => true} do |f|
+  = f.file_field :text_file
+  = f.submit "Upload" 

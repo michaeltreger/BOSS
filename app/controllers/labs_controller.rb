@@ -3,7 +3,7 @@ class LabsController < ApplicationController
   # GET /labs
   # GET /labs.json
   def index
-    @labs = Lab.all.sort!{|t1,t2|t1.groups[0].name <=> t2.groups[0].name}
+    @labs = Lab.all#.sort!{|t1,t2|t1.groups[0].name <=> t2.groups[0].name}
 
     respond_to do |format|
       format.html # index.html.erb
@@ -68,6 +68,7 @@ class LabsController < ApplicationController
         format.json { render json: @lab.errors, status: :unprocessable_entity }
       end
     end
+
   end
 
   # DELETE /labs/1
@@ -81,4 +82,86 @@ class LabsController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  def upload_shifts  
+    @lab = Lab.find(params[:id])
+  end
+
+  def commit_shifts
+    if @lab= Lab.find(params[:id])
+      @lab.update_attributes(params[:file])
+      filePath = @lab.text_file.path
+      timeTable = @lab.read_schedule(filePath)
+
+      startWeek = Time.new(Time.now.year, timeTable[0][2]["start_time_month"], timeTable[0][3]["start_time_day"], 8, 0, 0, "+01:00")
+      endWeek =  Time.new(Time.now.year, timeTable[0][4]["end_time_month"], timeTable[0][5]["end_time_day"].to_i + 1, 8, 0, 0, "+01:00")
+
+      respond_to do |format|
+        if timeTable[0][0]["initials"] != @lab.initials
+          flash.now[:error] = 'This flat file is not for this lab!' 
+          format.html { render action: "upload_shifts"}
+        elsif Time.now > startWeek
+          flash.now[:error] = 'Commiting shifts for past time!'
+          format.html { render action: "upload_shifts"}
+        elsif !@lab.is_week_empty?(startWeek, endWeek)
+          flash.now[:error] = 'Selected week calendar not empty!'#Assuming never commit calendar for the same week, use sub or time_edit to do changes.
+          format.html { render action: "upload_shifts"}
+        else
+          noInit = false
+          if timeTable[0][6] != {}
+            xx = true
+          end
+          for i in 1..24
+            for j in 0..6
+              if timeTable[i][j] != {}
+                timeTable[i][j].each do |k, v|
+                  if k !='xx' and k != 'XX' and !(employee = User.find_by_initials(k))
+                    noInit = true
+                    flash[:error] = "Employee with initials: #{k} does not exist!"
+                  end
+                end
+              end
+            end
+          end
+          if !noInit
+            for i in 1..24
+              for j in 0..6
+                if timeTable[i][j] != {}
+                  timeOffset = (j * 24 + i + 7).hour
+                  startTime = startWeek + timeOffset
+                  endTime = startTime + 1.hour
+
+                  timeTable[i][j].each do |k, v|
+                    if k =='XX' or k == 'xx'
+                      #sub must have entry attributes. entry must have start&end time. Associate all xx shifts with Chris
+                      xxEntry = Entry.create!(:entry_type => 'xx', :user_id => 7, :start_time => startTime, :end_time => endTime, :lab_id => @lab.id)
+                      Substitution.create!(:entry => xxEntry, :entry_id => xxEntry.id, :description => 'This is an xx shifts.')
+                    else
+                      if v == 0
+                        employee = User.find_by_initials(k)
+                        newEntry = Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id, :calendar_id => @lab.calendar.id)
+                      elsif v == 1
+                        endTime = startTime + 30.minute
+                        Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id, :calendar_id => @lab.calendar.id)
+                      elsif v == 2
+                        startTime = startTime + 30.minute
+                        Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id, :calendar_id => @lab.calendar.id)
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+        
+        @lab.calendar.check_continuity
+           
+        format.html { redirect_to labs_path, notice: 'Shifts were successfully assigned.' }
+        format.json { head :ok }
+      end
+    end
+  end
+
+
 end

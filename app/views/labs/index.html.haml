@@ -12,6 +12,8 @@
     %th
     %th
     %th
+    %th Uploading File
+
 
   - @labs.each do |lab|
     %tr
@@ -24,10 +26,12 @@
         %td= lab.groups[0]
       -else
         %td
-      %td= link_to 'View', lab
-      %td= link_to 'View Schedule', calendar_path(lab.calendar)
-      %td= link_to 'Edit', edit_lab_path(lab)
-      %td= link_to 'Destroy', lab, :confirm => 'Are you sure?', :method => :delete
+        %td= link_to 'View', lab
+        %td= link_to 'View Schedule', calendar_path(lab.calendar)
+        %td= link_to 'Edit', edit_lab_path(lab)
+        %td= link_to 'Destroy', lab, :confirm => 'Are you sure?', :method => :delete
+        %td= link_to 'Assign_Shifts', upload_shifts_path(lab.id)
+     
 
 %br
 
