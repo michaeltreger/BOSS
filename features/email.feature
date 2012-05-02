@@ -11,7 +11,11 @@ Background: A work entry has been added to my calendar
     | Bob          | 1              |   BB      | 2        |
     | Carl         | 1              |   CC      | 3        |
     | David        | 0              |   DD      | 4        |
-    
+
+  And the following periods exist:
+    | name             |
+    | Finals Week 1    |
+
   And I am logged in as "Alice"
 
   And the following calendars exist:

@@ -11,7 +11,11 @@ Background: A work entry has been added to my calendar
     | Bob          | 1              |   BB      |
     | Carl         | 1              |   CC      |
     | David        | 0              |   DD      |
-    
+
+  And the following periods exist:
+    | name             |
+    | Finals Week 1    |
+
   And I am logged in as "David"
 
   And the calendar "Alice's Shifts" has the following entries:

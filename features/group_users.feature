@@ -10,6 +10,9 @@ Background: A work entry has been added to my calendar
     | Bob          | 1              |
     | John         | -1             |
 
+  And the following periods exist:
+    | name             |
+    | Finals Week 1    |
     
   And I am logged in as "John"
 

@@ -5,7 +5,7 @@ $(document).ready(function() {
     if (this.length == 0) return hash;
     for (i = 0; i < this.length; i++) {
         char = this.charCodeAt(i);
-        hash = (127*hash + char ) %16908799
+        hash = (127*hash + char) %16908799
         hash = hash & hash; // Convert to 32bit integer
     }
     return hash;
@@ -142,7 +142,7 @@ $(document).ready(function() {
       color = '#';
       seed = initials.hashCode();
       for (i = 0; i < 6; i++ ) {
-          color += letters[(seed*i)%16]
+          color += letters[(seed*i*3)%16]
       }
       return color;
    }
