@@ -31,7 +31,6 @@ class SubstitutionsController < ApplicationController
     mysubs_sort = params[:mysubs_sort] || session[:mysubs_sort]
     subs_sort = params[:subs_sort] || session[:subs_sort]
     @filters = params[:filters] || {}
-
     if params[:filters] != session[:filters] && @filters != {}
       session[:filters] = @filters
       flash.keep
@@ -238,8 +237,12 @@ class SubstitutionsController < ApplicationController
     end
     respond_to do |format|
       if @substitution.is_expired?
-        flash[:error] = "Expired Shift"
-        format.html { redirect_to new_substitution_path}
+        if from_user
+          flash[:error] = "Expired Shift"
+          format.html { redirect_to request.referer }
+        else
+          flash[:error] = "Expired Shift"
+          format.html { redirect_to new_substitution_path }
         format.json { render json: @substitution.errors, status: :unprocessable_entity }
       elsif @substitution.save
         SubstitutionMailer.posted_sub(@substitution)
