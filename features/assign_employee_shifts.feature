@@ -10,6 +10,11 @@ Background: Users created
     | Bob          | 1              |
     | Chris        | 0              |
 
+  And the following periods exist:
+    | name             |
+    | Finals Week 1    |
+
+
   And the calendar "Alice's Shifts" has the following entries:
     | description         | start_time        | end_time         | entry_type |
     | Soccer Practice     | 12:00, 1/1/2012   | 14:00 1/1/2012   | obligation |

@@ -10,9 +10,14 @@ Background: Users created
     | Bob          | 1              |
     | Chris        | -1              |
 
+  And the following periods exist:
+    | name             |
+    | Finals Week 1    |
+
+
   And the following calendars exist:
     | name             | calendar_type  | user_id | period_id|
-    | Alice's Calendar | 1              | 1       |  2       |
+    | Alice's Calendar | 1              | 1       |  1       |
 
   And the calendar "Alice's Calendar" has the following entries:
     | description         | start_time        | end_time         | entry_type |
