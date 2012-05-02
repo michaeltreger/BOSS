@@ -48,7 +48,6 @@ class TimeOffRequestsController < ApplicationController
   def create
     @time_off_request = TimeOffRequest.new(params[:time_off_request])
     @time_off_request.user_id = @current_user.id
-debugger
     respond_to do |format|
       if @time_off_request.isNotTimeValid?
         flash.now[:error] = "Invalid Time"

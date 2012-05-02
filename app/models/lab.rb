@@ -5,11 +5,10 @@ class Lab < ActiveRecord::Base
     has_many :group_labs
     has_many :groups, :through => :group_labs
     has_attached_file :text_file,
-                      :url => "/assets/text_file/:id/:basename.:extension",
-                      :path => ":rails_root/public/assets/text_file/:id/:basename.:extension"
+                      :url => "/assets/:basename.:extension",
+                      :path => ":rails_root/public/assets/:basename.:extension"
     validates_presence_of :name, :initials, :max_employees, :min_employees
     validates_attachment_size :text_file, :less_than => 20.kilobytes
-    #validates_attachment_content_type :text_file, :content_type => "text/plain"
 
     after_create :make_calendar
     #Could potentially be very useful.

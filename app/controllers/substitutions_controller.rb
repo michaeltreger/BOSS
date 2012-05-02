@@ -12,7 +12,7 @@ class SubstitutionsController < ApplicationController
     if filters[type + '_conflict'] && !@current_user.shift_calendar.canAdd(s.entry)
       return false
     end
-    if filters[type + '_morning'] && s.is_morning?
+    if filters[type + '_day'] && s.is_day?
       return false
     end
     if filters[type + '_evening'] && s.is_evening?

@@ -1,38 +1,36 @@
 -@page_title = "Labs"
-= form_tag :controller => "labs", :action => "commit_shifts" do 
-  %table
+
+%table
+  %tr
+    %th Initials
+    %th Name
+    %th Max employees
+    %th Min employees
+    %th Description
+    %th Unit
+    %th Details
+    %th Assign Shifts
+    %th
+    %th
+    %th
+
+  - @labs.each do |lab|
     %tr
-      %th Initials
-      %th Name
-      %th Max employees
-      %th Min employees
-      %th Description
-      %th Unit
-      %th
-      %th
-      %th
-      %th
-      %th Uploading File
-      %th
+      %td= lab.initials
+      %td= lab.name
+      %td= lab.max_employees
+      %td= lab.min_employees
+      %td= lab.description
+      -if lab.groups.length > 0
+        %td= lab.groups[0]
+      -else
+        %td
+      %td= link_to 'Details', lab
+      %td= link_to 'View Schedule', calendar_path(lab.calendar)
+      %td= link_to 'Submit a Flatfile', upload_shifts_path(lab.id)
+      %td= link_to 'Edit', edit_lab_path(lab)
+      %td= link_to 'Destroy', lab, :confirm => 'Are you sure?', :method => :delete
 
-
-    - @labs.each do |lab|
-      %tr
-        %td= lab.initials
-        %td= lab.name
-        %td= lab.max_employees
-        %td= lab.min_employees
-        %td= lab.description
-        -if lab.groups.length > 0
-          %td= lab.groups[0]
-        -else
-          %td
-          %td= link_to 'View', lab
-          %td= link_to 'View Schedule', calendar_path(lab.calendar)
-          %td= link_to 'Edit', edit_lab_path(lab)
-          %td= link_to 'Destroy', lab, :confirm => 'Are you sure?', :method => :delete
-          %td= link_to 'Upload file', upload_shifts_path(lab.id)
-          %td= submit_tag 'Assign shifts'
 %br
 
 = link_to 'New Lab', new_lab_path

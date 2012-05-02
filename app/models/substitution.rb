@@ -14,20 +14,20 @@ class Substitution < ActiveRecord::Base
         users[1]
       end
     end
-    
+
     def is_evening?
       start = self.entry.start_time.hour
       start >= 17 and start < 22
     end
 
-    def is_morning? 
+    def is_day?
       start = self.entry.start_time.hour
       start >= 8 and start < 17
     end
-      
+
     def is_night?
       start = self.entry.start_time.hour
-      start >= 22 and start < 8
+      start >= 22 or start < 8
     end
 
     def is_expired?

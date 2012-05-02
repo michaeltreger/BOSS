@@ -29,6 +29,7 @@ class CalendarsController < ApplicationController
     @user_calendars = @current_user.calendars
     @acalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::AVAILABILITY}
     @wcalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
+    @allcalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @calendars }
@@ -70,8 +71,13 @@ class CalendarsController < ApplicationController
           results[:isLabCalendar] = true
           results[:readOnly] = true
           events.each do |e|
-            e.description = User.find(e.calendar.user_id).initials
-            e.entry_type = ""
+            if e.entry_type == 'xx'
+              e.description = 'XX'
+              e.entry_type = ""
+            else
+              e.description = User.find(e.calendar.user_id).initials
+              e.entry_type = ""
+            end
           end
         else
           events = @calendar.entries.select([:id, :start_time, :end_time, :description, :entry_type])
