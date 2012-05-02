@@ -16,7 +16,6 @@ Given /^the following users exist:$/ do |users_table|
         @group = Group.find_by_name("Schedulers") if user[:user_type] == "0"
     end
     user.delete "user_type"
-    #debugger
     @user = User.create!(user)
     @user.groups << @group unless @group.nil?
     @user.save!

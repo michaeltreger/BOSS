@@ -111,18 +111,7 @@
                   - if @current_period
                     <b>Current Period</b> <BR>
                     = @current_period.name
-                    - if Rails.env.development?
-                      <BR><B><BR><BR><BR><BR>
-                      %h4 DEBUG THINGS
-                      - if not @current_user.nil?
-                        -# if @current_user.user_type
-                          =# "Current User Type is " + @current_user.user_type.to_s
-                      - else
-                        = "Current User Type is nil"
-                      = form_tag ('/changeAdmin') do
-                        = number_field_tag(:user_type)
-                        = submit_tag("Change User Type")                    
-                      = session[:cas_user]                              
+                         
               #contentcol
                 #section
                   #section-txt

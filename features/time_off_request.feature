@@ -28,7 +28,7 @@ Background: Users created
     |  1      | 2012-4-29 12:00 PDT -07:00 | 2012-4-29 13:00 PDT -07:00 | 2012-4-21 12:00 PDT -07:00  | passed 4 days | go shopping |
     |  2      | 2012-4-30 9:00 PDT -07:00  | 2012-4-30 10:00 PDT -07:00 | 2012-4-21 19:00 PDT -07:00  | 2 days left   | go swimming |
 
-  Scenario: Make a time-off request
+  Scenario: Employee make a time-off request
     Given I am logged in as "Alice"
     And I am on my time-off requests page
     And I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00"
@@ -49,7 +49,25 @@ Background: Users created
     Then I should be on my time-off requests page
     And I should see a request starts at "2013-4-29 15:30" and ends at "2013-4-29 16:00"
 
-  
+  Scenario: Employee make a invalid time-off request
+    Given I am logged in as "Alice"
+    And I am on my time-off requests page
+    When I follow "New Request"
+    Then I should be on the Create New Request page
+    When I select "2013" from "time_off_request_start_time_1i"
+    And I select "Apr" from "time_off_request_start_time_2i"
+    And I select "29" from "time_off_request_start_time_3i"
+    And I select "15" from "time_off_request_start_time_4i"
+    And I select "30" from "time_off_request_start_time_5i"
+    And I select "2013" from "time_off_request_end_time_1i"
+    And I select "Jan" from "time_off_request_end_time_2i"
+    And I select "29" from "time_off_request_end_time_3i"
+    And I select "16" from "time_off_request_end_time_4i"
+    And I select "0" from "time_off_request_end_time_5i"
+    And I fill in "time_off_request_description" with "go gank"
+    And I press "Save Changes"
+    Then I should see "Invalid Time"
+
   Scenario: Delete a time-off request
     Given I am logged in as "Alice"
     And I am on my time-off requests page
@@ -57,7 +75,6 @@ Background: Users created
     Then I should be on my time-off requests page
     And I should not see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00"
   
-
   Scenario: Edit description of a time-off request
     Given I am logged in as "Alice"
     And I am on my time-off requests page
@@ -68,7 +85,6 @@ Background: Users created
     And I press "Save Changes"
     Then I should be on my time-off requests page
     And I should see "Time off request was successfully updated." on my requests page
-
 
   Scenario: Can not view other employees' requests
     Given I am logged in as "Bob"
