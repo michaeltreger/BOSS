@@ -3,8 +3,7 @@ class LabsController < ApplicationController
   # GET /labs
   # GET /labs.json
   def index
-    @labs = Lab.all#.sort!{|t1,t2|t1.groups[0].name <=> t2.groups[0].name}
-
+    @labs = Lab.all
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @labs }
