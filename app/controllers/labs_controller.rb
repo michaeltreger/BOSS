@@ -96,8 +96,8 @@ class LabsController < ApplicationController
       #else
         #format.html { render action: "upload" }
         #format.json { render json: @lab.errors, status: :unprocessable_entity }
-      end
-    end
+      #end
+    #end
   end
 
   def commit_shifts
