@@ -134,9 +134,23 @@ class LabsController < ApplicationController
                 if timeTable[i][j] != {}
                   timeOffset = (j * 24 + i + 7).hour
                   startTime = startWeek + timeOffset
-                  endTime = startTime + 1.hour
 
                   timeTable[i][j].each do |k, v|
+                    endTime = startTime + 1.hour
+                    
+                    if  k !='XX' and k != 'xx'
+                      t=i+1
+                      while timeTable[t][j].include?(k)
+                        if timeTable[t][j][k] == 0
+                          endTime += 1.hour
+                        elsif timeTable[t][j][k] == 1
+                          endTime += 30.minute
+                        end
+                        timeTable[t][j].delete(k)
+                        t+=1
+                      end
+                    end
+                    
                     if k =='XX' or k == 'xx'
                       #sub must have entry attributes. entry must have start&end time. Associate all xx shifts with Chris
                       xxEntry = Entry.create!(:entry_type => 'xx', :user_id => 7, :start_time => startTime, :end_time => endTime, :lab_id => @lab.id, :description => "")
