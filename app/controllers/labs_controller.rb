@@ -3,7 +3,7 @@ class LabsController < ApplicationController
   # GET /labs
   # GET /labs.json
   def index
-    @labs = Lab.all.sort!{|t1,t2|t1.groups[0].name <=> t2.groups[0].name}
+    @labs = Lab.all#.sort!{|t1,t2|t1.groups[0].name <=> t2.groups[0].name}
 
     respond_to do |format|
       format.html # index.html.erb
@@ -88,6 +88,16 @@ class LabsController < ApplicationController
 
   def upload_shifts
     @lab = Lab.find(params[:id])
+
+    #respond_to do |format|
+     # if @lab.save
+      #  format.html { redirect_to :back, notice: 'File was successfully uploaded.' }
+       # format.json { head :ok }
+      #else
+        #format.html { render action: "upload" }
+        #format.json { render json: @lab.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def commit_shifts
