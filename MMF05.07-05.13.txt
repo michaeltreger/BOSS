@@ -4,39 +4,39 @@
 |=====|=============|=============|=============|=============|=============|=============|=============|
 |     |   Monday    |   Tuesday   |  Wednesday  |  Thursday   |   Friday    |  Saturday   |   Sunday    |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| 8-9 |     MT  SYF | JQ  XX      |     XX  MT  | JQ  RC      | XX  XX      |   CLOSED    |   CLOSED    |
+| 8-9 |     MT  SYF | JQ          |         MT  | RC  JQ      |      XX     |   CLOSED    |   CLOSED    |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| 9-10| PC  MT  SYF | JQ  XX  RC  | PC  XX  MT  | JQ  RC  XX  | XX  XX  XX  |     XX  XX  |   CLOSED    |
+| 9-10| PC  MT  SYF | JQ      RC  | PC      MT  | JQ  RC      |     XX      |     XX      |   CLOSED    |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-|10-11| PC  MT  JQ  | JQ  XX  RC  | PC  XX  MT  | JQ  RC  SYF | XX  XX  CW  | XX  XX  XX  |   CLOSED    |
+|10-11| PC  MT  JQ  | JQ      RC  | PC      MT  | JQ  RC  SYF |         CW  |     XX      |   CLOSED    |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-|11-12| PC  RC  JQ  | XX  SYF XX  | PC  PC  RC  | XX  RX  SYF | MT  XX  CW  | XX  XX  XX  |   CLOSED    |
+|11-12| PC  RC  JQ  |     SYF     | PC  PC  RC  |     RX  SYF | MT      CW  |     XX      |   CLOSED    |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-|12-1 | JQ  RC  XX  | MT  XX  XX  | XX  PC  RC  | XX  MT  XX  | MT  XX  XX  | XX  MT  XX  |   CLOSED    |
+|12-1 | JQ  RC      | MT          |     PC  RC  |     MT      | MT          |     MT      |   CLOSED    |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| 1-2 | JQ  XX  XX  | MT  XX  XX  | XX  PC  XX  | XX  MT  XX  | XX  MT  XX  | PC  MT  XX  | PC  XX      |
+| 1-2 | JQ          | MT          |     PC      |     MT      |     MT      | PC  MT      | PC          |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| 2-3 | PC  XX  XX  | XX  XX  SYF | PC  XX  XX  | XX  MT  XX  | XX  MT  XX  | PC  XX  XX  | PC  XX  XX  |
+| 2-3 | PC          |         SYF | PC          |     MT      |     MT      | PC          | PC          |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| 3-4 | PC  XX  XX  | PC  PC  SYF | PC  XX  XX  | MT  XX  XX  | XX  XX  CW  | PC  XX  XX  | PC  MT  XX  |
+| 3-4 | PC          | PC  PC  SYF | PC          | MT          |         CW  | PC          | PC  MT      |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| 4-5 | XX  XX  XX  | PC  PC  JQ  | XX  XX  XX  | MT  XX  XX  | XX  XX  CW  | PC  XX  XX  | PC  MT  XX  |
+| 4-5 |     XX      | PC  PC  JQ  |     XX      | MT          |         CW  | PC          | PC  MT      |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| 5-6 | XX  XX  XX  | XX  PC  JQ  | XX  XX  XX  | MT  RC  XX  | XX  XX  CW  | XX  XX  XX  | PC  SYF XX  |
+| 5-6 |     XX      |     PC  JQ  |     XX      | MT  RC      |         CW  |     XX      | PC  SYF     |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| 6-7 | XX  XX  XX  | XX  PC  XX  | XX  MT  XX  | XX  RC  XX  | XX  CW  NC  | XX  XX  XX  | MT  SYF MT  |
+| 6-7 |     XX      |     PC      |     MT      |     RC      |     CW  NC  |     XX      | MT  SYF MT  |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| 7-8 | MT  XX  PC  | CW  PC  XX  | JQ  MT  RC  | XX  RC  JQ  | XX  CW  NC  | XX  XX  SYF | MT  XX  MT  |
+| 7-8 | MT      PC  | CW  PC      | JQ  MT  RC  |     RC  JQ  |     CW  NC  |         SYF | MT      MT  |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| 8-9 | MT  XX  PC  | CW  PC  XX  | JQ  MT  RC  | XX  XX  JQ  | XX  CW  XX  | XX  XX  SYF | MT  XX  XX  |
+| 8-9 | MT      PC  | CW  PC      | JQ  MT  RC  |         JQ  |     CW      |         SYF | MT          |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| 9-10| MT  SYF PC  | CW  PC  XX  | XX  RX  RC  | XX  XX  JQ  |     CW  XX  |     XX  SYF | MT  XX  XX  |
+| 9-10| MT  SYF PC  | CW  PC      |     RX  RC  |         JQ  |     CW      |         SYF | MT          |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-|10-11| CW  SYF     | XX  MT      | XX  RX      | CW  MT      |   CLOSED    |   CLOSED    | RC  CW      |
+|10-11| CW  SYF     |     MT      |     RX      | CW  MT      |   CLOSED    |   CLOSED    | RC  CW      |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-|11-12| CW  SYF     | XX  MT      | XX  RX      | CW  MT      |   CLOSED    |   CLOSED    | RC  CW      |
+|11-12| CW  SYF     |     MT      |     RX      | CW  MT      |   CLOSED    |   CLOSED    | RC  CW      |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-|12-1 | CW  SYF     | XX  MT      | XX  RX      | CW  MT      |   CLOSED    |   CLOSED    | RC  CW      |
+|12-1 | CW  SYF     |     MT      |     RX      | CW  MT      |   CLOSED    |   CLOSED    | RC  CW      |
 |-----|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| 1-2 | CW  SYF     | XX  MT      | XX  RX      | CW  MT      |   CLOSED    |   CLOSED    | RC  CW      |
+| 1-2 | CW  SYF     |     MT      |     RX      | CW  JQ      |   CLOSED    |   CLOSED    | RC  CW      |
 |=====|=============|=============|=============|=============|=============|=============|=============|
