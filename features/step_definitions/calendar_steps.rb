@@ -15,6 +15,7 @@ end
 Given /^the calendar "([^"]*)" has the following entries:$/ do |calendar_name, entries_table|
   calendar_id = (Calendar.find_by_name(calendar_name)).id
   entries_table.hashes.each do |entry|
+    entry[:lab] = Lab.find_by_name(entry[:lab])
     entry[:calendar_id] = calendar_id
     Entry.create!(entry)
   end

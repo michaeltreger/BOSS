@@ -30,7 +30,7 @@
         - @substitutions.each do |substitution|
           %tr
             %td= check_box_tag "entries[#{substitution.id.to_s}]"
-            - if substitution.is_morning?
+            - if substitution.is_day?
               %td{:colspan=> 2}= image_tag "/img/sun.jpg", :width => "30", :height => "30", :alt => "sun"
             - elsif substitution.is_evening?
               %td{:colspan=> 2}= image_tag "/img/sunset.jpg", :width => "30", :height => "30", :alt=> "sunset"
