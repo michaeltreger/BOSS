@@ -8,11 +8,11 @@
     %th Min employees
     %th Description
     %th Unit
+    %th Details
+    %th Assign Shifts
     %th
     %th
     %th
-    %th
-    %th Uploading File
 
 
   - @labs.each do |lab|
@@ -26,11 +26,12 @@
         %td= lab.groups[0]
       -else
         %td
-        %td= link_to 'View', lab
-        %td= link_to 'View Schedule', calendar_path(lab.calendar)
-        %td= link_to 'Edit', edit_lab_path(lab)
-        %td= link_to 'Destroy', lab, :confirm => 'Are you sure?', :method => :delete
-        %td= link_to 'Assign_Shifts', upload_shifts_path(lab.id)
+      %td= link_to 'Details', lab
+      %td= link_to 'View Schedule', calendar_path(lab.calendar)
+      %td= link_to 'Submit a Flatfile', upload_shifts_path(lab.id)
+      %td= link_to 'Edit', edit_lab_path(lab)
+      %td= link_to 'Destroy', lab, :confirm => 'Are you sure?', :method => :delete
+      
      
 
 %br

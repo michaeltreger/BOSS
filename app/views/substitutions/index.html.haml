@@ -11,7 +11,7 @@
     - @my_subs.each do |substitution|
       %tr
         %td= link_to 'Delete', substitution_path(substitution), :method => :delete, :confirm => 'Are you sure?', :id => 'delete_' + substitution.id.to_s
-        - if substitution.is_morning?
+        - if substitution.is_day?
           %td{:colspan=> 2}= image_tag "/img/sun.jpg", :width => "30", :height => "30", :alt => "sun"
         - elsif substitution.is_evening?
           %td{:colspan=> 2}= image_tag "/img/sunset.jpg", :width => "30", :height => "30", :alt=> "sunset"
@@ -39,8 +39,8 @@
   <br/>
  
   = check_box_tag "filters[subs_conflict]", 1, @filters.include?('subs_conflict')
-  Morning Shifts
-  = check_box_tag "filters[subs_morning]", 1, @filters.include?('subs_morning')
+  Day Shifts
+  = check_box_tag "filters[subs_day]", 1, @filters.include?('subs_day')
   Evening Shifts
   = check_box_tag "filters[subs_evening]", 1, @filters.include?('subs_evening')
   Late Night Shifts
@@ -77,7 +77,7 @@
     - @a_subs.each do |substitution|
       %tr.available_subs
         %td= check_box_tag "entries[#{substitution.id.to_s}]"
-        - if substitution.is_morning?
+        - if substitution.is_day?
           %td{:colspan=> 2}= image_tag "/img/sun.jpg", :width => "30", :height => "30", :alt => "sun"
         - elsif substitution.is_evening?
           %td{:colspan=> 2}= image_tag "/img/sunset.jpg", :width => "30", :height => "30", :alt=> "sunset"

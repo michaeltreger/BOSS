@@ -29,6 +29,7 @@ class CalendarsController < ApplicationController
     @user_calendars = @current_user.calendars
     @acalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::AVAILABILITY}
     @wcalendars = @user_calendars.find_all{|c| c.calendar_type == Calendar::SHIFTS}
+    @allcalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @calendars }
