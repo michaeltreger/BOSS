@@ -21,6 +21,7 @@ require 'spec_helper'
 describe CalendarsController do
 
   before (:each) do
+    Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
     @student = User.create!(:name => "John", :activated => true, :initials => "J")
 
     #@admin = User.create!(:name => "John2", :activated => true, :initials => "JJ")

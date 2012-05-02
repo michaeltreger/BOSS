@@ -21,17 +21,21 @@ require 'spec_helper'
 describe SubstitutionsController do
 
   before(:each) do
-    @period = Period.create!(:name=>"Spring 2020", :start_date => "2020-1-20", :end_date => "2020-5-20")
-    @my_group = Group.create!(:group_type => 1, :name => 'undergrad', :hour_limit => 22, :description => 'cs169', :created_at => '2012-01-01T00:00:00Z')
+    @period = Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
+    @my_group = Group.create!(:group_type => 1, :name => 'undergrad', :hour_limit => 20, :description => 'cs169')
     #@my_group_user = Group_user.create!(:group_id => @my_group.id, :user_id => @me.id, :created_at => '2012-01-01T00:00:00Z')
-    @me = User.create!(:user_type => 1, :name => 'Tom', :activated => 'true', :initials => 'T', :cas_user => 123)
-    @other = User.create!(:user_type => 1, :name => 'Other', :activated => 'true', :initials => 'O', :cas_user => 456)
+    @me = User.create!(:name => 'Tom', :activated => 'true', :initials => 'T', :cas_user => 123)
+    @other = User.create!(:name => 'Other', :activated => 'true', :initials => 'O', :cas_user => 456)
     @my_calendar = @me.shift_calendar
     @other_calendar = @other.shift_calendar
     session[:test_user_id] = @me.id
-    @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => '2020-01-20T08:00:00Z', :end_time => '2020-01-20T12:00:00Z')
-    @other_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => '2020-01-20T14:00:00Z', :end_time => '2020-01-20T16:00:00Z')
-    @too_long_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => '2020-01-21T01:00:00Z', :end_time => '2020-01-21T23:00:00Z')
+    @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => Time.now+2.days, :end_time => Time.now+2.days+4.hour)
+    @other_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => Time.now+3.days, :end_time => Time.now+3.days+2.hours)
+    @too_long_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => Time.now+4.days, :end_time => Time.now+4.days+23.hours)
+    group = Group.find_by_name("Administrators")
+    group.users << @me
+    group.users << @other
+    group.save!
   end
   def valid_attributes
     {

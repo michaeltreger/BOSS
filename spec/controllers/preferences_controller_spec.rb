@@ -20,8 +20,8 @@ require 'spec_helper'
 
 describe PreferencesController do
   before(:each) do
+      Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
       @user = User.create!(:name => 'Tom', :activated => 'true', :initials => 'T')
-      @calendar = Calendar.create!(:user_id => @user.id, :name => "#{@user.name}'s calendar",:calendar_type => 1)
       group = Group.find_by_name("Administrators")
       group.users << @user
       group.save!
@@ -46,7 +46,7 @@ describe PreferencesController do
     it "assigns all preferences as @preferences" do
       preference = Preference.create! valid_attributes
       get :index, {}, valid_session
-      assigns(:preferences).should eq([preference])
+      assigns(:preferences).should include(preference)
     end
   end
 

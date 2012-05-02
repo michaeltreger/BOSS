@@ -20,9 +20,8 @@ require 'spec_helper'
 
 describe PeriodsController do
   before(:each) do
-      @period = Period.create valid_attributes
+      @period = Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true, :exception=>true)
       @user = User.create!(:name => 'Tom', :activated => 'true', :initials => 'T')
-      @calendar = Calendar.create!(:user_id => @user.id, :name => "#{@user.name}'s calendar",:calendar_type => 1, :period_id=>@period.id)
       group = Group.find_by_name("Administrators")
       group.users << @user
       group.save!
@@ -33,7 +32,7 @@ describe PeriodsController do
   # Period. As you add validations to Period, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {:start_date=>DateTime.parse("Jan 20, 2012"), :end_date=>DateTime.parse("May 20, 2012"), :name=>"Spring 2012", :visible=>true}
+    {:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true}
   end
 
   # This should return the minimal set of values that should be in the session

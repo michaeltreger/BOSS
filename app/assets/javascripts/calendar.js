@@ -5,7 +5,7 @@ $(document).ready(function() {
     if (this.length == 0) return hash;
     for (i = 0; i < this.length; i++) {
         char = this.charCodeAt(i);
-        hash = ((hash<<5)-hash)+char;
+        hash = (127*hash + char ) %16908799
         hash = hash & hash; // Convert to 32bit integer
     }
     return hash;
@@ -21,8 +21,6 @@ $(document).ready(function() {
    function submit() {
       if (validate()) {
         finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
-        finalizedEvents.map(convertTimesOut);
-        
         json = JSON.stringify(finalizedEvents);
         //alert(json);
         $.ajax({
@@ -129,9 +127,8 @@ $(document).ready(function() {
          dataType: "json",
          success: function(data) {
             events = data.events;
-            events.map(convertTimesIn);
             $events = events;
-            $readOnly = string2boolean(data.read_only);
+            $readOnly = data.readOnly;
             $start_date = Date.parse(data.start_date);
             $end_date = Date.parse(data.end_date);
             $isLabCalendar = data.isLabCalendar;
@@ -139,37 +136,13 @@ $(document).ready(function() {
          }
       });
    }
-
-   function string2boolean(s) {
-      if (s === "true") {
-        return true;
-      } else {
-        return false;
-      }
-   }
-   
-   function convertTimesIn(event) {
-      //alert(event.start_time);
-      timezone_offset = new Date().getTimezoneOffset();
-      timezone_offset = 0;
-      //alert(event.start_time);
-      //event.start_time = Date.parse(event.start_time).add(-timezone_offset).minutes().add(-2).hours();
-      //event.end_time = Date.parse(event.end_time).add(-timezone_offset).minutes().add(-2).hours();
-      //alert(event.start_time);
-   }
-   
-   function convertTimesOut(event) {
-      //event.start_time = event.start_time.add(2).hours();
-      //event.end_time = event.end_time.add(2).hours();
-      //alert(event.start_time);
-   }
    
    function randomColor(initials) {
       letters = '0123456789ABCDEF'.split('');
       color = '#';
       seed = initials.hashCode();
       for (i = 0; i < 6; i++ ) {
-          color += letters[(seed*1391*i)%15]
+          color += letters[(seed*i)%16]
       }
       return color;
    }

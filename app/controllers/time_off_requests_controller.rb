@@ -77,8 +77,8 @@ class TimeOffRequestsController < ApplicationController
     @time_off_request = TimeOffRequest.find(params[:id])
     respond_to do |format|
       if @time_off_request.update_attributes(params[:time_off_request])
-          format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully updated.' }
-          format.json { head :ok }
+        format.html { redirect_to time_off_requests_url, notice: 'Time off request was successfully updated.' }
+        format.json { head :ok }
       else
         format.html { render action: "edit" }
         format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
