@@ -125,6 +125,7 @@ class SubstitutionsController < ApplicationController
       end
 
       @admin_allCalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)
+      @admin_allCalendars.delete_if { |c| not c.user.activated }
       @admin_allCalendars = @admin_allCalendars.sort_by{|c| c.user.initials}
     end
     respond_to do |format|

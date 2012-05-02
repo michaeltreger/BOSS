@@ -20,6 +20,13 @@ require 'spec_helper'
 
 describe AvailabilitySnapshotsController do
 
+  before (:each) do
+    @admin = User.create!(:name => "John", :activated => true, :initials => "J")
+    group = Group.find_by_name("Administrators")
+    group.users << @admin
+    group.save!
+  end
+
   # This should return the minimal set of attributes required to create a valid
   # AvailabilitySnapshot. As you add validations to AvailabilitySnapshot, be sure to
   # update the return value of this method accordingly.

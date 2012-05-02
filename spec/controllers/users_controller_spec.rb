@@ -21,14 +21,17 @@ require 'spec_helper'
 describe UsersController do
 
   before (:each) do
-    @admin = User.create!(:user_type => -1, :name => "John", :activated => true, :initials => "J")
+    @admin = User.create!(:name => "John", :activated => true, :initials => "J")
+    group = Group.find_by_name("Administrators")
+    group.users << @admin
+    group.save!
   end
 
   # This should return the minimal set of attributes required to create a valid
   # User. As you add validations to User, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {:name=>"Tim", :user_type=>1, :activated => true, :initials => "T"}
+    {:name=>"Tim", :activated => true, :initials => "T"}
   end
 
   # This should return the minimal set of values that should be in the session
