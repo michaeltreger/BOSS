@@ -2,14 +2,6 @@
 - if @user.activated == false
   %h2 Note: This user is currently deactivated.
 %p
-  %b Type:
-  - if @user.isAdmin?
-    Administrator
-  - elsif @user.isScheduler?
-    Scheduler
-  - else
-    Employee
-%p
   %b Name:
   = @user.name
 %p

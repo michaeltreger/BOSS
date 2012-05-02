@@ -8,6 +8,8 @@
   .field
     = f.hidden_field 'activated', :value => 'true'
   .field
+    = f.hidden_field 'user_type', :value => Group.find_by_name("All Users").id
+  .field
     = f.label :name
     = f.text_field :name
   .field
