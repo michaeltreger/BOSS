@@ -20,8 +20,12 @@ require 'spec_helper'
 
 describe PreferencesController do
   before(:each) do
-      @user = User.create!(:user_type => 1, :name => 'Tom', :activated => 'true', :initials => 'T')
+      @user = User.create!(:name => 'Tom', :activated => 'true', :initials => 'T')
       @calendar = Calendar.create!(:user_id => @user.id, :name => "#{@user.name}'s calendar",:calendar_type => 1)
+      group = Group.find_by_name("Administrators")
+      group.users << @user
+      group.save!
+
   end
 
   # This should return the minimal set of attributes required to create a valid

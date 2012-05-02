@@ -115,8 +115,8 @@
                       <BR><B><BR><BR><BR><BR>
                       %h4 DEBUG THINGS
                       - if not @current_user.nil?
-                        - if @current_user.user_type
-                          = "Current User Type is " + @current_user.user_type.to_s
+                        -# if @current_user.user_type
+                          =# "Current User Type is " + @current_user.user_type.to_s
                       - else
                         = "Current User Type is nil"
                       = form_tag ('/changeAdmin') do

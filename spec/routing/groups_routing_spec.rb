@@ -2,7 +2,11 @@ require "spec_helper"
 
 describe GroupsController do
   before(:each) do
-    @admin = User.create!(:user_type => -1, :name => 'AdminMan', :activated => true, :initials => 'AM')
+    @admin = User.create!(:name => 'AdminMan', :activated => true, :initials => 'AM')
+    group = Group.find_by_name("Administrators")
+    group.users << @admin
+    group.save!
+
   end
   describe "routing" do
 

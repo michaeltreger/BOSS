@@ -12,7 +12,12 @@ Active Users
     %th
   - @users.each do |user|
     %tr
-      %td= user.user_type
+      - if user.isAdmin?
+        %td Administrator
+      - elsif user.isScheduler?
+        %td Scheduler
+      - else
+        %td
       %td= user.name
       %td= user.initials
       %td= user.phone
@@ -36,7 +41,12 @@ Deactivated Users
     %th
   - @deactivatedUsers.each do |user|
     %tr
-      %td= user.user_type
+      - if user.isAdmin?
+        %td Administrator
+      - elsif user.isScheduler?
+        %td Scheduler
+      - else
+        %td
       %td= user.name
       %td= user.initials
       %td= user.phone

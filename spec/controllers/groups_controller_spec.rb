@@ -20,13 +20,16 @@ require 'spec_helper'
 
 describe GroupsController do
   before (:each) do
-    @admin = User.create!(:user_type => -1, :name => 'Chris', :activated => 'true', :initials => 'C', :cas_user => 1)
-    @user1 = User.create!(:user_type => 1, :name => 'Seven', :activated => 'true', :initials => 'JQ', :cas_user => 13213)
-    @user1 = User.create!(:user_type => 1, :name => 'Michael', :activated => 'true', :initials => 'MT', :cas_user => 122)
-    @user1 = User.create!(:user_type => 1, :name => 'Peter', :activated => 'true', :initials => 'PC', :cas_user => 22)
-    @user1 = User.create!(:user_type => 1, :name => 'Suyan', :activated => 'true', :initials => 'SYF', :cas_user => 111)
-    @user1 = User.create!(:user_type => 1, :name => 'Rohan', :activated => 'true', :initials => 'RC', :cas_user => 2131)
+    @admin = User.create!(:name => 'Chris', :activated => 'true', :initials => 'C', :cas_user => 1)
+    @user1 = User.create!(:name => 'Seven', :activated => 'true', :initials => 'JQ', :cas_user => 13213)
+    @user1 = User.create!(:name => 'Michael', :activated => 'true', :initials => 'MT', :cas_user => 122)
+    @user1 = User.create!(:name => 'Peter', :activated => 'true', :initials => 'PC', :cas_user => 22)
+    @user1 = User.create!(:name => 'Suyan', :activated => 'true', :initials => 'SYF', :cas_user => 111)
+    @user1 = User.create!(:name => 'Rohan', :activated => 'true', :initials => 'RC', :cas_user => 2131)
     session[:test_user_id] = @admin.id
+    group = Group.find_by_name("Administrators")
+    group.users << @admin
+    group.save!
   end
 
   # This should return the minimal set of attributes required to create a valid
@@ -49,9 +52,10 @@ describe GroupsController do
 
   describe "GET index" do
     it "assigns all groups as @groups" do
-      group = Group.create! valid_attributes
+      newGroup = Group.create! valid_attributes
+      group = [Group.find_by_name("Administrators"), Group.find_by_name("Schedulers"), newGroup]
       get :index, {}, valid_session
-      assigns(:groups).should eq([group])
+      assigns(:groups).should eq(group)
     end
   end
 
