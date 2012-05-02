@@ -68,6 +68,7 @@ class CalendarsController < ApplicationController
         if @calendar.lab?
           events = Entry.find_all_by_lab_id(@calendar.lab_id)
           results[:isLabCalendar] = true
+          results[:readOnly] = true
           events.each do |e|
             e.description = User.find(e.calendar.user_id).initials
             e.entry_type = ""

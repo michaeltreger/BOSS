@@ -5,7 +5,7 @@ $(document).ready(function() {
     if (this.length == 0) return hash;
     for (i = 0; i < this.length; i++) {
         char = this.charCodeAt(i);
-        hash = ((hash<<5)-hash)+char;
+        hash = (127*hash + char ) %16908799
         hash = hash & hash; // Convert to 32bit integer
     }
     return hash;
@@ -131,21 +131,13 @@ $(document).ready(function() {
             events = data.events;
             events.map(convertTimesIn);
             $events = events;
-            $readOnly = string2boolean(data.read_only);
+            $readOnly = data.readOnly;
             $start_date = Date.parse(data.start_date);
             $end_date = Date.parse(data.end_date);
             $isLabCalendar = data.isLabCalendar;
             startCalendar();
          }
       });
-   }
-
-   function string2boolean(s) {
-      if (s === "true") {
-        return true;
-      } else {
-        return false;
-      }
    }
    
    function convertTimesIn(event) {
@@ -169,7 +161,7 @@ $(document).ready(function() {
       color = '#';
       seed = initials.hashCode();
       for (i = 0; i < 6; i++ ) {
-          color += letters[(seed*1391*i)%15]
+          color += letters[(seed*i)%16]
       }
       return color;
    }
