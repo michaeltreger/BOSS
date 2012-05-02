@@ -36,9 +36,6 @@ class LabsController < ApplicationController
   # GET /labs/1/edit
   def edit
     @lab = Lab.find(params[:id])
-
-
-
   end
 
   # POST /labs
@@ -86,39 +83,16 @@ class LabsController < ApplicationController
     end
   end
 
-  def upload_shifts
+  def upload_shifts  
     @lab = Lab.find(params[:id])
-
-    #respond_to do |format|
-     # if @lab.save
-      #  format.html { redirect_to :back, notice: 'File was successfully uploaded.' }
-       # format.json { head :ok }
-      #else
-        #format.html { render action: "upload" }
-        #format.json { render json: @lab.errors, status: :unprocessable_entity }
-      #end
-    #end
   end
 
   def commit_shifts
     if @lab= Lab.find(params[:id])
+      @lab.update_attributes(params[:file])
       filePath = @lab.text_file.path
       timeTable = @lab.read_schedule(filePath)
 
-      #utcOffset = Time.now.utc_offset/3600
-      #if utcOffset <= 0
-       # if utcOffset < 10
-          #timeZone = "-0#{utcOffset.abs}:00"
-       # else
-          #timeZone = "-#{utcOffset.abs}:00"
-       # end
-      #else
-       # if utcOffset < 10
-          #timeZone = "+0#{utcOffset}:00"
-       # else
-          #timeZone = "+#{utcOffset}:00"
-       # end
-      #end
       startWeek = Time.new(Time.now.year, timeTable[0][2]["start_time_month"], timeTable[0][3]["start_time_day"], 8, 0, 0, "+01:00")
       endWeek =  Time.new(Time.now.year, timeTable[0][4]["end_time_month"], timeTable[0][5]["end_time_day"].to_i + 1, 8, 0, 0, "+01:00")
 
@@ -162,7 +136,6 @@ class LabsController < ApplicationController
                   else
                     if v == 0
                       employee = User.find_by_initials(k)
-                      #debugger
                       newEntry = Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id, :calendar_id => @lab.calendar.id)
                     elsif v == 1
                       endTime = startTime + 30.minute
