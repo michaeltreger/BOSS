@@ -90,17 +90,18 @@ class LabsController < ApplicationController
     @lab = Lab.find(params[:id])
 
     #respond_to do |format|
-     # if @lab.save
-      #  format.html { redirect_to :back, notice: 'File was successfully uploaded.' }
-       # format.json { head :ok }
-      #else
-        #format.html { render action: "upload" }
-        #format.json { render json: @lab.errors, status: :unprocessable_entity }
-      #end
+    # if @lab.save
+    #  format.html { redirect_to :back, notice: 'File was successfully uploaded.' }
+    # format.json { head :ok }
+    #else
+    #format.html { render action: "upload" }
+    #format.json { render json: @lab.errors, status: :unprocessable_entity }
+    #end
     #end
   end
 
   def commit_shifts
+    debugger
     if @lab= Lab.find(params[:id])
       filePath = @lab.text_file.path
       timeTable = @lab.read_schedule(filePath)
@@ -167,7 +168,7 @@ class LabsController < ApplicationController
                     elsif v == 1
                       endTime = startTime + 30.minute
                       Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id, :calendar_id => @lab.calendar.id)
-                      elsif v == 2
+                    elsif v == 2
                       startTime = startTime + 30.minute
                       Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id, :calendar_id => @lab.calendar.id)
                     end

@@ -31,10 +31,8 @@
           %td= link_to 'View Schedule', calendar_path(lab.calendar)
           %td= link_to 'Edit', edit_lab_path(lab)
           %td= link_to 'Destroy', lab, :confirm => 'Are you sure?', :method => :delete
-          %td= link_to 'Assign_Shifts', upload_shifts_path(lab.id)
-          %td= submit_tag 'Assign shifts', :id => params[:id]
-     
-
+          %td= link_to 'Upload file', upload_shifts_path(lab.id)
+          %td= submit_tag 'Assign shifts'
 %br
 
 = link_to 'New Lab', new_lab_path
