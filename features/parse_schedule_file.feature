@@ -9,6 +9,10 @@ Background: A Calendar has been created
     | Alice        | 1              |
     | Chris        | 0              |
 
+  And the following periods exist:
+    | name             |
+    | Finals Week 1    |
+
   And I am logged in as "Alice"
 
   And the calendar "Alice's Shifts" has the following entries:

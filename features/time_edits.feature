@@ -9,6 +9,10 @@ Background: A Calendar has been created
     | Alice        | 1              |
     | Joe          | 0              |
 
+  And the following periods exist:
+    | name             |
+    | Finals Week 1    |
+
   And the following calendars exist:
     | name             | calendar_type  | user_id |
     | Alice's Calendar | 1              | 1       |
