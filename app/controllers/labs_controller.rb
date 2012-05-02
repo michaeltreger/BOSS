@@ -175,8 +175,6 @@ class LabsController < ApplicationController
           end
         end
         
-        @lab.calendar.check_continuity
-           
         format.html { redirect_to labs_path, notice: 'Shifts were successfully assigned.' }
         format.json { head :ok }
       end

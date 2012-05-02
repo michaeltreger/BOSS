@@ -119,7 +119,6 @@ class Calendar < ActiveRecord::Base
     end
 
     def check_continuity
-      return
       if calendar_type == SHIFTS or calendar_type == LAB
         entries = Entry.where(:lab_id => self.lab_id).order(:start_time)
         entries.each do |e1|
