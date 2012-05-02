@@ -14,11 +14,33 @@ class AvailabilitySnapshotsController < ApplicationController
   # GET /availability_snapshots/1.json
   def show
     @availability_snapshot = AvailabilitySnapshot.find(params[:id])
+    @time = @availability_snapshot.start_date.to_time
+    @avail = @availability_snapshot.availabilities[:avail]
+    @rather_not = @availability_snapshot.availabilities[:rather_not]
+    @prefer = @availability_snapshot.availabilities[:prefer]
+
+    @avail.each_pair do |k,v|
+      @avail[k] = display(v)
+    end
+    @rather_not.each_pair do |k,v|
+      @rather_not[k] = display(v)
+    end
+    @prefer.each_pair do |k,v|
+      @prefer[k] = display(v)
+    end
 
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @availability_snapshot }
     end
+  end
+  
+  def display(list)
+    s = ""
+    list.each do |i|
+      s += i + " "
+    end
+    return s
   end
 
   # GET /availability_snapshots/new
@@ -43,6 +65,7 @@ class AvailabilitySnapshotsController < ApplicationController
     @availability_snapshot = AvailabilitySnapshot.new(params[:availability_snapshot])
     @avail = {}
     @rather_not = {}
+    @prefer = {}
     @start_time = Time.now.beginning_of_week + 7.days
     time = @start_time
     endTime = time + 7.days
@@ -76,6 +99,19 @@ class AvailabilitySnapshotsController < ApplicationController
             else
               @rather_not[time.to_time] << User.find(e.calendar.user_id).initials
             end
+            @avail[time.to_time].delete(User.find(e.calendar.user_id).initials)
+            time += 30.minutes
+          end
+        elsif e.entry_type == "prefer"
+          time = e.start_time + (start - e.start_time.beginning_of_week)
+          endTime = e.end_time + (start - e.end_time.beginning_of_week)
+          while time < endTime
+            if @prefer[time.to_time].nil?
+              @prefer[time.to_time] = [User.find(e.calendar.user_id).initials]
+            else
+              @prefer[time.to_time] << User.find(e.calendar.user_id).initials
+            end
+            @avail[time.to_time].delete(User.find(e.calendar.user_id).initials)
             time += 30.minutes
           end
         end
@@ -84,7 +120,7 @@ class AvailabilitySnapshotsController < ApplicationController
     @cal = {}
     @cal[:avail] = @avail
     @cal[:rather_not] = @rather_not
-    
+    @cal[:prefer] = @prefer
     @availability_snapshot.start_date = @start_time
     @availability_snapshot.end_date = endTime
     @availability_snapshot.availabilities = @cal

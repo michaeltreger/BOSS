@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     before_filter :set_period
   end
   before_filter :check_admin_or_sched
-
+  
 
   def skip_calnet?
     return false

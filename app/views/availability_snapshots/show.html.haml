@@ -1,7 +1,4 @@
 -@page_title = "Snapshot taken on #{@availability_snapshot.created_at.strftime('%m/%d/%Y %I:%M%p')}"
-- time = @availability_snapshot.start_date.to_time
-- avail = @availability_snapshot.availabilities[:avail]
-- rather_not = @availability_snapshot.availabilities[:rather_not]
 
 %table 
   %tr
@@ -15,11 +12,13 @@
     %th Sunday
   - 24.times do |h|
     %tr
-      %th=(time+h.hours).strftime('%I%p')
+      %th=(@time+h.hours).strftime('%I%p')
       - 7.times do |d|
         %td
-          - if !avail[time+d.days+h.hours].empty?
+          .as_p
+            = @prefer[@time+d.days+h.hours]
+          - if !@avail[@time+d.days+h.hours].empty?
             .as_a
-              = avail[time+d.days+h.hours]
+              = @avail[@time+d.days+h.hours]
           .as_rn
-            = rather_not[time+d.days+h.hours]
+            = @rather_not[@time+d.days+h.hours]

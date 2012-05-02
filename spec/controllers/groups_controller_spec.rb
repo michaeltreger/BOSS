@@ -20,6 +20,7 @@ require 'spec_helper'
 
 describe GroupsController do
   before (:each) do
+    Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
     @admin = User.create!(:name => 'Chris', :activated => 'true', :initials => 'C', :cas_user => 1)
     @user1 = User.create!(:name => 'Seven', :activated => 'true', :initials => 'JQ', :cas_user => 13213)
     @user1 = User.create!(:name => 'Michael', :activated => 'true', :initials => 'MT', :cas_user => 122)
