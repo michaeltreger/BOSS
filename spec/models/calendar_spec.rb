@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Calendar do
   before :each do
-    @user1 = User.create!({:user_type => 1, :name => 'anoriginalname', :activated => true, :initials => "ZZ"})
-    @user2 = User.create!({:user_type => 1, :name => 'mockuser', :activated => true, :initials => ":)"})
+    @user1 = User.create!({:name => 'anoriginalname', :activated => true, :initials => "ZZ"})
+    @user2 = User.create!({:name => 'mockuser', :activated => true, :initials => ":)"})
     @calendar1 = Calendar.create!({:calendar_type => 1, :name => 'reallyimportant', :user_id => @user1.id})
     @calendar2 = Calendar.create!({:calendar_type => 1, :name => 'calendar2', :user_id => @user2.id})
     @lab1 = Lab.create!({:name => 'lab1', :initials => 'l1', :max_employees => 1000, :min_employees => 1})
@@ -13,6 +13,10 @@ describe Calendar do
     @backtobackdiff = Entry.create!(:user_id => @user2.id, :calendar_id => @calendar2.id, :lab_id => @lab2.id, :start_time => '12:00pm', :end_time => '1:00pm')
     @backtobacksame = Entry.create!(:user_id => @user2.id, :calendar_id => @calendar2.id, :lab_id => @lab1.id, :start_time => '12:00pm', :end_time => '1:00pm')
     @other_entry = Entry.create!(:user_id => @user2.id, :calendar_id => @calendar2.id, :start_time => '2:00pm', :end_time => '4:00pm')
+    @admin = User.create!(:name => "John", :activated => true, :initials => "J")
+    group = Group.find_by_name("Administrators")
+    group.users << @admin
+    group.save!
   end
   describe "check if entry can be added to calendar" do
     it "should disallow overlapping entries" do

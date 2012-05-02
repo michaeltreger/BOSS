@@ -20,7 +20,10 @@ require 'spec_helper'
 
 describe LabsController do
   before (:each) do
-    @admin = User.create!(:user_type => -1, :name => "John", :activated => true, :initials => "J")
+    @admin = User.create!(:name => "John", :activated => true, :initials => "J")
+    group = Group.find_by_name("Administrators")
+    group.users << @admin
+    group.save!
   end
 
   # This should return the minimal set of attributes required to create a valid

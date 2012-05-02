@@ -54,6 +54,7 @@ When /^(?:|I )press "([^"]*)"$/ do |button|
 end
 
 When /^(?:|I )follow "([^"]*)"$/ do |link|
+  #debugger
   click_link(link)
 end
 

@@ -13,7 +13,7 @@ Feature: Root Administrator Is Created
     And I fill in "user_cas_user" with "12345"
     And I fill in "Email" with "joe@mail.com"
     And I press "Save"
-    And I log in as "Root Admin"
+    #And I log in as "Root Admin"
     And I go to the "Users" page
     Then I should see "Users"
 
@@ -22,10 +22,10 @@ Feature: Root Administrator Is Created
     And I fill in "user_cas_user" with "12345"
     And I fill in "Email" with "joe@mail.com"
     And I press "Save"
-    And I log in as "Root Admin"
+    #And I log in as "Root Admin"
     And I go to the "Users" page
     And I follow "New User"
-    And I select "Admin" from "User type"
+    #And I select "Admin" from "User type"
     And I fill in "Name" with "Test Admin"
     And I fill in "Initials" with "TA"
     And I fill in "user_cas_user" with "54321"

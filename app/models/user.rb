@@ -19,8 +19,8 @@ class User < ActiveRecord::Base
 
   after_create :make_calendars
 
-  ADMINISTRATOR = Group.find_by_name("Administrators").id
-  SCHEDULER = Group.find_by_name("Schedulers").id
+  ADMINISTRATOR = Group.find_or_create_by_name(:name => "Administrators", :description => "All users in this group are BOS administrators.").id
+  SCHEDULER = Group.find_or_create_by_name(:name => "Schedulers", :description => "All users in this group are BOS schedulers.").id
   EMPLOYEE = -1
 
   def make_calendars

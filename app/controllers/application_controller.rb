@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_login
-    if @current_user.nil? and request.fullpath != '/' and not User.where("user_type = '-1' OR user_type = '0'").empty?
+    if @current_user.nil? and request.fullpath != '/' and areAdmins?
       redirect_to '/'
     end
   end
@@ -98,12 +98,17 @@ class ApplicationController < ActionController::Base
   end
 
   def check_init
-    if request.fullpath == '/admin/init' and not User.where("user_type = '-1' OR user_type = '0'").empty?
+    if request.fullpath == '/admin/init' and areAdmins?
         redirect_to '/'
     end
-    if User.where("user_type = '-1' OR user_type = '0'").empty?
+    if not areAdmins?
         ApplicationController.skip_filter _process_action_callbacks.map(&:filter)
         redirect_to '/admin/init' unless request.fullpath == '/admin/init'
     end
   end
+
+  def areAdmins?
+    Group.find_by_name("Administrators").users.length != 0 or Group.find_by_name("Schedulers").users.length != 0
+  end
 end
+
