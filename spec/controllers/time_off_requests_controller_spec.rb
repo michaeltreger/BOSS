@@ -21,11 +21,16 @@ require 'spec_helper'
 describe TimeOffRequestsController do
 
   before(:each) do
-    @me = User.create!(:user_type => 1, :name => 'Seven', :activated => 'true', :initials => 'S')
+    Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
+    @me = User.create!(:name => 'Seven', :activated => 'true', :initials => 'S')
     @my_calendar = Calendar.create!(:calendar_type => 1, :name => 'my_calendar', :user_id => @me.id)
     @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => '10:00am', :end_time => '11:00am')
     @now = Time.current()
     session[:test_user_id] = @me.id
+    group = Group.find_by_name("Administrators")
+    group.users << @me
+    group.save!
+
   end
   # This should return the minimal set of attributes required to create a valid
   # TimeOffRequest. As you add validations to TimeOffRequest, be sure to

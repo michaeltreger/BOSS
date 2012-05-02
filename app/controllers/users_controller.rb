@@ -74,7 +74,15 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+    @group = nil
+    if params[:user][:user_type] != "-1" and not params[:user][:user_type].nil?
+        @group = Group.find(params[:user][:user_type])
+    end
+    params[:user].delete :user_type
     @user = User.new(params[:user])
+    if not @group.nil?
+        @user.groups << @group
+    end
 
     respond_to do |format|
       if @user.save
@@ -104,6 +112,19 @@ class UsersController < ApplicationController
             @user.groups << @group
         end
       end
+      if not params[:user][:user_type].nil?
+        @group = nil
+        @user.groups.delete Group.find_by_name("Administrators")
+        @user.groups.delete Group.find_by_name("Schedulers")
+        if params[:user][:user_type] != "-1"
+            @group = Group.find(params[:user][:user_type])
+        end
+        params[:user].delete :user_type
+        if not @group.nil?
+            @user.groups << @group if not @user.groups.include? @group
+        end
+      end
+
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :ok }

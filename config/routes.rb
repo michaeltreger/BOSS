@@ -1,5 +1,7 @@
 CS169CampusScheduler::Application.routes.draw do
 
+  get "home/index"
+
   resources :preferences
 
   resources :time_off_requests
@@ -32,7 +34,6 @@ CS169CampusScheduler::Application.routes.draw do
     match "/upload_shifts/:id" => "labs#upload_shifts", :as => 'upload_shifts'
     match "/upload_shifts/:id/commit_shifts" =>"labs#commit_shifts"
   end
-
   match '/get_entries_for_sub' => 'substitutions#get_entries_for_sub'
   match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'
   match "/changeAdmin" => "users#changeAdmin"
@@ -95,7 +96,7 @@ CS169CampusScheduler::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'calendars#index'
+  root :to => 'home#index'
 
   # See how all your routes lay out with "rake routes"
 

@@ -1,0 +1,19 @@
+%h1 Welcome to the new BOS!
+<BR>
+- if @current_user
+  <b>You are currently logged into BOS and Calnet
+  </b>
+  <BR><BR>
+  %p Latest News:
+  %p Notes from Admins/Schedulers can go here
+  %p Recent subs posted/taken can go here as well
+
+- else
+  <b> You are not currently signed in </b>
+  <BR><BR>
+  Returning Users: Please 
+  = link_to 'sign in with your Calnet credentials', @login_url
+  <BR><BR>
+  New Users: An administrator must approve your account before you can use this website.
+  <BR>
+  = link_to 'Check if your account is ready', @login_url

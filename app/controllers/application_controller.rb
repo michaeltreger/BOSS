@@ -5,25 +5,37 @@ class ApplicationController < ActionController::Base
   helper_method :page_title
   helper_method :current_user
 
+  before_filter :check_init
   if Rails.env.test?
     before_filter :test_set_current_user
   else
-    before_filter CASClient::Frameworks::Rails::Filter
-    before_filter :check_init
+    before_filter CASClient::Frameworks::Rails::Filter, :unless => :skip_calnet?
     before_filter :set_current_user
-    before_filter :set_period
     before_filter :check_login
+    before_filter :set_period
   end
   before_filter :check_admin_or_sched
+  
+
+  def skip_calnet?
+    return false
+  end
 
   def test_set_current_user
     @current_user = User.find_by_id(session[:test_user_id])
+    if @current_user.nil?
+        def @current_user.isAdmin?
+            false
+        end
+    end
   end
 
   def set_period
     @current_period = Period.current
-    @current_availability = @current_user.availability_calendar(@current_period)
-    @current_workschedule = @current_user.shift_calendar
+    if @current_user
+      @current_availability = @current_user.availability_calendar(@current_period)
+      @current_workschedule = @current_user.shift_calendar
+    end
   end
 
   def set_current_user
@@ -31,6 +43,17 @@ class ApplicationController < ActionController::Base
       @current_user = nil
     else
       @current_user = User.find_by_cas_user(session[:cas_user])
+    end
+    if @current_user.nil?
+        def @current_user.isAdmin?
+            false
+        end
+        def @current_user.isAdminOrScheduler?
+            false
+        end
+        def @current_user.isScheduler?
+            false
+        end
     end
   end
 
@@ -51,10 +74,8 @@ class ApplicationController < ActionController::Base
   end
 
   def check_login
-    if @current_user.nil? and not session[:cas_user].nil? and request.fullpath != '/join'
-      if not request.post? and request.fullpath != '/admin/users/'
-          redirect_to '/join'
-      end
+    if @current_user.nil? and request.fullpath != '/' and areAdmins?
+      redirect_to '/'
     end
   end
 
@@ -77,12 +98,17 @@ class ApplicationController < ActionController::Base
   end
 
   def check_init
-    if request.fullpath == '/admin/init' and not User.where("user_type = '-1' OR user_type = '0'").empty?
+    if request.fullpath == '/admin/init' and areAdmins?
         redirect_to '/'
     end
-    if User.where("user_type = '-1' OR user_type = '0'").empty?
+    if not areAdmins?
         ApplicationController.skip_filter _process_action_callbacks.map(&:filter)
         redirect_to '/admin/init' unless request.fullpath == '/admin/init'
     end
   end
+
+  def areAdmins?
+    Group.find_by_name("Administrators").users.length != 0 or Group.find_by_name("Schedulers").users.length != 0
+  end
 end
+

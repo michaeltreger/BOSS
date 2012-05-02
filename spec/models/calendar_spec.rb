@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Calendar do
   before :each do
-    @user1 = User.create!({:user_type => 1, :name => 'anoriginalname', :activated => true, :initials => "ZZ"})
-    @user2 = User.create!({:user_type => 1, :name => 'mockuser', :activated => true, :initials => ":)"})
+    @user1 = User.create!({:name => 'anoriginalname', :activated => true, :initials => "ZZ"})
+    @user2 = User.create!({:name => 'mockuser', :activated => true, :initials => ":)"})
     @calendar1 = Calendar.create!({:calendar_type => 1, :name => 'reallyimportant', :user_id => @user1.id})
     @calendar2 = Calendar.create!({:calendar_type => 1, :name => 'calendar2', :user_id => @user2.id})
     @lab1 = Lab.create!({:name => 'lab1', :initials => 'l1', :max_employees => 1000, :min_employees => 1})

@@ -7,6 +7,8 @@
     %th Max employees
     %th Min employees
     %th Description
+    %th Unit
+    %th
     %th
     %th
     %th
@@ -20,6 +22,11 @@
       %td= lab.max_employees
       %td= lab.min_employees
       %td= lab.description
+      -if lab.groups.length > 0
+        %td= lab.groups[0]
+      -else
+        %td
+      %td= link_to 'View', lab
       %td= link_to 'View Schedule', calendar_path(lab.calendar)
       %td= link_to 'Edit', edit_lab_path(lab)
       %td= link_to 'Destroy', lab, :confirm => 'Are you sure?', :method => :delete

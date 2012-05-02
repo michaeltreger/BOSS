@@ -8,7 +8,8 @@ Background: Users created
     | name         | user_type      |
     | Alice        | 1              |
     | Bob          | 1              |
-    | Chris        | -1              |
+    | Hell         | -1             |
+    | Chris        | 0              |
 
   And the following calendars exist:
     | name             | calendar_type  | user_id | period_id|
@@ -24,20 +25,47 @@ Background: Users created
     |  3      | 2012-4-29 12:00 PDT -07:00 | 2012-4-29 13:00 PDT -07:00 | 2012-4-20 12:00 PDT -07:00  | passed 4 days | go shopping |
     |  2      | 2012-4-30 9:00 PDT -07:00  | 2012-4-30 10:00 PDT -07:00 | 2012-4-21 19:00 PDT -07:00  | 2 days left   | go swimming |
 
-Scenario: view all time-off requests
-   Given I am logged in as "Chris"
+ Scenario: Admin view all time-off requests
+   Given I am logged in as "Hell"
    And I am on all time-off requests page
-   And I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00" with name "Chris"
+   And I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00" with name "Hell"
    And I should see a request starts at "2012-4-30 9:00" and ends at "2012-4-30 10:00" with name "Bob"
    And I should not see "some other requests"
 
-Scenario: view a request's description
-   Given I am logged in as "Chris"
+Scenario: Admin view a request's description
+   Given I am logged in as "Hell"
    And I am on all time-off requests page
    When I follow "Details"
    Then I should see a description "go shopping"
    When I follow "Back"
-   Then I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00" with name "Chris"
+   Then I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00" with name "Hell"
    Then I should see a request starts at "2012-4-30 9:00" and ends at "2012-4-30 10:00" with name "Bob"
    And I am on all time-off requests page
   
+
+ Scenario: Scheduler make a time-off request
+    Given I am logged in as "Chris"
+    And I am on my time-off requests page
+    When I follow "New Request"
+    Then I should be on the Create New Request page
+    When I select "2013" from "time_off_request_start_time_1i"
+    And I select "May" from "time_off_request_start_time_2i"
+    And I select "29" from "time_off_request_start_time_3i"
+    And I select "15" from "time_off_request_start_time_4i"
+    And I select "30" from "time_off_request_start_time_5i"
+    And I select "2013" from "time_off_request_end_time_1i"
+    And I select "May" from "time_off_request_end_time_2i"
+    And I select "29" from "time_off_request_end_time_3i"
+    And I select "16" from "time_off_request_end_time_4i"
+    And I select "0" from "time_off_request_end_time_5i"
+    And I fill in "time_off_request_description" with "go eating"
+    And I press "Save Changes"
+    Then I should be on my time-off requests page
+    And I should see a request starts at "2013-5-29 15:30" and ends at "2013-5-29 16:00"
+
+  Scenario: Scheduler view all time-off requests
+     Given I am logged in as "Chris"
+     And I am on all time-off requests page
+     And I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00" with name "Hell"
+     And I should see a request starts at "2012-4-30 9:00" and ends at "2012-4-30 10:00" with name "Bob"
+     And I should not see "some other requests"

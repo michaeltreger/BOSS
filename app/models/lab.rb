@@ -2,6 +2,7 @@ class Lab < ActiveRecord::Base
     has_one :calendar, :dependent => :destroy
     has_many :entries
     has_many :users, :through => :lab_users
+    has_many :group_labs
     has_many :groups, :through => :group_labs
     has_attached_file :text_file,
                       :url => "/assets/text_file/:id/:basename.:extension",

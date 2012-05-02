@@ -11,7 +11,7 @@
     %li This page will help you set up your initial administrator account.
     %li Enter the berkeley UID associated with the site administrator, and modify the name, and initials as you see fit.
   .field
-    = f.hidden_field 'user_type', :value => '-1'
+    = f.hidden_field 'user_type', :value => Group.find_by_name("Administrators").id
   .field
     = f.hidden_field 'activated', :value => 'true'
   .field
@@ -27,7 +27,7 @@
     = f.label :initials
     = f.text_field :initials, :value => "ROOT"
   .field
-    = f.label "Berkeley UID"
+    = f.label "Berkeley uid".to_sym
     = f.text_field :cas_user
   .actions
     = f.submit 'Save'

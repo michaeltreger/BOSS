@@ -8,27 +8,27 @@
 
   .field
     = f.label :hours_min
-    = f.number_field :hours_min
+    = f.select(:hours_min, 10..20)
   .field
     = f.label :hours_max
-    = f.number_field :hours_max
+    = f.select(:hours_max, 10..20)
   .field
     = f.label :hours_pref
-    = f.number_field :hours_pref
+    = f.select(:hours_pref, 10..20)
   .field
     = f.label :hours_day
-    = f.number_field :hours_day
+    = f.select(:hours_day, 2..5)
   .field
     = f.label :dispersal
-    = f.text_field :dispersal
+    = f.select(:dispersal, ["A lot in one day","Spread over the week"])
   .field
-    = f.label :timeof_week
-    = f.text_field :timeof_week
+    = f.label :time_of_week
+    = f.select(:timeof_week, ["Weekday","Weekend","Anytime"])
   .field
-    = f.label :timeof_day
-    = f.text_field :timeof_day
+    = f.label :time_of_day
+    = f.select(:timeof_day, ["Morning","Midday","Evening", "Anytime"])
   .field
     = f.label :other
-    = f.text_field :other
+    = f.text_area :other
   .actions
     = f.submit 'Save'

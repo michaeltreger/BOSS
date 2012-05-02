@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   has_many :groups, :through => :group_users
   validates_presence_of :name
   if not Rails.env.test?
-    validates_presence_of :user_type, :email, :cas_user
+    validates_presence_of :email, :cas_user
     validates_presence_of :initials, :if => Proc.new { |user| user.activated? }
     validates_uniqueness_of :cas_user
   end
@@ -19,9 +19,10 @@ class User < ActiveRecord::Base
 
   after_create :make_calendars
 
-  ADMINISTRATOR = -1
-  SCHEDULER = 0
-  EMPLOYEE = 1
+  ADMINISTRATOR = Group.find_or_create_by_name(:name => "Administrators", :description => "All users in this group are BOS administrators.").id
+  SCHEDULER = Group.find_or_create_by_name(:name => "Schedulers", :description => "All users in this group are BOS schedulers.").id
+  EMPLOYEE = Group.find_or_create_by_name(:name => "All Users", :description => "All users in this group by default.").id
+
 
   def make_calendars
     calendars << Calendar.create!(:name=> "#{name}'s Shifts",
@@ -54,11 +55,11 @@ class User < ActiveRecord::Base
   end
 
   def isAdmin?
-    user_type == ADMINISTRATOR
+    self.groups.include? Group.find(ADMINISTRATOR)
   end
 
   def isScheduler?
-    user_type == SCHEDULER
+    self.groups.include? Group.find(SCHEDULER)
   end
 
   def isAdminOrScheduler?

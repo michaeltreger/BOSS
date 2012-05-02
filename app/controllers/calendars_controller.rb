@@ -1,5 +1,5 @@
 class CalendarsController < ApplicationController
-  before_filter :check_login, :only => [:update]
+  before_filter :check_user, :only => [:update]
   before_filter :check_admin, :only => [:admin, :destroy]
 
 #  def check_admin
@@ -13,7 +13,7 @@ class CalendarsController < ApplicationController
 
 #  def check_admin_or_s
 
-  def check_login
+  def check_user
     @calendar = Calendar.find(params[:id])
     if @calendar.owner != @current_user.id and !@current_user.isAdmin?
       respond_to do |format|
@@ -67,6 +67,12 @@ class CalendarsController < ApplicationController
 
         if @calendar.lab?
           events = Entry.find_all_by_lab_id(@calendar.lab_id)
+          results[:isLabCalendar] = true
+          results[:readOnly] = true
+          events.each do |e|
+            e.description = User.find(e.calendar.user_id).initials
+            e.entry_type = ""
+          end
         else
           events = @calendar.entries.select([:id, :start_time, :end_time, :description, :entry_type])
         end
@@ -155,9 +161,10 @@ class CalendarsController < ApplicationController
     @calendar.updated_at = DateTime.now
 
     if @calendar.save
-      render json: "success"
+      CalendarMailer.updated_calendar(@calendar)
+      render :json => "Saved", :status => :ok
     else
-      render json: @calendar.errors
+      render :json => @calendar.errors, :status => :unprocessable_entity
     end
   end
 

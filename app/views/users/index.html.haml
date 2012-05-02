@@ -12,7 +12,12 @@ Active Users
     %th
   - @users.each do |user|
     %tr
-      %td= user.user_type
+      - if user.isAdmin?
+        %td Administrator
+      - elsif user.isScheduler?
+        %td Scheduler
+      - else
+        %td
       %td= user.name
       %td= user.initials
       %td= user.phone
@@ -36,14 +41,19 @@ Deactivated Users
     %th
   - @deactivatedUsers.each do |user|
     %tr
-      %td= user.user_type
+      - if user.isAdmin?
+        %td Administrator
+      - elsif user.isScheduler?
+        %td Scheduler
+      - else
+        %td
       %td= user.name
       %td= user.initials
       %td= user.phone
       %td= user.email
       %td= link_to 'View user\'s page', user
       %td= link_to 'Modify user', edit_user_path(user)#"/admin/users/edit/#{user.id}"
-      %td= link_to 'Activate user', { :action => "activateUser", :id => user.id }
+      %td= link_to 'Activate user', { :action => "activateuser", :id => user.id }
 
 %br
 

@@ -21,7 +21,14 @@ require 'spec_helper'
 describe CalendarsController do
 
   before (:each) do
-    @student = User.create!(:user_type => 1, :name => "John", :activated => true, :initials => "J")
+    Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
+    @student = User.create!(:name => "John", :activated => true, :initials => "J")
+
+    #@admin = User.create!(:name => "John2", :activated => true, :initials => "JJ")
+    group = Group.find_by_name("Administrators")
+    group.users << @student
+    group.save!
+
     #session[:test_user_id] = @student.id
   end
   # This should return the minimal set of attributes required to create a valid
@@ -183,13 +190,17 @@ describe CalendarsController do
 
   describe "admin/nonadmin viewing calendars" do
     before (:each) do
-      @student1 = User.create!(:user_type => 1, :name => "Micky", :cas_user => 123123)
-      @student2 = User.create!(:user_type => 1, :name => "Minnie", :cas_user => 456456)
+      @student1 = User.create!(:name => "Micky", :cas_user => 123123)
+      @student2 = User.create!(:name => "Minnie", :cas_user => 456456)
       @calendar11  = Calendar.create!(:calendar_type => Calendar::SNAPSHOT, :name => "testing11", :description => "student1 clendar1", :user_id => @student1.id)
       @calendar12  = Calendar.create!(:calendar_type => Calendar::SNAPSHOT, :name => "testing12", :description => "student1 caldendar2", :user_id => @student1.id)
       @calendar21  = Calendar.create!(:calendar_type => Calendar::SNAPSHOT, :name => "testing21", :description => "student2 caldendar1", :user_id => @student2.id)
       @calendar22  = Calendar.create!(:calendar_type => Calendar::SNAPSHOT, :name => "testing22", :description => "student2 caldendar2", :user_id => @student2.id)
-      @admin = User.create!(:user_type => -1, :name => "AF", :cas_user => 000000)
+      @admin = User.create!(:name => "AF", :cas_user => 000000)
+      group = Group.find_by_name("Administrators")
+      group.users << @admin
+      group.save!
+
     end
     describe "admin logged in" do
       before (:each) do

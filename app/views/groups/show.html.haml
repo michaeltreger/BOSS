@@ -3,12 +3,26 @@
 %p
   %b Name:
   = @group.name
+
 %p
   %b Type:
-  = @group.group_type
+  -if @group.email.nil?
+    Not set
+  -else
+    = @group.email
+
+%p
+  %b Type:
+  -if @group.group_type.nil?
+    Not set
+  -else
+    = @group.group_type
 %p
   %b Hour limit:
-  = @group.hour_limit
+  -if @group.hour_limit.nil?
+    Not set
+  -else
+    = @group.hour_limit
 
 %p
   %b Users in group:

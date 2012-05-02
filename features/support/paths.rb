@@ -39,7 +39,6 @@ module NavigationHelpers
       '/time_off_requests/new'
     when /^the Create New Request page$/
       '/time_off_requests/new'
-
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
@@ -50,6 +49,8 @@ module NavigationHelpers
         '/admin/users/'
     when /^the "Groups" page$/
         '/admin/groups/'
+    when /^the BOS homepage$/
+        '/'
 
     else
       begin

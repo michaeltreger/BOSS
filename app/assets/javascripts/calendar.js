@@ -1,5 +1,16 @@
 $(document).ready(function() {
 
+   String.prototype.hashCode = function(){
+    var hash = 0;
+    if (this.length == 0) return hash;
+    for (i = 0; i < this.length; i++) {
+        char = this.charCodeAt(i);
+        hash = (127*hash + char ) %16908799
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash;
+  }
+
    var $calendar = $('#calendar');
    var id = 999999999;
    var $events;
@@ -10,37 +21,42 @@ $(document).ready(function() {
    function submit() {
       if (validate()) {
         finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
-        finalizedEvents.map(convertTimesOut);
-        
         json = JSON.stringify(finalizedEvents);
         //alert(json);
         $.ajax({
           type: "PUT",
           url: window.location.pathname+".json",
           data: {"calendar_updates": json},
-          dataType: "json",
+          dataType: "jsonp",
           success: function(data, textStatus, XMLHttpRequest){
-             //alert("Succeeded");
+             alert("Succeeded");
           },
           error: function(data, textStatus, XMLHttpRequest){
-             //alert(data.responseText);
+             if (data.status == 200) {
+               alert("Saved");
+             } else {
+               alert("Invalid");
+             }
           }
         });
+      } else {
+        showValidateDialog();
       }
    }
    
    function validate() {
-     //return true;
      finalizedEvents = $calendar.weekCalendar("serializeAllEvents");
      total_unavail = 0;
      weekday_unavail = 0;
      $.each(finalizedEvents, function (i, event) {
       if (event.entry_type === "class" || event.entry_type === "obligation"|| event.entry_type === "closed") {
          d = duration(event);
-         if(event.start_time.getDay() != 0 && event.start_time.getDay() != 6) {
-            weekday_unavail += d;
+         if (d>0){
+           if(event.start_time.getDay() != 0 && event.start_time.getDay() != 6) {
+              weekday_unavail += d;
+           }
+           total_unavail += d
          }
-         total_unavail += d
       }
      });
  
@@ -111,38 +127,24 @@ $(document).ready(function() {
          dataType: "json",
          success: function(data) {
             events = data.events;
-            events.map(convertTimesIn);
             $events = events;
-            $readOnly = string2boolean(data.read_only);
+            $readOnly = data.readOnly;
             $start_date = Date.parse(data.start_date);
             $end_date = Date.parse(data.end_date);
+            $isLabCalendar = data.isLabCalendar;
             startCalendar();
          }
       });
    }
-
-   function string2boolean(s) {
-      if (s === "true") {
-        return true;
-      } else {
-        return false;
+   
+   function randomColor(initials) {
+      letters = '0123456789ABCDEF'.split('');
+      color = '#';
+      seed = initials.hashCode();
+      for (i = 0; i < 6; i++ ) {
+          color += letters[(seed*i)%16]
       }
-   }
-   
-   function convertTimesIn(event) {
-      //alert(event.start_time);
-      timezone_offset = new Date().getTimezoneOffset();
-      timezone_offset = 0;
-      //alert(event.start_time);
-      //event.start_time = Date.parse(event.start_time).add(-timezone_offset).minutes().add(-2).hours();
-      //event.end_time = Date.parse(event.end_time).add(-timezone_offset).minutes().add(-2).hours();
-      //alert(event.start_time);
-   }
-   
-   function convertTimesOut(event) {
-      //event.start_time = event.start_time.add(2).hours();
-      //event.end_time = event.end_time.add(2).hours();
-      //alert(event.start_time);
+      return color;
    }
    
    function startCalendar() {
@@ -154,7 +156,7 @@ $(document).ready(function() {
         allowEventCreation: !$readOnly,
         displayOddEven:true,
         timeslotsPerHour : 2,
-        allowCalEventOverlap : false,
+        allowCalEventOverlap : $isLabCalendar,
         overlapEventsSeparate: true,
         firstDayOfWeek : 1,
         businessHours :{start_time: 0, end_time: 24, limitDisplay: true },
@@ -189,6 +191,12 @@ $(document).ready(function() {
               $event.find(".wc-time").css({
                  "backgroundColor" : "#999",
                  "border" : "1px solid #888"
+              });
+           } else if (calEvent.entry_type=== "") {
+              color = randomColor(calEvent.description);
+              $event.css("backgroundColor", color);
+              $event.find(".wc-time").css({
+                 "backgroundColor" : color,
               });
            }
         },
