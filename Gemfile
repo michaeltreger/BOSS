@@ -11,6 +11,8 @@ gem 'activesupport'
 gem 'rubycas-client'
 gem 'net-ldap'
 
+gem 'paperclip', "~> 3.0"
+
 # for Heroku, replace "gem 'sqlite3'" in your Gemfile with this:
 group :development, :test do
   gem 'sqlite3' # use SQLite only in development and testing

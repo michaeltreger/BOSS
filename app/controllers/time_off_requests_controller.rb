@@ -8,8 +8,8 @@ class TimeOffRequestsController < ApplicationController
     if !Rails.env.test?
       recycle
     end
-    @time_off_requests = TimeOffRequest.find_all_by_user_id(@current_user.id) 
-  
+    @time_off_requests = TimeOffRequest.find_all_by_user_id(@current_user.id)
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @time_off_requests }
@@ -48,7 +48,7 @@ class TimeOffRequestsController < ApplicationController
   def create
     @time_off_request = TimeOffRequest.new(params[:time_off_request])
     @time_off_request.user_id = @current_user.id
-
+debugger
     respond_to do |format|
       if @time_off_request.isNotTimeValid?
         flash.now[:error] = "Invalid Time"
@@ -91,7 +91,7 @@ class TimeOffRequestsController < ApplicationController
   def destroy
     @time_off_request = TimeOffRequest.find(params[:id])
     @time_off_request.destroy
-    
+
     respond_to do |format|
       format.html { redirect_to time_off_requests_url}
       format.json { head :ok }
