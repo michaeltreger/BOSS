@@ -71,7 +71,7 @@ class LabsController < ApplicationController
         @group = Group.find(params[:lab][:groups])
         params[:lab].delete :groups
         if @lab.groups.include?(@group)
-            flash[:error] = "A user may not be added to the same group multiple times."
+            flash[:error] = "A group may not be added to the same lab multiple times."
             redirect_to @lab
             return
         else
