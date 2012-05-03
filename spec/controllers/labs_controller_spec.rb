@@ -151,6 +151,21 @@ describe LabsController do
         response.should render_template("edit")
       end
     end
+    describe "With group in params" do
+      it "should save the group in the lab" do
+        lab = Lab.create! valid_attributes
+        adminGroup = Group.find_by_name("Administrators")
+        put :update, {:id => lab.to_param, :lab => {:groups => adminGroup.id}}, valid_session
+        lab.groups.should include(adminGroup)
+      end
+      it "should not allow adding the group to the lab twice" do
+        lab = Lab.create! valid_attributes
+        adminGroup = Group.find_by_name("Administrators")
+        put :update, {:id => lab.to_param, :lab => {:groups => adminGroup.id}}, valid_session
+        put :update, {:id => lab.to_param, :lab => {:groups => adminGroup.id}}, valid_session
+        flash[:error].should == "A group may not be added to the same lab multiple times."
+      end
+    end
   end
 
   describe "DELETE destroy" do

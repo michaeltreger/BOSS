@@ -12,7 +12,7 @@ class LabsController < ApplicationController
             -1
         end
     end
-    
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @labs }
@@ -71,7 +71,7 @@ class LabsController < ApplicationController
         @group = Group.find(params[:lab][:groups])
         params[:lab].delete :groups
         if @lab.groups.include?(@group)
-            flash[:error] = "A user may not be added to the same group multiple times."
+            flash[:error] = "A group may not be added to the same lab multiple times."
             redirect_to @lab
             return
         else
@@ -208,7 +208,7 @@ class LabsController < ApplicationController
     @units = Unit.all().delete_if { |unit| @lab.groups.include? unit }
 
   end
-  
+
   def removeunit
     @lab = Lab.find(params[:lab_id])
     @unit = Unit.find(params[:unit_id])
