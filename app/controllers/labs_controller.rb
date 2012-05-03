@@ -120,8 +120,8 @@ class LabsController < ApplicationController
       filePath = @lab.text_file.path
       timeTable = @lab.read_schedule(filePath)
 
-      startWeek = Time.new(Time.current.year, timeTable[0][2]["start_time_month"], timeTable[0][3]["start_time_day"], 8, 0, 0, Time.zone.to_s)
-      endWeek =  Time.new(Time.current.year, timeTable[0][4]["end_time_month"], timeTable[0][5]["end_time_day"].to_i + 1, 8, 0, 0, Time.zone.to_s)
+      startWeek = Time.new(Time.current.year, timeTable[0][2]["start_time_month"], timeTable[0][3]["start_time_day"], 0, 0, 0, Time.zone.to_s[-5..-3] + ":00")
+      endWeek =  Time.new(Time.current.year, timeTable[0][4]["end_time_month"], timeTable[0][5]["end_time_day"].to_i + 1, 0, 0, 0, Time.zone.to_s[-5..-3] + ":00")
 
       respond_to do |format|
         if timeTable[0][0]["initials"] != @lab.initials
