@@ -55,6 +55,8 @@ module NavigationHelpers
         '/admin/groups/'
     when /^the BOS homepage$/
         '/'
+    when /^the "View Labs" page$/
+        '/admin/labs'
 
     else
       begin

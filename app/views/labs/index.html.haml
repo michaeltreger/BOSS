@@ -25,7 +25,7 @@
         %td= lab.groups[0].name
       -else
         %td
-      %td= link_to 'Details', lab
+      %td= link_to 'Details', lab, {:id => "details[#{lab.name.downcase.split(/ /).join('_')}]"}
       %td= link_to 'View Schedule', calendar_path(lab.calendar)
       %td= link_to 'Submit a Flatfile', upload_shifts_path(lab.id)
       %td= link_to 'Edit', edit_lab_path(lab)
