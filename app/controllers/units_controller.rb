@@ -68,7 +68,7 @@ class UnitsController < ApplicationController
         @lab =  Lab.find(params[:unit][:labs])
         params[:unit].delete :labs
         if @unit.labs.include?(@lab)
-            flash[:error] = "A user may not be added to the same unit multiple times."
+            flash[:error] = "A lab may not be added to the same unit multiple times."
             redirect_to @unit
             return
         else
@@ -96,7 +96,7 @@ class UnitsController < ApplicationController
       format.json { head :ok }
     end
   end
-  
+
   def addlabs
     @unit = Unit.find(params[:id])
     @labs = Lab.all().delete_if { |lab| @unit.labs.include? lab }

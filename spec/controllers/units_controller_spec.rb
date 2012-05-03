@@ -140,6 +140,21 @@ describe UnitsController do
         put :update, {:id => unit.to_param, :unit => valid_attributes}, valid_session
         response.should redirect_to(unit)
       end
+
+      it "updates units with labs" do
+        unit = Unit.create! valid_attributes
+        lab1 = Lab.create!(:name=>"Moffit", :initials=>"MMF", :max_employees=>4, :min_employees=>1)
+        put :update, {:id => unit.to_param, :unit => {:labs => lab1.id}}
+        unit.labs.should include(lab1)
+      end
+
+      it "should not allow adding labs to a unit twice" do
+        unit = Unit.create! valid_attributes
+        lab1 = Lab.create!(:name=>"Moffit", :initials=>"MMF", :max_employees=>4, :min_employees=>1)
+        put :update, {:id => unit.to_param, :unit => {:labs => lab1.id}}
+        put :update, {:id => unit.to_param, :unit => {:labs => lab1.id}}
+        flash[:error].should == "A lab may not be added to the same unit multiple times."
+      end
     end
 
     describe "with invalid params" do
@@ -190,7 +205,7 @@ describe UnitsController do
   def valid_attributes
     {:name=>"Unit1", :unit=> true}
   end
-  
+
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # UnitsController. Be sure to keep this updated too.
