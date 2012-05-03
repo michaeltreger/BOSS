@@ -71,7 +71,7 @@ class LabsController < ApplicationController
         @group = Group.find(params[:lab][:groups])
         params[:lab].delete :groups
         if @lab.groups.include?(@group)
-            flash[:error] = "A user may not be added to the same group multiple times."
+            flash[:error] = "A group may not be added to the same lab multiple times."
             redirect_to @lab
             return
         else
@@ -181,6 +181,7 @@ class LabsController < ApplicationController
                       Substitution.create!(:entry => xxEntry, :entry_id => xxEntry.id, :description => 'This is an xx shifts.')
                     else
                       employee = User.find_by_initials(k)
+
                       if v == 0
                         employee.shift_calendar.entries << Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id)
                       elsif v == 1

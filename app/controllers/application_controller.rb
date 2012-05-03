@@ -108,7 +108,7 @@ class ApplicationController < ActionController::Base
   end
 
   def areAdmins?
-    Group.find_by_name("Administrators").users.length != 0 or Group.find_by_name("Schedulers").users.length != 0
+    Group.find_or_create_by_name("Administrators").users.length != 0 or Group.find_by_name("Schedulers").users.length != 0
   end
 end
 

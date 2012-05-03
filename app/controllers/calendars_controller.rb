@@ -88,9 +88,15 @@ class CalendarsController < ApplicationController
           end
           results[:start_date] = @start_date
           results[:end_date] = @start_date + 6.days
+        else
+          results[:readOnly] = true
+          events.each do |e|
+            e[:readOnly] = true
+          end
         end
 
         if @current_user.id != @calendar.owner
+          results[:readOnly] = true
           events.each do |e|
             e[:readOnly] = true
           end
