@@ -26,6 +26,10 @@ describe UsersController do
     group = Group.find_by_name("Administrators")
     group.users << @admin
     group.save!
+    @sched = User.create!(:name => "Jim", :activated => true, :initials => "JIM")
+    group = Group.find_by_name("Schedulers")
+    group.users << @sched
+    group.save!
   end
 
   # This should return the minimal set of attributes required to create a valid
@@ -42,10 +46,14 @@ describe UsersController do
     {:test_user_id => @admin.id}
   end
 
+  def sched_session
+    {:test_user_id => @sched.id}
+  end
+
   describe "GET index" do
     it "assigns all users as @users" do
       @other = User.create! valid_attributes
-      users = [@admin, @other]
+      users = [@admin, @sched, @other]
       get :index, {}, valid_session
       assigns(:users).should eq(users)
     end
@@ -63,6 +71,14 @@ describe UsersController do
     it "assigns a new User as @user" do
       get :new, {}, valid_session
       assigns(:user).should be_a_new(User)
+    end
+  end
+
+  describe "Get new as sched" do
+    it "should not allow it" do
+      request.env["HTTP_REFERER"] = '/'
+      get :new, {}, sched_session
+      flash[:error].should == "You must be an administrator to perform that action."
     end
   end
 

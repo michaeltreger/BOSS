@@ -22,14 +22,12 @@ describe CalendarsController do
 
   before (:each) do
     Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
-    @student = User.create!(:name => "John", :activated => true, :initials => "J")
+     @student = User.create!(:name => "John", :activated => true, :initials => "J")
+    @student2 = User.create!(:name => "John2", :activated => true, :initials => "J2")
 
-    #@admin = User.create!(:name => "John2", :activated => true, :initials => "JJ")
     group = Group.find_by_name("Administrators")
     group.users << @student
     group.save!
-
-    #session[:test_user_id] = @student.id
   end
   # This should return the minimal set of attributes required to create a valid
   # Calendar. As you add validations to Calendar, be sure to
@@ -49,12 +47,30 @@ describe CalendarsController do
     }
   end
 
+  def nonadmin_session
+    {
+      :test_user_id => @student2.id
+    }
+  end
+
+  describe "post update as a non-admin" do
+    it "check_user filter should reject changes" do
+      @calendar = Calendar.create!(:calendar_type => 1, :name => "testing11", :description => "student1 clendar1", :user_id => @student.id)
+      put :update, {:id => @calendar.id}, nonadmin_session
+      response.should redirect_to(calendars_path)
+      flash[:error].should == "You are not authorized to access this calendar"
+    end
+  end
+
+
+
   describe "GET index" do
     it "show calendar list" do
-      calendars = Calendar.all
-      calendars.each do |calendar|
-        calendar.user_id.should == 1
-      end
+      calendar = Calendar.create! valid_attributes
+      get :index, {}, valid_session
+      assigns(:acalendars).size.should == 1
+      assigns(:wcalendars).size.should == 2
+      assigns(:allcalendars).size.should == 3
     end
   end
 
@@ -72,8 +88,6 @@ describe CalendarsController do
       assigns(:calendar).should be_a_new(Calendar)
     end
   end
-
-  describe
 
   describe "GET edit" do
     it "edit caldendar" do
@@ -124,7 +138,7 @@ describe CalendarsController do
 
   describe "PUT update" do
     describe "with valid params" do
-      before do
+      before :each do
         @calendar = Calendar.create!(:calendar_type => 1, :name => "testing11", :description => "student1 clendar1", :user_id => @student.id)
       end
 
@@ -173,6 +187,7 @@ describe CalendarsController do
     end
   end
 
+
   describe "DELETE destroy" do
     it "destroy the calendar" do
       calendar = Calendar.create! valid_attributes
@@ -211,6 +226,7 @@ describe CalendarsController do
         get :manage
         assigns(:sscalendars).count.should == 4
       end
+
     end
     describe "nonadmin logged in" do
       before (:each) do

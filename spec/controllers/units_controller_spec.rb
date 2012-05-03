@@ -19,6 +19,162 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe UnitsController do
+  before (:each) do
+    Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
+    @admin = User.create!(:name => 'Chris', :activated => 'true', :initials => 'C', :cas_user => 1)
+    @user1 = User.create!(:name => 'Seven', :activated => 'true', :initials => 'JQ', :cas_user => 13213)
+    @user2 = User.create!(:name => 'Michael', :activated => 'true', :initials => 'MT', :cas_user => 122)
+    @user3 = User.create!(:name => 'Peter', :activated => 'true', :initials => 'PC', :cas_user => 22)
+    @user4 = User.create!(:name => 'Suyan', :activated => 'true', :initials => 'SYF', :cas_user => 111)
+    @user5 = User.create!(:name => 'Rohan', :activated => 'true', :initials => 'RC', :cas_user => 2131)
+    session[:test_user_id] = @admin.id
+    unit = Unit.find_by_name("Administrators")
+    unit.users << @admin
+    unit.save!
+  end
+
+  # This should return the minimal set of attributes required to create a valid
+  # Unit. As you add validations to Unit, be sure to
+  # update the return value of this method accordingly.
+  def valid_attributes
+    {
+      :name => 'cs169', :group_type => 1, :hour_limit => 20, :description => 'cs169', :created_at => '2012-04-22T00:00:00Z', :unit => true
+    }
+  end
+
+  # This should return the minimal set of values that should be in the session
+  # in order to pass any filters (e.g. authentication) defined in
+  # UnitsController. Be sure to keep this updated too.
+  def valid_session
+    {
+      :test_user_id => @admin.id
+    }
+  end
+
+  def valid_nonadmin_session
+    {
+      :test_user_id => @user1.id
+    }
+  end
+
+  describe "GET show" do
+    it "assigns the requested unit as @unit" do
+      unit = Unit.create! valid_attributes
+      get :show, {:id => unit.id}, valid_session
+      assigns(:unit).should eq(unit)
+    end
+  end
+
+  describe "GET new" do
+    it "assigns a new unit as @unit" do
+      get :new, {}, valid_session
+      assigns(:unit).should be_a_new(Unit)
+    end
+  end
+
+  describe "GET edit" do
+    it "assigns the requested unit as @unit" do
+      unit = Unit.create! valid_attributes
+      get :edit, {:id => unit.to_param}, valid_session
+      assigns(:unit).should eq(unit)
+    end
+  end
+
+  describe "POST create" do
+    describe "with valid params" do
+      it "creates a new Unit" do
+        expect {
+          post :create, {:unit => valid_attributes}, valid_session
+        }.to change(Unit, :count).by(1)
+      end
+
+      it "assigns a newly created unit as @unit" do
+        post :create, {:unit => valid_attributes}, valid_session
+        assigns(:unit).should be_a(Unit)
+        assigns(:unit).should be_persisted
+      end
+
+      it "redirects to the created unit" do
+        post :create, {:unit => valid_attributes}, valid_session
+        response.should redirect_to(Unit.last)
+      end
+    end
+
+    describe "with invalid params" do
+      it "assigns a newly created but unsaved unit as @unit" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        Unit.any_instance.stub(:save).and_return(false)
+        post :create, {:unit => {}}, valid_session
+        assigns(:unit).should be_a_new(Unit)
+      end
+
+      it "re-renders the 'new' template" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        Unit.any_instance.stub(:save).and_return(false)
+        post :create, {:unit => {}}, valid_session
+        response.should render_template("new")
+      end
+    end
+  end
+
+  describe "PUT update" do
+    describe "with valid params" do
+      it "updates the requested unit" do
+        unit = Unit.create! valid_attributes
+        # Assuming there are no other units in the database, this
+        # specifies that the Unit created on the previous line
+        # receives the :update_attributes message with whatever params are
+        # submitted in the request.
+        Unit.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
+        put :update, {:id => unit.to_param, :unit => {'these' => 'params'}}, valid_session
+      end
+
+      it "assigns the requested unit as @unit" do
+        unit = Unit.create! valid_attributes
+        put :update, {:id => unit.to_param, :unit => valid_attributes}, valid_session
+        assigns(:unit).should eq(unit)
+      end
+
+      it "redirects to the unit" do
+        unit = Unit.create! valid_attributes
+        put :update, {:id => unit.to_param, :unit => valid_attributes}, valid_session
+        response.should redirect_to(unit)
+      end
+    end
+
+    describe "with invalid params" do
+      it "assigns the unit as @unit" do
+        unit = Unit.create! valid_attributes
+        # Trigger the behavior that occurs when invalid params are submitted
+        Unit.any_instance.stub(:save).and_return(false)
+        put :update, {:id => unit.to_param, :unit => {}}, valid_session
+        assigns(:unit).should eq(unit)
+      end
+
+      it "re-renders the 'edit' template" do
+        unit = Unit.create! valid_attributes
+        # Trigger the behavior that occurs when invalid params are submitted
+        Unit.any_instance.stub(:save).and_return(false)
+        put :update, {:id => unit.to_param, :unit => {}}, valid_session
+        response.should render_template("edit")
+      end
+    end
+  end
+
+  describe "DELETE destroy" do
+    it "destroys the requested unit" do
+      unit = Unit.create! valid_attributes
+      expect {
+        delete :destroy, {:id => unit.to_param}, valid_session
+      }.to change(Unit, :count).by(-1)
+    end
+
+    it "redirects to the units list" do
+      unit = Unit.create! valid_attributes
+      delete :destroy, {:id => unit.to_param}, valid_session
+      response.should redirect_to(units_url)
+    end
+  end
 
   before (:each) do
     @period = Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
@@ -170,3 +326,4 @@ describe UnitsController do
   end
 
 end
+
