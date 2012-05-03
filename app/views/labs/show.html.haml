@@ -16,6 +16,18 @@
   %b Min employees:
   = @lab.min_employees
 
+%p
+  %b= pluralize(@units.length, "Unit")[/\b(\S*)$/] + " lab is in:"
+  %br
+  - @units.each do |unit|
+    = link_to "#{unit.name}", unit_path(@unit)
+    = " ["
+    = link_to "remove", remove_unit_path(@lab, unit)
+    = "]"
+    %br
+
+= link_to 'Add Unit', add_unit_path(@lab)
+\|
 = link_to 'Edit', edit_lab_path(@lab)
 \|
 = link_to 'Back', labs_path

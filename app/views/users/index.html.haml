@@ -24,7 +24,7 @@ Active Users
       %td= user.email
       %td= link_to 'View user\'s page', user
       %td= link_to 'Modify user', edit_user_path(user)#"/admin/users/edit/#{user.id}"
-      %td= link_to 'Deactivate user', { :action => "deactivate", :id => user.id }, :confirm => 'Are you sure?'
+      %td= link_to 'Deactivate user', deactivate_user_path(user), :confirm => 'Are you sure?'
 
 %br
 
@@ -53,7 +53,7 @@ Deactivated Users
       %td= user.email
       %td= link_to 'View user\'s page', user
       %td= link_to 'Modify user', edit_user_path(user)#"/admin/users/edit/#{user.id}"
-      %td= link_to 'Activate user', { :action => "activateuser", :id => user.id }
+      %td= link_to 'Activate user', activate_user_path(user)
 
 %br
 

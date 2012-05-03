@@ -133,18 +133,6 @@ class SubstitutionsController < ApplicationController
     end
   end
 
-
-  # GET /substitutions/1
-  # GET /substitutions/1.json
-# this is pretty useless
-#  def show
-#    @substitution = Substitution.find(params[:id])
-#    respond_to do |format|
-#      format.html # show.html.erb
-#      format.json { render json: @substitution }
-#    end
-#  end
-
   # GET /substitutions/new
   # GET /substitutions/new.json
   def new
@@ -162,11 +150,6 @@ class SubstitutionsController < ApplicationController
       format.html # new.html.erb
       format.json { render json: @substitution }
     end
-  end
-
-  # GET /substitutions/1/edit
-  def edit
-    @substitution = Substitution.find(params[:id])
   end
 
   def splitShift(sub_entry, params)
@@ -296,6 +279,7 @@ class SubstitutionsController < ApplicationController
           currSub = Substitution.find(k)
           currEntry = currSub.entry
           targetCalendar = targetUser.shift_calendar
+          #debugger
           if !(targetCalendar == nil) && (@current_user.isAdmin? || (targetCalendar.canAdd(currEntry)))
             taken_subs[k] = v
           else

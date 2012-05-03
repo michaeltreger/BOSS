@@ -65,15 +65,15 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
 
     respond_to do |format|
-      if not params[:group][:labs].nil?
-        @lab =  Lab.find(params[:group][:labs])
-        params[:group].delete :labs
-        if @group.labs.include?(@lab)
+      if not params[:group][:users].nil?
+        @user = User.find(params[:group][:users])
+        params[:group].delete :users
+        if @group.users.include?(@lab)
             flash[:error] = "A user may not be added to the same group multiple times."
             redirect_to @group
             return
         else
-            @group.labs << @lab
+            @group.users << @user
         end
       end
       if @group.update_attributes(params[:group])

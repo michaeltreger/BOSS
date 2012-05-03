@@ -57,6 +57,10 @@ Background: A work entry has been added to my calendar
     Then I should see "You have no shifts to substitute"
     And I should not see "Select a Shift to Substitute"
 
+  Scenario: Cannot create a sub without picking an entry
+    When I press "Make Substitution"
+    Then I should see "Please select a shift to substitute."
+
   Scenario: Delete a substitution
     When I go to the "View Substitutions" page
     And I delete my substitution with description "Software Training"

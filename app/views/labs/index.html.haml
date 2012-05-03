@@ -22,7 +22,7 @@
       %td= lab.min_employees
       %td= lab.description
       -if lab.groups.length > 0
-        %td= lab.groups[0]
+        %td= lab.groups[0].name
       -else
         %td
       %td= link_to 'Details', lab

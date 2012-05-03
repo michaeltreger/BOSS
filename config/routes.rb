@@ -8,7 +8,7 @@ CS169CampusScheduler::Application.routes.draw do
 
   resources :time_edits
 
-  resources :substitutions
+  resources :substitutions, :except => ['edit','show']
 
   resources :calendars
 
@@ -23,16 +23,18 @@ CS169CampusScheduler::Application.routes.draw do
     match '/calendars' => 'calendars#manage', :as => 'manage_calendars'
     match '/substitutions' => 'substitutions#manage', :as => 'manage_substitutions'
     match '/init'  => "users#initadmin"
-    match '/users/:id/deactivate' => "users#deactivate"
-    match '/users/:id/activate' => "users#activateuser"
-    match "/groups/:id/users/add" => "groups#addusers"
-    put "/groups/:id/add" => "groups#updateusers"
-    match "/users/:user_id/Groups/:group_id/remove" => "users#removegroup"
-    match "/users/:id/add" => "users#addgroup"
-    match "/units/:id/labs/add" => "units#addlabs"
+    match '/users/:id/deactivate' => "users#deactivate", :as => :deactivate_user
+    match '/users/:id/activate' => "users#activateuser", :as => :activate_user
+    match "/groups/:id/users/add" => "groups#addusers", :as => :add_users
+    put "/groups/:id/add" => "groups#updateusers", :as => :update_users
+    match "/users/:user_id/Groups/:group_id/remove" => "users#removegroup", :as => :remove_group
+    match "/users/:id/add" => "users#addagroup", :as => :add_group
+    match "/units/:id/labs/add" => "units#addlabs", :as => :add_labs
     match "/mrclean" => "calendars#mrclean", :as => :mrclean
     match "/upload_shifts/:id" => "labs#upload_shifts", :as => 'upload_shifts'
     match "/commit_shifts/:id" =>"labs#commit_shifts", :as => 'commit_shifts'
+    match "/labs/:id/add" => "labs#addaunit", :as => :add_unit
+    match "/labs/:lab_id/Groups/:unit_id/remove" => "labs#removeunit", :as => :remove_unit
   end
   match '/get_entries_for_sub' => 'substitutions#get_entries_for_sub'
   match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'
