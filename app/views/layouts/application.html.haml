@@ -38,7 +38,7 @@
                       %li
                         - if @current_user.isAdmin?
                           = link_to "Admin", manage_calendars_path
-                        - if @current_user.isScheduler?
+                        - elsif @current_user.isScheduler?
                           = link_to "Scheduler", manage_calendars_path
                         %ul
                           %li

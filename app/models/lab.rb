@@ -25,9 +25,9 @@ class Lab < ActiveRecord::Base
       entries = Entry.where(:lab_id => self.id)
 
       entries.each do |e|
-        if endTime > e.start_time
+        if (endTime > e.start_time) && (endTime < e.end_time)
           return false
-        elsif startTime > e.end_time
+        elsif (startTime > e.start_time) && (startTime < e.end_time)
           return false
         else
           return true
