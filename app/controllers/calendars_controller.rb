@@ -75,8 +75,6 @@ class CalendarsController < ApplicationController
               e.description = "xx"
               e.entry_type = ""
             else
-              #TODO
->>>>>>> 66aab6d43b2cdf50a2787d5a173c6be95f1b86ff
               e.description = User.find(e.calendar.user_id).initials
               e.entry_type = ""
             end
