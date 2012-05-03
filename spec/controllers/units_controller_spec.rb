@@ -57,6 +57,12 @@ describe UnitsController do
     }
   end
 
+  describe "GET index" do
+    it "" do
+
+    end
+  end
+
   describe "GET show" do
     it "assigns the requested unit as @unit" do
       unit = Unit.create! valid_attributes
