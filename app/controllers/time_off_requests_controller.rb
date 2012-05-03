@@ -54,7 +54,7 @@ class TimeOffRequestsController < ApplicationController
         format.html { render action: "new" }
         format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
       elsif @time_off_request.is_expired?
-        flash.now[:error] = "The time is expired"
+        flash.now[:error] = "Your selected time has already passed"
         format.html { render action: "new" }
         format.json { render json: @time_off_request.errors, status: :unprocessable_entity }
       else
