@@ -21,11 +21,20 @@ module NavigationHelpers
       '/substitutions'
     when /^the "Manage Substitutions" page$/
       '/admin/substitutions'
+    when /^(.*)'s Availability Calendar for "(.*)"$/
+      owner = User.find_by_name($1)
+      period = Period.find_by_name($2)
+      calendar_id = (owner.availability_calendar(period)).id
+      '/calendars/'+calendar_id.to_s
     when /^(.*'s) Calendar page$/
       calendar_id = (Calendar.find_by_name($1+" Calendar")).id
       '/calendars/'+calendar_id.to_s
     when /^(.*)'s Shifts page$/
       calendar_id = (User.find_by_name($1).shift_calendar).id
+      '/calendars/'+calendar_id.to_s
+    when /^the "(.*)" Lab Shifts page$/
+      lab = Lab.find_by_name($1)
+      calendar_id = lab.calendar.id
       '/calendars/'+calendar_id.to_s
     when /^the "Time Edit" page$/
       '/time_edits'
@@ -41,6 +50,8 @@ module NavigationHelpers
       '/time_off_requests/new'
     when /^the "Admin Labs" page$/
       '/admin/labs'
+    when /^the "Admin Groups" page$/
+      '/admin/groups'
     when /^(.*)'s upload file page$/
       '/admin/upload_shifts/'+ Lab.find_by_name($1).id.to_s
     # Add more mappings here.
@@ -55,6 +66,8 @@ module NavigationHelpers
         '/admin/groups/'
     when /^the BOS homepage$/
         '/'
+    when /^the "View Labs" page$/
+        '/admin/labs'
 
     else
       begin

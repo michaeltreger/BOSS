@@ -148,9 +148,6 @@ describe SubstitutionsController do
           put :take_or_assign_subs, :target_user => {:id => @me.id}, :entries => {@substitution.id => "1"}
           changedEntry = Entry.find(@substitution.entry_id)
           changedEntry.calendar_id.should == @my_calendar.id
-          #debugger
-          #An entry doesn't have to belong to me directly, so it doesn't matter
-          #changedEntry.user_id.should == @me.id
         end
       end
       describe "While exceeding hour limit" do
@@ -159,7 +156,6 @@ describe SubstitutionsController do
           session[:test_user_id] = @other
           @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
           put :take_or_assign_subs, :target_user => {:id => @other2.id}, :entries => {@long_substitution.id => "1"}
-          #flash[:notice].should == "fajd;kfj"
           flash[:error].should include("The following subs could not be taken due to schedule conflicts or hour limits:")
           end
         it "should redirect to index" do

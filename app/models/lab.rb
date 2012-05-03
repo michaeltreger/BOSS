@@ -117,21 +117,4 @@ class Lab < ActiveRecord::Base
       end
       return timeTable
     end
-
-    def opening_shift
-      calendar.entries[0].user
-    end
-
-    def closing_shift
-      calendar.entries[0].user
-    end
-
-
-    def merge_times(table)
-      for i in 0..table.size
-        for j in 0..table[0].size
-
-        end
-      end
-    end
 end

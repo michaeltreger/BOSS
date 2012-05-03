@@ -8,6 +8,7 @@ Background: A work entry has been added to my calendar
     | name         | user_type      |
     | Alice        | 1              |
     | Bob          | 1              |
+    | Carl         | 0              |
     | John         | -1             |
 
   And the following periods exist:
@@ -62,3 +63,15 @@ Background: A work entry has been added to my calendar
     And I go to the "Users" page
     And I select "Alice" from the users page
     Then I should not see "Full-time employees"
+
+  Scenario: View all groups when admin
+    When I go to the "Groups" page
+    Then I should see "Full-time employees"
+    And I should see "Part-time employees"
+
+  Scenario: Only view my groups when nonadmin
+   When I am logged in as "Bob"
+   And I go to the "Groups" page
+   Then I should not see "Full-time employees"
+   And I should not see "Part-time employees"
+

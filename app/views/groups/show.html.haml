@@ -1,3 +1,4 @@
+-@page_title = @group.name
 %p#notice= notice
 
 %p
@@ -5,7 +6,7 @@
   = @group.name
 
 %p
-  %b Type:
+  %b Email:
   -if @group.email.nil?
     Not set
   -else

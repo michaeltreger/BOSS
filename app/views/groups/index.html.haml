@@ -1,7 +1,7 @@
 - if @current_user.isAdmin?
-  %h1 Listing groups
+  -@page_title = "Groups"
 - else
-  %h1 Listing my groups
+  -@page_title = "My Groups"
 
 %table
   %tr
@@ -21,7 +21,7 @@
       %td= group.hour_limit     
       %td= group.email
       - if @current_user.isAdmin?
-        %td= link_to 'Show', group
+        %td= link_to 'Show', group, {:id => "show_#{group.id}"}
         %td= link_to 'Edit', edit_group_path(group)
         %td= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete
       - else
