@@ -30,17 +30,6 @@ class Calendar < ActiveRecord::Base
       calendar_type == AVAILABILITY
     end
 
-    def full_name
-      start = ''
-      if user && user.initials
-        start = user.initials
-      elsif lab && lab.name
-        start = lab.name
-      end
-      return start + ': ' + name
-    end
-
-
     def canAdd(candidate_entry)
       # first do hour limit check
       if (work_hours + candidate_entry.duration) > user.hour_limit
