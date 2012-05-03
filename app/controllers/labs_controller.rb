@@ -3,9 +3,6 @@ class LabsController < ApplicationController
   # GET /labs
   # GET /labs.json
   def index
-<<<<<<< HEAD
-    @labs = Lab.all
-=======
     @labs = Lab.all.sort do |t1,t2|
         if t1.groups.length > 0 and t2.groups.length > 0
             (t1.groups[0].name <=> t2.groups[0].name)
@@ -16,8 +13,6 @@ class LabsController < ApplicationController
         end
     end
     
-
->>>>>>> 1ba59bf052de9a1b99440d48a55491ec3248ec6d
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @labs }
