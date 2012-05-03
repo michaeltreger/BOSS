@@ -11,7 +11,11 @@ Background: A work entry has been added to my calendar
     | Bob          | 1              |   BB      | 2        |
     | Carl         | 1              |   CC      | 3        |
     | David        | 0              |   DD      | 4        |
-    
+
+  And the following periods exist:
+    | name             |
+    | Finals Week 1    |
+
   And I am logged in as "Alice"
 
   And the following calendars exist:
@@ -43,19 +47,19 @@ Background: A work entry has been added to my calendar
 
 
   And the following substitutions exist:
-    | entry_id   | description             | from_user_id    | to_user_id |
-    |   3        | Work at Moffit          |    2            |    1       |
-    |   4        | Presentation            |    2            |   nil      |
-    |   5        | I conflict with Alice 1 |    2            |   nil      |
-    |   6        | I conflict with Alice 2 |    2            |   nil      |
-    |   7        | I conflict with Alice 3 |    2            |   nil      |
-    |   8        | I conflict with Alice 4 |    2            |   nil      |
-    |   9        | BacktoBackSameLocation  |    2            |   nil      |
-    |   10       | BacktoBackDiffLocation  |    2            |   nil      |
+    | entry_description          | description             | from_user_id    | to_user_id |
+    |   Work at Moffit           | Work at Moffit          |    2            |    1       |
+    |   Presentation             | Presentation            |    2            |   nil      |
+    |   I conflict with Alice 1  | I conflict with Alice 1 |    2            |   nil      |
+    |   I conflict with Alice 2  | I conflict with Alice 2 |    2            |   nil      |
+    |   I conflict with Alice 3  | I conflict with Alice 3 |    2            |   nil      |
+    |   I conflict with Alice 4  | I conflict with Alice 4 |    2            |   nil      |
+    |   BacktoBackSameLocation   | BacktoBackSameLocation  |    2            |   nil      |
+    |   BacktoBackDiffLocation   | BacktoBackDiffLocation  |    2            |   nil      |
 
   Scenario: Put my shift up for substitution
     Given I am on the "Post a Substitution" page
-    When I select the entry with id 1 for substitution
+    When I select the entry with description "Work at Wheeler" for substitution
     And I fill in "Description" with "Urgent - fix printer"
     And I press "Make Substitution"
     Then I should recieve an email

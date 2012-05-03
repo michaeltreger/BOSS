@@ -106,8 +106,14 @@ class LabsController < ApplicationController
     end
   end
 
-  def upload_shifts  
+  def upload_shifts
     @lab = Lab.find(params[:id])
+
+    respond_to do |format|
+      format.html
+      format.json { head :ok }
+    end
+
   end
 
   def commit_shifts
@@ -120,13 +126,16 @@ class LabsController < ApplicationController
       endWeek =  Time.new(Time.now.year, timeTable[0][4]["end_time_month"], timeTable[0][5]["end_time_day"].to_i + 1, 8, 0, 0, "+01:00")
 
       respond_to do |format|
+        debugger
         if timeTable[0][0]["initials"] != @lab.initials
-          flash.now[:error] = 'This flat file is not for this lab!' 
+          flash.now[:error] = 'This flat file is not for this lab!'
           format.html { render action: "upload_shifts"}
         elsif Time.now > startWeek
           flash.now[:error] = 'Commiting shifts for past time!'
           format.html { render action: "upload_shifts"}
+          debugger
         elsif !@lab.is_week_empty?(startWeek, endWeek)
+          debugger
           flash.now[:error] = 'Selected week calendar not empty!'#Assuming never commit calendar for the same week, use sub or time_edit to do changes.
           format.html { render action: "upload_shifts"}
         else
@@ -152,23 +161,38 @@ class LabsController < ApplicationController
                 if timeTable[i][j] != {}
                   timeOffset = (j * 24 + i + 7).hour
                   startTime = startWeek + timeOffset
-                  endTime = startTime + 1.hour
 
                   timeTable[i][j].each do |k, v|
+                    endTime = startTime + 1.hour
+
+                    if  k !='XX' and k != 'xx'
+                      t=i+1
+                      while timeTable[t][j].include?(k)
+                        if timeTable[t][j][k] == 0
+                          endTime += 1.hour
+                        elsif timeTable[t][j][k] == 1
+                          endTime += 30.minute
+                        end
+                        timeTable[t][j].delete(k)
+                        t+=1
+                      end
+                    end
+
                     if k =='XX' or k == 'xx'
                       #sub must have entry attributes. entry must have start&end time. Associate all xx shifts with Chris
-                      xxEntry = Entry.create!(:entry_type => 'xx', :user_id => 7, :start_time => startTime, :end_time => endTime, :lab_id => @lab.id)
+                      xxEntry = Entry.create!(:entry_type => 'xx', :user_id => 7, :start_time => startTime, :end_time => endTime, :lab_id => @lab.id, :description => "")
                       Substitution.create!(:entry => xxEntry, :entry_id => xxEntry.id, :description => 'This is an xx shifts.')
                     else
                       if v == 0
                         employee = User.find_by_initials(k)
-                        newEntry = Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id, :calendar_id => @lab.calendar.id)
+
+                        employee.shift_calendar.entries << Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id)
                       elsif v == 1
                         endTime = startTime + 30.minute
-                        Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id, :calendar_id => @lab.calendar.id)
+                        employee.shift_calendar.entries << Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id)
                       elsif v == 2
                         startTime = startTime + 30.minute
-                        Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id, :calendar_id => @lab.calendar.id)
+                        employee.shift_calendar.entries << Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id)
                       end
                     end
                   end
@@ -177,9 +201,9 @@ class LabsController < ApplicationController
             end
           end
         end
-        
+
         @lab.calendar.check_continuity
-           
+
         format.html { redirect_to labs_path, notice: 'Shifts were successfully assigned.' }
         format.json { head :ok }
       end

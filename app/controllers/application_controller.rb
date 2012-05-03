@@ -12,10 +12,9 @@ class ApplicationController < ActionController::Base
     before_filter CASClient::Frameworks::Rails::Filter, :unless => :skip_calnet?
     before_filter :set_current_user
     before_filter :check_login
-    before_filter :set_period
   end
   before_filter :check_admin_or_sched
-  
+  before_filter :set_period
 
   def skip_calnet?
     return false
@@ -33,7 +32,9 @@ class ApplicationController < ActionController::Base
   def set_period
     @current_period = Period.current
     if @current_user
-      @current_availability = @current_user.availability_calendar(@current_period)
+      if @current_period
+        @current_availability = @current_user.availability_calendar(@current_period)
+      end
       @current_workschedule = @current_user.shift_calendar
     end
   end

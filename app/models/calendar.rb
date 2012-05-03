@@ -119,8 +119,9 @@ class Calendar < ActiveRecord::Base
     end
 
     def check_continuity
+      return
       if calendar_type == SHIFTS or calendar_type == LAB
-        entries = Entry.where(:calendar_id => self.id)
+        entries = Entry.where(:lab_id => self.lab_id)
         entries.each do |e1|
           entries.each do |e2|
             if Entry.find_by_id(e1.id).nil? and Entry.find_by_id(e2.id).nil?
@@ -133,9 +134,9 @@ class Calendar < ActiveRecord::Base
                   end
                   description = ""
                   if (e1.description or e2.description) and e1.description != e2.description
-                    description << e1.description << e2.description
+                    #description << e1.description << e2.description
                   else
-                    description << e1.description ? e1.description : e2.description
+                    #description << e1.description ? e1.description : e2.description
                   end
                   startTime = inverse ? e2.start_time : e1.start_time
                   endTime = inverse ? e1.end_time : e2.end_time
@@ -144,7 +145,7 @@ class Calendar < ActiveRecord::Base
                   Entry.destroy(e1.id)
                   Entry.destroy(e2.id)
                   #debugger
-                  self.entries = Entry.where(:calendar_id => self.id)
+                  self.entries = Entry.where(:lab_id => self.lab_id)
                   self.check_continuity
                 end
               end

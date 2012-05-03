@@ -11,6 +11,11 @@ Background: Substitutions created
     | Carl         | 1              |   CC      |
     | David        | 0              |   DD      |
 
+  And the following periods exist:
+    | name             |
+    | Finals Week 1    |
+
+
   And I am logged in as "David"
 
   And the calendar "Alice's Shifts" has the following entries:
@@ -26,9 +31,9 @@ Background: Substitutions created
 
 
   And the following substitutions exist:
-    | entry_id   | description           | from_user_id    | to_user_id |
-    |   3        | Work at Moffit        |    2            |    3       |
-    |   4        | Presentation          |    2            |    nil     |
+    | entry_description | description           | from_user_id    | to_user_id |
+    |  Work at Moffit   | Work at Moffit        |    2            |    3       |
+    |  Presentation     | Presentation          |    2            |    nil     |
 
   Given I am on the "Manage Substitutions" page
 

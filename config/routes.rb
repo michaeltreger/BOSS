@@ -8,7 +8,7 @@ CS169CampusScheduler::Application.routes.draw do
 
   resources :time_edits
 
-  resources :substitutions
+  resources :substitutions, :except => ['edit','show']
 
   resources :calendars
 

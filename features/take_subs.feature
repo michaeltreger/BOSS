@@ -10,6 +10,10 @@ Background: Substitutions created
     | Carl         | 1              |   CC      |
     | David        | 0              |   DD      |
 
+  And the following periods exist:
+    | name             |
+    | Finals Week 1    |
+
   And I am logged in as "Alice"
 
   And the following labs exist:
@@ -36,15 +40,15 @@ Background: Substitutions created
 
 
   And the following substitutions exist:
-    | entry_id   | description             | from_user_id    | to_user_id |
-    |   3        | Work at Moffit          |    2            |    1       |
-    |   4        | Presentation            |    2            |   nil      |
-    |   5        | I conflict with Alice 1 |    2            |   nil      |
-    |   6        | I conflict with Alice 2 |    2            |   nil      |
-    |   7        | I conflict with Alice 3 |    2            |   nil      |
-    |   8        | I conflict with Alice 4 |    2            |   nil      |
-    |   9        | BacktoBackSameLocation  |    2            |   nil      |
-    |   10       | BacktoBackDiffLocation  |    2            |   nil      |
+    | entry_description          | description             | from_user_id    | to_user_id |
+    |   Work at Moffit           | Work at Moffit          |    2            |    1       |
+    |   Presentation             | Presentation            |    2            |   nil      |
+    |   I conflict with Alice 1  | I conflict with Alice 1 |    2            |   nil      |
+    |   I conflict with Alice 2  | I conflict with Alice 2 |    2            |   nil      |
+    |   I conflict with Alice 3  | I conflict with Alice 3 |    2            |   nil      |
+    |   I conflict with Alice 4  | I conflict with Alice 4 |    2            |   nil      |
+    |   BacktoBackSameLocation   | BacktoBackSameLocation  |    2            |   nil      |
+    |   BacktoBackDiffLocation   | BacktoBackDiffLocation  |    2            |   nil      |
 
   Given I am on the "View Substitutions" page
   Scenario: Take available substitutions

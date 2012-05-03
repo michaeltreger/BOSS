@@ -67,8 +67,8 @@ class User < ActiveRecord::Base
   end
 
   def hour_limit
-    if groups.size > 0
-      all_hour_limits = groups.map{|g| g.hour_limit}
+    if self.groups.size > 0
+      all_hour_limits = groups.map{|g| (g.hour_limit || 0)}
       hour_limit = all_hour_limits.max
     else
       hour_limit = 20
