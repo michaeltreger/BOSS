@@ -6,7 +6,7 @@ class Period < ActiveRecord::Base
   after_create :create_availability_calendars_and_preferences
 
   def self.current
-    now = Time.now
+    now = Time.current
     periods = where(:visible=>true).where("start_date <= '#{now}'").where("end_date >= '#{now}'")
     if periods.length > 1
       periods = periods.where(:exception=>true)

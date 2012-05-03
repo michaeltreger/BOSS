@@ -52,7 +52,7 @@ class CalendarsController < ApplicationController
   def show
     @calendar = Calendar.find(params[:id])
     if @calendar.availability? and @calendar.period
-      @start_date = [Time.now.beginning_of_week + 14.days, @calendar.period.start_date.to_time.beginning_of_week].max
+      @start_date = [Time.current.beginning_of_week + 14.days, @calendar.period.start_date.to_time.beginning_of_week].max
       @end_date = @start_date + 6.days
     end
 
@@ -165,7 +165,7 @@ class CalendarsController < ApplicationController
   def update_entries(json)
     parsed_json = ActiveSupport::JSON.decode(json)
     @calendar.update_calendar(parsed_json)
-    @calendar.updated_at = DateTime.now
+    @calendar.updated_at = DateTime.current
 
     if @calendar.save
       CalendarMailer.updated_calendar(@calendar)

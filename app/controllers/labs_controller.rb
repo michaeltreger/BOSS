@@ -120,14 +120,16 @@ class LabsController < ApplicationController
       filePath = @lab.text_file.path
       timeTable = @lab.read_schedule(filePath)
 
-      startWeek = Time.new(Time.now.year, timeTable[0][2]["start_time_month"], timeTable[0][3]["start_time_day"], 8, 0, 0, "+01:00")
-      endWeek =  Time.new(Time.now.year, timeTable[0][4]["end_time_month"], timeTable[0][5]["end_time_day"].to_i + 1, 8, 0, 0, "+01:00")
+      startWeek = Time.current.beginning_of_week + 8.hours
+      #Time.new(Time.now.year, timeTable[0][2]["start_time_month"], timeTable[0][3]["start_time_day"], 8, 0, 0, "+01:00")
+      endWeek =  Time.current.end_of_week + 8.hours
+      #new(Time.now.year, timeTable[0][4]["end_time_month"], timeTable[0][5]["end_time_day"].to_i + 1, 8, 0, 0, "+01:00")
 
       respond_to do |format|
         if timeTable[0][0]["initials"] != @lab.initials
           flash.now[:error] = 'This flat file is not for this lab!'
           format.html { render action: "upload_shifts"}
-        elsif Time.now > startWeek
+        elsif Time.current > startWeek
           flash.now[:error] = 'Commiting shifts for past time!'
           format.html { render action: "upload_shifts"}
         elsif !@lab.is_week_empty?(startWeek, endWeek)

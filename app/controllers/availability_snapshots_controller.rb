@@ -34,7 +34,7 @@ class AvailabilitySnapshotsController < ApplicationController
       format.json { render json: @availability_snapshot }
     end
   end
-  
+
   def display(list)
     s = ""
     list.each do |i|
@@ -66,7 +66,7 @@ class AvailabilitySnapshotsController < ApplicationController
     @avail = {}
     @rather_not = {}
     @prefer = {}
-    @start_time = Time.now.beginning_of_week + 7.days
+    @start_time = Time.current.beginning_of_week + 7.days
     time = @start_time
     endTime = time + 7.days
 
@@ -79,8 +79,8 @@ class AvailabilitySnapshotsController < ApplicationController
       @avail[time] = Array.new(users)
       time += 30.minutes
     end
-    
-    start = Time.now.beginning_of_week + 7.days
+
+    start = Time.current.beginning_of_week + 7.days
     User.find_all_by_activated(true).each do |u|
       u.availability_calendar(@current_period).entries.each do |e|
         if e.unavailable?
@@ -124,8 +124,8 @@ class AvailabilitySnapshotsController < ApplicationController
     @availability_snapshot.start_date = @start_time
     @availability_snapshot.end_date = endTime
     @availability_snapshot.availabilities = @cal
-        
-    
+
+
     respond_to do |format|
       if @availability_snapshot.save
         format.html { redirect_to @availability_snapshot, notice: 'Availability snapshot was successfully created.' }
@@ -136,7 +136,7 @@ class AvailabilitySnapshotsController < ApplicationController
       end
     end
   end
-  
+
   # PUT /availability_snapshots/1
   # PUT /availability_snapshots/1.json
   def update

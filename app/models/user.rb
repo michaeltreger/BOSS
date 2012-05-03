@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
     avail_calendar = Calendar.create!(:name=> "#{name}'s #{p.name} Availabilities",
                                       :calendar_type=>Calendar::AVAILABILITY)
     if !p.exception
-      monday = Time.now.beginning_of_week
+      monday = Time.current.beginning_of_week
       5.times do |day|
         avail_calendar.entries << Entry.create(:start_time=>monday + day.days + 2.hours, :end_time=>monday + day.days + 8.hours, :entry_type=>"closed")
       end
