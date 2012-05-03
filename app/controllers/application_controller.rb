@@ -82,8 +82,8 @@ class ApplicationController < ActionController::Base
   def check_admin
     if not @current_user.nil?
         if not @current_user.isAdmin? and request.fullpath[/^\/admin/]
-            flash[:error] = "You must be an administrator to perform that action."
-            redirect_to :back
+          flash[:error] = "You must be an administrator to perform that action."
+          redirect_to :back
         end
     end
   end

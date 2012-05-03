@@ -30,20 +30,20 @@ Background: A work entry has been added to my calendar
 
   And the calendar "Alice's Calendar" has the following entries:
     | description         |  lab       | start_time        | end_time         |
-    | Work at Wheeler     |  Wheeler   | 12:00, 1/1/2012   | 14:00 1/1/2012   |
-    | Software Training   |  Wheeler   | 14:00, 1/1/2012   | 16:00 1/1/2012   |
+    | Work at Wheeler     |  Wheeler   | 12:00, 1/1/2112   | 14:00 1/1/2112   |
+    | Software Training   |  Wheeler   | 14:00, 1/1/2112   | 16:00 1/1/2112   |
 
 
   And the calendar "Bob's Calendar" has the following entries:
     | description              |  lab       | start_time        | end_time         |
-    | Work at Moffit           |  Moffit    | 15:00, 1/1/2012   | 18:00 1/1/2012   |
-    | Presentation             |  Moffit    | 8:00, 1/1/2012    | 12:00 1/1/2012   |
-    | I conflict with Alice 1  |  Wheeler   | 11:00, 1/1/2012   | 13:00 1/1/2012   |
-    | I conflict with Alice 2  |  Wheeler   | 12:30, 1/1/2012   | 13:00 1/1/2012   |
-    | I conflict with Alice 3  |  Wheeler   | 12:30, 1/1/2012   | 15:00 1/1/2012   |
-    | I conflict with Alice 4  |  Wheeler   | 11:00, 1/1/2012   | 15:00 1/1/2012   |
-    | BacktoBackSameLocation   |  Wheeler   | 11:00, 1/1/2012   | 12:00 1/1/2012   |
-    | BacktoBackDiffLocation   |  Moffit    | 11:00, 1/1/2012   | 12:00 1/1/2012   |
+    | Work at Moffit           |  Moffit    | 15:00, 1/1/2112   | 18:00 1/1/2112   |
+    | Presentation             |  Moffit    | 8:00, 1/1/2112    | 12:00 1/1/2112   |
+    | I conflict with Alice 1  |  Wheeler   | 11:00, 1/1/2112   | 13:00 1/1/2112   |
+    | I conflict with Alice 2  |  Wheeler   | 12:30, 1/1/2112   | 13:00 1/1/2112   |
+    | I conflict with Alice 3  |  Wheeler   | 12:30, 1/1/2112   | 15:00 1/1/2112   |
+    | I conflict with Alice 4  |  Wheeler   | 11:00, 1/1/2112   | 15:00 1/1/2112   |
+    | BacktoBackSameLocation   |  Wheeler   | 11:00, 1/1/2112   | 12:00 1/1/2112   |
+    | BacktoBackDiffLocation   |  Moffit    | 11:00, 1/1/2112   | 12:00 1/1/2112   |
 
 
   And the following substitutions exist:
@@ -56,18 +56,19 @@ Background: A work entry has been added to my calendar
     |   I conflict with Alice 4  | I conflict with Alice 4 |    2            |   nil      |
     |   BacktoBackSameLocation   | BacktoBackSameLocation  |    2            |   nil      |
     |   BacktoBackDiffLocation   | BacktoBackDiffLocation  |    2            |   nil      |
+    
+  And no emails have been sent
 
   Scenario: Put my shift up for substitution
     Given I am on the "Post a Substitution" page
     When I select the entry with description "Work at Wheeler" for substitution
     And I fill in "Description" with "Urgent - fix printer"
     And I press "Make Substitution"
-    Then I should recieve an email
+    Then I should receive an emails
     
   Scenario: Take a substitution shift
     Given I am on the "View Substitutions" page
     When I check the substitution "Work at Moffit"
     And I check the substitution "Presentation"
     And I press "Take Selected Substitutions"
-    Then I should recieve an email
-    
+    Then I should receive 2 emails

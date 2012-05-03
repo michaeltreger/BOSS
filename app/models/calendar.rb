@@ -30,17 +30,6 @@ class Calendar < ActiveRecord::Base
       calendar_type == AVAILABILITY
     end
 
-    def full_name
-      start = ''
-      if user && user.initials
-        start = user.initials
-      elsif lab && lab.name
-        start = lab.name
-      end
-      return start + ': ' + name
-    end
-
-
     def canAdd(candidate_entry)
       # first do hour limit check
       if (work_hours + candidate_entry.duration) > user.hour_limit
@@ -119,39 +108,40 @@ class Calendar < ActiveRecord::Base
     end
 
     def check_continuity
-      if calendar_type == SHIFTS or calendar_type == LAB
-        entries = Entry.where(:lab_id => self.lab_id)
-        entries.each do |e1|
-          entries.each do |e2|
-            if Entry.find_by_id(e1.id).nil? and Entry.find_by_id(e2.id).nil?
-            else
-              if e1.lab_id == e2.lab_id and e1.user_id == e2.user_id
-                if e1.end_time == e2.start_time or e2.end_time == e1.start_time
-                  inverse = false
-                  if e2.end_time == e1.start_time
-                    inverse = true
-                  end
-                  description = ""
-                  if (e1.description or e2.description) and e1.description != e2.description
-                    #description << e1.description << e2.description
-                  else
-                    #description << e1.description ? e1.description : e2.description
-                  end
-                  startTime = inverse ? e2.start_time : e1.start_time
-                  endTime = inverse ? e1.end_time : e2.end_time
-                  #debugger
-                  newEntry = Entry.create!(:entry_type => 'shift', :start_time => startTime, :end_time => endTime, :description => description, :calendar_id => self.id, :user_id => e1.user_id, :lab_id => e1.lab_id)
-                  Entry.destroy(e1.id)
-                  Entry.destroy(e2.id)
-                  #debugger
-                  self.entries = Entry.where(:lab_id => self.lab_id)
-                  self.check_continuity
-                end
-              end
-            end
-          end
-        end
-      end
+      return
+#      if calendar_type == SHIFTS or calendar_type == LAB
+#        entries = Entry.where(:lab_id => self.lab_id)
+#        entries.each do |e1|
+#          entries.each do |e2|
+#            if Entry.find_by_id(e1.id).nil? and Entry.find_by_id(e2.id).nil?
+#            else
+#              if e1.lab_id == e2.lab_id and e1.user_id == e2.user_id
+#                if e1.end_time == e2.start_time or e2.end_time == e1.start_time
+#                  inverse = false
+#                  if e2.end_time == e1.start_time
+#                    inverse = true
+#                  end
+#                  description = ""
+#                  if (e1.description or e2.description) and e1.description != e2.description
+#                    #description << e1.description << e2.description
+#                  else
+#                    #description << e1.description ? e1.description : e2.description
+#                  end
+#                  startTime = inverse ? e2.start_time : e1.start_time
+#                  endTime = inverse ? e1.end_time : e2.end_time
+#                  #debugger
+#                  newEntry = Entry.create!(:entry_type => 'shift', :start_time => startTime, :end_time => endTime, :description => description, :calendar_id => self.id, :user_id => e1.user_id, :lab_id => e1.lab_id)
+#                  Entry.destroy(e1.id)
+#                  Entry.destroy(e2.id)
+#                  #debugger
+ #                 self.entries = Entry.where(:lab_id => self.lab_id)
+ #                 self.check_continuity
+ #               end
+ #             end
+ #           end
+ #         end
+ #       end
+ #     end
     end
 end
 
