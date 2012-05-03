@@ -14,7 +14,7 @@ class AvailabilitySnapshotsController < ApplicationController
   # GET /availability_snapshots/1.json
   def show
     @availability_snapshot = AvailabilitySnapshot.find(params[:id])
-    @time = @availability_snapshot.start_date.to_time
+    @time = @availability_snapshot.start_date
     @avail = @availability_snapshot.availabilities[:avail]
     @rather_not = @availability_snapshot.availabilities[:rather_not]
     @prefer = @availability_snapshot.availabilities[:prefer]
