@@ -91,6 +91,7 @@ class CalendarsController < ApplicationController
         end
 
         if @current_user.id != @calendar.owner
+          results[:readOnly] = true
           events.each do |e|
             e[:readOnly] = true
           end
