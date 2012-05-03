@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  has_mobile_fu
   protect_from_forgery
 
   helper_method :page_title
