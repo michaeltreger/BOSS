@@ -15,10 +15,6 @@ describe SubstitutionsController do
       post("/substitutions").should route_to("substitutions#create")
     end
 
-    it "routes to #update" do
-      put("/substitutions/1").should route_to("substitutions#update", :id => "1")
-    end
-
     it "routes to #destroy" do
       delete("/substitutions/1").should route_to("substitutions#destroy", :id => "1")
     end

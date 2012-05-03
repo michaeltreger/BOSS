@@ -12,7 +12,7 @@ class LabsController < ApplicationController
             -1
         end
     end
-    
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @labs }
@@ -208,7 +208,7 @@ class LabsController < ApplicationController
     @units = Unit.all().delete_if { |unit| @lab.groups.include? unit }
 
   end
-  
+
   def removeunit
     @lab = Lab.find(params[:lab_id])
     @unit = Unit.find(params[:unit_id])

@@ -8,6 +8,7 @@ Background: A work entry has been added to my calendar
     | name         | user_type      |
     | Alice        | 1              |
     | Bob          | 1              |
+    | Carl         | 0              |
     | John         | -1             |
 
   And the following periods exist:
