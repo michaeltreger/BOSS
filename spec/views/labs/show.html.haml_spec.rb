@@ -9,6 +9,7 @@ describe "labs/show" do
       :max_employees => 1,
       :min_employees => 1
     ))
+    @units = @lab.groups
   end
 
   it "renders attributes in <p>" do
