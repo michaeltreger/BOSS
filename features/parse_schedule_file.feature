@@ -5,26 +5,27 @@ Feature: Set Availability Calendar
 
 Background: A Calendar has been created
   Given the following users exist:
-    | name         | user_type      |
-    | Alice        | 1              |
-    | Chris        | 0              |
+    | name         | user_type      | initials |
+    | Alice        | 1              | AA       |
+    | Chris        | -1             | CC       |
 
   And the following periods exist:
     | name             |
     | Finals Week 1    |
 
-  And I am logged in as "Alice"
+  And the following labs exist:
+    |name   | initials | max_employees | min_employees |
+    |Moffit | MMF      | 4             | 1             |
+    
 
-  And the calendar "Alice's Shifts" has the following entries:
-    | description         | start_time        | end_time         | type       |
-    | Work at Wheeler     | 12:00, 1/1/2012   | 14:00 1/1/2012   | prefer     |
-    | Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   | rather_not |
-    And I am logged in as "Chris"
-    And I am on parse flat file page
-
-  Scenario: parse a flat file to generate employee calendars  
-    When I choose a flat file
-    And I press "upload"
-    Then I should see "upload successfully"
+  Scenario: parse a flat file to assign shifts for every employee
+    When I am logged in as "Chris"
+    And I am on the "Admin Labs" page
+    And I follow "Submit a Flatfile"
+    And I should be on Moffit's upload file page
+    When I attach the file "public/assets/MMF05.07-05.13.txt" to "file_text_file"
+    And I press "Upload"
+    And I should be on the "Admin Labs" page
+    Then I should see "Shifts were successfully assigned."
     And I go to Alice's Shifts page
     And I should see Alice's new working calendar
