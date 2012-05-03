@@ -109,7 +109,6 @@ class LabsController < ApplicationController
         elsif Time.now > startWeek
           flash.now[:error] = 'Commiting shifts for past time!'
           format.html { render action: "upload_shifts"}
-          debugger
         elsif !@lab.is_week_empty?(startWeek, endWeek)
           debugger
           flash.now[:error] = 'Selected week calendar not empty!'#Assuming never commit calendar for the same week, use sub or time_edit to do changes.
