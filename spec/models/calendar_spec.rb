@@ -39,7 +39,7 @@ describe Calendar do
 
       @calendar1.entries.size.should == 2
       @calendar1.check_continuity
-      @calendar1.entries.size.should == 2
+      @calendar1.entries.size.should == 1
 
       @backtobacksame2.calendar_id = @calendar1.id
       @backtobacksame2.user_id = @calendar1.user_id
@@ -74,16 +74,6 @@ describe Calendar do
 
       it "should return false while checking whether it is availability" do
         @calendar1.availability?.should == false
-      end
-    end
-
-    describe "get the full name of the calendar" do
-      it "should include the lab name if it is a lab calendar" do
-        @lab1_calendar.full_name.should include(@lab1.name)
-      end
-
-      it "should include the initials if it is a shifts calendar of a availability calendar" do
-        @calendar1.full_name.should include(@user1.initials)
       end
     end
 
