@@ -6,11 +6,11 @@ Feature: Post Subs for Anyone
 Background: A work entry has been added to my calendar
 
   Given the following users exist:
-    | name         | user_type      | initials  |
-    | Alice        | 1              |   AA      |
-    | Bob          | 1              |   BB      |
-    | Carl         | 1              |   CC      |
-    | David        | 0              |   DD      |
+    | name         | user_type      | initials  | activated |
+    | Alice        | 1              |   AA      | true      |
+    | Bob          | 1              |   BB      | true      |
+    | Carl         | 1              |   CC      | true      |
+    | David        | 0              |   DD      | true      |
 
   And the following periods exist:
     | name             |
@@ -24,14 +24,14 @@ Background: A work entry has been added to my calendar
     | Software Training   | 14:00, 1/1/2012   | 16:00 1/1/2012   |
 
   And the following substitutions exist:
-    | entry_id   | description                | from_user_id    | to_user_id |
-    |   2        | Software Training          |    1            |    2       |
+    | entry_description     | description                | from_user_id    | to_user_id |
+    |   Software Training   | Software Training          |    1            |    2       |
 
   And I am on the "Manage Substitutions" page
 
   Scenario: Put someone else's shift up for substitution
     When I follow "Alice's Shifts"
-    And I select the entry with id 1 for substitution
+    And I select the entry with description "Work at Wheeler" for substitution
     And I fill in "Description" with "Urgent - fix printer"
     And I press "Make Substitution"
     And I go to the "View Substitutions" page
@@ -42,7 +42,7 @@ Background: A work entry has been added to my calendar
   
   Scenario: Posted subs are still on original owner's calendar
     When I follow "Alice's Shifts"
-    When I select the entry with id 1 for substitution
+    When I select the entry with description "Work at Wheeler" for substitution
     And I fill in "Description" with "Wheeler Work"
     And I press "Make Substitution"
     And I am on Alice's Shifts page
@@ -50,5 +50,5 @@ Background: A work entry has been added to my calendar
     Then I should see "Work at Wheeler"
 
   Scenario: Substitution cannot be posted twice for one entry
-    Then I should not see the entry with id 2 for substitution
+    Then I should not see the entry with description "Software Training" for substitution
 

@@ -40,14 +40,14 @@ Background: A work entry has been added to my calendar
 
 
   And the following substitutions exist:
-    | entry_id   | description            | from_user_id    | to_user_id    |
-    |   1        | Sub 1                  |    1            |    nil        |
-    |   2        | Sub 3                  |    1            |    nil        |
-    |   3        | Sub 5                  |    1            |    nil        |
-    |   4        | Sub 7                  |    1            |    nil        |
-    |   5        | Sub 2                  |    2            |    nil        |
-    |   6        | Sub 4                  |    2            |    nil        |
-    |   7        | Sub 6                  |    2            |    nil        |
+    | entry_description  | description            | from_user_id    | to_user_id    |
+    |   Meeting 1        | Sub 1                  |    1            |    nil        |
+    |   Meeting 3        | Sub 3                  |    1            |    nil        |
+    |   Meeting 5        | Sub 5                  |    1            |    nil        |
+    |   Meeting 7        | Sub 7                  |    1            |    nil        |
+    |   Meeting 2        | Sub 2                  |    2            |    nil        |
+    |   Meeting 4        | Sub 4                  |    2            |    nil        |
+    |   Meeting 6        | Sub 6                  |    2            |    nil        |
 
   And I am on the "View Substitutions" page
 
