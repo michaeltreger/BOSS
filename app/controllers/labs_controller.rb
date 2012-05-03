@@ -3,7 +3,16 @@ class LabsController < ApplicationController
   # GET /labs
   # GET /labs.json
   def index
-    @labs = Lab.all#.sort!{|t1,t2|t1.groups[0].name <=> t2.groups[0].name}
+    @labs = Lab.all.sort do |t1,t2|
+        if t1.groups.length > 0 and t2.groups.length > 0
+            (t1.groups[0].name <=> t2.groups[0].name)
+        elsif t2.groups.length < 0
+            1
+        else
+            -1
+        end
+    end
+    
 
     respond_to do |format|
       format.html # index.html.erb
@@ -15,6 +24,7 @@ class LabsController < ApplicationController
   # GET /labs/1.json
   def show
     @lab = Lab.find(params[:id])
+    @units = @lab.groups
 
     respond_to do |format|
       format.html # show.html.erb
@@ -58,6 +68,19 @@ class LabsController < ApplicationController
   # PUT /labs/1.json
   def update
     @lab = Lab.find(params[:id])
+
+    if not params[:lab][:groups].nil?
+        @group = Group.find(params[:lab][:groups])
+        params[:lab].delete :groups
+        if @lab.groups.include?(@group)
+            flash[:error] = "A user may not be added to the same group multiple times."
+            redirect_to @lab
+            return
+        else
+            @lab.groups << @group
+        end
+      end
+
 
     respond_to do |format|
       if @lab.update_attributes(params[:lab])
@@ -163,5 +186,23 @@ class LabsController < ApplicationController
     end
   end
 
+  def addaunit
+    @lab = Lab.find(params[:id])
+    @units = Unit.all().delete_if { |unit| @lab.groups.include? unit }
+
+  end
+  
+  def removeunit
+    @lab = Lab.find(params[:lab_id])
+    @unit = Unit.find(params[:unit_id])
+
+    @lab.groups.delete(@unit)
+    @unit.labs.delete(@lab)
+
+    @lab.save!
+    @unit.save!
+
+    redirect_to @lab
+  end
 
 end

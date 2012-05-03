@@ -14,7 +14,7 @@
 - if @current_user.isAdmin?
   = link_to 'Edit', edit_unit_path(@unit)
   \|
-  = link_to 'Add Labs', "/admin/units/#{@unit.id}/labs/add"
+  = link_to 'Add Labs', add_labs_path(@unit)
   \|
   = link_to 'Back', units_path
 - else

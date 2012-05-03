@@ -25,7 +25,7 @@
         %td= link_to 'Edit', edit_group_path(group)
         %td= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete
       - else
-        %td= link_to 'Show', "/groups/#{group.id}"
+        %td= link_to 'Show', group
 
 %br
 - if @current_user.isAdmin?
