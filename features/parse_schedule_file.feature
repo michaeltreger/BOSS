@@ -43,6 +43,18 @@ Background: A Calendar has been created
     And I go to Alice's Shifts page
     And Alice should have 1 entry which starts at "2012-5-7 8:00" and ends at "2012-5-7 9:00"
   
+  Scenario: parse a flat file which contains partial shifts
+    When I am logged in as "Chris"
+    And I am on the "Admin Labs" page
+    And I follow "Submit a Flatfile"
+    And I should be on Moffit's upload file page
+    When I attach the file "features/file_sample/sample_shifts2.txt" to "file_text_file"
+    And I press "Upload"
+    And I should be on the "Admin Labs" page
+    Then I should see "Shifts were successfully assigned."
+    And I go to Alice's Shifts page
+    And Alice should have 1 entry which starts at "2012-5-7 8:30" and ends at "2012-5-7 9:00"
+
   Scenario: parse a flat file with wrong lab
     When I am logged in as "Chris"
     And I am on the "Admin Labs" page
