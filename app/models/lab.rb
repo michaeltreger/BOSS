@@ -22,11 +22,12 @@ class Lab < ActiveRecord::Base
     end
 
     def is_week_empty?(startTime, endTime)
-      entries = self.calendar.entries
+      entries = Entry.where(:lab_id => self.id)
+
       entries.each do |e|
-        if endTime <=> e.start_time
+        if endTime > e.start_time
           return false
-        elsif startTime <=> e.end_time
+        elsif startTime > e.end_time
           return false
         else
           return true
@@ -124,12 +125,12 @@ class Lab < ActiveRecord::Base
     def closing_shift
       calendar.entries[0].user
     end
-    
-    
+
+
     def merge_times(table)
       for i in 0..table.size
         for j in 0..table[0].size
-                  
+
         end
       end
     end
