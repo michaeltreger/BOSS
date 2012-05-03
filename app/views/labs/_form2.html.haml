@@ -8,7 +8,7 @@
 
   .field
     = f.label :unit
-    = f.select('groups', @units.collect {|unit| [ unit.name, unit.id ] })
+    = f.select('groups', @units.collect {|unit| [ unit.name, unit.id ] }, :id => :unit)
 
   .actions
     = f.submit 'Save'

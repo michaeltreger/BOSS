@@ -8,3 +8,11 @@ Given /^the following labs exist:$/ do |lab_table|
     Lab.create(lab)
   end
 end
+
+Given /^the lab "([^"]*)" is in the unit "([^"]*)"$/ do |arg1, arg2|
+    lab = Lab.find_by_name(arg1)
+    unit = Unit.find_by_name(arg2)
+    unit.labs << lab
+    unit.save!
+end
+
