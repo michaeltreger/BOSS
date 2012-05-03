@@ -43,7 +43,7 @@ class Calendar < ActiveRecord::Base
 
     def canAdd(candidate_entry)
       # first do hour limit check
-      if (work_hours + candidate_entry.duration) > user.hour_limit
+      if (work_hours(candidate_entry.start_time) + candidate_entry.duration) > user.hour_limit
         return false
       end
 
@@ -76,16 +76,20 @@ class Calendar < ActiveRecord::Base
       Entry.delete(old_entry_ids)
     end
 
-    def work_hours
-      hours = 0
-      for entry in self.entries
-        if !entry.nil?
-          hours += entry.duration
+    def work_hours(time)
+      if calendar_type == SHIFTS
+        day = time.wday
+        monday = time - time.wday.day + 1.day + 8.hour
+        nextMonday = monday + 7.day
+        hours = 0
+        for entry in self.entries
+          if !entry.nil? && entry.start_time > monday && entry.start_time < nextMonday
+            hours += entry.duration
+          end
         end
+        return hours
       end
-      return hours
     end
-
 
     def check_constraints
       if calendar_type == AVAILABILITY
@@ -105,13 +109,10 @@ class Calendar < ActiveRecord::Base
 
         total_avail = 24*7 - total_unavail
         weekday_avail = 14*5 - weekday_unavail
-        if total_avail > 45 and weekday_avail > 15
-          return true
-        elsif total_avail > 30
-          return true
-        elsif weekday_avail > 15
+        if (total_avail > 45 and weekday_avail > 15) or total_avail > 30 or weekday_avail > 15
           return true
         else
+          return false
           errors[:base] = "not a valid calendar"
         end
 
@@ -119,9 +120,8 @@ class Calendar < ActiveRecord::Base
     end
 
     def check_continuity
-      return
       if calendar_type == SHIFTS or calendar_type == LAB
-        entries = Entry.where(:lab_id => self.lab_id)
+        entries = Entry.where(:calendar_id => self.id)
         entries.each do |e1|
           entries.each do |e2|
             if Entry.find_by_id(e1.id).nil? and Entry.find_by_id(e2.id).nil?
@@ -133,19 +133,23 @@ class Calendar < ActiveRecord::Base
                     inverse = true
                   end
                   description = ""
-                  if (e1.description or e2.description) and e1.description != e2.description
-                    #description << e1.description << e2.description
-                  else
-                    #description << e1.description ? e1.description : e2.description
+                  if e1.description and e2.description
+                    if e1.description != e2.description
+                      description << e1.description << e2.description
+                    else
+                      description << e1.description
+                    end
+                  elsif e1.description
+                    description << e1.description
+                  elsif e2.description
+                    description << e2.description
                   end
                   startTime = inverse ? e2.start_time : e1.start_time
                   endTime = inverse ? e1.end_time : e2.end_time
-                  #debugger
                   newEntry = Entry.create!(:entry_type => 'shift', :start_time => startTime, :end_time => endTime, :description => description, :calendar_id => self.id, :user_id => e1.user_id, :lab_id => e1.lab_id)
                   Entry.destroy(e1.id)
                   Entry.destroy(e2.id)
-                  #debugger
-                  self.entries = Entry.where(:lab_id => self.lab_id)
+                  self.entries = Entry.where(:calendar_id => self.id)
                   self.check_continuity
                 end
               end
