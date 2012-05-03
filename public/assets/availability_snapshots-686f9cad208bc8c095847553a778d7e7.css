@@ -1,0 +1,14 @@
+/* line 5, /home/saasbook/CS169-Campus-Scheduler/app/assets/stylesheets/availability_snapshots.css.scss */
+.as_rn {
+  color: red;
+}
+
+/* line 9, /home/saasbook/CS169-Campus-Scheduler/app/assets/stylesheets/availability_snapshots.css.scss */
+.as_a {
+  color: black;
+}
+
+/* line 13, /home/saasbook/CS169-Campus-Scheduler/app/assets/stylesheets/availability_snapshots.css.scss */
+.as_p {
+  color: green;
+}

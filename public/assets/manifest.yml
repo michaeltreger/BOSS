@@ -1,8 +1,9 @@
 --- 
-BOS.css: BOS-24957b55f64a204255ac510ddbfb8b49.css
-UCB.css: UCB-2aed93bb91d4c0a72bd1c3608f70c38e.css
-application.css: application-74cada8aed7e94eb41a0c447fa76763e.css
-calendar.css: calendar-7a927f831144b86ce7c3c3339181f5ae.css
+BOS.css: BOS-e644586569e40eb7f09729767bf9960a.css
+UCB.css: UCB-f706886cfdf64d90ca4dead114c83259.css
+application.css: application-b0ce230c33587019a9c2931717fbe824.css
+availability_snapshots.css: availability_snapshots-686f9cad208bc8c095847553a778d7e7.css
+calendar.css: calendar-e2466858796cbc41b84fa47159d7b161.css
 calendars.css: calendars-1c9609bc58b1e77c196de29021583379.css
 entries.css: entries-1c9609bc58b1e77c196de29021583379.css
 groups.css: groups-1c9609bc58b1e77c196de29021583379.css
@@ -12,14 +13,16 @@ labs.css: labs-1c9609bc58b1e77c196de29021583379.css
 periods.css: periods-1c9609bc58b1e77c196de29021583379.css
 preferences.css: preferences-1c9609bc58b1e77c196de29021583379.css
 reset.css: reset-680608efc72cfc41b187bda5d5f21aff.css
-scaffolds.css: scaffolds-84f5a80fa8a185e5ada12dd27f103270.css
+scaffolds.css: scaffolds-f78bdd284f80868033337e6997b2a387.css
 substitutions.css: substitutions-1c9609bc58b1e77c196de29021583379.css
-table.css: table-e11ebbf2287b6833707d535dc5f99e3e.css
+table.css: table-605afcf668c2d52b8db2fce5bd44305b.css
 time_edits.css: time_edits-1c9609bc58b1e77c196de29021583379.css
-time_off_requests.css: time_off_requests-859bcb20de3dd66d0fadded8cea3b689.css
+time_off_requests.css: time_off_requests-dc4f71e4a707d1cd3b4288261c993f72.css
+units.css: units-1c9609bc58b1e77c196de29021583379.css
 users.css: users-1c9609bc58b1e77c196de29021583379.css
-application.js: application-f38b0f0576709e5be0513a5ba889e750.js
-calendar.js: calendar-07e3be29b2feffe7a81ee3210687adb8.js
+application.js: application-0df6db62c151e0ee01138994485114fb.js
+availability_snapshots.js: availability_snapshots-be936550b6939a6f107544b16b3fb99d.js
+calendar.js: calendar-c4e2e9290b28affa6b9aef836e580602.js
 calendars.js: calendars-be936550b6939a6f107544b16b3fb99d.js
 entries.js: entries-be936550b6939a6f107544b16b3fb99d.js
 groups.js: groups-be936550b6939a6f107544b16b3fb99d.js
@@ -30,6 +33,7 @@ preferences.js: preferences-be936550b6939a6f107544b16b3fb99d.js
 substitutions.js: substitutions-be936550b6939a6f107544b16b3fb99d.js
 time_edits.js: time_edits-be936550b6939a6f107544b16b3fb99d.js
 time_off_requests.js: time_off_requests-be936550b6939a6f107544b16b3fb99d.js
+units.js: units-be936550b6939a6f107544b16b3fb99d.js
 users.js: users-be936550b6939a6f107544b16b3fb99d.js
 date.js: date-23e2ba780ccfe0baf8dfd51485fa8cba.js
 jquery-ui-1.8.11.custom.min.js: jquery-ui-1.8.11.custom.min-f0b079ef1ea23e9267a191aa526ee37f.js
