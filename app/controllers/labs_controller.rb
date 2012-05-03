@@ -41,7 +41,6 @@ class LabsController < ApplicationController
   # POST /labs.json
   def create
     @lab = Lab.new(params[:lab])
-
     respond_to do |format|
       if @lab.save
         format.html { redirect_to labs_path, notice: 'Lab was successfully created.' }
@@ -102,7 +101,6 @@ class LabsController < ApplicationController
       endWeek =  Time.new(Time.now.year, timeTable[0][4]["end_time_month"], timeTable[0][5]["end_time_day"].to_i + 1, 8, 0, 0, "+01:00")
 
       respond_to do |format|
-        debugger
         if timeTable[0][0]["initials"] != @lab.initials
           flash.now[:error] = 'This flat file is not for this lab!'
           format.html { render action: "upload_shifts"}
@@ -110,7 +108,6 @@ class LabsController < ApplicationController
           flash.now[:error] = 'Commiting shifts for past time!'
           format.html { render action: "upload_shifts"}
         elsif !@lab.is_week_empty?(startWeek, endWeek)
-          debugger
           flash.now[:error] = 'Selected week calendar not empty!'#Assuming never commit calendar for the same week, use sub or time_edit to do changes.
           format.html { render action: "upload_shifts"}
         else
@@ -125,6 +122,7 @@ class LabsController < ApplicationController
                   if k !='xx' and k != 'XX' and !(employee = User.find_by_initials(k))
                     noInit = true
                     flash[:error] = "Employee with initials: #{k} does not exist!"
+                    format.html { render action: "upload_shifts"}
                   end
                 end
               end
@@ -160,7 +158,6 @@ class LabsController < ApplicationController
                     else
                       if v == 0
                         employee = User.find_by_initials(k)
-
                         employee.shift_calendar.entries << Entry.create!(:entry_type => 'shift', :user_id => employee.id, :start_time => startTime, :end_time => endTime, :description => "#{employee.name}@#{@lab.name}", :lab_id => @lab.id)
                       elsif v == 1
                         endTime = startTime + 30.minute
@@ -178,7 +175,6 @@ class LabsController < ApplicationController
         end
 
         @lab.calendar.check_continuity
-
         format.html { redirect_to labs_path, notice: 'Shifts were successfully assigned.' }
         format.json { head :ok }
       end
