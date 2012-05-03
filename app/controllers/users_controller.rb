@@ -164,7 +164,7 @@ class UsersController < ApplicationController
     redirect_to @user
   end
 
-  def addgroup
+  def addagroup
     @user = User.find(params[:id])
     @groups = Group.all().delete_if { |group| @user.groups.include? group }
 

@@ -36,9 +36,7 @@
 - if @current_user.isAdmin?
   = link_to 'Edit', edit_group_path(@group)
   \|
-  = link_to 'Add Users', "/admin/groups/#{@group.id}/users/add"
-  \|
-  = link_to 'Add Labs', "/admin/groups/#{@group.id}/labs/add"
+  = link_to 'Add Users', add_users_path(@group)
   \|
   = link_to 'Back', groups_path
 - else

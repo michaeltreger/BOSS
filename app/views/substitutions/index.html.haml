@@ -4,9 +4,9 @@
   %table.subs#my_subs
     %tr
       %th.delete{:colspan=> 3}
-      %th.time{:class => @mysubs_time_header, :colspan => 2}= link_to 'Shift Time', substitutions_path(:mysubs_sort => 'time', :filters => @filters)
-      %th.initials{:class => @mysubs_location_header}= link_to 'Location', substitutions_path(:mysubs_sort => 'location', :filters => @filters)
-      %th.initials{:class => @mysubs_reserved_for_header}= link_to 'Reserved For', substitutions_path(:mysubs_sort => 'reserved_for', :filters => @filters)
+      %th.time{:class => @mysubs_time_header, :colspan => 2}= link_to 'Shift Time', substitutions_path(:mysubs_sort => 'time', :filters => @filters), {:id => :mysubs_time}
+      %th.initials{:class => @mysubs_location_header}= link_to 'Location', substitutions_path(:mysubs_sort => 'location', :filters => @filters), {:id => :mysubs_location}
+      %th.initials{:class => @mysubs_reserved_for_header}= link_to 'Reserved For', substitutions_path(:mysubs_sort => 'reserved_for', :filters => @filters), {:id => :mysubs_reserved_for}
       %th Notes
     - @my_subs.each do |substitution|
       %tr
@@ -51,9 +51,9 @@
   %table.subs
     %tr
       %th.delete{:colspan => 3} Select
-      %th.time{:class => @subs_time_header, :colspan => 2}= link_to 'Shift Time', substitutions_path(:subs_sort => 'time', :filters => @filters)
-      %th.initials{:class => @subs_location_header}= link_to 'Location', substitutions_path(:subs_sort => 'location', :filters => @filters)
-      %th.initials{:class => @subs_posted_by_header}= link_to 'Posted By', substitutions_path(:subs_sort => 'posted_by', :filters => @filters)
+      %th.time{:class => @subs_time_header, :colspan => 2}= link_to 'Shift Time', substitutions_path(:subs_sort => 'time', :filters => @filters), {:id => :allsubs_time}
+      %th.initials{:class => @subs_location_header}= link_to 'Location', substitutions_path(:subs_sort => 'location', :filters => @filters), {:id => :allsubs_location}
+      %th.initials{:class => @subs_posted_by_header}= link_to 'Posted By', substitutions_path(:subs_sort => 'posted_by', :filters => @filters), {:id => :allsubs_posted_by}
       %th Notes
     - if @reserved_subs && @reserved_subs.size != 0
       - @reserved_subs.each do |substitution|

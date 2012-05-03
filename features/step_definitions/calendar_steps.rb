@@ -13,10 +13,10 @@ Given /^the following calendars exist:$/ do |calendars_table|
 end
 
 Given /^the calendar "([^"]*)" has the following entries:$/ do |calendar_name, entries_table|
-  calendar_id = (Calendar.find_by_name(calendar_name)).id
+  calendar = Calendar.find_by_name(calendar_name)
   entries_table.hashes.each do |entry|
     entry[:lab] = Lab.find_by_name(entry[:lab])
-    entry[:calendar_id] = calendar_id
+    entry[:calendar_id] = calendar.id
     Entry.create!(entry)
   end
 end

@@ -6,7 +6,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "sel
 
 Given /^the following substitutions exist:$/ do |substitutions_table|
   substitutions_table.hashes.each do |s|
-    substitution = {:entry => Entry.find(s[:entry_id]),
+    substitution = {:entry => Entry.find_by_description(s[:entry_description]),
                     :description => s[:description]}
     new_sub = Substitution.create(substitution)
     owner = User.find_by_id(s[:from_user_id])
@@ -19,7 +19,8 @@ Given /^the following substitutions exist:$/ do |substitutions_table|
   end
 end
 
-When /^I select the entry with id (\d+) for substitution$/ do |entry_id|
+When /^I select the entry with description "([^"]*)" for substitution$/ do |entry_description|
+  entry_id = Entry.find_by_description(entry_description).id
   choose('entry_' + entry_id.to_s)
 end
 
@@ -46,11 +47,13 @@ When /^I put the substitution in "([^"]*)"$/ do |calendar|
   select(calendar)
 end
 
-When /^I delete my substitution with id (\d+)$/ do |sub_id|
+When /^I delete my substitution with description "([^"]*)"$/ do |sub_description|
+  sub_id = Substitution.find_by_description(sub_description).id
   click_link('delete_' + sub_id.to_s)
 end
 
-Then /^I should not see the entry with id (\d+) for substitution$/ do |entry_id|
+Then /^I should not see the entry with description "([^"]*)" for substitution$/ do |entry_description|
+  entry_id = Entry.find_by_description(entry_description).id
   assert !(page.html =~ /.*<td><input checked="checked" id="#{entry_id}" name="Select" type="radio".*/m)
 end
 
