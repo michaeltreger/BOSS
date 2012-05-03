@@ -38,7 +38,6 @@ CS169CampusScheduler::Application.routes.draw do
   end
   match '/get_entries_for_sub' => 'substitutions#get_entries_for_sub'
   match '/take_or_assign_subs' => 'substitutions#take_or_assign_subs'
-  match "/changeAdmin" => "users#changeAdmin"
   match "/test_setuser/:id" => "users#test_setuser"
   match "/groups/:id" => "groups#show"
   match "/users/:id" => "users#show"

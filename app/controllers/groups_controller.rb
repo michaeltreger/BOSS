@@ -68,7 +68,7 @@ class GroupsController < ApplicationController
       if not params[:group][:users].nil?
         @user = User.find(params[:group][:users])
         params[:group].delete :users
-        if @group.users.include?(@lab)
+        if @group.users.include?(@user)
             flash[:error] = "A user may not be added to the same group multiple times."
             redirect_to @group
             return
@@ -98,8 +98,9 @@ class GroupsController < ApplicationController
     end
   end
 
-  def addusers
-    @group = Group.find(params[:id])
-    @users = User.find_all_by_activated(true).delete_if { |user| @group.users.include? user }
-  end
+  # not used currently
+  #def addusers
+  #  @group = Group.find(params[:id])
+  #  @users = User.find_all_by_activated(true).delete_if { |user| @group.users.include? user }
+  #end
 end

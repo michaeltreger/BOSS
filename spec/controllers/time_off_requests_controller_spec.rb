@@ -42,6 +42,13 @@ describe TimeOffRequestsController do
     }
   end
 
+  def expired_attributes
+    {
+     :user_id => @me.id, :start_time => '2000-04-08T17:30:00Z', :end_time => '2000-04-09T16:30:00Z', :created_at => '2000-04-06T10:30:00Z', :description => 'creating'
+    }
+  end
+
+
    def invalid_attributes
     {
      :user_id => @me.id, :start_time => '2020-04-08T17:30:00Z', :end_time => '2020-04-08T16:30:00Z', :created_at => '2020-04-06T10:30:00Z'
@@ -65,15 +72,6 @@ describe TimeOffRequestsController do
       assigns(:time_off_requests).count.should == 2
     end
   end
-
-  #useless
-  #describe "GET show" do
-    #it "should show the request" do
-      #time_off_request = TimeOffRequest.create! valid_attributes
-      #get :show, {:id => time_off_request.to_param}, valid_session
-      #assigns(:time_off_request).should == time_off_request
-    #end
-  #end
 
   describe "GET new" do
     it "should assign a new time_off_request" do
@@ -110,7 +108,23 @@ describe TimeOffRequestsController do
         flash[:notice].should == 'Time off request was successfully created.'
       end
     end
+    describe "with expired params" do
+      it "should give a warning" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        TimeOffRequest.any_instance.stub(:save).and_return(false)
+        post :create, {:time_off_request => expired_attributes}, valid_session
+        #assigns(:time_off_request).should_not be_a_new(TimeOffRequest)
+        #assert_response :unprocessable_entry
+        flash[:error].should == 'Your selected time has already passed'
+      end
 
+      it "shoud re-render the 'new' template" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        TimeOffRequest.any_instance.stub(:save).and_return(false)
+        post :create, {:time_off_request => invalid_attributes}, valid_session
+        response.should render_template("new")
+      end
+    end
     describe "with invalid params" do
       it "should give a warning" do
         # Trigger the behavior that occurs when invalid params are submitted
