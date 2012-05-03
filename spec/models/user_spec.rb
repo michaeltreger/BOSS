@@ -6,7 +6,7 @@ describe User do
     @period2 = Period.create(:start_date => Time.now + 2.months, :end_date => Time.now + 3.months, :name => "Future", :visible=>true)
     @user1 = User.create!({:name => 'anoriginalname', :activated => true, :initials => "ZZ"})
     @group1 = Group.create!({:name => 'group1', :hour_limit => 10})
-    @group2 = Group.create!({:name => 'group2', :hour_limit => 20})
+    @group2 = Group.create!({:name => 'group2', :hour_limit => 200})
     @group3 = Group.create!({:name => 'group3'})
   end
   describe "user hour limit" do
@@ -15,7 +15,7 @@ describe User do
       @group1.save!
       @group2.users << @user1
       @group2.save!
-      @user1.hour_limit.should == 20
+      @user1.hour_limit.should == 200
     end
     it "should be 20 if user is in no groups" do
       @user1.hour_limit.should == 20
