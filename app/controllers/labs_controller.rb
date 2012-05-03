@@ -160,7 +160,6 @@ class LabsController < ApplicationController
 
                   timeTable[i][j].each do |k, v|
                     endTime = startTime + 1.hour
-                    #debugger
 
                     if  k !='XX' and k != 'xx' and false
                       t=i+1
