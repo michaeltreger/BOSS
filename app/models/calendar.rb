@@ -120,7 +120,7 @@ class Calendar < ActiveRecord::Base
 
     def check_continuity
       if calendar_type == SHIFTS or calendar_type == LAB
-        entries = Entry.where(:lab_id => self.lab_id).order(:start_time)
+        entries = Entry.where(:lab_id => self.lab_id)
         entries.each do |e1|
           entries.each do |e2|
             if Entry.find_by_id(e1.id).nil? and Entry.find_by_id(e2.id).nil?
@@ -144,7 +144,7 @@ class Calendar < ActiveRecord::Base
                   Entry.destroy(e1.id)
                   Entry.destroy(e2.id)
                   #debugger
-                  self.entries = Entry.where(:calendar_id => self.id)
+                  self.entries = Entry.where(:lab_id => self.lab_id)
                   self.check_continuity
                 end
               end

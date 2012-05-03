@@ -3,8 +3,16 @@ class LabsController < ApplicationController
   # GET /labs
   # GET /labs.json
   def index
-    @labs = Lab.all#.sort!{|t1,t2|t1.groups[0].name <=> t2.groups[0].name}
-
+    @labs = Lab.all.sort do |t1,t2|
+        if t1.groups.length > 0 and t2.groups.length > 0
+            (t1.groups[0].name <=> t2.groups[0].name)
+        elsif t2.groups.length < 0
+            1
+        else
+            -1
+        end
+    end
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @labs }
@@ -15,6 +23,7 @@ class LabsController < ApplicationController
   # GET /labs/1.json
   def show
     @lab = Lab.find(params[:id])
+    @units = @lab.groups
 
     respond_to do |format|
       format.html # show.html.erb
@@ -42,7 +51,6 @@ class LabsController < ApplicationController
   # POST /labs.json
   def create
     @lab = Lab.new(params[:lab])
-
     respond_to do |format|
       if @lab.save
         format.html { redirect_to labs_path, notice: 'Lab was successfully created.' }
@@ -58,6 +66,19 @@ class LabsController < ApplicationController
   # PUT /labs/1.json
   def update
     @lab = Lab.find(params[:id])
+
+    if not params[:lab][:groups].nil?
+        @group = Group.find(params[:lab][:groups])
+        params[:lab].delete :groups
+        if @lab.groups.include?(@group)
+            flash[:error] = "A user may not be added to the same group multiple times."
+            redirect_to @lab
+            return
+        else
+            @lab.groups << @group
+        end
+      end
+
 
     respond_to do |format|
       if @lab.update_attributes(params[:lab])
@@ -83,14 +104,14 @@ class LabsController < ApplicationController
     end
   end
 
-  def upload_shifts  
+  def upload_shifts
     @lab = Lab.find(params[:id])
-    
+
     respond_to do |format|
       format.html
       format.json { head :ok }
     end
-    
+
   end
 
   def commit_shifts
@@ -104,7 +125,7 @@ class LabsController < ApplicationController
 
       respond_to do |format|
         if timeTable[0][0]["initials"] != @lab.initials
-          flash.now[:error] = 'This flat file is not for this lab!' 
+          flash.now[:error] = 'This flat file is not for this lab!'
           format.html { render action: "upload_shifts"}
         elsif Time.now > startWeek
           flash.now[:error] = 'Commiting shifts for past time!'
@@ -124,6 +145,7 @@ class LabsController < ApplicationController
                   if k !='xx' and k != 'XX' and !(employee = User.find_by_initials(k))
                     noInit = true
                     flash[:error] = "Employee with initials: #{k} does not exist!"
+                    format.html { render action: "upload_shifts"}
                   end
                 end
               end
@@ -138,7 +160,7 @@ class LabsController < ApplicationController
 
                   timeTable[i][j].each do |k, v|
                     endTime = startTime + 1.hour
-                    
+
                     if  k !='XX' and k != 'xx'
                       t=i+1
                       while timeTable[t][j].include?(k)
@@ -151,7 +173,7 @@ class LabsController < ApplicationController
                         t+=1
                       end
                     end
-                    
+
                     if k =='XX' or k == 'xx'
                       #sub must have entry attributes. entry must have start&end time. Associate all xx shifts with Chris
                       xxEntry = Entry.create!(:entry_type => 'xx', :user_id => 7, :start_time => startTime, :end_time => endTime, :lab_id => @lab.id, :description => "")
@@ -174,12 +196,30 @@ class LabsController < ApplicationController
             end
           end
         end
-        
+
         format.html { redirect_to labs_path, notice: 'Shifts were successfully assigned.' }
         format.json { head :ok }
       end
     end
   end
 
+  def addaunit
+    @lab = Lab.find(params[:id])
+    @units = Unit.all().delete_if { |unit| @lab.groups.include? unit }
+
+  end
+  
+  def removeunit
+    @lab = Lab.find(params[:lab_id])
+    @unit = Unit.find(params[:unit_id])
+
+    @lab.groups.delete(@unit)
+    @unit.labs.delete(@lab)
+
+    @lab.save!
+    @unit.save!
+
+    redirect_to @lab
+  end
 
 end

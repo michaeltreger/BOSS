@@ -22,11 +22,12 @@ class Lab < ActiveRecord::Base
     end
 
     def is_week_empty?(startTime, endTime)
-      entries = self.calendar.entries
+      entries = Entry.where(:lab_id => self.id)
+
       entries.each do |e|
-        if endTime <=> e.start_time
+        if endTime > e.start_time
           return false
-        elsif startTime <=> e.end_time
+        elsif startTime > e.end_time
           return false
         else
           return true

@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  has_mobile_fu
   protect_from_forgery
 
   helper_method :page_title
@@ -32,7 +31,9 @@ class ApplicationController < ActionController::Base
   def set_period
     @current_period = Period.current
     if @current_user
-      @current_availability = @current_user.availability_calendar(@current_period)
+      if @current_period
+        @current_availability = @current_user.availability_calendar(@current_period)
+      end
       @current_workschedule = @current_user.shift_calendar
     end
   end

@@ -31,7 +31,6 @@ class SubstitutionsController < ApplicationController
     mysubs_sort = params[:mysubs_sort] || session[:mysubs_sort]
     subs_sort = params[:subs_sort] || session[:subs_sort]
     @filters = params[:filters] || {}
-
     if params[:filters] != session[:filters] && @filters != {}
       session[:filters] = @filters
       flash.keep
@@ -134,18 +133,6 @@ class SubstitutionsController < ApplicationController
     end
   end
 
-
-  # GET /substitutions/1
-  # GET /substitutions/1.json
-# this is pretty useless
-#  def show
-#    @substitution = Substitution.find(params[:id])
-#    respond_to do |format|
-#      format.html # show.html.erb
-#      format.json { render json: @substitution }
-#    end
-#  end
-
   # GET /substitutions/new
   # GET /substitutions/new.json
   def new
@@ -163,11 +150,6 @@ class SubstitutionsController < ApplicationController
       format.html # new.html.erb
       format.json { render json: @substitution }
     end
-  end
-
-  # GET /substitutions/1/edit
-  def edit
-    @substitution = Substitution.find(params[:id])
   end
 
   def splitShift(sub_entry, params)
@@ -238,8 +220,13 @@ class SubstitutionsController < ApplicationController
     end
     respond_to do |format|
       if @substitution.is_expired?
-        flash[:error] = "Expired Shift"
-        format.html { redirect_to new_substitution_path}
+        if from_user
+          flash[:error] = "Expired Shift"
+          format.html { redirect_to request.referer }
+        else
+          flash[:error] = "Expired Shift"
+          format.html { redirect_to new_substitution_path }
+        end
         format.json { render json: @substitution.errors, status: :unprocessable_entity }
       elsif @substitution.save
         SubstitutionMailer.posted_sub(@substitution)
@@ -292,6 +279,7 @@ class SubstitutionsController < ApplicationController
           currSub = Substitution.find(k)
           currEntry = currSub.entry
           targetCalendar = targetUser.shift_calendar
+          #debugger
           if !(targetCalendar == nil) && (@current_user.isAdmin? || (targetCalendar.canAdd(currEntry)))
             taken_subs[k] = v
           else

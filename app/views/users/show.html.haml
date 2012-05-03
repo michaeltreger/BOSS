@@ -21,10 +21,10 @@
     - if @current_user.isAdmin?
       = link_to "#{group.name}", group
       = " ["
-      = link_to "remove", :controller => "users", :action => "removegroup", :user_id => @user.id, :group_id => group.id
+      = link_to "remove", remove_group_path(@user, group)
       = "]"
     - else
-      = link_to "#{group.name}", "/groups/#{group.id}"
+      = link_to "#{group.name}", group_path(group)
     %br
 
 - if not @current_period.nil?
@@ -75,7 +75,7 @@
 - if @current_user.isAdmin?
   = link_to 'Edit', edit_user_path(@user)
   \|
-  = link_to "Add to group", "/admin/users/#{@user.id}/add"
+  = link_to "Add to group", add_group_path(@user)
   \|
   = link_to "Delete user", @user, :confirm => 'Are you sure?', :method => :delete
 

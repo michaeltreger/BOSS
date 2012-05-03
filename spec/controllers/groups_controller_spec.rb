@@ -23,10 +23,10 @@ describe GroupsController do
     Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
     @admin = User.create!(:name => 'Chris', :activated => 'true', :initials => 'C', :cas_user => 1)
     @user1 = User.create!(:name => 'Seven', :activated => 'true', :initials => 'JQ', :cas_user => 13213)
-    @user1 = User.create!(:name => 'Michael', :activated => 'true', :initials => 'MT', :cas_user => 122)
-    @user1 = User.create!(:name => 'Peter', :activated => 'true', :initials => 'PC', :cas_user => 22)
-    @user1 = User.create!(:name => 'Suyan', :activated => 'true', :initials => 'SYF', :cas_user => 111)
-    @user1 = User.create!(:name => 'Rohan', :activated => 'true', :initials => 'RC', :cas_user => 2131)
+    @user2 = User.create!(:name => 'Michael', :activated => 'true', :initials => 'MT', :cas_user => 122)
+    @user3 = User.create!(:name => 'Peter', :activated => 'true', :initials => 'PC', :cas_user => 22)
+    @user4 = User.create!(:name => 'Suyan', :activated => 'true', :initials => 'SYF', :cas_user => 111)
+    @user5 = User.create!(:name => 'Rohan', :activated => 'true', :initials => 'RC', :cas_user => 2131)
     session[:test_user_id] = @admin.id
     group = Group.find_by_name("Administrators")
     group.users << @admin
@@ -51,22 +51,29 @@ describe GroupsController do
     }
   end
 
+  def valid_nonadmin_session
+    {
+      :test_user_id => @user1.id
+    }
+  end
+
+
   describe "GET index" do
-    it "assigns all groups as @groups" do
+    it "assigns all groups as @groups when admin" do
       newGroup = Group.create! valid_attributes
-      group = [Group.find_by_name("Administrators"), Group.find_by_name("Schedulers"), newGroup]
+      group = [Group.find_by_name("Administrators"), Group.find_by_name("Schedulers"), Group.find_by_name("All Users"), newGroup]
       get :index, {}, valid_session
       assigns(:groups).should eq(group)
     end
   end
 
-#  describe "GET show" do
-#    it "assigns the requested group as @group" do
-#      group = Group.create! valid_attributes
-#      get :show, {:id => group.to_param}, valid_session
-#      assigns(:group).should eq(group)
-#    end
-#  end
+  describe "GET show" do
+    it "assigns the requested group as @group" do
+      group = Group.create! valid_attributes
+      get :show, {:id => group.id}, valid_session
+      assigns(:group).should eq(group)
+    end
+  end
 
   describe "GET new" do
     it "assigns a new group as @group" do
@@ -130,6 +137,19 @@ describe GroupsController do
         # submitted in the request.
         Group.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
         put :update, {:id => group.to_param, :group => {'these' => 'params'}}, valid_session
+      end
+
+      it "adds a user to a group" do
+        group = Group.create! valid_attributes
+        put :update, {:id => group.id, :group => {:users => @user1}}, valid_session
+        group.users[0].should == @user1
+      end
+
+      it "does not add a user to a group multiple times" do
+        group = Group.create! valid_attributes
+        put :update, {:id => group.id, :group => {:users => @user1}}, valid_session
+        put :update, {:id => group.id, :group => {:users => @user1}}, valid_session
+        flash[:error].should == "A user may not be added to the same group multiple times."
       end
 
       it "assigns the requested group as @group" do

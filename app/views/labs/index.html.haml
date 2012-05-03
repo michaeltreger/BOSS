@@ -14,7 +14,6 @@
     %th
     %th
 
-
   - @labs.each do |lab|
     %tr
       %td= lab.initials
@@ -23,7 +22,7 @@
       %td= lab.min_employees
       %td= lab.description
       -if lab.groups.length > 0
-        %td= lab.groups[0]
+        %td= lab.groups[0].name
       -else
         %td
       %td= link_to 'Details', lab
@@ -31,8 +30,6 @@
       %td= link_to 'Submit a Flatfile', upload_shifts_path(lab.id)
       %td= link_to 'Edit', edit_lab_path(lab)
       %td= link_to 'Destroy', lab, :confirm => 'Are you sure?', :method => :delete
-      
-     
 
 %br
 

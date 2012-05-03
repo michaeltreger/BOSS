@@ -22,20 +22,21 @@ describe SubstitutionsController do
 
   before(:each) do
     @period = Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
-    @my_group = Group.create!(:group_type => 1, :name => 'undergrad', :hour_limit => 20, :description => 'cs169')
-    #@my_group_user = Group_user.create!(:group_id => @my_group.id, :user_id => @me.id, :created_at => '2012-01-01T00:00:00Z')
     @me = User.create!(:name => 'Tom', :activated => 'true', :initials => 'T', :cas_user => 123)
     @other = User.create!(:name => 'Other', :activated => 'true', :initials => 'O', :cas_user => 456)
+    @other2 = User.create!(:name => 'Other2', :activated => 'true', :initials => 'O2', :cas_user => 789)
     @my_calendar = @me.shift_calendar
     @other_calendar = @other.shift_calendar
-    session[:test_user_id] = @me.id
+    @other2_calendar = @other2.shift_calendar
     @my_entry = Entry.create!(:user_id => @me.id, :calendar_id => @my_calendar.id, :start_time => Time.now+2.days, :end_time => Time.now+2.days+4.hour)
     @other_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => Time.now+3.days, :end_time => Time.now+3.days+2.hours)
-    @too_long_entry = Entry.create!(:user_id => @other.id, :calendar_id => @other_calendar.id, :start_time => Time.now+4.days, :end_time => Time.now+4.days+23.hours)
+    @too_long_entry = Entry.create!(:user_id => @other2.id, :calendar_id => @other2_calendar.id, :start_time => Time.now+4.days, :end_time => Time.now+4.days+23.hours)
+    @other_group = Group.create!(:group_type => 1, :name => 'undergrad', :hour_limit => 20, :description => 'cs169')
+    @other_group_user = GroupUser.create!(:group_id => @other_group, :user_id => @other2.id, :created_at => '2012-01-01')
     group = Group.find_by_name("Administrators")
     group.users << @me
-    group.users << @other
     group.save!
+    session[:test_user_id] = @me.id
   end
   def valid_attributes
     {
@@ -155,10 +156,12 @@ describe SubstitutionsController do
       describe "While exceeding hour limit" do
         it "should not take sub" do
           request.env["HTTP_REFERER"] = substitutions_url
+          session[:test_user_id] = @other
           @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
-          put :take_or_assign_subs, :target_user => {:id => @me.id}, :entries => {@long_substitution.id => "1"}
-          flash[:error].should include('The following subs could not be taken')
-        end
+          put :take_or_assign_subs, :target_user => {:id => @other2.id}, :entries => {@long_substitution.id => "1"}
+          #flash[:notice].should == "fajd;kfj"
+          flash[:error].should include("The following subs could not be taken due to schedule conflicts or hour limits:")
+          end
         it "should redirect to index" do
           request.env["HTTP_REFERER"] = substitutions_url
           @long_substitution = Substitution.create!(:description => 'I\'m long', :entry => @too_long_entry, :entry_id => @too_long_entry.id)
