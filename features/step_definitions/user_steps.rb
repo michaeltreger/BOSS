@@ -12,8 +12,8 @@ Given /^the following users exist:$/ do |users_table|
   users_table.hashes.each do |user|
     @group = nil
     if not user[:user_type].nil?
-        @group = Group.find_by_name("Administrators") if user[:user_type] == "-1"
-        @group = Group.find_by_name("Schedulers") if user[:user_type] == "0"
+        @group = Group.find_by_name("Administrators") if user[:user_type] == "-1" or user[:user_type] == "Admin"
+        @group = Group.find_by_name("Schedulers") if user[:user_type] == "0" or user[:user_type] == "Sched"
     end
     user.delete "user_type"
     @user = User.create!(user)
