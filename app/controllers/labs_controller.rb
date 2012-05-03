@@ -103,16 +103,13 @@ class LabsController < ApplicationController
       endWeek =  Time.new(Time.now.year, timeTable[0][4]["end_time_month"], timeTable[0][5]["end_time_day"].to_i + 1, 8, 0, 0, "+01:00")
 
       respond_to do |format|
-        debugger
         if timeTable[0][0]["initials"] != @lab.initials
           flash.now[:error] = 'This flat file is not for this lab!'
           format.html { render action: "upload_shifts"}
         elsif Time.now > startWeek
           flash.now[:error] = 'Commiting shifts for past time!'
           format.html { render action: "upload_shifts"}
-          debugger
         elsif !@lab.is_week_empty?(startWeek, endWeek)
-          debugger
           flash.now[:error] = 'Selected week calendar not empty!'#Assuming never commit calendar for the same week, use sub or time_edit to do changes.
           format.html { render action: "upload_shifts"}
         else
