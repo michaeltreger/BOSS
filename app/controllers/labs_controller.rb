@@ -160,9 +160,8 @@ class LabsController < ApplicationController
 
                   timeTable[i][j].each do |k, v|
                     endTime = startTime + 1.hour
-                    #debugger
 
-                    if  k !='XX' and k != 'xx' and false
+                    if  k !='XX' and k != 'xx'
                       t=i+1
                       while timeTable[t][j].include?(k)
                         if timeTable[t][j][k] == 0
@@ -174,7 +173,6 @@ class LabsController < ApplicationController
                         t+=1
                       end
                     end
-                    debugger
                     if k =='XX' or k == 'xx'
                       #sub must have entry attributes. entry must have start&end time. Associate all xx shifts with Chris
                       xxEntry = Entry.create!(:entry_type => 'xx', :user_id => 7, :start_time => startTime, :end_time => endTime, :lab_id => @lab.id, :description => "")

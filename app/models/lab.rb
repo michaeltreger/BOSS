@@ -40,7 +40,9 @@ class Lab < ActiveRecord::Base
     #Step1: Parse the info into the 3D array.
     #Step2: Iterate through the 3D array and make entries and subs.
 
+
     def read_schedule(fileName)
+
       if !(file = File.open(fileName, 'r'))
         abort("Can not open file : #{fileName}")
       end
@@ -86,25 +88,22 @@ class Lab < ActiveRecord::Base
               empInits = fields[i].split(/\s+/)
               for j in 0..(empInits.size-1)
                 if((empInits[j].upcase != "CLOSED") && (empInits[j] != ""))
+                  empInits[j] << " "
                   empArr = empInits[j].split('/')
-                  empArr.each do |x|
-                    if x == 'xx' or x == 'XX'
-                      timeTable[0][6].merge!({"xx" => true})
-                    end
-                  end
                   if empArr.size == 2
                     if empArr[0] == ""
-                      timeTable[tRN][dCN].merge!({empArr[1] => 2})
-                    elsif empAmp[1] == ""
-                      timeTable[tRN][dCN].merge!({empArr[0] => 1})
+                      timeTable[tRN][dCN].merge!({empArr[1].strip => 2})
+                    elsif empArr[1] == " "
+                      timeTable[tRN][dCN].merge!({empArr[0].strip => 1})
                     end
 
                   elsif empArr.size == 3
-                    timeTable[tRN][dCN].merge!({empArr[0] => 1})
-                    timeTable[tRN][dCN].merge!({empArr[2] => 2})
+                    timeTable[tRN][dCN].merge!({empArr[0].strip => 1})
+                    timeTable[tRN][dCN].merge!({empArr[2].strip => 2})
 
                   elsif empArr.size == 1
-                    timeTable[tRN][dCN].merge!({empArr[0] => 0})
+                    #puts timeTable
+                    timeTable[tRN][dCN].merge!({empArr[0].strip => 0})
                   end
                 end
               end
@@ -112,9 +111,10 @@ class Lab < ActiveRecord::Base
               dCN = dCN % 7
             end
           end
-        tRN += 1
+          tRN += 1
         end
       end
       return timeTable
     end
+
 end
