@@ -117,12 +117,4 @@ class Lab < ActiveRecord::Base
       end
       return timeTable
     end
-
-    def opening_shift
-      calendar.entries[0].user
-    end
-
-    def closing_shift
-      calendar.entries[0].user
-    end
 end
