@@ -174,7 +174,7 @@ class LabsController < ApplicationController
                         t+=1
                       end
                     end
-                    debugger
+
                     if k =='XX' or k == 'xx'
                       #sub must have entry attributes. entry must have start&end time. Associate all xx shifts with Chris
                       xxEntry = Entry.create!(:entry_type => 'xx', :user_id => 7, :start_time => startTime, :end_time => endTime, :lab_id => @lab.id, :description => "")
