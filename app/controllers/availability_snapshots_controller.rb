@@ -14,7 +14,7 @@ class AvailabilitySnapshotsController < ApplicationController
   # GET /availability_snapshots/1.json
   def show
     @availability_snapshot = AvailabilitySnapshot.find(params[:id])
-    @time = @availability_snapshot.start_date
+    @time = @availability_snapshot.start_date.midnight.to_time
     @avail = @availability_snapshot.availabilities[:avail]
     @rather_not = @availability_snapshot.availabilities[:rather_not]
     @prefer = @availability_snapshot.availabilities[:prefer]
@@ -28,7 +28,7 @@ class AvailabilitySnapshotsController < ApplicationController
     @prefer.each_pair do |k,v|
       @prefer[k] = display(v)
     end
-
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @availability_snapshot }
