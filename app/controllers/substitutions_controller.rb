@@ -243,6 +243,7 @@ class SubstitutionsController < ApplicationController
         else
           flash[:error] = "Expired Shift"
           format.html { redirect_to new_substitution_path }
+        end
         format.json { render json: @substitution.errors, status: :unprocessable_entity }
       elsif @substitution.save
         SubstitutionMailer.posted_sub(@substitution)
