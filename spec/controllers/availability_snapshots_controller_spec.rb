@@ -21,12 +21,12 @@ require 'spec_helper'
 describe AvailabilitySnapshotsController do
 
   before (:each) do
-    @period = Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
+    @period = Period.create(:start_date=>Time.current-2.months, :end_date=>Time.current+2.months, :name=>"Period", :visible=>true)
     @admin = User.create!(:name => "John", :activated => true, :initials => "J")
-    @admin.availability_calendar(@period).entries << Entry.create(:entry_type => "rather_not", :start_time => (Time.now).change(:min=>0), :end_time =>(Time.now+2.hours).change(:minute=>0))
-    @admin.availability_calendar(@period).entries << Entry.create(:entry_type => "prefer", :start_time => (Time.now+4.hours).change(:min=>0), :end_time =>(Time.now+6.hours).change(:minute=>0))
-    @admin.availability_calendar(@period).entries << Entry.create(:entry_type => "rather_not", :start_time => (Time.now+7.hours).change(:min=>0), :end_time =>(Time.now+8.hours).change(:minute=>0))
-    @admin.availability_calendar(@period).entries << Entry.create(:entry_type => "prefer", :start_time => (Time.now+10.hours).change(:min=>0), :end_time =>(Time.now+12.hours).change(:minute=>0))
+    @admin.availability_calendar(@period).entries << Entry.create(:entry_type => "rather_not", :start_time => (Time.current).change(:min=>0), :end_time =>(Time.current+2.hours).change(:min=>0))
+    @admin.availability_calendar(@period).entries << Entry.create(:entry_type => "prefer", :start_time => (Time.current+4.hours).change(:min=>0), :end_time =>(Time.current+6.hours).change(:min=>0))
+    @admin.availability_calendar(@period).entries << Entry.create(:entry_type => "rather_not", :start_time => (Time.current+7.hours).change(:min=>0), :end_time =>(Time.current+8.hours).change(:min=>0))
+    @admin.availability_calendar(@period).entries << Entry.create(:entry_type => "prefer", :start_time => (Time.current+10.hours).change(:min=>0), :end_time =>(Time.current+12.hours).change(:min=>0))
     @admin.save
     group = Group.find_by_name("Administrators")
     group.users << @admin
@@ -37,7 +37,7 @@ describe AvailabilitySnapshotsController do
   # AvailabilitySnapshot. As you add validations to AvailabilitySnapshot, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    time = Time.now
+    time = Time.current
     {:start_date =>time-2.days, :end_date =>time+2.days, :availabilities=>{:avail=>{time=>["J"]},:rather_not=>{time=>["J"]},:prefer=>{time=>["J"]}}}
   end
   
