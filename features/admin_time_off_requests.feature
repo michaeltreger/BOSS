@@ -37,7 +37,7 @@ Background: Users created
    And I should see a request starts at "2012-4-30 9:00" and ends at "2012-4-30 10:00" with name "Bob"
    And I should not see "some other requests"
 
-Scenario: Admin view a request's description
+ Scenario: Admin view a request's description
    Given I am logged in as "Hell"
    And I am on all time-off requests page
    When I follow "Details"
@@ -47,6 +47,21 @@ Scenario: Admin view a request's description
    Then I should see a request starts at "2012-4-30 9:00" and ends at "2012-4-30 10:00" with name "Bob"
    And I am on all time-off requests page
   
+ Scenario: Admin can edit a request's description
+   Given I am logged in as "Hell"
+   And I am on all time-off requests page
+   When I follow "Details"
+   Then I should see a description "go shopping"
+   When I follow "Edit"
+   And I fill in "time_off_request_description" with "go eating"
+   And I press "Save Changes"
+   Then I should be on all time-off requests page
+   Then I should see a request starts at "2012-4-29 12:00" and ends at "2012-4-29 13:00" with name "Hell"
+   Then I should see a request starts at "2012-4-30 9:00" and ends at "2012-4-30 10:00" with name "Bob"
+   And I follow "Details"
+   Then I should see a description "go eating"
+   When I follow "Back"
+   Then I should be on all time-off requests page
 
  Scenario: Scheduler make a time-off request
     Given I am logged in as "Chris"
