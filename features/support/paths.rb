@@ -21,6 +21,11 @@ module NavigationHelpers
       '/substitutions'
     when /^the "Manage Substitutions" page$/
       '/admin/substitutions'
+    when /^(.*)'s Availability Calendar for "(.*)"$/
+      owner = User.find_by_name($1)
+      period = Period.find_by_name($2)
+      calendar_id = (owner.availability_calendar(period)).id
+      '/calendars/'+calendar_id.to_s
     when /^(.*'s) Calendar page$/
       calendar_id = (Calendar.find_by_name($1+" Calendar")).id
       '/calendars/'+calendar_id.to_s

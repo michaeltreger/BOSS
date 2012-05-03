@@ -17,6 +17,7 @@ class CalendarsController < ApplicationController
     @calendar = Calendar.find(params[:id])
     if @calendar.owner != @current_user.id and !@current_user.isAdmin?
       respond_to do |format|
+        flash[:error] = "You are not authorized to access this calendar"
         format.html { redirect_to calendars_path, error: "You are not authorized to access this calendar" }
         format.json { render json: "You are not authorized to access this calendar" }
       end
@@ -40,15 +41,9 @@ class CalendarsController < ApplicationController
   # GET /calendars/1.json
 
   def manage
-    @sscalendars = Calendar.find_all_by_calendar_type(Calendar::SNAPSHOT)
-    @wcalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)
-    if !@sscalendars
-      @sscalendars = []
-    end
-    if !@wcalendars
-      @wcalendars = []
-    end
-    respond_to do |format|
+    @sscalendars = Calendar.find_all_by_calendar_type(Calendar::SNAPSHOT) || []
+    @wcalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)    || []
+     respond_to do |format|
       format.html
       format.json { render json: @acalendars }
     end
