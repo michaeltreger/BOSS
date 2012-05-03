@@ -50,6 +50,8 @@ module NavigationHelpers
       '/time_off_requests/new'
     when /^the "Admin Labs" page$/
       '/admin/labs'
+    when /^the "Admin Groups" page$/
+      '/admin/groups'
     when /^(.*)'s upload file page$/
       '/admin/upload_shifts/'+ Lab.find_by_name($1).id.to_s
     # Add more mappings here.
