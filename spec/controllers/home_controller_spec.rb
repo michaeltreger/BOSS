@@ -2,13 +2,17 @@ require 'spec_helper'
 
 describe HomeController do
   before (:each) do
-    @me = User.create(:name=>"Michael", :cas_user=>720656, :initials=>"MT", :email=>"michael.treger@gmail.com", :activated => true)
-    session[:cas_user_id] = @me.id
+    Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
+    @admin = User.create!(:name => "John", :activated => true, :initials => "J")
+    group = Group.find_by_name("Administrators")
+    group.users << @admin
+    group.save!
+
   end
   describe "GET 'index'" do
     it "returns http success" do
-      get :index
-      response.should be_success
+      visit('/')
+      response.should render_template('index')
     end
   end
 
