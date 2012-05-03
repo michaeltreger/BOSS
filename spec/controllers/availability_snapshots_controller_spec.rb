@@ -21,8 +21,13 @@ require 'spec_helper'
 describe AvailabilitySnapshotsController do
 
   before (:each) do
-    Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
+    @period = Period.create(:start_date=>Time.now-2.months, :end_date=>Time.now+2.months, :name=>"Period", :visible=>true)
     @admin = User.create!(:name => "John", :activated => true, :initials => "J")
+    @admin.availability_calendar(@period).entries << Entry.create(:entry_type => "rather_not", :start_time => (Time.now).change(:min=>0), :end_time =>(Time.now+2.hours).change(:minute=>0))
+    @admin.availability_calendar(@period).entries << Entry.create(:entry_type => "prefer", :start_time => (Time.now+4.hours).change(:min=>0), :end_time =>(Time.now+6.hours).change(:minute=>0))
+    @admin.availability_calendar(@period).entries << Entry.create(:entry_type => "rather_not", :start_time => (Time.now+7.hours).change(:min=>0), :end_time =>(Time.now+8.hours).change(:minute=>0))
+    @admin.availability_calendar(@period).entries << Entry.create(:entry_type => "prefer", :start_time => (Time.now+10.hours).change(:min=>0), :end_time =>(Time.now+12.hours).change(:minute=>0))
+    @admin.save
     group = Group.find_by_name("Administrators")
     group.users << @admin
     group.save!

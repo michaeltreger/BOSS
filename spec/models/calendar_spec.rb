@@ -10,7 +10,7 @@ describe Calendar do
     @lab2 = Lab.create!({:name => 'lab2', :initials => 'l2', :max_employees => 2000, :min_employees => 1999})
     @originalentry = Entry.create!(:user_id => @user1.id, :calendar_id => @calendar1.id, :lab_id => @lab1.id, :start_time => '8:00am', :end_time => '12:00pm')
     @overlap = Entry.create!(:user_id => @user2.id, :calendar_id => @calendar2.id, :lab_id => @lab1.id, :start_time => '9:00am', :end_time => '1:00pm' )
-    @backtobackdiff = Entry.create!(:user_id => @user2.id, :calendar_id => @calendar2.id, :lab_id => @lab2.id, :start_time => '12:00pm', :end_time => '1:00pm')
+    @backtobackdiff = Entry.create!(:user_id => @user1.id, :calendar_id => @calendar2.id, :lab_id => @lab2.id, :start_time => '12:00pm', :end_time => '1:00pm')
     @backtobacksame = Entry.create!(:user_id => @user2.id, :calendar_id => @calendar2.id, :lab_id => @lab1.id, :start_time => '12:00pm', :end_time => '1:00pm')
     @backtobacksame2 = Entry.create!(:user_id => @user2.id, :calendar_id => @calendar2.id, :lab_id => @lab1.id, :start_time => '1:00pm', :end_time => '2:00pm')
     @backtobacksame3 = Entry.create!(:user_id => @user2.id, :calendar_id => @calendar2.id, :lab_id => @lab1.id, :start_time => '2:00pm', :end_time => '3:00pm')
@@ -37,7 +37,7 @@ describe Calendar do
 
       @calendar1.entries.size.should == 2
       @calendar1.check_continuity
-      @calendar1.entries.size.should == 1
+      @calendar1.entries.size.should == 2
 
       @backtobacksame2.calendar_id = @calendar1.id
       @backtobacksame2.user_id = @calendar1.user_id
@@ -49,10 +49,10 @@ describe Calendar do
       @backtobacksame3.save!
       @backtobacksame4.save!
 
-      @calendar1.entries = Entry.where(:calendar_id => @calendar1.id)
-      @calendar1.entries.size.should == 4
-      @calendar1.check_continuity
-      @calendar1.entries.size.should == 1
+      @calendar2.entries = Entry.where(:calendar_id => @calendar2.id)
+      @calendar2.entries.size.should == 3
+      @calendar2.check_continuity
+      @calendar2.entries.size.should == 3
     end
   end
 end
