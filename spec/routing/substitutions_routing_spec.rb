@@ -11,14 +11,6 @@ describe SubstitutionsController do
       get("/substitutions/new").should route_to("substitutions#new")
     end
 
-    it "routes to #show" do
-      get("/substitutions/1").should route_to("substitutions#show", :id => "1")
-    end
-
-    it "routes to #edit" do
-      get("/substitutions/1/edit").should route_to("substitutions#edit", :id => "1")
-    end
-
     it "routes to #create" do
       post("/substitutions").should route_to("substitutions#create")
     end

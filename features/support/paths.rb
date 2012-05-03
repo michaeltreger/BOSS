@@ -39,6 +39,10 @@ module NavigationHelpers
       '/time_off_requests/new'
     when /^the Create New Request page$/
       '/time_off_requests/new'
+    when /^the "Admin Labs" page$/
+      '/admin/labs'
+    when /^(.*)'s upload file page$/
+      '/admin/upload_shifts/'+ Lab.find_by_name($1).id.to_s
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

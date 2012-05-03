@@ -55,12 +55,7 @@ class UsersController < ApplicationController
   end
 
 
-  ###DEBUGGING FUNCTIONS###########
-  def changeAdmin
-    @current_user.user_type = Integer(params[:user_type])
-    @current_user.save!
-    redirect_to '/'
-  end
+  ###TESTING FUNCTIONS###########
 
   def test_setuser
     if Rails.env.test?
@@ -70,6 +65,8 @@ class UsersController < ApplicationController
     end
     redirect_to '/'
   end
+
+  ###############################
 
   # POST /users
   # POST /users.json
