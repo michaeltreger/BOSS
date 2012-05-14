@@ -8,7 +8,7 @@
 
   .field
     = f.label :name
-    = f.select('users', @users.collect {|user| [ user.name, user.id ] })
+    = f.select('users', @users.collect {|user| [ user.name, user.id ] }, {}, {:class => "groupselect"})
 
   .actions
     = f.submit 'Save'

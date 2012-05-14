@@ -98,9 +98,8 @@ class GroupsController < ApplicationController
     end
   end
 
-  # not used currently
-  #def addusers
-  #  @group = Group.find(params[:id])
-  #  @users = User.find_all_by_activated(true).delete_if { |user| @group.users.include? user }
-  #end
+  def addusers
+    @group = Group.find(params[:id])
+    @users = User.find_all_by_activated(true).delete_if { |user| @group.users.include? user }
+  end
 end
