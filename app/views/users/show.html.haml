@@ -1,6 +1,7 @@
 -@page_title = "#{@user.name}'s Profile"
 - if @user.activated == false
   %h2 Note: This user is currently deactivated.
+%h3 General Information
 %p
   %b Name:
   = @user.name
@@ -79,3 +80,47 @@
   \|
   = link_to "Delete user", @user, :confirm => 'Are you sure?', :method => :delete
 
+<br>
+<br>
+
+%h3 Time Edits
+%table
+  %tr
+    %th Start time
+    %th Duration
+    %th Lab
+    %th Comment
+    %th
+    %th
+    %th
+
+  - @time_edits.each do |time_edit|
+    %tr
+      %td= time_edit.start_time
+      %td= time_edit.duration
+      %td= time_edit.lab_id
+      %td= time_edit.comment
+      %td= link_to 'Show', time_edit
+      %td= link_to 'Edit', edit_time_edit_path(time_edit)
+      %td= link_to 'Destroy', time_edit, :confirm => 'Are you sure?', :method => :delete
+
+<br>
+
+%h3 Time Off Requests
+%table
+  %tr
+    %th Start time
+    %th End time
+    %th Submission time
+    %th Day notice
+    %th
+    %th
+
+  - @time_off_requests.each do |time_off_request|
+    %tr
+      %td= time_off_request.start_time.strftime('%a, %m/%d/%Y %I:%M%p')
+      %td= time_off_request.end_time.strftime('%a, %m/%d/%Y %I:%M%p')
+      %td= time_off_request.submission.strftime('%a, %m/%d/%Y %I:%M%p')
+      %td= time_off_request.day_notice
+      %td= link_to 'Details', time_off_request
+      %td= link_to 'Delete', time_off_request, :confirm => 'Are you sure?', :method => :delete

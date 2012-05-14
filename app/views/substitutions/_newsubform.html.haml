@@ -18,11 +18,13 @@
           - else
             %td
   .col-2
-    %h3 Substitute Partial Shift?
+    %h3 Partial Shift (Optional)
+    = check_box "partial_shift", "enabled", {:id => "partial_shift"}
+    Check this box to sub a shift only for the following time:
+    <BR>
     = time_select "partial_shift", "start", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_start" , :class => "timeselect"}
     = '---'
     = time_select "partial_shift", "end", { :simple_time_select => true, :minute_interval => 30, :time_separator => ""}, { :id => "partial_shift_end", :class => "timeselect" }
-    = check_box "partial_shift", "enabled", {:id => "partial_shift"}
     %h3 Select a user to offer this substitution to (Optional)
     = collection_select(:user, :id, @users, :id, :initials, {:include_blank => true}, {:class => :initialsselect})  
     %h3 Notes about this Substitution

@@ -31,6 +31,8 @@ class UsersController < ApplicationController
     @acalendars = @user.calendars.find_all {|c| c.availability? and c.period.visible}
     @wcalendars = @user.calendars.find_all {|c| c.shift?}
     @preferences = @user.preference.find_all {|p| p.period.visible}
+    @time_edits = TimeEdit.find_by_user_id(@user.id) || []
+    @time_off_requests = TimeOffRequest.find_by_user_id(@user.id) || []
 
     respond_to do |format|
       format.html # show.html.erb
