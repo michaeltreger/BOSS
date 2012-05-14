@@ -3,6 +3,11 @@ select.calendarselect {
   width: 400px;
 }
 
+select.groupselect {
+  font-size: 90%;
+  width: 200px;
+}
+
 select.initialsselect {
   font-size: 90%;
   width: 70px;

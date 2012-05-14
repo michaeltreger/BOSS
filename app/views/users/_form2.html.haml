@@ -7,8 +7,7 @@
           %li= msg
 
   .field
-    = f.label :group
-    = f.select('groups', @groups.collect {|group| [ group.name, group.id ] })
+    = f.select('groups', @groups.collect {|group| [ group.name, group.id ] },{}, {:class => "groupselect"})
 
   .actions
     = f.submit 'Save'
