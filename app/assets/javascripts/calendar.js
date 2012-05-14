@@ -192,6 +192,12 @@ $(document).ready(function() {
                  "backgroundColor" : "#999",
                  "border" : "1px solid #888"
               });
+           } else if (calEvent.entry_type=== "time_off_request") {
+              $event.css("backgroundColor", "#da2");
+             $event.find(".wc-time").css({
+                 "backgroundColor" : "#b80",
+                 "border" : "1px solid #a70"
+              });
            } else if (calEvent.entry_type=== "") {
               color = randomColor(calEvent.description);
               $event.css("backgroundColor", color);

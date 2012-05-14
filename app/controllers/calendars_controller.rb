@@ -83,8 +83,10 @@ class CalendarsController < ApplicationController
             if e.entry_type == "closed"
               e[:readOnly] = true
             end
-            e.start_time = e.start_time + (@start_date-e.start_time.beginning_of_week)
-            e.end_time = e.end_time + (@start_date-e.end_time.beginning_of_week)
+            if e.entry_type != "time_off_request"
+              e.start_time = e.start_time + (@start_date-e.start_time.beginning_of_week)
+              e.end_time = e.end_time + (@start_date-e.end_time.beginning_of_week)
+            end
           end
           results[:start_date] = @start_date
           results[:end_date] = @start_date + 6.days
