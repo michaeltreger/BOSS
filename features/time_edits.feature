@@ -30,7 +30,7 @@ Background: A Calendar has been created
     Given I am logged in as "Alice"
     And I am on the "New Time Edit" page
     When I select "14" from "time_edit_start_time_4i"
-    And I fill in "Duration" with "2"
+    And I fill in "time_edit_duration" with "2"
     And I select "MMF" from "time_edit_lab_id"
     And I fill in "Comment" with "Lab training"
     And I press "Save"
