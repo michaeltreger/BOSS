@@ -6,7 +6,7 @@ class CalendarMailer < ActionMailer::Base
     #mail(:to => cal.user.email, :subject => "Updated Calendar").deliver
     #mail(:to => admins, :subject => "Updated Calendar").deliver
     #mail(:to => scheds, :subject => "Updated Calendar").deliver
-    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "Updated Calendar").deliver
+    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "[#{User.find(calendar.owner).initials}] Schedule Updated").deliver
   end
   
 end

@@ -10,7 +10,7 @@ class SubstitutionMailer < ActionMailer::Base
     else
       #mail(:to => everyone, :subject => "Posted Sub").deliver
     end
-    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "Posted Sub").deliver
+    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "#{sub.entry.start_time.strftime('%m/%d: %I:%M%p')} - #{sub.entry.end_time.strftime('%I:%M%p')} at #{sub.entry.lab.initials} (#{sub.from_user.initials})").deliver
   end
   
   def taken_sub(sub, targetUser)
@@ -20,7 +20,7 @@ class SubstitutionMailer < ActionMailer::Base
     #mail(:to => sub.from_user.email, :subject => "Taken Sub").deliver
     #mail(:to => admins, :subject => "Taken Sub").deliver
     #mail(:to => scheds, :subject => "Taken Sub").deliver
-    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "Taken Sub").deliver
+    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "#{sub.entry.start_time.strftime('%m/%d: %I:%M%p')} - #{sub.entry.end_time.strftime('%I:%M%p')} at #{sub.entry.lab.initials} for #{sub.from_user.initials} taken by #{targetUser.initials}").deliver
   end
 
 end

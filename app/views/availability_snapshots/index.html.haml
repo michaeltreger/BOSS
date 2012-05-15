@@ -9,7 +9,7 @@
   - @availability_snapshots.each do |availability_snapshot|
     %tr
       %td= link_to "#{availability_snapshot.start_date} - #{availability_snapshot.end_date}", availability_snapshot
-      %td= availability_snapshot.created_at
+      %td= availability_snapshot.created_at.strftime('%a, %m/%d -- %I:%M%p')
       %td= link_to 'Destroy', availability_snapshot, :confirm => 'Are you sure?', :method => :delete
 
 %br

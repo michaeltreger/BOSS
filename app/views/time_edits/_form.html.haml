@@ -10,7 +10,11 @@
     = f.label :start_time
     = f.datetime_select :start_time
   .field
-    = f.label :duration
+    = f.label 'duration (minutes)'
+    = radio_button_tag( 'positive-negative' , :positive, true)
+    +
+    = radio_button_tag( 'positive-negative' , :negative)
+    \-
     = f.number_field :duration
   .field
     = f.label :lab_id

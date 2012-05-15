@@ -41,7 +41,8 @@ class CalendarsController < ApplicationController
   # GET /calendars/1.json
 
   def manage
-    @sscalendars = Calendar.find_all_by_calendar_type(Calendar::SNAPSHOT) || []
+    @labcalendars = Calendar.find_all_by_calendar_type(Calendar::LAB) || []
+    @sscalendars = AvailabilitySnapshot.all || []
     @wcalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)    || []
      respond_to do |format|
       format.html
@@ -83,8 +84,10 @@ class CalendarsController < ApplicationController
             if e.entry_type == "closed"
               e[:readOnly] = true
             end
-            e.start_time = e.start_time + (@start_date-e.start_time.beginning_of_week)
-            e.end_time = e.end_time + (@start_date-e.end_time.beginning_of_week)
+            if e.entry_type != "time_off_request"
+              e.start_time = e.start_time + (@start_date-e.start_time.beginning_of_week)
+              e.end_time = e.end_time + (@start_date-e.end_time.beginning_of_week)
+            end
           end
           results[:start_date] = @start_date
           results[:end_date] = @start_date + 6.days
