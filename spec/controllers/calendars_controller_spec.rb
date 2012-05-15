@@ -207,10 +207,10 @@ describe CalendarsController do
     before (:each) do
       @student1 = User.create!(:name => "Micky", :cas_user => 123123)
       @student2 = User.create!(:name => "Minnie", :cas_user => 456456)
-      @calendar11  = Calendar.create!(:calendar_type => Calendar::AVAILABILITY, :name => "testing11", :description => "student1 clendar1", :user_id => @student1.id)
-      @calendar12  = Calendar.create!(:calendar_type => Calendar::AVAILABILITY, :name => "testing12", :description => "student1 caldendar2", :user_id => @student1.id)
-      @calendar21  = Calendar.create!(:calendar_type => Calendar::AVAILABILITY, :name => "testing21", :description => "student2 caldendar1", :user_id => @student2.id)
-      @calendar22  = Calendar.create!(:calendar_type => Calendar::AVAILABILITY, :name => "testing22", :description => "student2 caldendar2", :user_id => @student2.id)
+      @calendar11  = Calendar.create!(:calendar_type => Calendar::SHIFTS, :name => "testing11", :description => "student1 clendar1", :user_id => @student1.id)
+      @calendar12  = Calendar.create!(:calendar_type => Calendar::SHIFTS, :name => "testing12", :description => "student1 caldendar2", :user_id => @student1.id)
+      @calendar21  = Calendar.create!(:calendar_type => Calendar::SHIFTS, :name => "testing21", :description => "student2 caldendar1", :user_id => @student2.id)
+      @calendar22  = Calendar.create!(:calendar_type => Calendar::SHIFTS, :name => "testing22", :description => "student2 caldendar2", :user_id => @student2.id)
       @admin = User.create!(:name => "AF", :cas_user => 000000)
       group = Group.find_by_name("Administrators")
       group.users << @admin
@@ -224,7 +224,7 @@ describe CalendarsController do
 
       it "admin can view all students' calendars" do
         get :manage
-        assigns(:acalendars).count.should == 4
+        assigns(:wcalendars).count.should == 9
       end
 
     end
