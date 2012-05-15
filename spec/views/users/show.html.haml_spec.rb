@@ -11,6 +11,8 @@ describe "users/show" do
     )
     @current_user = @user
     @groups = []
+    @time_edits = []
+    @time_off_requests = []
     session[:test_user_id] = @user.id
   end
 

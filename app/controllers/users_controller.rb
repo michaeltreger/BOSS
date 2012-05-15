@@ -33,7 +33,6 @@ class UsersController < ApplicationController
     @preferences = @user.preference.find_all {|p| p.period.visible}
     @time_edits = TimeEdit.find_all_by_user_id(@user.id) || []
     @time_off_requests = TimeOffRequest.find_by_user_id(@user.id) || []
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }
