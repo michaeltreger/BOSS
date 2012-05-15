@@ -51,6 +51,9 @@ class TimeEditsController < ApplicationController
   def create
     params[:time_edit][:user_id] = @current_user.id
     params[:time_edit][:calendar_id] = @current_user.shift_calendar.id
+    if params['positive-negative'] == 'negative'
+      params[:time_edit][:duration] = params[:time_edit][:duration].to_i.abs * -1
+    end
     @time_edit = TimeEdit.new(params[:time_edit])
 
     respond_to do |format|
