@@ -41,7 +41,8 @@ class CalendarsController < ApplicationController
   # GET /calendars/1.json
 
   def manage
-    @sscalendars = Calendar.find_all_by_calendar_type(Calendar::SNAPSHOT) || []
+    @labcalendars = Calendar.find_all_by_calendar_type(Calendar::LAB) || []
+    @sscalendars = AvailabilitySnapshot.all || []
     @wcalendars = Calendar.find_all_by_calendar_type(Calendar::SHIFTS)    || []
      respond_to do |format|
       format.html

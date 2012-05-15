@@ -11,12 +11,18 @@
     %th
     %th
 
+  - pay_period = (@time_edits[0].start_time+16.days).month
+  - group = :group1
   - @time_edits.each do |time_edit|
-    %tr
-      %td= time_edit.user_id
+    - if (time_edit.start_time+16.days).month != pay_period
+      - group = group == :group1 ? :group2 : :group1
+      - pay_period = (time_edit.start_time+16.days).month
+
+    %tr{:class=>group}
+      %td= User.find(time_edit.user_id).initials
       %td= time_edit.start_time
       %td= time_edit.duration
-      %td= time_edit.lab_id
+      %td= Lab.find(time_edit.lab_id).initials
       %td= time_edit.comment
       %td= link_to 'Show', time_edit
       %td= link_to 'Edit', edit_time_edit_path(time_edit)

@@ -1,25 +1,27 @@
 - @page_title = 'Calendar Administration'
-%h3 Submitted Availability Calendars
+%h3 Lab Calendars
 %table
   %tr
-    %th Owner
     %th Name
-    %th Description
-    %th Start
-    %th End
     %th Last Modified
-    %th
-    %th
-  - @sscalendars.each do |c|
+  - @labcalendars.each do |c|
     %tr
-      %td= link_to c.user.initials, user_path(c.user)
       %td= link_to c.name, calendar_path(c)
-      %td= c.description
-      %td= c.period.start_date
-      %td= c.period.end_date
       %td= c.updated_at.strftime('%a, %m/%d -- %I:%M%p')
-      %td= link_to 'Edit', edit_calendar_path(c)
-      %td= link_to 'Delete', c, :confirm => 'Are you sure?', :method => :delete
+
+%h3 Snapshot Calendars
+%table
+  %tr
+    %th Dates For
+    %th Created On
+    %th
+
+  - @sscalendars.each do |availability_snapshot|
+    %tr
+      %td= link_to "#{availability_snapshot.start_date} - #{availability_snapshot.end_date}", availability_snapshot
+      %td= availability_snapshot.created_at.strftime('%a, %m/%d -- %I:%M%p')
+      %td= link_to 'Destroy', availability_snapshot, :confirm => 'Are you sure?', :method => :delete
+
 
 %h3 Work Calendars
 %table
