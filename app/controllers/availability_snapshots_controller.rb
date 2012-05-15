@@ -83,11 +83,12 @@ class AvailabilitySnapshotsController < ApplicationController
     start = Time.current.beginning_of_week + 7.days
     User.find_all_by_activated(true).each do |u|
       u.availability_calendar(@current_period).entries.each do |e|
-        if e.unavailable?
+      user_initials = User.find(e.calendar.user_id).initials
+      if e.unavailable?
           time = e.start_time + (start - e.start_time.beginning_of_week)
           endTime = e.end_time + (start - e.end_time.beginning_of_week)
           while time < endTime
-            @avail[time].delete(User.find(e.calendar.user_id).initials)
+            @avail[time].delete(user_initials)
             time += 30.minutes
           end
         elsif e.entry_type == "rather_not"
@@ -95,11 +96,13 @@ class AvailabilitySnapshotsController < ApplicationController
           endTime = e.end_time + (start - e.end_time.beginning_of_week)
           while time < endTime
             if @rather_not[time].nil?
-              @rather_not[time] = [User.find(e.calendar.user_id).initials]
+              @rather_not[time] = [user_initials]
             else
-              @rather_not[time] << User.find(e.calendar.user_id).initials
+              @rather_not[time] << user_initials
             end
-            @avail[time].delete(User.find(e.calendar.user_id).initials)
+            if @avail[time]
+              @avail[time].delete(user_initials)
+            end
             time += 30.minutes
           end
         elsif e.entry_type == "prefer"
@@ -107,11 +110,29 @@ class AvailabilitySnapshotsController < ApplicationController
           endTime = e.end_time + (start - e.end_time.beginning_of_week)
           while time < endTime
             if @prefer[time].nil?
-              @prefer[time] = [User.find(e.calendar.user_id).initials]
+              @prefer[time] = [user_initials]
             else
-              @prefer[time] << User.find(e.calendar.user_id).initials
+              @prefer[time] << user_initials
             end
-            @avail[time].delete(User.find(e.calendar.user_id).initials)
+            if @avail[time]
+              @avail[time].delete(user_initials)
+            end
+            time += 30.minutes
+          end
+        elsif e.entry_type == "time_off_request"
+          time = e.start_time.change(:min=>0)
+          endTime = e.end_time
+          while time < endTime
+            if @avail[time]
+              @avail[time].delete(user_initials)
+            end
+            if @prefer[time]
+              debugger
+              @prefer[time].delete(user_initials)
+            end
+            if @rather_not[time]
+              @rather_not[time].delete(user_initials)
+            end
             time += 30.minutes
           end
         end
