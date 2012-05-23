@@ -13,7 +13,11 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.find_all_by_activated(true)
+    if params[:group]
+      @users = Group.find(params[:group]).users.find_all {|u| u.activated?}
+    else
+      @users = User.find_all_by_activated(true)
+    end
     @deactivatedUsers = User.find_all_by_activated(false)
 
     respond_to do |format|
