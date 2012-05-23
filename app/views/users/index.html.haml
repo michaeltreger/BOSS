@@ -1,4 +1,8 @@
 -@page_title = "Users"
+= form_tag users_path, :method => "get" do
+  = select_tag 'group', options_from_collection_for_select(Group.all, "id","name")
+  = submit_tag "Save"
+<br/><br/>
 Active Users
 %table
   %tr
@@ -17,14 +21,14 @@ Active Users
       - elsif user.isScheduler?
         %td Scheduler
       - else
-        %td
+        %td Employee
       %td= user.name
       %td= user.initials
       %td= user.phone
       %td= user.email
       %td= link_to 'View user\'s page', user
       %td= link_to 'Modify user', edit_user_path(user)#"/admin/users/edit/#{user.id}"
-      %td= link_to 'Deactivate user', deactivate_user_path(user), :confirm => 'Are you sure?'
+      %td= link_to 'Availability calendar', calendar_path(user)
 
 %br
 
