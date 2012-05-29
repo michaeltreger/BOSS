@@ -28,7 +28,7 @@ Active Users
       %td= user.email
       %td= link_to 'View user\'s page', user
       %td= link_to 'Modify user', edit_user_path(user)#"/admin/users/edit/#{user.id}"
-      %td= link_to 'Availability calendar', calendar_path(user)
+      %td= link_to 'Availability calendar', calendar_path(user.availability_calendar(Period.current))
 
 %br
 
