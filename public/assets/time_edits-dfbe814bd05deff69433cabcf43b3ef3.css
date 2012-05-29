@@ -1,0 +1,9 @@
+/* line 5, /home/peter/Documents/cs169/CS169-Campus-Scheduler/app/assets/stylesheets/time_edits.css.scss */
+tr.group1 td {
+  background-color: #ffffff;
+}
+
+/* line 6, /home/peter/Documents/cs169/CS169-Campus-Scheduler/app/assets/stylesheets/time_edits.css.scss */
+tr.group2 td {
+  background-color: #c0c0c0;
+}
