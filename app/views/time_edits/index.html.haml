@@ -12,19 +12,22 @@
     %th
 
   - group = :group1
+  - thisPeriod = TimeEdit.pay_period_function(Time.now)
+  - prevPeriod = TimeEdit.pay_period_function(Time.now-1.month)
   - @time_edits = @time_edits.group_by(&:pay_period)
   - @time_edits.each do |period, time_edits|
-    - time_edits.each do |time_edit|
-      %tr{:class=>group}
-        %td= User.find(time_edit.user_id).initials
-        %td= time_edit.start_time
-        %td= time_edit.duration
-        %td= Lab.find(time_edit.lab_id).initials
-        %td= time_edit.comment
-        %td= link_to 'Show', time_edit
-        %td= link_to 'Edit', edit_time_edit_path(time_edit)
-        %td= link_to 'Destroy', time_edit, :confirm => 'Are you sure?', :method => :delete
-    - group = group == :group1 ? :group2 : :group1
+    -if period == thisPeriod or period == prevPeriod
+      - time_edits.each do |time_edit|
+        %tr{:class=>group}
+          %td= User.find(time_edit.user_id).initials
+          %td= time_edit.start_time
+          %td= time_edit.duration
+          %td= Lab.find(time_edit.lab_id).initials
+          %td= time_edit.comment
+          %td= link_to 'Show', time_edit
+          %td= link_to 'Edit', edit_time_edit_path(time_edit)
+          %td= link_to 'Destroy', time_edit, :confirm => 'Are you sure?', :method => :delete
+      - group = group == :group1 ? :group2 : :group1
 
 %br
 
