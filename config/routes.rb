@@ -12,6 +12,9 @@ CS169CampusScheduler::Application.routes.draw do
 
   resources :calendars
 
+  match 'error' => 'home#error'
+  match 'maintenance' => 'home#maintenance'
+
   match 'logout' => 'users#logout', :as => :logout
   scope '/admin' do
     resources :periods

@@ -1,6 +1,6 @@
 -@page_title = "Users"
 = form_tag users_path, :method => "get" do
-  = select_tag 'group', options_from_collection_for_select(Group.all, "id","name")
+  = select_tag 'group', options_from_collection_for_select(Group.all, "id","name", (params[:group] || 0)), {:class => "groupselect"}
   = submit_tag "Save"
 <br/><br/>
 Active Users
@@ -28,8 +28,7 @@ Active Users
       %td= user.email
       %td= link_to 'View user\'s page', user
       %td= link_to 'Modify user', edit_user_path(user)#"/admin/users/edit/#{user.id}"
-      %td= link_to 'Availability calendar', calendar_path(user)
-
+      %td= link_to 'Availability Calendar', user.availability_calendar(@current_period)
 %br
 
 Deactivated Users
