@@ -1,26 +1,26 @@
 class SubstitutionMailer < ActionMailer::Base
-  default from: "bos-notifications@cafe.berkeley.edu"
+  default from: "boss.cafe1@gmail.com"
   
   def posted_sub(sub)
     @sub = sub
+    subject = "#{sub.entry.start_time.strftime('%m/%d: %I:%M%p')} - #{sub.entry.end_time.strftime('%I:%M%p')} at #{sub.entry.lab.initials} (#{sub.from_user.initials})"
     if @sub.to_user
-      #mail(:to => sub.to_user.email, :subject => "Posted Sub").deliver
-      #mail(:to => admins, :subject => "Posted Sub").deliver
-      #mail(:to => scheds, :subject => "Posted Sub").deliver
+      mail(:to => sub.to_user.email, :subject => subject).deliver
+      mail(:to => Group.find(User::ADMINISTRATOR).email, :subject => subject).deliver
+      mail(:to => Group.find(User::SCHEDULER).email, :subject => subject).deliver
     else
-      #mail(:to => everyone, :subject => "Posted Sub").deliver
+      mail(:to => Group.find(User::ALL_USERS).email, :subject => subject).deliver
     end
-    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "#{sub.entry.start_time.strftime('%m/%d: %I:%M%p')} - #{sub.entry.end_time.strftime('%I:%M%p')} at #{sub.entry.lab.initials} (#{sub.from_user.initials})").deliver
   end
   
   def taken_sub(sub, targetUser)
     @sub = sub
     @targetUser = targetUser
-    #mail(:to => targetUser.email, :subject => "Taken Sub").deliver
-    #mail(:to => sub.from_user.email, :subject => "Taken Sub").deliver
-    #mail(:to => admins, :subject => "Taken Sub").deliver
-    #mail(:to => scheds, :subject => "Taken Sub").deliver
-    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "#{sub.entry.start_time.strftime('%m/%d: %I:%M%p')} - #{sub.entry.end_time.strftime('%I:%M%p')} at #{sub.entry.lab.initials} for #{sub.from_user.initials} taken by #{targetUser.initials}").deliver
+    subject = "#{sub.entry.start_time.strftime('%m/%d: %I:%M%p')} - #{sub.entry.end_time.strftime('%I:%M%p')} at #{sub.entry.lab.initials} for #{sub.from_user.initials rescue 'XX'} taken by #{targetUser.initials}"
+    mail(:to => targetUser.email, :subject => subject).deliver
+    mail(:to => sub.from_user.email, :subject => subject).deliver
+    mail(:to => Group.find(User::ADMINISTRATOR).email, :subject => subject).deliver
+    mail(:to => Group.find(User::SCHEDULER).email, :subject => subject).deliver
   end
 
 end
