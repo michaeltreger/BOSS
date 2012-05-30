@@ -15,7 +15,7 @@ User.create(:name=>"Michael", :cas_user=>720656, :initials=>"MT", :email=>"micha
 User.create(:name=>"Peter", :cas_user=>760437, :initials=>"PC", :email=>"petercheng00@berkeley.edu", :activated => true)
 User.create(:name=>"Su Yan Fang", :cas_user =>967198, :initials=>"SYF", :email=>"sohunew4000@gmail.com", :activated => true)
 User.create(:name=>"Jingwei", :cas_user=> 974333, :initials=>"JQ", :email=>"seven.qi2011@gmail.com", :activated => true)
-#User.create(:name=>"Rohan", :cas_user=> 883140, :initials=>"RC", :email=>"rohan.cribbs@gmail.com", :activated => true)
+User.create(:name=>"Rohan", :cas_user=> 883140, :initials=>"RC", :email=>"rohan.cribbs@gmail.com", :activated => true)
 User.create(:name=>"Richard", :cas_user=> 307909, :initials=>"RX", :email=>"richard@richard.richard", :activated => true)
 User.create(:name=>"Chris", :cas_user=>18453, :initials=>"CW", :email=>"chrisw@cafe.berkeley.edu", :activated => true)
 User.create(:name=>"Willa", :cas_user=>196233, :initials=>"NC", :email=>"nchan@cafe.berkeley.edu", :activated => true)
