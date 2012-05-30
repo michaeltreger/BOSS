@@ -8,6 +8,12 @@ class HomeController < ApplicationController
     return true
   end
 
+  def error
+  end
+
+  def maintenance
+  end
+
   def index
     @login_url = CASClient::Frameworks::Rails::Filter.login_url(self)
     set_current_user()

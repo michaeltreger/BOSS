@@ -30,6 +30,14 @@ class ApplicationController < ActionController::Base
 
   def set_period
     @current_period = Period.current
+    if @current_period.nil?
+      if @current_user && !@current_user.isAdmin?
+        flash[:error] = "No Period is Currently Active - Please Contact an Administrator"
+        redirect_to '/'
+      elsif @current_user
+        flash[:error] = "No Period is Currently Active - Some Pages May Fail to Load"
+      end
+    end
     if @current_user
       if @current_period
         @current_availability = @current_user.availability_calendar(@current_period)

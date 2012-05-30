@@ -19,7 +19,6 @@ class UsersController < ApplicationController
       @users = User.find_all_by_activated(true)
     end
     @deactivatedUsers = User.find_all_by_activated(false)
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
