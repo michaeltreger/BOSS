@@ -171,7 +171,7 @@ class CalendarsController < ApplicationController
     @calendar.updated_at = DateTime.current
 
     if @calendar.save
-      #CalendarMailer.updated_calendar(@calendar)
+      CalendarMailer.updated_calendar(@calendar)
       render :json => "Saved", :status => :ok
     else
       render :json => @calendar.errors, :status => :unprocessable_entity

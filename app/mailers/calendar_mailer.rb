@@ -1,12 +1,12 @@
 class CalendarMailer < ActionMailer::Base
-  default from: "bos-notifications@cafe.berkeley.edu"
+  default from: "boss.cafe1@gmail.com"
   
   def updated_calendar(calendar)
     @calendar = calendar
-    #mail(:to => cal.user.email, :subject => "Updated Calendar").deliver
-    #mail(:to => admins, :subject => "Updated Calendar").deliver
-    #mail(:to => scheds, :subject => "Updated Calendar").deliver
-    mail(:to => "michael.treger+bostesting@gmail.com", :subject => "[#{User.find(calendar.owner).initials}] Schedule Updated").deliver
+    subject = "[#{User.find(calendar.owner).initials}] Schedule Updated"
+    mail(:to => calendar.user.email, :subject => subject).deliver
+    mail(:to => Group.find(User::ADMINISTRATOR).email, :subject => subject).deliver
+    mail(:to => Group.find(User::SCHEDULER).email, :subject => subject).deliver
   end
   
 end
