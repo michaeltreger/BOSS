@@ -21,7 +21,8 @@ class User < ActiveRecord::Base
 
   ADMINISTRATOR = Group.find_or_create_by_name(:name => "Administrators", :description => "All users in this group are BOS administrators.").id
   SCHEDULER = Group.find_or_create_by_name(:name => "Schedulers", :description => "All users in this group are BOS schedulers.").id
-  EMPLOYEE = Group.find_or_create_by_name(:name => "Unassigned", :description => "All users in this group by default.").id
+  EMPLOYEE = Group.find_or_create_by_name(:name => "Employee", :description => "All users in are employees.").id
+  ALL_USERS = Group.find_or_create_by_name(:name => "All Users", :description => "All users in this group by default.").id
 
 
   def make_calendars
