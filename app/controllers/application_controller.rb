@@ -38,7 +38,6 @@ class ApplicationController < ActionController::Base
         flash[:error] = "No Period is Currently Active - Some Pages May Fail to Load"
       end
     end
-    aerawer
     if @current_user
       if @current_period
         @current_availability = @current_user.availability_calendar(@current_period)

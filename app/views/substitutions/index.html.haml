@@ -35,22 +35,22 @@
   = hidden_field_tag "subs_location_sort", true if @subs_date_header
   = hidden_field_tag "subs_reserved_for_sort", true if @subs_date_header
   <b>Hide:</b>
-  Subs I cannot take
   <br/>
- 
+
   = check_box_tag "filters[subs_conflict]", 1, @filters.include?('subs_conflict')
-  Day Shifts
+  Subs I cannot take 
   = check_box_tag "filters[subs_day]", 1, @filters.include?('subs_day')
-  Evening Shifts
+  Day Shifts
   = check_box_tag "filters[subs_evening]", 1, @filters.include?('subs_evening')
-  Late Night Shifts
+  Evening Shifts
   = check_box_tag "filters[subs_late_night]", 1, @filters.include?('subs_late_night')
+  Late Night Shifts
 
   = submit_tag 'Update', :id => 'subs_filters_submit'
 = form_tag :controller => "substitutions", :action => "take_or_assign_subs" do
   %table.subs
     %tr
-      %th.delete{:colspan => 3} Select
+      %th.initials{:colspan => 3} Select
       %th.time{:class => @subs_time_header, :colspan => 2}= link_to 'Shift Time', substitutions_path(:subs_sort => 'time', :filters => @filters), {:id => :allsubs_time}
       %th.initials{:class => @subs_location_header}= link_to 'Location', substitutions_path(:subs_sort => 'location', :filters => @filters), {:id => :allsubs_location}
       %th.initials{:class => @subs_posted_by_header}= link_to 'Posted By', substitutions_path(:subs_sort => 'posted_by', :filters => @filters), {:id => :allsubs_posted_by}
@@ -58,9 +58,15 @@
     - if @reserved_subs && @reserved_subs.size != 0
       - @reserved_subs.each do |substitution|
         %tr.reserved
-          %td{:colspan => 6}= 'Reserved For Me:'
+          %td{:colspan => 8}= 'Reserved For Me:'
         %tr.reservedsub
           %td= check_box_tag "entries[#{substitution.id.to_s}]"
+          - if substitution.is_day?
+            %td{:colspan=> 2}= image_tag "/img/sun.jpg", :width => "30", :height => "30", :alt => "sun"
+          - elsif substitution.is_evening?
+            %td{:colspan=> 2}= image_tag "/img/sunset.jpg", :width => "30", :height => "30", :alt=> "sunset"
+          - else
+            %td{:colspan=> 2}= image_tag "/img/night.jpg", :width => "30", :height => "30", :alt => "moon"
           %td= substitution.entry.start_time.strftime('%a, %m/%d')
           %td= substitution.entry.start_time.strftime('%I:%M%p') + ' -  ' + substitution.entry.end_time.strftime('%I:%M%p')
           - if substitution.entry.lab

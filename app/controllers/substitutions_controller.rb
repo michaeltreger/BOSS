@@ -190,7 +190,7 @@ class SubstitutionsController < ApplicationController
   def create
     if params[:substitution][:entry].nil?
       flash[:error] = 'Please select a shift to substitute.'
-      redirect_to new_substitution_path
+      redirect_to :back
       return
     end
     sub_entry = Entry.find(params[:substitution][:entry])
@@ -199,7 +199,7 @@ class SubstitutionsController < ApplicationController
       s = splitShift(sub_entry, params)
       if s == nil
         flash[:error] = "Invalid partial shift times"
-        redirect_to new_substitution_path
+        redirect_to :back
         return
       else
         sub_entry = s
