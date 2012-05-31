@@ -6,6 +6,7 @@
     %th Start time
     %th Duration
     %th Lab
+    %th Classification
     %th Comment
     %th
     %th
@@ -23,6 +24,7 @@
           %td= time_edit.start_time
           %td= time_edit.duration
           %td= Lab.find(time_edit.lab_id).initials
+          %td= time_edit.classification
           %td= time_edit.comment
           %td= link_to 'Show', time_edit
           %td= link_to 'Edit', edit_time_edit_path(time_edit)

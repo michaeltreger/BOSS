@@ -12,4 +12,8 @@ class TimeEdit < ActiveRecord::Base
     end
     return pay_period
   end
+
+  def self.classifications
+    ["Mansub","Senior Duties","Projects","Training"]
+  end
 end
