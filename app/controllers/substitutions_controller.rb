@@ -95,6 +95,9 @@ class SubstitutionsController < ApplicationController
   end
 
   def manage
+    if !Rails.env.test?
+      recycle
+    end
     @users = User.find(:all)
     if params[:entries]
       @entries = params[:entries].map { |e| Entry.find(e) }
