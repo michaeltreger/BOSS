@@ -6,13 +6,13 @@ class SubstitutionMailer < ActionMailer::Base
     subject = "#{sub.entry.start_time.strftime('%m/%d: %I:%M%p')} - #{sub.entry.end_time.strftime('%I:%M%p')} at #{sub.entry.lab.initials} (#{sub.from_user.initials})"
     if @sub.to_user
       mail(:to => sub.to_user.email, :subject => subject).deliver
-      if Group.find(User::ADMINISTRATOR)
+      if Group.find(User::ADMINISTRATOR) and Group.find(User::ADMINISTRATOR).email?
         mail(:to => Group.find(User::ADMINISTRATOR).email, :subject => subject).deliver
       end
-      if Group.find(User::SCHEDULER)
+      if Group.find(User::SCHEDULER) and Group.find(User::SCHEDULER).email?
         mail(:to => Group.find(User::SCHEDULER).email, :subject => subject).deliver
       end
-    else
+    elsif Group.find(User::ALL_USERS) and Group.find(User::ALL_USERS).email
       mail(:to => Group.find(User::ALL_USERS).email, :subject => subject).deliver
     end
   end
@@ -27,10 +27,10 @@ class SubstitutionMailer < ActionMailer::Base
     if sub.from_user
       mail(:to => sub.from_user.email, :subject => subject).deliver
     end
-    if Group.find(User::ADMINISTRATOR)
+    if Group.find(User::ADMINISTRATOR) and Group.find(User::ADMINISTRATOR).email?
       mail(:to => Group.find(User::ADMINISTRATOR).email, :subject => subject).deliver
     end
-    if Group.find(User::SCHEDULER)
+    if Group.find(User::SCHEDULER) and Group.find(User::SCHEDULER).email?
       mail(:to => Group.find(User::SCHEDULER).email, :subject => subject).deliver
     end
   end
