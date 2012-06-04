@@ -6,8 +6,12 @@ class SubstitutionMailer < ActionMailer::Base
     subject = "#{sub.entry.start_time.strftime('%m/%d: %I:%M%p')} - #{sub.entry.end_time.strftime('%I:%M%p')} at #{sub.entry.lab.initials} (#{sub.from_user.initials})"
     if @sub.to_user
       mail(:to => sub.to_user.email, :subject => subject).deliver
-      mail(:to => Group.find(User::ADMINISTRATOR).email, :subject => subject).deliver
-      mail(:to => Group.find(User::SCHEDULER).email, :subject => subject).deliver
+      if Group.find(User::ADMINISTRATOR)
+        mail(:to => Group.find(User::ADMINISTRATOR).email, :subject => subject).deliver
+      end
+      if Group.find(User::SCHEDULER)
+        mail(:to => Group.find(User::SCHEDULER).email, :subject => subject).deliver
+      end
     else
       mail(:to => Group.find(User::ALL_USERS).email, :subject => subject).deliver
     end
