@@ -1,0 +1,2 @@
+heroku config:add GMAIL_SMTP_USER=boss.cafe1@gmail.com
+heroku config:add GMAIL_SMTP_PASSWORD=yourpassword
