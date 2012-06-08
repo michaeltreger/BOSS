@@ -1,6 +1,6 @@
 -@page_title = "Currently editing #{@user.name}"
 
-= render 'form'
+= render 'editform'
 = link_to 'Deactivate user', deactivate_user_path(@user), :confirm => 'Are you sure?'
 = link_to 'Back', users_path
 
